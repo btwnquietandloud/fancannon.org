@@ -228,15 +228,19 @@
   }
   .tl-desc {
     font-size: 14px; color: var(--text-muted); line-height: 1.6;
-    max-height: 44px; overflow: hidden; transition: max-height 0.3s ease;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+    overflow: hidden; max-height: 2.8em; transition: max-height 0.4s ease;
   }
-  .tl-card.expanded .tl-desc { max-height: 300px; }
-  .tl-toggle { font-size: 12px; margin-top: 4px; display: inline-block; }
+  .tl-card.expanded .tl-desc {
+    -webkit-line-clamp: unset; max-height: 500px;
+  }
+  .tl-toggle { font-size: 12px; margin-top: 6px; display: inline-block; cursor: pointer; opacity: 0.8; }
+  .tl-toggle:hover { opacity: 1; }
 
   /* ── Characters ── */
   .char-grid {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: 12px; margin-bottom: 24px;
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 10px; margin-bottom: 24px;
   }
   .char-btn {
     background: var(--bg-card); border-radius: 16px; padding: 20px 12px;
@@ -280,6 +284,7 @@
     font-family: 'Fredoka', sans-serif; font-size: 12px; font-weight: 600;
     padding: 4px 12px; border-radius: 8px;
   }
+  .char-trivia-list { display: flex; flex-direction: column; gap: 8px; }
   .char-trivia {
     border-radius: 12px; padding: 14px 18px;
     display: flex; align-items: center; gap: 10px;
@@ -323,6 +328,107 @@
   }
   .fact-text { font-size: 14px; color: var(--text); margin: 4px 0 0; line-height: 1.6; }
 
+  /* ── Trivia ── */
+  .trivia-start-screen {
+    text-align: center; padding: 60px 24px;
+    background: var(--bg-card); border-radius: 24px;
+    border: 1px solid var(--border);
+  }
+  .trivia-start-icon { font-size: 72px; margin-bottom: 20px; animation: pulseGlow 3s ease-in-out infinite; }
+  .trivia-start-title {
+    font-family: 'Fredoka', sans-serif; font-size: 24px;
+    color: var(--text); margin: 0 0 12px;
+  }
+  .trivia-start-desc {
+    font-size: 15px; color: var(--text-muted); margin: 0 0 28px;
+    max-width: 420px; margin-left: auto; margin-right: auto; line-height: 1.6;
+  }
+  .trivia-action-btn {
+    font-family: 'Fredoka', sans-serif; font-size: 16px; font-weight: 600;
+    padding: 14px 36px; border: none; border-radius: 14px;
+    background: linear-gradient(135deg, #e040a0, #ff6b35); color: #fff;
+    cursor: pointer; transition: all 0.25s ease;
+    box-shadow: 0 4px 20px rgba(224,64,160,0.3);
+  }
+  .trivia-action-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 28px rgba(224,64,160,0.4); }
+  .trivia-hud {
+    display: flex; justify-content: center; gap: 16px;
+    margin-bottom: 16px; flex-wrap: wrap;
+  }
+  .trivia-hud-item {
+    background: var(--bg-card); border-radius: 14px; padding: 12px 20px;
+    border: 1px solid var(--border); text-align: center; min-width: 90px;
+  }
+  .trivia-hud-label { display: block; font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; font-family: 'Fredoka', sans-serif; }
+  .trivia-hud-value { display: block; font-family: 'Bungee', cursive; font-size: 18px; color: var(--text); margin-top: 4px; }
+  .trivia-progress-bar {
+    width: 100%; height: 6px; background: var(--border); border-radius: 3px;
+    margin-bottom: 24px; overflow: hidden;
+  }
+  .trivia-progress-fill {
+    height: 100%; border-radius: 3px; transition: width 0.4s ease;
+    background: linear-gradient(90deg, #e040a0, #ff6b35, #ffd166);
+    width: 0%;
+  }
+  .trivia-card {
+    background: var(--bg-card); border-radius: 20px; padding: 32px;
+    border: 1px solid var(--border); max-width: 680px; margin: 0 auto;
+  }
+  .trivia-category {
+    font-family: 'Fredoka', sans-serif; font-size: 11px; font-weight: 600;
+    color: #e040a0; text-transform: uppercase; letter-spacing: 1.5px;
+    margin-bottom: 12px;
+  }
+  .trivia-question {
+    font-family: 'Fredoka', sans-serif; font-size: 20px; font-weight: 600;
+    color: var(--text); margin: 0 0 24px; line-height: 1.5;
+  }
+  .trivia-options { display: flex; flex-direction: column; gap: 10px; }
+  .trivia-option {
+    width: 100%; text-align: left; padding: 16px 20px;
+    background: rgba(255,255,255,0.03); border: 2px solid var(--border);
+    border-radius: 14px; cursor: pointer;
+    font-family: 'Nunito', sans-serif; font-size: 15px; color: var(--text);
+    transition: all 0.2s ease; display: flex; align-items: center; gap: 12px;
+  }
+  .trivia-option:hover:not(.disabled) { border-color: #e040a066; background: rgba(224,64,160,0.05); transform: translateX(4px); }
+  .trivia-option .opt-letter {
+    font-family: 'Bungee', cursive; font-size: 14px; color: var(--text-dim);
+    width: 32px; height: 32px; border-radius: 10px; display: flex;
+    align-items: center; justify-content: center; flex-shrink: 0;
+    background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+    transition: all 0.2s ease;
+  }
+  .trivia-option:hover:not(.disabled) .opt-letter { border-color: #e040a066; color: #e040a0; }
+  .trivia-option.correct {
+    border-color: #06d6a0; background: rgba(6,214,160,0.1);
+    animation: fadeUp 0.3s ease;
+  }
+  .trivia-option.correct .opt-letter { background: #06d6a0; color: #fff; border-color: #06d6a0; }
+  .trivia-option.wrong {
+    border-color: #ff4757; background: rgba(255,71,87,0.1);
+    animation: fadeUp 0.3s ease;
+  }
+  .trivia-option.wrong .opt-letter { background: #ff4757; color: #fff; border-color: #ff4757; }
+  .trivia-option.disabled { cursor: default; opacity: 0.5; pointer-events: none; }
+  .trivia-option.disabled.correct { opacity: 1; }
+  .trivia-option.disabled.wrong { opacity: 1; }
+  .trivia-feedback {
+    margin-top: 20px; padding: 16px 20px; border-radius: 14px;
+    font-family: 'Nunito', sans-serif; font-size: 14px; line-height: 1.6;
+  }
+  .trivia-feedback.correct-fb { background: rgba(6,214,160,0.08); border: 1px solid rgba(6,214,160,0.2); color: #06d6a0; }
+  .trivia-feedback.wrong-fb { background: rgba(255,71,87,0.08); border: 1px solid rgba(255,71,87,0.2); color: #ff8090; }
+  .trivia-next-btn {
+    margin-top: 20px; width: 100%; font-size: 15px; padding: 14px;
+  }
+  @keyframes shakeWrong {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-6px); }
+    40%, 80% { transform: translateX(6px); }
+  }
+  .shake { animation: shakeWrong 0.4s ease; }
+
   /* ── Footer ── */
   footer {
     text-align: center; margin-top: 48px; padding: 20px;
@@ -343,6 +449,7 @@
     <button class="tab-btn" data-tab="timeline"><span class="icon">📜</span> Timeline</button>
     <button class="tab-btn" data-tab="characters"><span class="icon">👥</span> Characters</button>
     <button class="tab-btn" data-tab="facts"><span class="icon">🎲</span> Fun Facts</button>
+    <button class="tab-btn" data-tab="trivia"><span class="icon">🧠</span> Trivia</button>
   </nav>
 
   <!-- ════════════ HOME ════════════ -->
@@ -418,6 +525,46 @@
     <div class="facts-grid" id="facts-grid"></div>
   </div>
 
+  <!-- ════════════ TRIVIA ════════════ -->
+  <div class="section" id="sec-trivia">
+    <h2 class="section-heading" style="color:#e040a0">🧠 BFDI Trivia Challenge</h2>
+    <p class="section-sub">Test your knowledge of the BFDI universe!</p>
+    <div id="trivia-container">
+      <!-- Start screen -->
+      <div id="trivia-start" class="trivia-start-screen">
+        <div class="trivia-start-icon">🏝️</div>
+        <h3 class="trivia-start-title">Ready to Test Your BFDI Knowledge?</h3>
+        <p class="trivia-start-desc">100 questions covering characters, seasons, lore, and behind-the-scenes history. How many can you get right?</p>
+        <button id="trivia-start-btn" class="trivia-action-btn">Start Trivia</button>
+      </div>
+      <!-- Game screen (hidden initially) -->
+      <div id="trivia-game" style="display:none;">
+        <div class="trivia-hud">
+          <div class="trivia-hud-item">
+            <span class="trivia-hud-label">Question</span>
+            <span class="trivia-hud-value" id="trivia-qnum">1 / 100</span>
+          </div>
+          <div class="trivia-hud-item">
+            <span class="trivia-hud-label">Score</span>
+            <span class="trivia-hud-value" id="trivia-score">0</span>
+          </div>
+          <div class="trivia-hud-item">
+            <span class="trivia-hud-label">Streak</span>
+            <span class="trivia-hud-value" id="trivia-streak">🔥 0</span>
+          </div>
+        </div>
+        <div class="trivia-progress-bar"><div class="trivia-progress-fill" id="trivia-progress"></div></div>
+        <div class="trivia-card" id="trivia-card">
+          <div class="trivia-category" id="trivia-category">Characters</div>
+          <p class="trivia-question" id="trivia-question">Loading...</p>
+          <div class="trivia-options" id="trivia-options"></div>
+          <div class="trivia-feedback" id="trivia-feedback" style="display:none;"></div>
+          <button class="trivia-action-btn trivia-next-btn" id="trivia-next" style="display:none;">Next Question →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <footer>
     <p>Fan-made guide · BFDI is created by Cary & Michael Huang · jacknjellify on YouTube</p>
   </footer>
@@ -426,18 +573,54 @@
 <script>
 // ═══════════ DATA ═══════════
 const characters = [
-  { name:"Firey", emoji:"🔥", color:"#ff6b35", role:"Season 1 Winner", seasons:["BFDI","BFDIA","IDFB","BFB"], description:"The very first object show character ever created. A passionate and sometimes forgetful flame who won Season 1 with 406 votes. His rivalry with Coiny and complicated friendship with Leafy are central to the series.", trivia:"First ever object show winner in history" },
-  { name:"Leafy", emoji:"🍃", color:"#06d6a0", role:"Fan Favorite / Anti-Hero", seasons:["BFDI","BFDIA","IDFB","BFB","TPOT"], description:"Appears kind and friendly on the surface, but has a complex two-faced nature. She infamously stole Dream Island with fake money after Firey wouldn't let her in, turning every contestant against her.", trivia:"Has a 'niceness chart' ranking other characters' kindness" },
-  { name:"Bubble", emoji:"🫧", color:"#88ccff", role:"Season 1 Finalist", seasons:["BFDI","BFDIA","BFB","TPOT"], description:"Sweet and innocent with a distinctive accent, replacing vowels with 'oi' sounds. Extremely fragile and pops constantly, but always recovers thanks to the Bubble Recovery Center. One of the most rational characters.", trivia:"Says 'Yoylecake!' as her catchphrase" },
-  { name:"Four", emoji:"4️⃣", color:"#ffe74c", role:"Host (BFB / TPOT)", seasons:["BFB","TPOT"], description:"A powerful and unpredictable Algebralian number who hosts Battle for BFB. Can screech contestants to kill them, recover the dead, and has reality-warping powers. Both feared and loved by fans.", trivia:"Based on the number 4 — part of the 'Algebralian' species" },
-  { name:"X", emoji:"✖️", color:"#ffd166", role:"Co-Host", seasons:["BFB","TPOT"], description:"Four's best friend and co-host. A kind and gentle Algebralian who treasures their baskets. Much more empathetic toward contestants than Four.", trivia:"X's 'value' has been debated by contestants in the show" },
-  { name:"Flower", emoji:"🌸", color:"#ff69b4", role:"BFB Winner", seasons:["BFDI","BFDIA","BFB"], description:"Initially a loud, aggressive bully who destroys recovery centers and attacks others. Undergoes major character development in BFB, becoming more self-aware and ultimately winning the season.", trivia:"Second contestant ever to win a season of BFDI" },
-  { name:"Pencil", emoji:"✏️", color:"#ff4757", role:"Alliance Leader", seasons:["BFDI","BFDIA","BFB","TPOT"], description:"Leader of the FreeSmart alliance with Match, Bubble, Ruby, and Book. Can be bossy and harsh to those she considers beneath her. Won the unreleased prequel 'Total Firey Island'.", trivia:"Leader of the iconic 'FreeSmart' alliance" },
-  { name:"Woody", emoji:"🪵", color:"#c8956c", role:"Underdog Hero", seasons:["BFDI","BFB","BFDIA"], description:"Originally a terrified balsa wood character afraid of everything. Gets incredible character development in BFB, overcoming his fears and becoming genuinely brave. Fan favorite redemption arc.", trivia:"Known for screaming — initially could barely speak" },
-  { name:"Two", emoji:"2️⃣", color:"#06d6a0", role:"Host (TPOT)", seasons:["TPOT"], description:"Another Algebralian who arrives to host The Power of Two. Much friendlier and more helpful than Four, genuinely wanting to assist contestants. Split BFB's 64 contestants, taking 40 for their own show.", trivia:"Caused the BFB/TPOT split by offering their powers as a prize" },
-  { name:"Golf Ball", emoji:"⛳", color:"#e8e8e8", role:"The Strategist", seasons:["BFDI","BFDIA","BFB","TPOT"], description:"Bossy, highly intelligent, and always trying to lead. Often paired with Tennis Ball, her closest ally. Runs a factory called 'Golf Ball's Underground Factory' and considers herself the smartest contestant.", trivia:"Has her own underground factory with advanced tech" },
-  { name:"Announcer", emoji:"📢", color:"#888888", role:"Original Host", seasons:["BFDI","BFDIA","BFDIE"], description:"The mysterious robotic speaker box who started the entire competition by offering Dream Island as a prize. Monotone and detached, treating contestants more like game pieces than people.", trivia:"Dropped from the sky to start the very first competition" },
-  { name:"Loser", emoji:"🏆", color:"#f0c040", role:"Fan Idol", seasons:["BFB"], description:"Despite the name, Loser is beloved by almost every contestant. Charismatic and inspirational, though revealed to have been dishonest about some achievements. His elimination was a major shock.", trivia:"Every contestant wanted to be on his team" },
+  // ── Original Season 1 Contestants ──
+  { name:"Firey", emoji:"🔥", color:"#ff6b35", role:"Season 1 Winner", seasons:["BFDI","BFDIA","IDFB","BFB"], description:"The very first object show character ever created. A passionate and sometimes forgetful flame who won Season 1 with 406 votes. His rivalry with Coiny and complicated friendship with Leafy are central to the series.", trivia:["First ever object show winner in history","Voiced by co-creator Michael Huang","Won with 406 votes in the Season 1 finale"] },
+  { name:"Leafy", emoji:"🍃", color:"#06d6a0", role:"Fan Favorite / Anti-Hero", seasons:["BFDI","BFDIA","IDFB","BFB","TPOT"], description:"Appears kind and friendly on the surface, but has a complex two-faced nature. She infamously stole Dream Island with fake money after Firey wouldn't let her in, turning every contestant against her.", trivia:["Has a 'niceness chart' ranking other characters' kindness","Stole Dream Island with counterfeit money — the show's biggest betrayal","Would have joined BFDIA with 606 votes but was stuck in Yoyleland"] },
+  { name:"Bubble", emoji:"🫧", color:"#88ccff", role:"Season 1 Finalist", seasons:["BFDI","BFDIA","BFB","TPOT"], description:"Sweet and innocent with a distinctive accent, replacing vowels with 'oi' sounds. Extremely fragile and pops constantly, but always recovers thanks to the Bubble Recovery Center. One of the most rational characters.", trivia:["Says 'Yoylecake!' as her catchphrase","Calls Leafy 'Loify' due to her oi-accent","Has popped and been recovered more times than any other character"] },
+  { name:"Flower", emoji:"🌸", color:"#ff69b4", role:"BFB Winner", seasons:["BFDI","BFDIA","BFB"], description:"Initially a loud, aggressive bully who destroys recovery centers and attacks others. Undergoes major character development in BFB, becoming more self-aware and ultimately winning the season.", trivia:["Second contestant ever to win a season of BFDI","Destroyed the original Recovery Center out of spite in Season 1","Her fashion business arc in BFB was a fan-favorite storyline"] },
+  { name:"Pencil", emoji:"✏️", color:"#ff4757", role:"Alliance Leader", seasons:["BFDI","BFDIA","BFB","TPOT"], description:"Leader of the FreeSmart alliance with Match, Bubble, Ruby, and Book. Can be bossy and harsh to those she considers beneath her. Won the unreleased prequel 'Total Firey Island'.", trivia:["Leader of the iconic 'FreeSmart' alliance","Won the prequel comic series Total Firey Island","Was sent back in time by One during the events of TPOT"] },
+  { name:"Coiny", emoji:"🪙", color:"#e8b030", role:"Firey's Rival", seasons:["BFDI","BFDIA","BFB","TPOT"], description:"A coin who is Firey's arch-nemesis — the two constantly slap each other. A natural strategist and team leader who can be impulsive but cares about fairness. Their rivalry is one of the longest-running gags in the series.", trivia:["Has been slapping Firey since the very first episode","Looks nearly identical to Nickel, causing frequent mix-ups","His slap fights with Firey are the series' most iconic recurring gag"] },
+  { name:"Woody", emoji:"🪵", color:"#c8956c", role:"Underdog Hero", seasons:["BFDI","BFB","BFDIA"], description:"Originally a terrified balsa wood character afraid of everything. Gets incredible character development in BFB, overcoming his fears and becoming genuinely brave. Fan favorite redemption arc.", trivia:["Known for screaming — initially could barely speak","His BFB bravery arc is considered one of the best character developments","Made a glass bridge by heating sand in BFDIA, shocking everyone"] },
+  { name:"Ice Cube", emoji:"🧊", color:"#a8d8ea", role:"Quiet Schemer", seasons:["BFDI","BFDIA","BFB","TPOT"], description:"Generally quiet but secretly has an intense side. Known for being very easy to kill (she shatters constantly) and becoming furious when wronged. Has an ax-crazy streak beneath her silent exterior.", trivia:["Has sworn revenge on multiple characters who wronged her","Uses recycled audio clips for most of her dialogue","Appeared in a Kuwaiti TV program during Ramadan 2023"] },
+  { name:"Teardrop", emoji:"💧", color:"#5baaec", role:"The Silent One", seasons:["BFDI","BFDIA","BFB","TPOT"], description:"A completely silent character who communicates through actions and expressions alone. Despite never speaking a word, she's a strong competitor and surprisingly expressive. Fiercely independent.", trivia:["Has never spoken a single word in the entire series","Her BFDIA elimination was controversially influenced by outside voters","Fans debate whether she chooses not to speak or physically can't"] },
+  { name:"Rocky", emoji:"🪨", color:"#9e9e9e", role:"The Wild Card", seasons:["BFDI","BFDIA","BFB","TPOT"], description:"A small rock who barely speaks and is best known for vomiting constantly. Despite seeming useless, he has a dedicated fanbase and has survived many eliminations thanks to viewer sympathy.", trivia:["His main ability is barfing — which has actually won challenges","One of the few characters who switched teams in both BFDI and BFDIA","Fans debate whether he's secretly intelligent or truly oblivious"] },
+  { name:"Pen", emoji:"🖊️", color:"#2196f3", role:"The Cool Guy", seasons:["BFDI","BFB","TPOT"], description:"A laid-back, friendly pen who is part of the popular 'guys' group with Eraser and Blocky. Generally well-liked by other contestants and rarely gets into conflicts. One of the most social characters.", trivia:["Part of the 'cool guys' trio with Eraser and Blocky","One of the most consistently well-liked characters across all seasons","Rarely involved in drama — acts as a stabilizing social presence"] },
+  { name:"Needle", emoji:"🪡", color:"#cc88aa", role:"Don't Call Her Needy", seasons:["BFDI","BFDIA","BFB","TPOT"], description:"A sewing needle who gets extremely upset when called 'Needy' — she'll slap anyone who says it. Otherwise fairly calm and collected. Her catchphrase reaction is one of the most iconic running gags.", trivia:["Will instantly slap anyone who calls her 'Needy'","Used a Win Token in Season 1 but still wasn't safe from elimination","Her slap is so iconic that even the hosts have been hit"] },
+  { name:"Spongy", emoji:"🧽", color:"#d4a843", role:"The Outcast", seasons:["BFDI","BFDIA","BFB"], description:"A large, absorbent sponge who is often mistreated and excluded by other contestants due to his size and smell. Despite being bullied, he tries to be helpful and has a surprisingly resilient spirit.", trivia:["Frequently rejected from teams due to his size","His elimination caused controversy over vote-counting discrepancies","Was the last male eliminated before the Season 1 finale"] },
+  { name:"Golf Ball", emoji:"⛳", color:"#e8e8e8", role:"The Strategist", seasons:["BFDI","BFDIA","BFB","TPOT"], description:"Bossy, highly intelligent, and always trying to lead. Often paired with Tennis Ball, her closest ally. Runs a factory called 'Golf Ball's Underground Factory' and considers herself the smartest contestant.", trivia:["Has her own underground factory with advanced tech","Considers herself the most intelligent character in the series","Her bossy leadership style has made her both loved and hated by fans"] },
+  { name:"Tennis Ball", emoji:"🎾", color:"#c8d84c", role:"The Loyal Sidekick", seasons:["BFDI","BFDIA","BFB","TPOT"], description:"Golf Ball's best friend and most loyal supporter. Calm, reasonable, and good-natured, he often serves as a voice of reason when Golf Ball gets too bossy. One of the most consistently likeable characters.", trivia:["Best friends with Golf Ball since the very beginning","One of the few characters who switched teams in multiple seasons","Often the only one who can calm Golf Ball down"] },
+  { name:"Match", emoji:"🔥", color:"#ff7043", role:"The Mean Girl", seasons:["BFDI","BFDIA","BFB"], description:"Pencil's best friend and co-leader of the FreeSmart alliance. Speaks in a valley girl accent peppered with 'like' and can be exclusionary and harsh. Has moments of genuine kindness beneath the attitude.", trivia:["Says 'like' in almost every sentence she speaks","Was demoted within her own alliance by Pencil in BFB","Attempted to atone for her mean behavior after BFB Episode 8"] },
+  { name:"Blocky", emoji:"🟥", color:"#e53935", role:"The Prankster", seasons:["BFDI","BFDIA","BFB","TPOT"], description:"A red building block known for his violent pranks on other contestants, which he films for 'Blocky's Funny Doings International.' Can be a bully but is popular among the male characters.", trivia:["Runs 'Blocky's Funny Doings International' — his own prank show","His pranks often involve destroying or harming other contestants","May have appeared as early as 2009 in a pre-BFDI video"] },
+  { name:"Eraser", emoji:"🧱", color:"#e88090", role:"The Follower", seasons:["BFDI","BFB","TPOT"], description:"A pink eraser who hangs out with Pen and Blocky as part of the 'cool guys' group. Not the brightest contestant but loyal to his friends. Often goes along with whatever his friends are doing.", trivia:["One of the original 'cool guys' trio alongside Pen and Blocky","Despite being an eraser, he's actually pink — not white","Tends to repeat or agree with whatever Pen and Blocky say"] },
+  { name:"Snowball", emoji:"⚪", color:"#c0d8f0", role:"The Bully", seasons:["BFDI","BFDIA","BFB","TPOT"], description:"An aggressive and short-tempered snowball who relies on physical strength. One of the most antagonistic original contestants, frequently bullying and threatening others to get his way.", trivia:["One of the most physically aggressive characters in the series","Attempted to destroy the Announcer after being eliminated","Despite his aggression, viewers have occasionally saved him"] },
+  { name:"Pin", emoji:"📌", color:"#e04050", role:"The Leader", seasons:["BFDI","BFDIA","BFB","TPOT"], description:"A thumbtack who was the original leader of the Squishy Cherries team. Authoritative and determined, she has a 'Gratitude Token' that plays an important role. Generally tries to do the right thing.", trivia:["Owns a 'Gratitude Token' that becomes a key plot device","Was the first team captain chosen in Season 1","Her token was later used by Leafy to switch teams in BFB"] },
+  { name:"David", emoji:"🙂", color:"#d8c8a0", role:"The Oddball", seasons:["BFDI","BFDIA","BFB"], description:"A crudely drawn stick figure who joined as a recommended character in Episode 18. Can only say 'Aw, seriously?' in various tones. His bizarre simplicity compared to the other characters makes him a cult favorite.", trivia:["Only says 'Aw, seriously?' — his sole line of dialogue","Joined as a fan-recommended character mid-season","His crude stick-figure design intentionally contrasts the other characters"] },
+  // ── BFDIA New Characters ──
+  { name:"Ruby", emoji:"💎", color:"#e84060", role:"The Energetic Gem", seasons:["BFDIA","BFB","TPOT"], description:"An enthusiastic and bubbly ruby gemstone who joined in Season 2. Part of the FreeSmart alliance and one of its kindest members. Her cheerful energy and loyalty make her a fan favorite.", trivia:["One of the nicest members of the FreeSmart alliance","Received over 30,000 votes in a single episode","Her upbeat personality contrasts Pencil and Match's harshness"] },
+  { name:"Book", emoji:"📖", color:"#68c060", role:"The Know-It-All", seasons:["BFDIA","BFB","TPOT"], description:"An intelligent book who is a member of the FreeSmart alliance. Prides herself on being well-read and knowledgeable, but can be dismissive and apathetic toward her own teammates at times.", trivia:["Defines herself by her knowledge and factual accuracy","Her apathy toward teammates caused Ice Cube to leave their team","Contains the fictional 'BFDI Tips and Tricks' inside her pages"] },
+  { name:"Gelatin", emoji:"🟩", color:"#40c890", role:"The Trickster", seasons:["BFDIA","BFB","TPOT"], description:"A playful and mischievous gelatin dessert who joined in BFDIA. Known for his freeze juice and creative problem-solving. Can be immature but is generally good-natured and entertaining.", trivia:["Has 'freeze juice' that can freeze anything instantly","Never been sent to the TLC or LOL across any season","Often uses creative and unconventional solutions to challenges"] },
+  { name:"Puffball", emoji:"🌈", color:"#d880d8", role:"The Floater", seasons:["BFDIA","BFB","TPOT"], description:"A colorful, flying puffball who can carry other contestants. One of the few characters who can fly. Became controversial in BFDIA when she started sweeping prizes for herself rather than sharing with her team.", trivia:["One of the only characters who can fly","Went on a prize-sweeping streak that turned fans against her","Has her own Speaker Box — the Puffball Speaker Box"] },
+  { name:"Yellow Face", emoji:"🟡", color:"#ffe040", role:"The Ad Man", seasons:["BFDIA","BFB","TPOT"], description:"A large yellow face known for creating ridiculous and absurd commercials for fake products. His ads are a beloved recurring segment. Despite his chaotic energy, he's surprisingly strategic.", trivia:["His fake product ads are one of the show's most iconic recurring bits","Never been sent to the TLC or LOL","Ads include 'Non-Slip Shoes So Ha' and 'Bubble Transformer'"] },
+  { name:"Donut", emoji:"🍩", color:"#d8a070", role:"The Reluctant Leader", seasons:["BFDIA","BFB"], description:"A donut who became an unexpected leader when Four was absorbed into him, temporarily giving him godlike powers. Generally reasonable and fair-minded, he rose to prominence during the middle of BFB.", trivia:["Temporarily gained Four's powers when Four was absorbed into him","Hosted Cake at Stake while Four was trapped inside him","His stolen diary became a major BFB plot point"] },
+  { name:"Bomby", emoji:"💣", color:"#404040", role:"The Walking Hazard", seasons:["BFDIA","BFB","TPOT"], description:"A bomb who can explode at any moment, making him a constant danger to those around him. Despite this, he's gentle and well-meaning. Other contestants are understandably nervous around him.", trivia:["Can explode at any time — both helping and hurting his teams","Never been sent to the TLC or LOL across any season","His fuse being lit creates some of the show's most tense moments"] },
+  { name:"Fries", emoji:"🍟", color:"#d8a830", role:"The Grump", seasons:["BFDIA","BFB","TPOT"], description:"A container of french fries who is perpetually grumpy and irritable. Hates when people eat his fries (which is technically eating part of him). Despite his attitude, he's a capable competitor.", trivia:["Gets extremely angry when anyone eats his fries","Characters eating his fries is a recurring dark humor gag","Surprisingly competent in challenges despite his bad attitude"] },
+  { name:"Nickel", emoji:"🪙", color:"#a0a8b0", role:"The Other Coin", seasons:["BFDIA","BFB","TPOT"], description:"A nickel who looks suspiciously similar to Coiny, leading to constant identity confusion. More calm and level-headed than Coiny, he often gets frustrated by the constant comparisons between them.", trivia:["Frequently confused with Coiny due to near-identical appearance","Gets visibly annoyed when people mix him up with Coiny","Provides a mellow counterpart to Coiny's impulsive personality"] },
+  { name:"Dora", emoji:"🗿", color:"#c0a890", role:"The Enigma", seasons:["BFDIA","BFB","TPOT"], description:"A mysterious character who speaks exclusively in rapid, unintelligible gibberish that sounds vaguely Spanish. Despite her bizarre communication style, she's surprisingly effective in competitions and has dedicated fans.", trivia:["Speaks entirely in incomprehensible rapid gibberish","Her speech has never been officially translated","Fans endlessly debate what she's actually saying"] },
+  // ── BFB / TPOT New Characters ──
+  { name:"Lollipop", emoji:"🍭", color:"#b050c8", role:"The Sarcastic Wit", seasons:["BFB","TPOT"], description:"A sarcastic and witty lollipop who debuted in BFB. Initially standoffish and condescending, she develops genuine friendships over time. Known for her dry humor and clever observations.", trivia:["Her sarcastic commentary made her one of BFB's most quoted characters","Developed a genuine friendship with Gelatin despite initial hostility","Hosted a party that revealed her softer side beneath the sarcasm"] },
+  { name:"Taco", emoji:"🌮", color:"#e8c040", role:"The Misunderstood One", seasons:["BFB"], description:"A taco who was initially seen as untrustworthy after appearing to betray her team. Her story is one of miscommunication and being judged unfairly, eventually earning redemption when the truth came out.", trivia:["Her 'betrayal' was actually a misunderstanding that took episodes to resolve","Could only say 'Squishy' in early BFDI — later gained full speech","Her redemption arc explored themes of being unfairly judged"] },
+  { name:"Black Hole", emoji:"⚫", color:"#333344", role:"The Gentle Giant", seasons:["BFB","TPOT"], description:"A literal black hole who is paradoxically one of the kindest and most thoughtful contestants. Constantly worried about accidentally destroying things with his gravitational pull. A fan favorite for his gentle nature.", trivia:["Despite being a black hole, he's one of the most gentle characters","Has to be extremely careful not to accidentally suck in contestants","Explores the theme of being feared for what you are vs who you are"] },
+  { name:"Lightning", emoji:"⚡", color:"#ffe840", role:"The Enforcer", seasons:["BFB","TPOT"], description:"An aggressive bolt of lightning who was used by Pencil to electrocute people she didn't like. Powerful and dangerous, but not always in control of how others use his abilities.", trivia:["Was weaponized by Pencil to zap people she disliked","One of the most powerful contestants in terms of raw destructive ability","His electricity has been both a weapon and a tool across episodes"] },
+  { name:"Winner", emoji:"🏅", color:"#e8d040", role:"The Humble Champion", seasons:["TPOT"], description:"A trophy-like character who debuted in TPOT. Despite their name suggesting arrogance, Winner is actually humble and well-liked. Uses they/them pronouns — one of the show's non-binary characters.", trivia:["Uses they/them pronouns — one of BFDI's non-binary characters","Despite being named 'Winner,' they're actually quite humble","Quickly became a fan favorite after debuting in TPOT"] },
+  { name:"Price Tag", emoji:"🏷️", color:"#70b848", role:"The Newcomer", seasons:["TPOT"], description:"A price tag who joined the competition in TPOT. Another non-binary character using they/them pronouns. Brings fresh energy to the ever-expanding cast of contestants.", trivia:["Uses they/them pronouns alongside Winner as a non-binary character","One of the newest additions to the BFDI cast","Voted into TPOT by viewers as a recommended character"] },
+  { name:"Clock", emoji:"🕐", color:"#c0a870", role:"The Timekeeper", seasons:["BFB","TPOT"], description:"A clock who takes honesty and fairness very seriously. Became deeply involved in the Firey lying storyline in BFB, where he confronted Firey about pretending not to know Leafy. Values truth above all.", trivia:["Confronted Firey about lying about not remembering Leafy","Takes honesty more seriously than almost any other contestant","His moral conviction makes him one of BFB's most principled characters"] },
+  { name:"Cake", emoji:"🎂", color:"#f0c0d0", role:"The Sweetheart", seasons:["BFB","TPOT"], description:"A gentle slice of cake and Loser's biggest fan. Kind-hearted and emotional, he was devastated when Loser was eliminated. Provides a soft, caring presence among the more chaotic BFB contestants.", trivia:["One of Loser's most devoted fans and supporters","Was heartbroken when Loser was eliminated from the competition","His gentle nature provides balance among more aggressive contestants"] },
+  // ── Hosts & Special Characters ──
+  { name:"Four", emoji:"4️⃣", color:"#ffe74c", role:"Host (BFB / TPOT)", seasons:["BFB","TPOT"], description:"A powerful and unpredictable Algebralian number who hosts Battle for BFB. Can screech contestants to kill them, recover the dead, and has reality-warping powers. Both feared and loved by fans.", trivia:["Part of the 'Algebralian' species — beings based on numbers","Can kill contestants with a 'screech' and revive the dead","Was temporarily absorbed into Donut, giving Donut his powers"] },
+  { name:"X", emoji:"✖️", color:"#ffd166", role:"Co-Host", seasons:["BFB","TPOT"], description:"Four's best friend and co-host. A kind and gentle Algebralian who treasures their baskets. Much more empathetic toward contestants than Four.", trivia:["X's 'value' has been debated by contestants in the show","Has a treasured collection of baskets","Much kinder to contestants than Four — often acts as a mediator"] },
+  { name:"Two", emoji:"2️⃣", color:"#06d6a0", role:"Host (TPOT)", seasons:["TPOT"], description:"Another Algebralian who arrives to host The Power of Two. Much friendlier and more helpful than Four, genuinely wanting to assist contestants. Split BFB's 64 contestants, taking 40 for their own show.", trivia:["Caused the BFB/TPOT split by offering their powers as a prize","Genuinely wants to help contestants — the friendliest host","Their arrival is one of the most pivotal moments in BFDI history"] },
+  { name:"Announcer", emoji:"📢", color:"#888888", role:"Original Host", seasons:["BFDI","BFDIA","BFDIE"], description:"The mysterious robotic speaker box who started the entire competition by offering Dream Island as a prize. Monotone and detached, treating contestants more like game pieces than people.", trivia:["Dropped from the sky to start the very first competition","Secretly hosted another game 'elsewhere' during BFDI — revealed in BFDIE","Was crushed by Spongy in Season 1, requiring temporary replacement hosts"] },
+  { name:"Loser", emoji:"🏆", color:"#f0c040", role:"Fan Idol", seasons:["BFB"], description:"Despite the name, Loser is beloved by almost every contestant. Charismatic and inspirational, though revealed to have been dishonest about some achievements. His elimination was a major shock.", trivia:["Every contestant wanted to be on his team","Was revealed to have lied about some of his accomplishments","His 'Loser Dance' short became one of jacknjellify's most popular videos"] },
 ];
 
 const timeline = [
@@ -614,6 +797,13 @@ document.querySelectorAll('.quick-card[data-nav]').forEach(card => {
         `<span class="char-season-tag" style="background:${c.color}18;color:${c.color}">${s}</span>`
       ).join('');
 
+      const triviaHTML = (Array.isArray(c.trivia) ? c.trivia : [c.trivia]).map(t =>
+        `<div class="char-trivia" style="background:${c.color}0a;border:1px solid ${c.color}22">
+          <span>💡</span>
+          <span>${t}</span>
+        </div>`
+      ).join('');
+
       detail.innerHTML = `
         <div class="char-detail-header">
           <span class="char-detail-emoji" style="filter:drop-shadow(0 0 15px ${c.color}88)">${c.emoji}</span>
@@ -624,10 +814,7 @@ document.querySelectorAll('.quick-card[data-nav]').forEach(card => {
         </div>
         <p class="char-detail-desc">${c.description}</p>
         <div class="char-seasons">${seasonsHTML}</div>
-        <div class="char-trivia" style="background:${c.color}0a;border:1px solid ${c.color}22">
-          <span>💡</span>
-          <span>${c.trivia}</span>
-        </div>
+        <div class="char-trivia-list">${triviaHTML}</div>
       `;
       detail.style.borderColor = c.color + '44';
       detail.style.boxShadow = `0 0 40px ${c.color}10`;
@@ -680,6 +867,261 @@ document.querySelectorAll('.quick-card[data-nav]').forEach(card => {
   });
 
   renderCards('All');
+})();
+
+// ═══════════ TRIVIA ENGINE ═══════════
+(function initTrivia() {
+  // 100 trivia questions — sourced from characters, timeline, fun facts, and lore
+  const triviaDB = [
+    // ── Characters: Identity & Roles (1-20) ──
+    { q:"Who won Season 1 of BFDI?", a:"Firey", d:["Leafy","Bubble","Flower"], cat:"Characters" },
+    { q:"Who won Battle for BFB (Season 4)?", a:"Flower", d:["Firey","Leafy","Woody"], cat:"Characters" },
+    { q:"Which character is known for never speaking a single word?", a:"Teardrop", d:["Rocky","Ice Cube","David"], cat:"Characters" },
+    { q:"What is David's only line of dialogue?", a:"Aw, seriously?", d:["Oh no!","Why me?","Not again!"], cat:"Characters" },
+    { q:"Which character stole Dream Island with fake money?", a:"Leafy", d:["Flower","Pencil","Blocky"], cat:"Characters" },
+    { q:"Who is the host of Battle for BFB?", a:"Four", d:["Two","Announcer","X"], cat:"Characters" },
+    { q:"Which character runs 'Blocky's Funny Doings International'?", a:"Blocky", d:["Eraser","Pen","Snowball"], cat:"Characters" },
+    { q:"What species are Four, X, and Two?", a:"Algebralians", d:["Numeroids","Mathlings","Digitals"], cat:"Lore" },
+    { q:"Who is the host of The Power of Two?", a:"Two", d:["Four","X","Announcer"], cat:"Characters" },
+    { q:"Which character uses they/them pronouns and is named after a reward?", a:"Winner", d:["Price Tag","Loser","Trophy"], cat:"Characters" },
+    { q:"Who leads the FreeSmart alliance?", a:"Pencil", d:["Match","Bubble","Ruby"], cat:"Characters" },
+    { q:"Which character has a distinctive accent that replaces vowels with 'oi'?", a:"Bubble", d:["Leafy","Match","Ruby"], cat:"Characters" },
+    { q:"What is Bubble's catchphrase?", a:"Yoylecake!", d:["Oh no!","Popping time!","Bubblicious!"], cat:"Characters" },
+    { q:"Which character will slap anyone who calls her 'Needy'?", a:"Needle", d:["Pin","Flower","Pencil"], cat:"Characters" },
+    { q:"Who is Firey's arch-nemesis that he constantly slap-fights?", a:"Coiny", d:["Snowball","Leafy","Blocky"], cat:"Characters" },
+    { q:"Which character is a literal black hole but one of the gentlest?", a:"Black Hole", d:["Lightning","Remote","TV"], cat:"Characters" },
+    { q:"Who temporarily gained Four's powers when Four was absorbed into him?", a:"Donut", d:["Loser","Gelatin","Firey"], cat:"Characters" },
+    { q:"What is Golf Ball best known for building?", a:"An underground factory", d:["A spaceship","A recovery center","A robot army"], cat:"Characters" },
+    { q:"Which character speaks entirely in rapid, unintelligible gibberish?", a:"Dora", d:["David","Rocky","Teardrop"], cat:"Characters" },
+    { q:"Despite being named 'Loser', how do other contestants feel about him?", a:"They adore him", d:["They pity him","They ignore him","They fear him"], cat:"Characters" },
+
+    // ── Characters: Traits & Trivia (21-40) ──
+    { q:"Which character's main ability is vomiting?", a:"Rocky", d:["Spongy","Bomby","Gelatin"], cat:"Characters" },
+    { q:"Match is known for saying which word constantly?", a:"Like", d:["Totally","Whatever","Obviously"], cat:"Characters" },
+    { q:"Who is Tennis Ball's best friend?", a:"Golf Ball", d:["Basketball","Coiny","Firey"], cat:"Characters" },
+    { q:"Which character was originally terrified of everything but overcame his fears in BFB?", a:"Woody", d:["Spongy","David","Rocky"], cat:"Characters" },
+    { q:"What item does Pin own that becomes a key plot device?", a:"A Gratitude Token", d:["A Win Token","A Dream Map","A Recovery Card"], cat:"Characters" },
+    { q:"Which character is frequently rejected from teams due to his large size?", a:"Spongy", d:["Blocky","Snowball","Rocky"], cat:"Characters" },
+    { q:"Who are the three members of the 'cool guys' trio?", a:"Pen, Eraser, and Blocky", d:["Firey, Coiny, and Snowball","Tennis Ball, Golf Ball, and Rocky","Pen, Coiny, and Match"], cat:"Characters" },
+    { q:"Which character has 'freeze juice' that can freeze anything?", a:"Gelatin", d:["Ice Cube","Snowball","Bubble"], cat:"Characters" },
+    { q:"What is Puffball's unique physical ability?", a:"She can fly", d:["She can turn invisible","She can stretch","She can teleport"], cat:"Characters" },
+    { q:"What does Yellow Face create as a recurring segment?", a:"Fake product commercials", d:["News reports","Music videos","Cooking shows"], cat:"Characters" },
+    { q:"Who confronted Firey about lying about not remembering Leafy?", a:"Clock", d:["Coiny","Pin","Golf Ball"], cat:"Characters" },
+    { q:"Which character is Loser's biggest fan?", a:"Cake", d:["Bubble","Woody","Bell"], cat:"Characters" },
+    { q:"What happens to Fries when other characters eat his fries?", a:"He gets extremely angry", d:["He grows new ones","He shrinks","He doesn't notice"], cat:"Characters" },
+    { q:"Which character looks nearly identical to Coiny?", a:"Nickel", d:["Firey","Pin","Donut"], cat:"Characters" },
+    { q:"What did Pencil order Lightning to do in BFB?", a:"Electrocute people she disliked", d:["Guard the alliance","Power a machine","Race against Four"], cat:"Characters" },
+    { q:"How did the Announcer arrive in BFDI Episode 1?", a:"Dropped from the sky", d:["Rose from underground","Walked in from offscreen","Was built by Golf Ball"], cat:"Characters" },
+    { q:"Which character's diary being stolen became a major BFB plot point?", a:"Donut", d:["Book","Four","Leafy"], cat:"Characters" },
+    { q:"Who was the first contestant eliminated from BFDI Season 1?", a:"Flower", d:["Spongy","David","Woody"], cat:"Characters" },
+    { q:"Taco's apparent 'betrayal' in BFB was actually what?", a:"A misunderstanding", d:["A planned strategy","A prank by Blocky","An accident"], cat:"Characters" },
+    { q:"Which character uses recycled audio clips for most of their dialogue?", a:"Ice Cube", d:["Teardrop","David","Rocky"], cat:"Characters" },
+
+    // ── Seasons & Structure (41-55) ──
+    { q:"How many seasons does BFDI have as of 2026?", a:"6", d:["4","5","7"], cat:"Seasons" },
+    { q:"What does BFDIA stand for?", a:"Battle for Dream Island Again", d:["Battle for Dream Island Adventures","Battle for Dream Island Aftermath","Battle for Dream Island Alliance"], cat:"Seasons" },
+    { q:"What does IDFB stand for?", a:"Island Dream For Battle", d:["I Don't Feel Bad","Intense Dream for Battle","Imaginary Dream for Battle"], cat:"Seasons" },
+    { q:"How many episodes did BFDI Season 1 have?", a:"25", d:["20","30","15"], cat:"Seasons" },
+    { q:"How many contestants competed in Battle for BFB at the start?", a:"64", d:["32","48","40"], cat:"Seasons" },
+    { q:"What caused the BFB/TPOT split?", a:"Two arrived and offered their powers as a prize", d:["Four quit the show","Contestants voted to split","The Announcer returned"], cat:"Seasons" },
+    { q:"How many contestants left BFB to join The Power of Two?", a:"40", d:["32","20","48"], cat:"Seasons" },
+    { q:"How many contestants remained in BFB after the split?", a:"14", d:["24","16","10"], cat:"Seasons" },
+    { q:"What is the prize in BFDI Season 1?", a:"Dream Island", d:["A million dollars","A yoyleberry farm","A speaker box"], cat:"Seasons" },
+    { q:"What is the prize in BFDIA?", a:"A farm", d:["Dream Island","A castle","Four's powers"], cat:"Seasons" },
+    { q:"What is BFDIE about?", a:"What the Announcer was doing during the original BFDI", d:["A prequel set before Season 1","Characters on a different planet","The aftermath of BFB"], cat:"Seasons" },
+    { q:"BFDI Season 1 was unique for having what kind of release schedule?", a:"Perfectly consistent monthly episodes", d:["Weekly episodes","Random sporadic releases","Bi-weekly episodes"], cat:"Seasons" },
+    { q:"Which BFDI season had only a single episode before hiatus?", a:"IDFB (Season 3)", d:["BFDIA","BFB","TPOT"], cat:"Seasons" },
+    { q:"In which season do viewers vote to SAVE characters instead of eliminate them?", a:"BFB (starting Episode 17)", d:["BFDI from the beginning","TPOT","BFDIA"], cat:"Seasons" },
+    { q:"What is the name of the fictional world where BFDI takes place?", a:"Goiky", d:["Dreamville","Objectopia","Yoyleland"], cat:"Lore" },
+
+    // ── Timeline & History (56-75) ──
+    { q:"What year did the first episode of BFDI premiere?", a:"2010", d:["2008","2011","2009"], cat:"History" },
+    { q:"On what date did BFDI Episode 1 premiere?", a:"January 1, 2010", d:["March 15, 2010","June 1, 2009","December 25, 2010"], cat:"History" },
+    { q:"What year was the jacknjellify YouTube channel created?", a:"2008", d:["2009","2010","2007"], cat:"History" },
+    { q:"Who created Battle for Dream Island?", a:"Cary and Michael Huang", d:["Adam Katz and Justin Chapman","Joseph Pak and Samuel Thornbury","Alex and Brian Smith"], cat:"History" },
+    { q:"How old were the Huang twins when they started making BFDI?", a:"12 years old", d:["15 years old","10 years old","18 years old"], cat:"History" },
+    { q:"What software was BFDI originally animated in?", a:"Adobe Flash", d:["Toon Boom","After Effects","Blender"], cat:"History" },
+    { q:"What trip inspired the Huang twins to create BFDI?", a:"A trip to Hawaii", d:["A trip to Japan","A trip to New York","A trip to London"], cat:"History" },
+    { q:"What comic series was BFDI based on?", a:"Total Firey Island", d:["Object World","Dream Island Comics","Firey and Friends"], cat:"History" },
+    { q:"How many years was BFDIA on hiatus before returning?", a:"About 10 years (2013-2023)", d:["3 years","5 years","7 years"], cat:"History" },
+    { q:"Why did BFDIA go on hiatus in 2013?", a:"The twins needed to focus on school", d:["They ran out of ideas","YouTube suspended their channel","They started a new show"], cat:"History" },
+    { q:"What university did Cary Huang attend?", a:"Stanford University", d:["MIT","UC Berkeley","Harvard"], cat:"History" },
+    { q:"What did Michael Huang study in college?", a:"Film at UC Berkeley", d:["Animation at CalArts","Computer Science at Stanford","Art at UCLA"], cat:"History" },
+    { q:"When did jacknjellify hit 1 million subscribers?", a:"April 2021", d:["January 2020","December 2019","June 2022"], cat:"History" },
+    { q:"When did jacknjellify hit 2 million subscribers?", a:"November 2023", d:["March 2022","January 2024","August 2023"], cat:"History" },
+    { q:"What happened to jacknjellify's AdSense in 2014?", a:"It was suspended for an unknown reason", d:["It was hacked","They voluntarily paused it","It was upgraded"], cat:"History" },
+    { q:"What was the first object show channel to reach 1 million subscribers?", a:"jacknjellify", d:["Inanimate Insanity","AnimationEpic","Object Mayhem"], cat:"History" },
+    { q:"Where did jacknjellify open an office in 2023?", a:"Santa Monica, California", d:["San Francisco","Los Angeles downtown","New York City"], cat:"History" },
+    { q:"In what year did BFDI finally get a Wikipedia article?", a:"2025", d:["2020","2023","2018"], cat:"History" },
+    { q:"What non-BFDI video by the Huang twins went viral on Newgrounds and ABC News?", a:"Scale of the Universe", d:["Marble Race","Object Battle","Firey Music Video"], cat:"History" },
+    { q:"When did BFDI first have an episode screened in movie theaters?", a:"2023", d:["2021","2024","2019"], cat:"History" },
+
+    // ── Lore & Mechanics (76-88) ──
+    { q:"What machines are used to bring dead characters back to life?", a:"Recovery Centers", d:["Respawn Machines","Life Restorers","Dream Machines"], cat:"Lore" },
+    { q:"What is the name of the Win Token's function?", a:"It erases half of a contestant's elimination votes", d:["It grants immunity","It eliminates another player","It doubles prize money"], cat:"Lore" },
+    { q:"What did Leafy use to steal Dream Island?", a:"Fake money / counterfeit cash", d:["A teleporter","Golf Ball's factory","A Win Token"], cat:"Lore" },
+    { q:"What does Four's 'screech' do to contestants?", a:"Kills them", d:["Freezes them","Teleports them","Makes them shrink"], cat:"Lore" },
+    { q:"What are X's most treasured possessions?", a:"Baskets", d:["Gems","Books","Hats"], cat:"Lore" },
+    { q:"What is the 'TLC' that eliminated contestants are sent to?", a:"Tiny Loser Chamber", d:["Total Loser Camp","The Last Chance","Terrible Losers Club"], cat:"Lore" },
+    { q:"What is the 'LOL' in BFDI?", a:"Locker of Losers", d:["Land of Losers","League of Losers","Lost Object Limbo"], cat:"Lore" },
+    { q:"What is Yoyleland?", a:"A distant land where Leafy was stranded after Season 1", d:["The host's home","A dream sequence location","A contestant-built city"], cat:"Lore" },
+    { q:"What did Firey build to apologize to Leafy in BFB?", a:"A ferris wheel", d:["A bridge","A house","A boat"], cat:"Lore" },
+    { q:"What was the Announcer secretly doing during the events of BFDI Season 1?", a:"Hosting another game elsewhere (revealed in BFDIE)", d:["Building a new Dream Island","Training new contestants","Sleeping"], cat:"Lore" },
+    { q:"Why did Firey pretend not to know Leafy in BFDIA?", a:"To protect his reputation after she stole Dream Island", d:["He genuinely forgot her","Four erased his memory","He was replaced by a clone"], cat:"Lore" },
+    { q:"What happens when Bubble pops?", a:"She can be recovered by the Bubble Recovery Center", d:["She's gone forever","She reforms after 24 hours","Another Bubble replaces her"], cat:"Lore" },
+    { q:"How do viewers participate in BFDI eliminations?", a:"By voting via YouTube likes/dislikes or comments", d:["Through a mobile app","Via email surveys","On a separate website"], cat:"Lore" },
+
+    // ── Fun Facts & Meta (89-100) ──
+    { q:"What is the BFDI fandom collectively known as?", a:"The Object Show Community (OSC)", d:["The Dream Island Fanclub","BFDI Nation","The Object Army"], cat:"Meta" },
+    { q:"Which show is considered BFDI's 'unofficial sister show'?", a:"Inanimate Insanity", d:["Object Overload","Brawl of the Objects","Challenge to Win"], cat:"Meta" },
+    { q:"Approximately how many total views does jacknjellify have?", a:"Over 2 billion", d:["500 million","1 billion","750 million"], cat:"Meta" },
+    { q:"What genre did BFDI help create?", a:"Object shows", d:["Reality animation","Voting cartoons","Game show parodies"], cat:"Meta" },
+    { q:"BFDI is a parody of which TV genre?", a:"Game shows (Survivor / Total Drama Island)", d:["Soap operas","Cooking competitions","Talent shows"], cat:"Meta" },
+    { q:"Which Kuwaiti TV show featured Ice Cube in its opening?", a:"Aareel Bo Adnan", d:["Kuwait Cartoon Hour","Al Majid Show","Sabah Al Khair"], cat:"Meta" },
+    { q:"What platform was BFDIA 5b released as?", a:"A platformer video game", d:["A mobile app","A Flash quiz","A Roblox game"], cat:"Meta" },
+    { q:"How long is the BFDI Season 1 full compilation video?", a:"3 hours and 50 minutes", d:["2 hours","5 hours","1 hour and 30 minutes"], cat:"Meta" },
+    { q:"Which character appeared in a Kuwaiti TV program during Ramadan 2023?", a:"Ice Cube", d:["Four","Firey","Bubble"], cat:"Meta" },
+    { q:"What award did jacknjellify win in 2016 from Wikia?", a:"The Food Award", d:["Best Animation","Fan Choice Award","Web Series of the Year"], cat:"Meta" },
+    { q:"What is the name of the first BFDI episode?", a:"Take the Plunge", d:["Dream Island Awaits","The Big Battle","Object Showdown"], cat:"Meta" },
+    { q:"Roughly how many subscribers does jacknjellify have as of 2025?", a:"Over 3 million", d:["1 million","500,000","5 million"], cat:"Meta" },
+  ];
+
+  // ── Shuffle utility ──
+  function shuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  // ── Game State ──
+  let queue = [];
+  let currentQ = null;
+  let questionNum = 0;
+  let score = 0;
+  let streak = 0;
+  let bestStreak = 0;
+  let answered = false;
+
+  const els = {
+    startScreen: document.getElementById('trivia-start'),
+    game: document.getElementById('trivia-game'),
+    startBtn: document.getElementById('trivia-start-btn'),
+    qnum: document.getElementById('trivia-qnum'),
+    score: document.getElementById('trivia-score'),
+    streak: document.getElementById('trivia-streak'),
+    progress: document.getElementById('trivia-progress'),
+    category: document.getElementById('trivia-category'),
+    question: document.getElementById('trivia-question'),
+    options: document.getElementById('trivia-options'),
+    feedback: document.getElementById('trivia-feedback'),
+    next: document.getElementById('trivia-next'),
+  };
+
+  function startGame() {
+    els.startScreen.style.display = 'none';
+    els.game.style.display = 'block';
+    queue = shuffle(triviaDB);
+    questionNum = 0; score = 0; streak = 0; bestStreak = 0;
+    loadQuestion();
+  }
+
+  function loadQuestion() {
+    // If we've exhausted all questions, reshuffle
+    if (queue.length === 0) queue = shuffle(triviaDB);
+
+    currentQ = queue.pop();
+    questionNum++;
+    answered = false;
+
+    // Update HUD
+    const displayNum = ((questionNum - 1) % 100) + 1;
+    els.qnum.textContent = displayNum + ' / 100';
+    els.score.textContent = score;
+    els.streak.textContent = '🔥 ' + streak;
+    els.progress.style.width = (displayNum / 100 * 100) + '%';
+    els.category.textContent = currentQ.cat;
+    els.question.textContent = currentQ.q;
+
+    // Build shuffled options
+    const options = shuffle([currentQ.a, ...currentQ.d]);
+    const letters = ['A', 'B', 'C', 'D'];
+    els.options.innerHTML = '';
+    options.forEach((opt, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'trivia-option';
+      btn.innerHTML = `<span class="opt-letter">${letters[i]}</span><span>${opt}</span>`;
+      btn.addEventListener('click', () => handleAnswer(btn, opt));
+      els.options.appendChild(btn);
+    });
+
+    // Hide feedback and next
+    els.feedback.style.display = 'none';
+    els.next.style.display = 'none';
+
+    // Scroll card into view
+    document.getElementById('trivia-card').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function handleAnswer(btn, chosen) {
+    if (answered) return;
+    answered = true;
+
+    const isCorrect = chosen === currentQ.a;
+    const allBtns = els.options.querySelectorAll('.trivia-option');
+
+    // Disable all buttons and mark correct/wrong
+    allBtns.forEach(b => {
+      b.classList.add('disabled');
+      const text = b.querySelector('span:last-child').textContent;
+      if (text === currentQ.a) b.classList.add('correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      score++;
+      streak++;
+      if (streak > bestStreak) bestStreak = streak;
+      els.feedback.className = 'trivia-feedback correct-fb';
+      els.feedback.innerHTML = `<strong>✅ Correct!</strong> ${streak > 1 ? ' 🔥 ' + streak + ' in a row!' : ''}`;
+    } else {
+      btn.classList.add('wrong');
+      btn.classList.add('shake');
+      const prevStreak = streak;
+      streak = 0;
+      els.feedback.className = 'trivia-feedback wrong-fb';
+      els.feedback.innerHTML = `<strong>❌ Not quite.</strong> The answer is <strong>${currentQ.a}</strong>.${prevStreak >= 3 ? ' Streak of ' + prevStreak + ' ended.' : ''}`;
+    }
+
+    els.score.textContent = score;
+    els.streak.textContent = '🔥 ' + streak;
+    els.feedback.style.display = 'block';
+    els.next.style.display = 'block';
+    els.next.focus();
+  }
+
+  // ── Event Listeners ──
+  els.startBtn.addEventListener('click', startGame);
+  els.next.addEventListener('click', loadQuestion);
+
+  // Keyboard shortcut: 1-4 to pick answer, Enter/Space for next
+  document.addEventListener('keydown', (e) => {
+    if (activeTab !== 'trivia') return;
+    if (!answered) {
+      const num = parseInt(e.key);
+      if (num >= 1 && num <= 4) {
+        const btns = els.options.querySelectorAll('.trivia-option');
+        if (btns[num - 1]) btns[num - 1].click();
+      }
+    } else {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        els.next.click();
+      }
+    }
+  });
 })();
 </script>
 </body>
