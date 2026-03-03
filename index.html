@@ -10,39 +10,44 @@
 <link href="https://fonts.googleapis.com/css2?family=Chewy&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #ffffff;
-    --surface: #f5f4f8;
-    --surface-hover: #eeedf3;
-    --border: #e0dfe6;
-    --border-hover: #c8c6d2;
+    --page-bg: #2d5255;
+    --container-bg: #ffffff;
+    --surface: #f7f6fa;
+    --border: #e2e1e9;
     --text: #1a1a2e;
     --text-muted: #5c5a72;
     --text-dim: #9896aa;
-    --teal: #2d6a5e;
-    --gold: #b8942e;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
-    min-height: 100vh; background: var(--bg); color: var(--text);
-    font-family: 'Nunito', sans-serif; overflow-x: hidden;
+    min-height: 100vh; background: var(--page-bg);
+    font-family: 'Nunito', sans-serif; color: var(--text); overflow-x: hidden;
   }
 
-  .page { max-width: 920px; margin: 0 auto; padding: 32px 20px 80px; }
+  .page { max-width: 960px; margin: 0 auto; padding: 0 16px 60px; }
 
-  /* Hero */
-  .hero { text-align: center; margin-bottom: 56px; padding-top: 16px; }
+  /* Hero - sits on teal background */
+  .hero { text-align: center; padding: 36px 0 32px; }
   .hero-banner {
-    max-width: 560px; width: 100%; margin: 0 auto 0; display: block;
+    max-width: 560px; width: 100%; margin: 0 auto; display: block;
+  }
+
+  /* White content containers */
+  .content-panel {
+    background: var(--container-bg);
+    border-radius: 20px;
+    padding: 36px 32px 40px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.08);
   }
 
   /* Section headings */
   .section-header {
     display: flex; align-items: center; gap: 12px;
-    margin-bottom: 28px; margin-top: 0;
+    margin-bottom: 24px;
   }
   .section-header h2 {
-    font-family: 'Chewy', cursive; font-size: 30px;
-    color: var(--text);
+    font-family: 'Chewy', cursive; font-size: 30px; color: var(--text);
   }
   .section-header .section-mascot {
     width: 44px; height: 44px; object-fit: contain;
@@ -51,44 +56,41 @@
     flex: 1; height: 1px; background: var(--border);
   }
   .section-desc {
-    font-size: 15px; color: var(--text-muted); margin-bottom: 24px; margin-top: -16px;
-    padding-left: 56px;
+    font-size: 15px; color: var(--text-muted); margin-bottom: 24px;
+    margin-top: -12px; padding-left: 56px;
   }
 
   /* Cards */
-  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 18px; }
   .card {
-    background: var(--surface); border: 1px solid var(--border); border-radius: 18px;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
     padding: 0; text-decoration: none; color: inherit;
     transition: all 0.3s ease; position: relative; overflow: hidden; display: block;
   }
-  .card:hover { transform: translateY(-4px); border-color: var(--card-color); box-shadow: 0 8px 30px rgba(0,0,0,0.08); }
+  .card:hover { transform: translateY(-4px); border-color: var(--card-color); box-shadow: 0 8px 28px rgba(0,0,0,0.07); }
   .card-img-wrap {
-    width: 100%; height: 180px; display: flex; align-items: center; justify-content: center;
-    overflow: hidden; background: var(--bg);
-    border-bottom: 1px solid var(--border);
+    width: 100%; height: 170px; display: flex; align-items: center; justify-content: center;
+    overflow: hidden; background: #fff;
   }
-  .card-img-wrap img {
-    max-height: 160px; max-width: 90%; object-fit: contain;
-  }
-  .card-body { padding: 20px 22px 22px; }
+  .card-img-wrap img { max-height: 155px; max-width: 85%; object-fit: contain; }
+  .card-body { padding: 18px 20px 20px; }
   .card-sub {
     font-size: 11px; font-weight: 800; text-transform: uppercase;
-    letter-spacing: 1.5px; margin-bottom: 6px;
+    letter-spacing: 1.5px; margin-bottom: 5px;
   }
   .card-title {
-    font-family: 'Chewy', cursive; font-size: 22px;
-    color: var(--text); margin-bottom: 8px; line-height: 1.2;
+    font-family: 'Chewy', cursive; font-size: 21px;
+    color: var(--text); margin-bottom: 7px; line-height: 1.2;
   }
   .card-desc { font-size: 13px; color: var(--text-muted); line-height: 1.65; }
-  .card-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 14px; }
+  .card-tags { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 12px; }
   .card-tag {
-    font-size: 11px; font-weight: 700; padding: 3px 10px;
-    border-radius: 6px; background: rgba(0,0,0,0.04); color: var(--text-muted);
+    font-size: 10px; font-weight: 700; padding: 3px 9px;
+    border-radius: 5px; background: rgba(0,0,0,0.04); color: var(--text-muted);
     border: 1px solid rgba(0,0,0,0.06);
   }
 
-  /* Card accent colors */
+  /* Card accents */
   .card-bfdi { --card-color: #ff6b35; } .card-bfdi .card-sub { color: #d45520; }
   .card-op { --card-color: #e63946; } .card-op .card-sub { color: #c42d3a; }
   .card-kotlc { --card-color: #8b3fd4; } .card-kotlc .card-sub { color: #7a32c0; }
@@ -98,24 +100,22 @@
   .card-size { --card-color: #059669; } .card-size .card-sub { color: #059669; }
   .card-denom { --card-color: #d97706; } .card-denom .card-sub { color: #d97706; }
 
-  /* Divider */
-  .section-divider { margin: 52px 0 36px; }
-
   .coming-soon {
-    text-align: center; margin-top: 48px; padding: 28px 24px;
-    border: 1px dashed var(--border); border-radius: 18px;
+    text-align: center; padding: 24px;
+    border: 1px dashed var(--border); border-radius: 14px; margin-top: 24px;
   }
   .coming-soon p { font-size: 14px; color: var(--text-dim); }
 
   footer {
-    text-align: center; margin-top: 56px; padding-top: 20px;
-    border-top: 1px solid var(--border);
+    text-align: center; margin-top: 32px; padding-top: 16px;
   }
-  footer p { font-size: 12px; color: var(--text-dim); line-height: 1.8; }
+  footer p { font-size: 12px; color: rgba(255,255,255,0.5); line-height: 1.8; }
 
   @media(max-width:600px) {
-    .card-img-wrap { height: 150px; }
+    .content-panel { padding: 24px 18px 28px; border-radius: 14px; }
+    .card-img-wrap { height: 140px; }
     .section-desc { padding-left: 0; }
+    .grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -127,106 +127,108 @@
   </div>
 
   <!-- UNIVERSE GUIDES -->
-  <div class="section-header">
-    <img src="momo.png" alt="Momo" class="section-mascot">
-    <h2>Universe Guides</h2>
-    <div class="section-line"></div>
-  </div>
-  <p class="section-desc">Deep dives into the fandoms you love &mdash; characters, timelines, lore, and trivia.</p>
+  <div class="content-panel">
+    <div class="section-header">
+      <img src="momo.png" alt="Momo" class="section-mascot">
+      <h2>Universe Guides</h2>
+      <div class="section-line"></div>
+    </div>
+    <p class="section-desc">Deep dives into the fandoms you love &mdash; characters, timelines, lore, and trivia.</p>
 
-  <div class="grid">
-    <a href="bfdi-universe.html" class="card card-bfdi">
-      <div class="card-img-wrap"><img src="momo-bfdi.png" alt="Momo as BFDI character"></div>
-      <div class="card-body">
-        <div class="card-sub">YouTube Series</div>
-        <div class="card-title">Battle for Dream Island</div>
-        <p class="card-desc">The first-ever object show. 25 characters, 16 years of history, and 100 trivia questions.</p>
-        <div class="card-tags"><span class="card-tag">25 Characters</span><span class="card-tag">Timeline</span><span class="card-tag">100 Trivia Qs</span></div>
-      </div>
-    </a>
+    <div class="grid">
+      <a href="bfdi-universe.html" class="card card-bfdi">
+        <div class="card-img-wrap"><img src="momo-bfdi.png" alt="Momo as BFDI character"></div>
+        <div class="card-body">
+          <div class="card-sub">YouTube Series</div>
+          <div class="card-title">Battle for Dream Island</div>
+          <p class="card-desc">The first-ever object show. 25 characters, 16 years of history, and 100 trivia questions.</p>
+          <div class="card-tags"><span class="card-tag">25 Characters</span><span class="card-tag">Timeline</span><span class="card-tag">100 Trivia Qs</span></div>
+        </div>
+      </a>
 
-    <a href="onepiece-universe.html" class="card card-op">
-      <div class="card-img-wrap"><img src="momo-onepiece.png" alt="Momo as One Piece pirate"></div>
-      <div class="card-body">
-        <div class="card-sub">Manga / Anime</div>
-        <div class="card-title">One Piece</div>
-        <p class="card-desc">Eiichiro Oda's epic pirate saga. 25 key characters, major arcs, Devil Fruits, and Haki.</p>
-        <div class="card-tags"><span class="card-tag">25 Characters</span><span class="card-tag">Devil Fruits</span><span class="card-tag">100 Trivia Qs</span></div>
-      </div>
-    </a>
+      <a href="onepiece-universe.html" class="card card-op">
+        <div class="card-img-wrap"><img src="momo-onepiece.png" alt="Momo as One Piece pirate"></div>
+        <div class="card-body">
+          <div class="card-sub">Manga / Anime</div>
+          <div class="card-title">One Piece</div>
+          <p class="card-desc">Eiichiro Oda's epic pirate saga. 25 key characters, major arcs, Devil Fruits, and Haki.</p>
+          <div class="card-tags"><span class="card-tag">25 Characters</span><span class="card-tag">Devil Fruits</span><span class="card-tag">100 Trivia Qs</span></div>
+        </div>
+      </a>
 
-    <a href="kotlc-universe.html" class="card card-kotlc">
-      <div class="card-img-wrap"><img src="momo-koftc.png" alt="Momo as KOTLC elf"></div>
-      <div class="card-body">
-        <div class="card-sub">Book Series</div>
-        <div class="card-title">Keeper of the Lost Cities</div>
-        <p class="card-desc">Shannon Messenger's elvin world. Special abilities, the matchmaking system, and Foxfire Academy.</p>
-        <div class="card-tags"><span class="card-tag">25 Characters</span><span class="card-tag">Abilities</span><span class="card-tag">100 Trivia Qs</span></div>
-      </div>
-    </a>
+      <a href="kotlc-universe.html" class="card card-kotlc">
+        <div class="card-img-wrap"><img src="momo-kotlc.png" alt="Momo as KOTLC elf"></div>
+        <div class="card-body">
+          <div class="card-sub">Book Series</div>
+          <div class="card-title">Keeper of the Lost Cities</div>
+          <p class="card-desc">Shannon Messenger's elvin world. Special abilities, the matchmaking system, and Foxfire Academy.</p>
+          <div class="card-tags"><span class="card-tag">25 Characters</span><span class="card-tag">Abilities</span><span class="card-tag">100 Trivia Qs</span></div>
+        </div>
+      </a>
 
-    <a href="forgotten-warrior-universe.html" class="card card-sfw">
-      <div class="card-img-wrap"><img src="momo-warrior.png" alt="Momo as forgotten warrior"></div>
-      <div class="card-body">
-        <div class="card-sub">Book Series</div>
-        <div class="card-title">Saga of the Forgotten Warrior</div>
-        <p class="card-desc">Larry Correia's epic fantasy. Ancestor blades, the caste system of Lok, and demons from the deep.</p>
-        <div class="card-tags"><span class="card-tag">25 Characters</span><span class="card-tag">4 Castes</span><span class="card-tag">100 Trivia Qs</span></div>
-      </div>
-    </a>
+      <a href="forgotten-warrior-universe.html" class="card card-sfw">
+        <div class="card-img-wrap"><img src="momo-warrior.png" alt="Momo as forgotten warrior"></div>
+        <div class="card-body">
+          <div class="card-sub">Book Series</div>
+          <div class="card-title">Saga of the Forgotten Warrior</div>
+          <p class="card-desc">Larry Correia's epic fantasy. Ancestor blades, the caste system of Lok, and demons from the deep.</p>
+          <div class="card-tags"><span class="card-tag">25 Characters</span><span class="card-tag">4 Castes</span><span class="card-tag">100 Trivia Qs</span></div>
+        </div>
+      </a>
 
-    <a href="opm-universe.html" class="card card-opm">
-      <div class="card-img-wrap"><img src="momo-onepunchman.png" alt="Momo as One Punch Man"></div>
-      <div class="card-body">
-        <div class="card-sub">Manga / Anime</div>
-        <div class="card-title">One Punch Man</div>
-        <p class="card-desc">ONE's superhero parody masterpiece. Saitama, the Hero Association, S-Class heroes, and 100 trivia questions.</p>
-        <div class="card-tags"><span class="card-tag">25 Characters</span><span class="card-tag">Hero Classes</span><span class="card-tag">100 Trivia Qs</span></div>
-      </div>
-    </a>
+      <a href="opm-universe.html" class="card card-opm">
+        <div class="card-img-wrap"><img src="momo-onepunchman.png" alt="Momo as One Punch Man"></div>
+        <div class="card-body">
+          <div class="card-sub">Manga / Anime</div>
+          <div class="card-title">One Punch Man</div>
+          <p class="card-desc">ONE's superhero parody masterpiece. Saitama, the Hero Association, S-Class heroes, and 100 trivia questions.</p>
+          <div class="card-tags"><span class="card-tag">25 Characters</span><span class="card-tag">Hero Classes</span><span class="card-tag">100 Trivia Qs</span></div>
+        </div>
+      </a>
+    </div>
   </div>
 
   <!-- KNOWLEDGE CANNON -->
-  <div class="section-divider"></div>
+  <div class="content-panel">
+    <div class="section-header">
+      <img src="momo-telescope.png" alt="Momo with telescope" class="section-mascot">
+      <h2>Knowledge Cannon</h2>
+      <div class="section-line"></div>
+    </div>
+    <p class="section-desc">Interactive tools for exploring, discovering, and learning cool stuff.</p>
 
-  <div class="section-header">
-    <img src="momo-telescope.png" alt="Momo with telescope" class="section-mascot">
-    <h2>Knowledge Cannon</h2>
-    <div class="section-line"></div>
-  </div>
-  <p class="section-desc">Interactive tools for exploring, discovering, and learning cool stuff.</p>
+    <div class="grid">
+      <a href="state-explorer.html" class="card card-states">
+        <div class="card-body">
+          <div class="card-sub">Geography</div>
+          <div class="card-title">&#127482;&#127480; U.S. State Explorer</div>
+          <p class="card-desc">Interactive map with data on every U.S. state &mdash; population, capitals, area, and more.</p>
+          <div class="card-tags"><span class="card-tag">50 States</span><span class="card-tag">Interactive Map</span><span class="card-tag">Data Filters</span></div>
+        </div>
+      </a>
 
-  <div class="grid">
-    <a href="state-explorer.html" class="card card-states">
-      <div class="card-body">
-        <div class="card-sub">Geography</div>
-        <div class="card-title">&#127482;&#127480; U.S. State Explorer</div>
-        <p class="card-desc">Interactive map with data on every U.S. state &mdash; population, capitals, area, and more.</p>
-        <div class="card-tags"><span class="card-tag">50 States</span><span class="card-tag">Interactive Map</span><span class="card-tag">Data Filters</span></div>
-      </div>
-    </a>
+      <a href="size-comparisons.html" class="card card-size">
+        <div class="card-body">
+          <div class="card-sub">Science</div>
+          <div class="card-title">&#127757; How Big Is It?</div>
+          <p class="card-desc">Compare the sizes of animals, buildings, planets, and more. A visual scale tool that makes big numbers make sense.</p>
+          <div class="card-tags"><span class="card-tag">Size Comparisons</span><span class="card-tag">Visual Scale</span><span class="card-tag">Interactive</span></div>
+        </div>
+      </a>
 
-    <a href="size-comparisons.html" class="card card-size">
-      <div class="card-body">
-        <div class="card-sub">Science</div>
-        <div class="card-title">&#127757; How Big Is It?</div>
-        <p class="card-desc">Compare the sizes of animals, buildings, planets, and more. A visual scale tool that makes big numbers make sense.</p>
-        <div class="card-tags"><span class="card-tag">Size Comparisons</span><span class="card-tag">Visual Scale</span><span class="card-tag">Interactive</span></div>
-      </div>
-    </a>
+      <a href="denomination.html" class="card card-denom">
+        <div class="card-body">
+          <div class="card-sub">World Cultures</div>
+          <div class="card-title">&#128176; DenomNation</div>
+          <p class="card-desc">Explore currencies from around the world. Learn what money looks like and how countries handle denominations.</p>
+          <div class="card-tags"><span class="card-tag">World Currencies</span><span class="card-tag">Geography</span><span class="card-tag">Interactive</span></div>
+        </div>
+      </a>
+    </div>
 
-    <a href="denomination.html" class="card card-denom">
-      <div class="card-body">
-        <div class="card-sub">World Cultures</div>
-        <div class="card-title">&#128176; DenomNation</div>
-        <p class="card-desc">Explore currencies from around the world. Learn what money looks like, what it's called, and how countries handle denominations.</p>
-        <div class="card-tags"><span class="card-tag">World Currencies</span><span class="card-tag">Geography</span><span class="card-tag">Interactive</span></div>
-      </div>
-    </a>
-  </div>
-
-  <div class="coming-soon">
-    <p>More guides and tools always in the works. Stay tuned.</p>
+    <div class="coming-soon">
+      <p>More guides and tools always in the works. Stay tuned.</p>
+    </div>
   </div>
 
   <footer>
