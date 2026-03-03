@@ -24,6 +24,8 @@
   .g1 { width: 500px; height: 500px; top: -180px; left: -120px; background: rgba(45,106,94,0.08); }
   .g2 { width: 400px; height: 400px; bottom: -100px; right: -80px; background: rgba(201,164,74,0.06); }
   .page { position: relative; z-index: 1; max-width: 880px; margin: 0 auto; padding: 48px 20px 80px; }
+
+  /* Hero */
   .hero { text-align: center; margin-bottom: 64px; padding-top: 24px; }
   .hero-logo {
     width: 160px; height: 160px; border-radius: 50%; margin: 0 auto 24px; display: block;
@@ -38,6 +40,27 @@
     -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
   }
   .hero p { font-size: 18px; color: var(--text-muted); max-width: 520px; margin: 0 auto; line-height: 1.7; font-weight: 300; }
+
+  /* Section headings */
+  .section-header {
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 24px; margin-top: 0;
+  }
+  .section-header h2 {
+    font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700;
+  }
+  .section-header .section-icon { font-size: 28px; }
+  .section-header .section-line {
+    flex: 1; height: 1px; background: var(--border);
+  }
+  .section-header .section-mascot {
+    width: 48px; height: 48px; border-radius: 10px; object-fit: contain;
+  }
+  .section-desc {
+    font-size: 14px; color: var(--text-muted); margin-bottom: 24px; margin-top: -12px;
+  }
+
+  /* Cards */
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
   .card {
     background: var(--surface); border: 1px solid var(--border); border-radius: 20px;
@@ -55,13 +78,27 @@
   .card-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 16px; position: relative; z-index: 1; }
   .card-tag { font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 6px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); }
   .card-arrow { position: absolute; top: 28px; right: 28px; font-size: 20px; opacity: 0; transform: translateX(-8px); transition: all 0.3s; z-index: 1; }
+
+  /* Universe card accents */
   .card-bfdi { --card-color: #ff6b35; } .card-bfdi::before { background: linear-gradient(135deg, rgba(255,107,53,0.06), transparent 60%); } .card-bfdi .card-sub { color: #ff6b35; }
   .card-op { --card-color: #e63946; } .card-op::before { background: linear-gradient(135deg, rgba(230,57,70,0.06), transparent 60%); } .card-op .card-sub { color: #e63946; }
   .card-kotlc { --card-color: #a855f7; } .card-kotlc::before { background: linear-gradient(135deg, rgba(168,85,247,0.06), transparent 60%); } .card-kotlc .card-sub { color: #a855f7; }
   .card-sfw { --card-color: #c0392b; } .card-sfw::before { background: linear-gradient(135deg, rgba(192,57,43,0.06), transparent 60%); } .card-sfw .card-sub { color: #d4a03c; }
-  .coming-soon { text-align: center; margin-top: 64px; padding: 40px 24px; border: 1px dashed var(--border); border-radius: 20px; }
-  .coming-soon h3 { font-family: 'Playfair Display', serif; font-size: 22px; margin-bottom: 8px; color: var(--text-muted); }
+
+  /* Knowledge Cannon card accents */
+  .card-states { --card-color: #3b82f6; } .card-states::before { background: linear-gradient(135deg, rgba(59,130,246,0.06), transparent 60%); } .card-states .card-sub { color: #3b82f6; }
+  .card-size { --card-color: #10b981; } .card-size::before { background: linear-gradient(135deg, rgba(16,185,129,0.06), transparent 60%); } .card-size .card-sub { color: #10b981; }
+  .card-denom { --card-color: #f59e0b; } .card-denom::before { background: linear-gradient(135deg, rgba(245,158,11,0.06), transparent 60%); } .card-denom .card-sub { color: #f59e0b; }
+
+  /* Divider */
+  .section-divider { margin: 56px 0 40px; }
+
+  .coming-soon {
+    text-align: center; margin-top: 48px; padding: 32px 24px;
+    border: 1px dashed var(--border); border-radius: 20px;
+  }
   .coming-soon p { font-size: 14px; color: var(--text-dim); }
+
   footer { text-align: center; margin-top: 64px; padding-top: 24px; border-top: 1px solid var(--border); }
   footer p { font-size: 12px; color: var(--text-dim); line-height: 1.8; }
 </style>
@@ -74,8 +111,16 @@
   <div class="hero">
     <img src="fancannonlogo.png" alt="Fan Cannon" class="hero-logo">
     <h1>Fan Cannon</h1>
-    <p>Interactive universe guides for the fandoms you love. Characters, timelines, lore, trivia &mdash; all in one place.</p>
+    <p>Interactive universe guides, learning tools, and fun stuff &mdash; all in one place.</p>
   </div>
+
+  <!-- ══════════ UNIVERSE GUIDES ══════════ -->
+  <div class="section-header">
+    <span class="section-icon">&#127758;</span>
+    <h2>Universe Guides</h2>
+    <div class="section-line"></div>
+  </div>
+  <p class="section-desc">Deep dives into the fandoms you love &mdash; characters, timelines, lore, and trivia.</p>
 
   <div class="grid">
     <a href="bfdi-universe.html" class="card card-bfdi">
@@ -83,7 +128,7 @@
       <span class="card-emoji">&#127965;</span>
       <div class="card-sub">YouTube Series</div>
       <div class="card-title">Battle for Dream Island</div>
-      <p class="card-desc">The first-ever object show. 25 characters, 16 years of history, and 100 trivia questions about BFDI and its universe.</p>
+      <p class="card-desc">The first-ever object show. 25 characters, 16 years of history, and 100 trivia questions.</p>
       <div class="card-tags"><span class="card-tag">25 Characters</span><span class="card-tag">Timeline</span><span class="card-tag">100 Trivia Qs</span></div>
     </a>
 
@@ -92,7 +137,7 @@
       <span class="card-emoji">&#9760;</span>
       <div class="card-sub">Manga / Anime</div>
       <div class="card-title">One Piece</div>
-      <p class="card-desc">Eiichiro Oda's epic pirate saga. 25 key characters, major arcs, Devil Fruits, Haki, and 100 trivia questions.</p>
+      <p class="card-desc">Eiichiro Oda's epic pirate saga. 25 key characters, major arcs, Devil Fruits, and Haki.</p>
       <div class="card-tags"><span class="card-tag">25 Characters</span><span class="card-tag">Devil Fruits</span><span class="card-tag">100 Trivia Qs</span></div>
     </a>
 
@@ -101,7 +146,7 @@
       <span class="card-emoji">&#10024;</span>
       <div class="card-sub">Book Series</div>
       <div class="card-title">Keeper of the Lost Cities</div>
-      <p class="card-desc">Shannon Messenger's elvin world. 25 characters, special abilities, the matchmaking system, and 100 trivia questions.</p>
+      <p class="card-desc">Shannon Messenger's elvin world. Special abilities, the matchmaking system, and Foxfire Academy.</p>
       <div class="card-tags"><span class="card-tag">25 Characters</span><span class="card-tag">Abilities</span><span class="card-tag">100 Trivia Qs</span></div>
     </a>
 
@@ -110,18 +155,56 @@
       <span class="card-emoji">&#9876;</span>
       <div class="card-sub">Book Series</div>
       <div class="card-title">Saga of the Forgotten Warrior</div>
-      <p class="card-desc">Larry Correia's epic fantasy. Ancestor blades, the caste system of Lok, demons, and 100 trivia questions.</p>
+      <p class="card-desc">Larry Correia's epic fantasy. Ancestor blades, the caste system of Lok, and demons from the deep.</p>
       <div class="card-tags"><span class="card-tag">25 Characters</span><span class="card-tag">4 Castes</span><span class="card-tag">100 Trivia Qs</span></div>
     </a>
   </div>
 
+  <!-- ══════════ KNOWLEDGE CANNON ══════════ -->
+  <div class="section-divider"></div>
+
+  <div class="section-header">
+    <span class="section-icon"><img src="knowledge-cannon.png" alt="Knowledge Cannon" class="section-mascot"></span>
+    <h2>Knowledge Cannon</h2>
+    <div class="section-line"></div>
+  </div>
+  <p class="section-desc">Interactive tools for exploring, discovering, and learning cool stuff.</p>
+
+  <div class="grid">
+    <a href="us-state-explorer.html" class="card card-states">
+      <span class="card-arrow">&rarr;</span>
+      <span class="card-emoji">&#127482;&#127480;</span>
+      <div class="card-sub">Geography</div>
+      <div class="card-title">U.S. State Explorer</div>
+      <p class="card-desc">Interactive map with data on every U.S. state &mdash; population, capitals, area, and more. Click, filter, and explore.</p>
+      <div class="card-tags"><span class="card-tag">50 States</span><span class="card-tag">Interactive Map</span><span class="card-tag">Data Filters</span></div>
+    </a>
+
+    <a href="size-comparisons.html" class="card card-size">
+      <span class="card-arrow">&rarr;</span>
+      <span class="card-emoji">&#127757;</span>
+      <div class="card-sub">Science</div>
+      <div class="card-title">How Big Is It?</div>
+      <p class="card-desc">Compare the sizes of animals, buildings, planets, and more. A visual scale tool that makes big numbers make sense.</p>
+      <div class="card-tags"><span class="card-tag">Size Comparisons</span><span class="card-tag">Visual Scale</span><span class="card-tag">Interactive</span></div>
+    </a>
+
+    <a href="denomination.html" class="card card-denom">
+      <span class="card-arrow">&rarr;</span>
+      <span class="card-emoji">&#128176;</span>
+      <div class="card-sub">World Cultures</div>
+      <div class="card-title">DenomNation</div>
+      <p class="card-desc">Explore currencies from around the world. Learn what money looks like, what it's called, and how countries handle denominations.</p>
+      <div class="card-tags"><span class="card-tag">World Currencies</span><span class="card-tag">Geography</span><span class="card-tag">Interactive</span></div>
+    </a>
+  </div>
+
   <div class="coming-soon">
-    <h3>More Universes Coming Soon</h3>
-    <p>New fandom guides are always in the works. Stay tuned.</p>
+    <p>More guides and tools always in the works. Stay tuned.</p>
   </div>
 
   <footer>
-    <p>Fan Cannon &mdash; fan-made universe guides<br>All properties belong to their respective creators</p>
+    <p>Fan Cannon &mdash; fan-made universe guides &amp; learning tools<br>All properties belong to their respective creators</p>
   </footer>
 </div>
 </body>
