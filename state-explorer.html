@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>U.S. State Explorer</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+<style>
+  :root {
+    --bg: #0b0d14;
+    --surface: #141722;
+    --surface-raised: #1c2030;
+    --surface-hover: #252a3e;
+    --border: #2a3050;
+    --border-bright: #3d4670;
+    --text: #e4e2f0;
+    --text-dim: #7a7e99;
+    --text-faint: #4e5270;
+    --accent: #5b7cf7;
+    --accent-light: #7e9bff;
+    --accent-glow: rgba(91,124,247,0.2);
+    --governor-r: #ef6b6b;
+    --governor-r-bg: rgba(239,107,107,0.08);
+    --governor-r-border: rgba(239,107,107,0.2);
+    --governor-d: #5ba8ef;
+    --governor-d-bg: rgba(91,168,239,0.08);
+    --governor-d-border: rgba(91,168,239,0.2);
+    --motto-gold: #f0c948;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 25% 20%, rgba(91,124,247,0.06) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 40% at 75% 80%, rgba(147,91,247,0.04) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .app { position: relative; z-index: 1; }
+
+  .app-header {
+    text-align: center;
+    padding: 2rem 1rem 0.5rem;
+  }
+
+  .app-header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(1.6rem, 3.5vw, 2.6rem);
+    font-weight: 400;
+    background: linear-gradient(135deg, #e4e2f0 10%, #7e9bff 55%, #c49bff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .app-header .subtitle {
+    color: var(--text-dim);
+    font-size: 0.88rem;
+    font-weight: 300;
+    margin-top: 0.25rem;
+  }
+
+  .filter-bar {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1rem 1rem 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .filter-btn {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 0.5rem 1.3rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: all 0.25s ease;
+    user-select: none;
+  }
+
+  .filter-btn:hover {
+    background: var(--surface-hover);
+    border-color: var(--border-bright);
+    color: var(--text);
+  }
+
+  .filter-btn.active {
+    background: linear-gradient(135deg, #5b7cf7 0%, #7e5bf7 100%);
+    border-color: transparent;
+    color: #fff;
+    box-shadow: 0 2px 16px var(--accent-glow);
+  }
+
+  .map-section {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 0.5rem;
+  }
+
+  #map-container { width: 100%; }
+  #map-container svg { width: 100%; height: auto; display: block; }
+
+  .state-path {
+    fill: var(--surface-raised);
+    stroke: var(--border);
+    stroke-width: 0.5;
+    cursor: pointer;
+    transition: fill 0.18s ease;
+  }
+
+  .state-path:hover {
+    filter: brightness(1.4);
+    stroke: var(--accent-light);
+    stroke-width: 1.2;
+  }
+
+  .state-path.selected {
+    filter: brightness(1.5) drop-shadow(0 0 6px var(--accent-glow));
+    stroke: var(--accent);
+    stroke-width: 1.8;
+  }
+
+  .state-label {
+    font-family: 'Outfit', sans-serif;
+    font-size: 9px;
+    font-weight: 500;
+    fill: var(--text-faint);
+    pointer-events: none;
+    text-anchor: middle;
+    dominant-baseline: central;
+  }
+
+  .hint-text {
+    text-align: center;
+    color: var(--text-faint);
+    font-size: 0.8rem;
+    font-weight: 300;
+    padding: 0.25rem 0 1.5rem;
+  }
+
+  .tooltip {
+    position: fixed;
+    pointer-events: none;
+    background: var(--surface-raised);
+    border: 1px solid var(--border-bright);
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    z-index: 200;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 0.12s, transform 0.12s;
+    max-width: 320px;
+    backdrop-filter: blur(12px);
+  }
+
+  .tooltip.visible { opacity: 1; transform: translateY(0); }
+
+  .tt-party, .panel-party {
+    display: inline-block;
+    font-size: 0.6rem;
+    font-weight: 600;
+    padding: 0.1rem 0.5rem;
+    border-radius: 999px;
+    margin-left: 0.4rem;
+    vertical-align: middle;
+  }
+
+  .tt-party.R, .panel-party.R {
+    background: var(--governor-r-bg);
+    color: var(--governor-r);
+    border: 1px solid var(--governor-r-border);
+  }
+
+  .tt-party.D, .panel-party.D {
+    background: var(--governor-d-bg);
+    color: var(--governor-d);
+    border: 1px solid var(--governor-d-border);
+  }
+
+  .overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.35);
+    z-index: 99;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+
+  .overlay.open { opacity: 1; pointer-events: all; }
+
+  .info-panel {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 1.2rem 1.8rem 2rem;
+    transform: translateY(100%);
+    transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+    z-index: 100;
+    box-shadow: 0 -8px 40px rgba(0,0,0,0.5);
+    border-radius: 20px 20px 0 0;
+    max-height: 55vh;
+    overflow-y: auto;
+  }
+
+  .info-panel.open { transform: translateY(0); }
+
+  .info-panel .drag-indicator {
+    width: 36px; height: 4px;
+    border-radius: 2px;
+    background: var(--border-bright);
+    margin: 0 auto 1rem;
+  }
+
+  .info-panel .close-btn {
+    position: absolute;
+    top: 0.8rem; right: 1rem;
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    font-size: 1rem;
+    cursor: pointer;
+    width: 28px; height: 28px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s;
+  }
+
+  .info-panel .close-btn:hover {
+    background: var(--surface-hover);
+    color: var(--text);
+  }
+
+  .panel-state-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.6rem;
+    margin-bottom: 0.05rem;
+  }
+
+  .panel-abbr {
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: var(--text-faint);
+    letter-spacing: 0.12em;
+    margin-bottom: 0.8rem;
+  }
+
+  .panel-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 0.15rem;
+  }
+
+  .panel-governor { font-size: 1.15rem; font-weight: 500; }
+
+  .panel-motto {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.2rem;
+    color: var(--motto-gold);
+    line-height: 1.4;
+  }
+
+  .panel-motto-en {
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    font-style: italic;
+    margin-top: 0.15rem;
+  }
+
+  .loading {
+    text-align: center;
+    padding: 4rem 1rem;
+    color: var(--text-dim);
+    font-weight: 300;
+  }
+
+  .spinner {
+    display: inline-block;
+    width: 24px; height: 24px;
+    border: 2px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-bottom: 0.75rem;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  @media (max-width: 600px) {
+    .app-header { padding: 1.2rem 1rem 0.3rem; }
+    .state-label { font-size: 6.5px; }
+  }
+
+  .gov-legend {
+    display: flex;
+    justify-content: center;
+    gap: 1.2rem;
+    flex-wrap: wrap;
+    padding: 0.4rem 1rem 0;
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: var(--text-dim);
+  }
+
+  .gov-legend .leg-item {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .gov-legend .swatch {
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="app-header">
+    <h1>U.S. State Explorer</h1>
+    <div class="subtitle">Click any state to explore</div>
+  </div>
+
+  <div class="filter-bar">
+    <button class="filter-btn active" data-filter="governor" onclick="setFilter('governor')">&#x1F3DB;&#xFE0F; Governor</button>
+    <button class="filter-btn" data-filter="motto" onclick="setFilter('motto')">&#x1F4DC; State Motto</button>
+    <button class="filter-btn" data-filter="nickname" onclick="setFilter('nickname')">&#x1F3F7;&#xFE0F; Nickname</button>
+    <button class="filter-btn" data-filter="bird" onclick="setFilter('bird')">&#x1F426; State Bird</button>
+    <button class="filter-btn" data-filter="sport" onclick="setFilter('sport')">&#x1F3C5; State Sport</button>
+    <button class="filter-btn" data-filter="faces" onclick="setFilter('faces')">&#x2B50; Famous Faces</button>
+    <button class="filter-btn" data-filter="funfact" onclick="setFilter('funfact')">&#x1F4A1; Fun Facts</button>
+  </div>
+
+  <div class="map-section">
+    <div class="gov-legend" id="gov-legend">
+      <div class="leg-item"><div class="swatch" style="background:#8b2030;"></div>Republican (Male)</div>
+      <div class="leg-item"><div class="swatch" style="background:#c75068;"></div>Republican (Female)</div>
+      <div class="leg-item"><div class="swatch" style="background:#1e4a8a;"></div>Democrat (Male)</div>
+      <div class="leg-item"><div class="swatch" style="background:#4a8ad4;"></div>Democrat (Female)</div>
+    </div>
+    <div class="gov-legend" id="sport-legend" style="display:none;">
+      <div class="leg-item"><div class="swatch" style="background:#b5621a;"></div>Official state sport</div>
+      <div class="leg-item"><div class="swatch" style="background:#1c2030;border-color:rgba(255,255,255,0.06);"></div>No designation</div>
+    </div>
+    <div id="map-container">
+      <div class="loading"><div class="spinner"></div><div>Loading map...</div></div>
+    </div>
+    <div class="hint-text">Hover or tap a state for details</div>
+  </div>
+</div>
+
+<div class="tooltip" id="tooltip"></div>
+<div class="overlay" id="overlay" onclick="closePanel()"></div>
+<div class="info-panel" id="info-panel">
+  <div class="drag-indicator"></div>
+  <button class="close-btn" onclick="closePanel()">&#x2715;</button>
+  <div id="panel-content"></div>
+</div>
+
+<script>
+var stateData = {
+  "01": { abbr:"AL", name:"Alabama", governor:"Kay Ivey", party:"R", female:true, motto:"Audemus jura nostra defendere", mottoEn:"We dare defend our rights", nickname:"The Yellowhammer State", bird:"Yellowhammer (Northern Flicker)" },
+  "02": { abbr:"AK", name:"Alaska", governor:"Mike Dunleavy", party:"R", female:false, motto:"North to the Future", mottoEn:null, nickname:"The Last Frontier", bird:"Willow Ptarmigan" },
+  "04": { abbr:"AZ", name:"Arizona", governor:"Katie Hobbs", party:"D", female:true, motto:"Ditat Deus", mottoEn:"God enriches", nickname:"The Grand Canyon State", bird:"Cactus Wren" },
+  "05": { abbr:"AR", name:"Arkansas", governor:"Sarah Huckabee Sanders", party:"R", female:true, motto:"Regnat populus", mottoEn:"The people rule", nickname:"The Natural State", bird:"Northern Mockingbird" },
+  "06": { abbr:"CA", name:"California", governor:"Gavin Newsom", party:"D", female:false, motto:"Eureka", mottoEn:"I have found it", nickname:"The Golden State", bird:"California Quail" },
+  "08": { abbr:"CO", name:"Colorado", governor:"Jared Polis", party:"D", female:false, motto:"Nil sine numine", mottoEn:"Nothing without providence", nickname:"The Centennial State", bird:"Lark Bunting" },
+  "09": { abbr:"CT", name:"Connecticut", governor:"Ned Lamont", party:"D", female:false, motto:"Qui transtulit sustinet", mottoEn:"He who transplanted sustains", nickname:"The Constitution State", bird:"American Robin" },
+  "10": { abbr:"DE", name:"Delaware", governor:"Matt Meyer", party:"D", female:false, motto:"Liberty and Independence", mottoEn:null, nickname:"The First State", bird:"Delaware Blue Hen" },
+  "12": { abbr:"FL", name:"Florida", governor:"Ron DeSantis", party:"R", female:false, motto:"In God We Trust", mottoEn:null, nickname:"The Sunshine State", bird:"Northern Mockingbird" },
+  "13": { abbr:"GA", name:"Georgia", governor:"Brian Kemp", party:"R", female:false, motto:"Wisdom, Justice, and Moderation", mottoEn:null, nickname:"The Peach State", bird:"Brown Thrasher" },
+  "15": { abbr:"HI", name:"Hawaii", governor:"Josh Green", party:"D", female:false, motto:"Ua Mau ke Ea o ka Aina i ka Pono", mottoEn:"The life of the land is perpetuated in righteousness", nickname:"The Aloha State", bird:"Nene (Hawaiian Goose)" },
+  "16": { abbr:"ID", name:"Idaho", governor:"Brad Little", party:"R", female:false, motto:"Esto perpetua", mottoEn:"Let it be perpetual", nickname:"The Gem State", bird:"Mountain Bluebird" },
+  "17": { abbr:"IL", name:"Illinois", governor:"JB Pritzker", party:"D", female:false, motto:"State Sovereignty, National Union", mottoEn:null, nickname:"The Prairie State", bird:"Northern Cardinal" },
+  "18": { abbr:"IN", name:"Indiana", governor:"Mike Braun", party:"R", female:false, motto:"The Crossroads of America", mottoEn:null, nickname:"The Hoosier State", bird:"Northern Cardinal" },
+  "19": { abbr:"IA", name:"Iowa", governor:"Kim Reynolds", party:"R", female:true, motto:"Our Liberties We Prize and Our Rights We Will Maintain", mottoEn:null, nickname:"The Hawkeye State", bird:"Eastern Goldfinch" },
+  "20": { abbr:"KS", name:"Kansas", governor:"Laura Kelly", party:"D", female:true, motto:"Ad astra per aspera", mottoEn:"To the stars through difficulties", nickname:"The Sunflower State", bird:"Western Meadowlark" },
+  "21": { abbr:"KY", name:"Kentucky", governor:"Andy Beshear", party:"D", female:false, motto:"United We Stand, Divided We Fall", mottoEn:null, nickname:"The Bluegrass State", bird:"Northern Cardinal" },
+  "22": { abbr:"LA", name:"Louisiana", governor:"Jeff Landry", party:"R", female:false, motto:"Union, Justice, Confidence", mottoEn:null, nickname:"The Pelican State", bird:"Brown Pelican" },
+  "23": { abbr:"ME", name:"Maine", governor:"Janet Mills", party:"D", female:true, motto:"Dirigo", mottoEn:"I lead", nickname:"The Pine Tree State", bird:"Black-capped Chickadee" },
+  "24": { abbr:"MD", name:"Maryland", governor:"Wes Moore", party:"D", female:false, motto:"Fatti maschii, parole femine", mottoEn:"Strong deeds, gentle words", nickname:"The Old Line State", bird:"Baltimore Oriole" },
+  "25": { abbr:"MA", name:"Massachusetts", governor:"Maura Healey", party:"D", female:true, motto:"Ense petit placidam sub libertate quietem", mottoEn:"By the sword we seek peace, but peace only under liberty", nickname:"The Bay State", bird:"Black-capped Chickadee" },
+  "26": { abbr:"MI", name:"Michigan", governor:"Gretchen Whitmer", party:"D", female:true, motto:"Si quaeris peninsulam amoenam circumspice", mottoEn:"If you seek a pleasant peninsula, look about you", nickname:"The Great Lakes State", bird:"American Robin" },
+  "27": { abbr:"MN", name:"Minnesota", governor:"Tim Walz", party:"D", female:false, motto:"L'Etoile du Nord", mottoEn:"The Star of the North", nickname:"The North Star State", bird:"Common Loon" },
+  "28": { abbr:"MS", name:"Mississippi", governor:"Tate Reeves", party:"R", female:false, motto:"Virtute et armis", mottoEn:"By valor and arms", nickname:"The Magnolia State", bird:"Northern Mockingbird" },
+  "29": { abbr:"MO", name:"Missouri", governor:"Mike Kehoe", party:"R", female:false, motto:"Salus populi suprema lex esto", mottoEn:"The welfare of the people shall be the supreme law", nickname:"The Show-Me State", bird:"Eastern Bluebird" },
+  "30": { abbr:"MT", name:"Montana", governor:"Greg Gianforte", party:"R", female:false, motto:"Oro y Plata", mottoEn:"Gold and Silver", nickname:"The Treasure State", bird:"Western Meadowlark" },
+  "31": { abbr:"NE", name:"Nebraska", governor:"Jim Pillen", party:"R", female:false, motto:"Equality Before the Law", mottoEn:null, nickname:"The Cornhusker State", bird:"Western Meadowlark" },
+  "32": { abbr:"NV", name:"Nevada", governor:"Joe Lombardo", party:"R", female:false, motto:"All for Our Country", mottoEn:null, nickname:"The Silver State", bird:"Mountain Bluebird" },
+  "33": { abbr:"NH", name:"New Hampshire", governor:"Kelly Ayotte", party:"R", female:true, motto:"Live Free or Die", mottoEn:null, nickname:"The Granite State", bird:"Purple Finch" },
+  "34": { abbr:"NJ", name:"New Jersey", governor:"Mikie Sherrill", party:"D", female:true, motto:"Liberty and Prosperity", mottoEn:null, nickname:"The Garden State", bird:"Eastern Goldfinch" },
+  "35": { abbr:"NM", name:"New Mexico", governor:"Michelle Lujan Grisham", party:"D", female:true, motto:"Crescit eundo", mottoEn:"It grows as it goes", nickname:"The Land of Enchantment", bird:"Greater Roadrunner" },
+  "36": { abbr:"NY", name:"New York", governor:"Kathy Hochul", party:"D", female:true, motto:"Excelsior", mottoEn:"Ever upward", nickname:"The Empire State", bird:"Eastern Bluebird" },
+  "37": { abbr:"NC", name:"North Carolina", governor:"Josh Stein", party:"D", female:false, motto:"Esse quam videri", mottoEn:"To be, rather than to seem", nickname:"The Tar Heel State", bird:"Northern Cardinal" },
+  "38": { abbr:"ND", name:"North Dakota", governor:"Kelly Armstrong", party:"R", female:false, motto:"Liberty and Union, Now and Forever, One and Inseparable", mottoEn:null, nickname:"The Peace Garden State", bird:"Western Meadowlark" },
+  "39": { abbr:"OH", name:"Ohio", governor:"Mike DeWine", party:"R", female:false, motto:"With God, All Things Are Possible", mottoEn:null, nickname:"The Buckeye State", bird:"Northern Cardinal" },
+  "40": { abbr:"OK", name:"Oklahoma", governor:"Kevin Stitt", party:"R", female:false, motto:"Labor omnia vincit", mottoEn:"Labor conquers all things", nickname:"The Sooner State", bird:"Scissor-tailed Flycatcher" },
+  "41": { abbr:"OR", name:"Oregon", governor:"Tina Kotek", party:"D", female:true, motto:"Alis volat propriis", mottoEn:"She flies with her own wings", nickname:"The Beaver State", bird:"Western Meadowlark" },
+  "42": { abbr:"PA", name:"Pennsylvania", governor:"Josh Shapiro", party:"D", female:false, motto:"Virtue, Liberty and Independence", mottoEn:null, nickname:"The Keystone State", bird:"Ruffed Grouse" },
+  "44": { abbr:"RI", name:"Rhode Island", governor:"Dan McKee", party:"D", female:false, motto:"Hope", mottoEn:null, nickname:"The Ocean State", bird:"Rhode Island Red" },
+  "45": { abbr:"SC", name:"South Carolina", governor:"Henry McMaster", party:"R", female:false, motto:"Dum spiro spero", mottoEn:"While I breathe, I hope", nickname:"The Palmetto State", bird:"Carolina Wren" },
+  "46": { abbr:"SD", name:"South Dakota", governor:"Larry Rhoden", party:"R", female:false, motto:"Under God the People Rule", mottoEn:null, nickname:"The Mount Rushmore State", bird:"Ring-necked Pheasant" },
+  "47": { abbr:"TN", name:"Tennessee", governor:"Bill Lee", party:"R", female:false, motto:"Agriculture and Commerce", mottoEn:null, nickname:"The Volunteer State", bird:"Northern Mockingbird" },
+  "48": { abbr:"TX", name:"Texas", governor:"Greg Abbott", party:"R", female:false, motto:"Friendship", mottoEn:null, nickname:"The Lone Star State", bird:"Northern Mockingbird" },
+  "49": { abbr:"UT", name:"Utah", governor:"Spencer Cox", party:"R", female:false, motto:"Industry", mottoEn:null, nickname:"The Beehive State", bird:"California Gull" },
+  "50": { abbr:"VT", name:"Vermont", governor:"Phil Scott", party:"R", female:false, motto:"Freedom and Unity", mottoEn:null, nickname:"The Green Mountain State", bird:"Hermit Thrush" },
+  "51": { abbr:"VA", name:"Virginia", governor:"Abigail Spanberger", party:"D", female:true, motto:"Sic semper tyrannis", mottoEn:"Thus always to tyrants", nickname:"The Old Dominion", bird:"Northern Cardinal" },
+  "53": { abbr:"WA", name:"Washington", governor:"Bob Ferguson", party:"D", female:false, motto:"Al-ki", mottoEn:"By and by", nickname:"The Evergreen State", bird:"Willow Goldfinch" },
+  "54": { abbr:"WV", name:"West Virginia", governor:"Patrick Morrisey", party:"R", female:false, motto:"Montani semper liberi", mottoEn:"Mountaineers are always free", nickname:"The Mountain State", bird:"Northern Cardinal" },
+  "55": { abbr:"WI", name:"Wisconsin", governor:"Tony Evers", party:"D", female:false, motto:"Forward", mottoEn:null, nickname:"The Badger State", bird:"American Robin" },
+  "56": { abbr:"WY", name:"Wyoming", governor:"Mark Gordon", party:"R", female:false, motto:"Equal Rights", mottoEn:null, nickname:"The Cowboy State", bird:"Western Meadowlark" }
+};
+
+var sportData = {
+  "01": { sport:"None designated", desc:"Alabama has not officially designated a state sport.", origin:"While football culture dominates the state through its intense college rivalries, no sport has been formally adopted by the legislature." },
+  "02": { sport:"Dog Mushing", desc:"A winter sport in which a musher is pulled by a team of sled dogs across snow and ice.", origin:"Designated in 1972, reflecting Alaska\u2019s deep ties to sled dog culture and the legendary Iditarod Trail Sled Dog Race." },
+  "04": { sport:"None designated", desc:"Arizona has not officially designated a state sport.", origin:"Despite a strong culture around golf, rodeo, and spring training baseball, no sport has been formally adopted." },
+  "05": { sport:"None designated", desc:"Arkansas has not officially designated a state sport.", origin:"The state has deep ties to hunting, fishing, and college football, but has not formally named an official state sport." },
+  "06": { sport:"Surfing", desc:"A water sport in which a person rides ocean waves while standing on a surfboard.", origin:"Designated in 2018 after a campaign arguing the sport is deeply woven into California\u2019s coastal identity, economy, and global image." },
+  "08": { sport:"Pack Burro Racing", desc:"A foot race where runners lead a burro (donkey) loaded with mining gear over mountain terrain.", origin:"Designated in 2012, honoring Colorado\u2019s mining heritage. The sport dates to the 1800s when miners raced their burros between towns." },
+  "09": { sport:"None designated", desc:"Connecticut has not officially designated a state sport.", origin:"While the state has strong ties to sailing, rowing, and basketball, no official designation has been made." },
+  "10": { sport:"Bicycling", desc:"A sport and mode of transportation using a human-powered two-wheeled vehicle.", origin:"Designated in 2014 after advocacy highlighting Delaware\u2019s flat terrain, trail network, and bicycle-friendly infrastructure." },
+  "12": { sport:"None designated", desc:"Florida has not officially designated a state sport.", origin:"Despite being home to major professional teams and year-round outdoor sports, Florida has not formally adopted a state sport." },
+  "13": { sport:"None designated", desc:"Georgia has not officially designated a state sport.", origin:"Georgia has a passionate sports culture around football and baseball but has not officially designated a state sport." },
+  "15": { sport:"Surfing", desc:"A water sport in which a person rides ocean waves while standing on a surfboard.", origin:"Designated in 1998, recognizing Hawaii as the birthplace of modern surfing with deep roots in Native Hawaiian culture." },
+  "16": { sport:"None designated", desc:"Idaho has not officially designated a state sport.", origin:"Outdoor recreation like skiing, fishing, and mountain biking are embedded in Idaho culture, but no official state sport has been named." },
+  "17": { sport:"None designated", desc:"Illinois has not officially designated a state sport.", origin:"Home to iconic teams like the Bulls, Bears, and Cubs, Illinois has not formally adopted a state sport." },
+  "18": { sport:"None designated", desc:"Indiana has not officially designated a state sport.", origin:"Despite basketball being synonymous with Indiana and the Indy 500\u2019s racing heritage, no official state sport has been designated." },
+  "19": { sport:"Wrestling", desc:"A combat sport involving grappling techniques to pin or control an opponent.", origin:"Designated in 2022 after decades of advocacy. Iowa is widely regarded as the amateur wrestling capital of the U.S." },
+  "20": { sport:"None designated", desc:"Kansas has not officially designated a state sport.", origin:"Basketball has deep roots here \u2014 James Naismith brought the sport to the University of Kansas \u2014 but no formal designation has been made." },
+  "21": { sport:"None designated", desc:"Kentucky has not officially designated a state sport.", origin:"Horse racing and basketball are cultural pillars of the Bluegrass State, but neither has been formally adopted." },
+  "22": { sport:"None designated", desc:"Louisiana has not officially designated a state sport.", origin:"While football (especially LSU) and fishing are cultural touchstones, no official state sport designation exists." },
+  "23": { sport:"None designated", desc:"Maine has not officially designated a state sport.", origin:"Outdoor pursuits like skiing, snowmobiling, and lobster boat racing are popular, but Maine has not formally named a state sport." },
+  "24": { sport:"Jousting", desc:"An equestrian sport where mounted riders aim lances at small rings suspended from posts while galloping at full speed.", origin:"Designated in 1962, making it the oldest official state sport in the U.S. Ring jousting has been held in Maryland since the colonial era." },
+  "25": { sport:"Basketball", desc:"A team sport in which two teams of five players score by shooting a ball through a raised hoop.", origin:"Designated in 2022. Basketball was invented in nearby Springfield, MA by James Naismith in 1891." },
+  "26": { sport:"None designated", desc:"Michigan has not officially designated a state sport.", origin:"Michigan has a passionate sports culture around football, hockey, and auto racing, but no formal designation has been made." },
+  "27": { sport:"Ice Hockey", desc:"A team sport played on ice in which skaters use sticks to shoot a puck into the opposing net.", origin:"Designated in 2009 after a campaign by schoolchildren. Minnesota\u2019s frozen lakes and strong youth hockey pipeline made it a natural choice." },
+  "28": { sport:"None designated", desc:"Mississippi has not officially designated a state sport.", origin:"Football and bass fishing are deeply popular in Mississippi, but no official state sport has been named." },
+  "29": { sport:"None designated", desc:"Missouri has not officially designated a state sport.", origin:"Despite strong traditions in baseball, football, and bass fishing, Missouri has not formally designated a state sport." },
+  "30": { sport:"Rodeo", desc:"A competitive sport from cattle herding traditions, featuring bronc riding, bull riding, and roping.", origin:"Designated in 2019. Rodeo reflects Montana\u2019s deep ranching heritage and cowboy culture." },
+  "31": { sport:"None designated", desc:"Nebraska has not officially designated a state sport.", origin:"College football is practically a religion in Nebraska, but no formal state sport has been adopted." },
+  "32": { sport:"None designated", desc:"Nevada has not officially designated a state sport.", origin:"Though Las Vegas has become a major professional sports hub, Nevada has not formally designated a state sport." },
+  "33": { sport:"Skiing", desc:"A winter sport using skis to glide over snow, encompassing alpine and Nordic disciplines.", origin:"Designated in 1998, reflecting the state\u2019s rugged White Mountains terrain and long tradition of winter sports." },
+  "34": { sport:"None designated", desc:"New Jersey has not officially designated a state sport.", origin:"Despite a rich sports culture and proximity to major league teams, New Jersey has not formally designated a state sport." },
+  "35": { sport:"None designated", desc:"New Mexico has not officially designated a state sport.", origin:"Hot air ballooning, rodeo, and outdoor sports are culturally significant, but no official state sport has been named." },
+  "36": { sport:"Baseball", desc:"A bat-and-ball team sport in which two teams of nine take turns batting and fielding.", origin:"Designated in 2021, tied to the sport\u2019s deep New York history from the Yankees and Mets to Cooperstown\u2019s Baseball Hall of Fame." },
+  "37": { sport:"Stock Car Racing", desc:"A form of auto racing using modified production cars on oval tracks.", origin:"Designated in 2011. North Carolina is the heartland of NASCAR with most teams based near Charlotte." },
+  "38": { sport:"Rodeo", desc:"A competitive sport from cattle herding traditions, featuring bronc riding, bull riding, and roping.", origin:"Designated in 2011, honoring the state\u2019s western ranching heritage and cowboy traditions." },
+  "39": { sport:"None designated", desc:"Ohio has not officially designated a state sport.", origin:"Ohio has a storied sports history as the birthplace of professional football, but has not formally named a state sport." },
+  "40": { sport:"None designated", desc:"Oklahoma has not officially designated a state sport.", origin:"Wrestling has an incredibly strong tradition in Oklahoma, but no official designation has been made." },
+  "41": { sport:"None designated", desc:"Oregon has not officially designated a state sport.", origin:"Oregon has strong traditions in track and field, cycling, and outdoor sports, but no formal state sport has been adopted." },
+  "42": { sport:"None designated", desc:"Pennsylvania has not officially designated a state sport.", origin:"Despite historic franchises like the Steelers, Eagles, and Phillies, Pennsylvania has not formally designated a state sport." },
+  "44": { sport:"Sailing", desc:"A sport that uses wind to propel a craft over water via sails.", origin:"Designated in 2012. Narragansett Bay is a world-class sailing destination, and Newport hosted the America\u2019s Cup for decades." },
+  "45": { sport:"None designated", desc:"South Carolina has not officially designated a state sport.", origin:"Golf and college football are hugely popular, but no official state sport has been named." },
+  "46": { sport:"Rodeo", desc:"A competitive sport from cattle herding traditions, featuring bronc riding, bull riding, and roping.", origin:"Designated to honor South Dakota\u2019s strong ranching roots and western heritage." },
+  "47": { sport:"None designated", desc:"Tennessee has not officially designated a state sport.", origin:"Tennessee has a vibrant sports scene from NASCAR to SEC football, but no official state sport has been designated." },
+  "48": { sport:"Rodeo", desc:"A competitive sport from cattle herding traditions, featuring bronc riding, bull riding, and roping.", origin:"Designated in 1997. Texas has the deepest rodeo tradition in the country, anchored by the Houston Livestock Show and Rodeo." },
+  "49": { sport:"Skiing", desc:"A winter sport using skis to glide over snow, encompassing alpine and Nordic disciplines.", origin:"Designated in 2013. Utah\u2019s world-class resorts and the 2002 Winter Olympics in Park City made skiing a natural choice." },
+  "50": { sport:"Skiing", desc:"A winter sport using skis to glide over snow, encompassing alpine and Nordic disciplines.", origin:"Designated in 2012. Vermont\u2019s Green Mountains provide ideal terrain for the state\u2019s long skiing tradition." },
+  "51": { sport:"None designated", desc:"Virginia has not officially designated a state sport.", origin:"Virginia has strong traditions in equestrian sports, lacrosse, and college athletics, but no official state sport has been named." },
+  "53": { sport:"Pickleball", desc:"A paddle sport combining elements of tennis, badminton, and table tennis.", origin:"Designated in 2022. Pickleball was invented on Bainbridge Island, Washington in 1965." },
+  "54": { sport:"None designated", desc:"West Virginia has not officially designated a state sport.", origin:"Hunting, fishing, and whitewater rafting are deeply popular, but no formal designation has been made." },
+  "55": { sport:"None designated", desc:"Wisconsin has not officially designated a state sport.", origin:"Despite passionate fan cultures around the Packers, Brewers, and Bucks, Wisconsin has not formally designated a state sport." },
+  "56": { sport:"Rodeo", desc:"A competitive sport from cattle herding traditions, featuring bronc riding, bull riding, and roping.", origin:"Designated in 2003. Wyoming\u2019s Cheyenne Frontier Days is one of the world\u2019s largest outdoor rodeos." }
+};
+
+var facesData = {
+  "01": ["Rosa Parks", "Helen Keller", "Hank Aaron"],
+  "02": ["Jewel", "Curt Schilling", "Mario Chalmers"],
+  "04": ["Stevie Nicks", "Emma Stone", "Linda Ronstadt"],
+  "05": ["Johnny Cash", "Bill Clinton", "Maya Angelou"],
+  "06": ["Marilyn Monroe", "Steve Jobs", "Serena Williams"],
+  "08": ["Jack Dempsey", "Amy Adams", "Trey Parker"],
+  "09": ["Katharine Hepburn", "Mark Twain", "Michael Bolton"],
+  "10": ["Joe Biden", "Henry Heimlich", "Ryan Phillippe"],
+  "12": ["Jim Morrison", "Sidney Poitier", "Faye Dunaway"],
+  "13": ["Martin Luther King Jr.", "Ray Charles", "Julia Roberts"],
+  "15": ["Barack Obama", "Bruno Mars", "Jason Momoa"],
+  "16": ["Ezra Pound", "Picabo Street", "Lana Turner"],
+  "17": ["Abraham Lincoln", "Walt Disney", "Michael Jordan"],
+  "18": ["Michael Jackson", "James Dean", "David Letterman"],
+  "19": ["John Wayne", "Ashton Kutcher", "Herbert Hoover"],
+  "20": ["Amelia Earhart", "Dwight D. Eisenhower", "Buster Keaton"],
+  "21": ["Muhammad Ali", "Abraham Lincoln", "Johnny Depp"],
+  "22": ["Louis Armstrong", "Ellen DeGeneres", "Lil Wayne"],
+  "23": ["Stephen King", "Patrick Dempsey", "Henry Wadsworth Longfellow"],
+  "24": ["Harriet Tubman", "Babe Ruth", "Thurgood Marshall"],
+  "25": ["John F. Kennedy", "Edgar Allan Poe", "Matt Damon"],
+  "26": ["Henry Ford", "Madonna", "Stevie Wonder"],
+  "27": ["Prince", "Bob Dylan", "F. Scott Fitzgerald"],
+  "28": ["Elvis Presley", "Oprah Winfrey", "B.B. King"],
+  "29": ["Mark Twain", "Walt Disney", "Chuck Berry"],
+  "30": ["Evel Knievel", "David Lynch", "Michelle Williams"],
+  "31": ["Warren Buffett", "Fred Astaire", "Marlon Brando"],
+  "32": ["Andre Agassi", "Jenna Jameson", "Jack Kramer"],
+  "33": ["Adam Sandler", "Mandy Moore", "Robert Frost"],
+  "34": ["Frank Sinatra", "Bruce Springsteen", "Meryl Streep"],
+  "35": ["Neil Patrick Harris", "Demi Moore", "Jeff Bezos"],
+  "36": ["Jay-Z", "Lady Gaga", "Robert De Niro"],
+  "37": ["Michael Jordan", "Ava Gardner", "Nina Simone"],
+  "38": ["Angie Dickinson", "Phil Jackson", "Peggy Lee"],
+  "39": ["LeBron James", "Neil Armstrong", "Thomas Edison"],
+  "40": ["Brad Pitt", "Carrie Underwood", "Chuck Norris"],
+  "41": ["Matt Groening", "River Phoenix", "Tonya Harding"],
+  "42": ["Benjamin Franklin", "Andy Warhol", "Will Smith"],
+  "44": ["H.P. Lovecraft", "Mena Suvari", "Viola Davis"],
+  "45": ["James Brown", "Stephen Colbert", "Chadwick Boseman"],
+  "46": ["Crazy Horse", "Sitting Bull", "Tom Brokaw"],
+  "47": ["Dolly Parton", "Aretha Franklin", "Justin Timberlake"],
+  "48": ["Beyonce", "Willie Nelson", "Matthew McConaughey"],
+  "49": ["Philo Farnsworth", "Donny Osmond", "Roseanne Barr"],
+  "50": ["Bernie Sanders", "Calvin Coolidge", "Ben Cohen"],
+  "51": ["George Washington", "Thomas Jefferson", "Pharrell Williams"],
+  "53": ["Jimi Hendrix", "Kurt Cobain", "Bill Gates"],
+  "54": ["Chuck Yeager", "Brad Paisley", "Don Knotts"],
+  "55": ["Harry Houdini", "Willem Dafoe", "Frank Lloyd Wright"],
+  "56": ["Jackson Pollock", "Dick Cheney", "Curt Gowdy"]
+};
+
+var funFactData = {
+  "01": "Alabama is the only state that has declared an alcoholic beverage its official state drink \u2014 Conecuh Ridge Whiskey was named the official state spirit in 2004.",
+  "02": "Alaska is so large that if you placed it over the lower 48 states, it would stretch from coast to coast. It has more coastline than all other U.S. states combined.",
+  "04": "Arizona receives so much sunshine that it could theoretically power the entire United States with solar energy. The state averages over 300 sunny days per year.",
+  "05": "The only active diamond mine in the United States is in Arkansas. Crater of Diamonds State Park lets visitors keep any gems they find \u2014 including a 40-carat stone discovered in 1924.",
+  "06": "California\u2019s economy is so large that if it were an independent country, it would have the fifth-largest GDP in the world, ahead of India and the United Kingdom.",
+  "08": "Colorado has the highest average elevation of any state at 6,800 feet. The city of Leadville, at 10,152 feet, is the highest incorporated city in North America.",
+  "09": "The first phone book ever published was issued in New Haven, Connecticut in 1878. It was a single page with just 50 names and no phone numbers \u2014 you had to ask the operator.",
+  "10": "Delaware was the first state to ratify the U.S. Constitution on December 7, 1787, earning its nickname The First State. It is also the second-smallest state by area.",
+  "12": "St. Augustine, Florida, founded in 1565, is the oldest continuously occupied European settlement in the United States \u2014 predating the Jamestown settlement by 42 years.",
+  "13": "Georgia produces more peanuts than any other state \u2014 nearly half of all peanuts grown in the United States come from Georgia, earning it the title Peanut Capital of the World.",
+  "15": "Hawaii is the only U.S. state that grows coffee commercially, and it is the only state composed entirely of islands. The Hawaiian alphabet has just 13 letters.",
+  "16": "Idaho grows roughly one-third of all potatoes produced in the United States. The state\u2019s license plates are the only ones in the country that feature a vegetable.",
+  "17": "Chicago\u2019s reversal of the Chicago River in 1900 is considered one of the greatest engineering feats in history \u2014 they made an entire river flow backward to prevent sewage from contaminating the drinking water supply.",
+  "18": "Indiana hosts the largest single-day sporting event in the world: the Indianapolis 500. The race track, built in 1909, was originally paved with 3.2 million bricks.",
+  "19": "Iowa produces more corn and hogs than any other state. Roughly one-tenth of the entire U.S. food supply originates in Iowa.",
+  "20": "Dodge City, Kansas is the windiest city in the United States with average winds of 14 mph. The state is also flatter than a pancake \u2014 literally confirmed by a scientific study in 2003.",
+  "21": "Kentucky holds more bourbon than people. There are approximately 11 million barrels of bourbon aging in the state compared to a population of about 4.5 million.",
+  "22": "Louisiana is the only state that does not have counties \u2014 it is divided into parishes instead, a holdover from its French and Spanish colonial heritage.",
+  "23": "Maine produces about 90% of the nation\u2019s lobster supply. The state\u2019s coastline, if you straightened out all the inlets and peninsulas, would stretch about 3,478 miles.",
+  "24": "The Maryland State House in Annapolis is the oldest state capitol still in continuous legislative use. It also briefly served as the capitol of the entire United States from 1783 to 1784.",
+  "25": "Harvard University in Massachusetts, founded in 1636, is the oldest institution of higher education in the United States \u2014 it was established 140 years before America declared independence.",
+  "26": "Michigan has more lighthouses than any other state, with over 120 dotting its 3,288 miles of Great Lakes shoreline \u2014 the longest freshwater coastline in the world.",
+  "27": "Minnesota has 11,842 lakes of 10 acres or more, far exceeding its famous claim of 10,000 lakes. The state also has more shoreline than California, Florida, and Hawaii combined.",
+  "28": "Mississippi\u2019s namesake river carries roughly 436 billion gallons of water per day into the Gulf of Mexico. The river\u2019s drainage basin covers 41% of the continental United States.",
+  "29": "The ice cream cone was popularized at the 1904 World\u2019s Fair in St. Louis, Missouri, when an ice cream vendor ran out of cups and a nearby waffle maker rolled his waffles into cones.",
+  "30": "Montana has a population density of just 7.5 people per square mile, making it one of the least densely populated states. It has three times as many cattle as people.",
+  "31": "Kool-Aid was invented in Hastings, Nebraska in 1927. The state celebrates its creation with an annual Kool-Aid Days festival complete with the world\u2019s largest Kool-Aid stand.",
+  "32": "Las Vegas uses so much electricity that it is the brightest spot on Earth when viewed from space. Nevada\u2019s gambling industry generates over $13 billion in annual revenue.",
+  "33": "New Hampshire\u2019s Mount Washington held the world record for fastest wind speed ever recorded on the surface of the Earth \u2014 231 mph in 1934 \u2014 for over 60 years.",
+  "34": "New Jersey has the most dense system of highways and railroads in the United States, and more diners than any other state \u2014 earning it the unofficial title of Diner Capital of the World.",
+  "35": "New Mexico\u2019s Carlsbad Caverns contains a chamber so large that it could fit six football fields inside. The cave is also home to over 400,000 Brazilian free-tailed bats.",
+  "36": "New York City\u2019s subway system has 472 stations, making it the largest metro system in the world by number of stations. It operates 24 hours a day, 365 days a year.",
+  "37": "North Carolina\u2019s Outer Banks were the site of the Wright Brothers\u2019 first powered flight in 1903. The first flight lasted just 12 seconds and covered 120 feet.",
+  "38": "North Dakota produces more sunflowers than any other state and is also the top honey-producing state. Rugby, ND is the geographic center of the North American continent.",
+  "39": "Ohio has produced more U.S. Presidents than any other state except Virginia \u2014 eight presidents were born in Ohio, earning it the nickname Mother of Presidents.",
+  "40": "Oklahoma has more man-made lakes than any other state, with over 200 reservoirs. The state\u2019s name comes from Choctaw words meaning Red People.",
+  "41": "Crater Lake in Oregon is the deepest lake in the United States at 1,943 feet. It was formed by the collapse of a volcano about 7,700 years ago and is fed entirely by rain and snow.",
+  "42": "Pennsylvania is home to the oldest continuously operating zoo in the United States (Philadelphia Zoo, 1874) and Hershey, which produces over 70 million chocolate Kisses per day.",
+  "44": "Rhode Island is the smallest state but has one of the longest official names: State of Rhode Island and Providence Plantations, which was used until 2020.",
+  "45": "South Carolina\u2019s Angel Oak on Johns Island is estimated to be between 400 and 500 years old. Its canopy provides over 17,200 square feet of shade.",
+  "46": "Mount Rushmore in South Dakota took 14 years to carve and was never actually finished. The original design included the presidents carved to the waist.",
+  "47": "Tennessee\u2019s Great Smoky Mountains National Park is the most visited national park in the United States, drawing over 12 million visitors annually \u2014 roughly twice as many as the Grand Canyon.",
+  "48": "Texas is so large that the distance from El Paso to the Louisiana border is greater than the distance from El Paso to Los Angeles. King Ranch is larger than the entire state of Rhode Island.",
+  "49": "Utah\u2019s Great Salt Lake is the largest saltwater lake in the Western Hemisphere. It is so salty that swimmers float effortlessly, and it supports brine shrimp but no fish.",
+  "50": "Vermont produces more maple syrup than all other states combined, accounting for about 50% of U.S. production. It takes roughly 40 gallons of sap to make one gallon of syrup.",
+  "51": "Virginia has produced more U.S. Presidents than any other state \u2014 eight in total, including four of the first five. It was also home to both the first and last major battles of the Civil War.",
+  "53": "Washington state grows more apples than any other state, producing over 10 billion annually. It is also home to the rainiest spot in the continental U.S. \u2014 the Hoh Rain Forest gets 140 inches of rain per year.",
+  "54": "West Virginia is the only state located entirely within the Appalachian region. The New River, despite its name, is one of the oldest rivers in the world at an estimated 360 million years old.",
+  "55": "Wisconsin is known as America\u2019s Dairyland and produces over 3 billion pounds of cheese per year \u2014 more than any other state and roughly a quarter of all U.S. cheese.",
+  "56": "Yellowstone, mostly in Wyoming, was the world\u2019s first national park, established in 1872. It sits atop one of the largest active volcanic systems on Earth."
+};
+
+var currentFilter = 'governor';
+var selectedFips = null;
+var tooltip = document.getElementById('tooltip');
+var isTouchDevice = 'ontouchstart' in window;
+
+function setFilter(filter) {
+  currentFilter = filter;
+  document.querySelectorAll('.filter-btn').forEach(function(btn) {
+    btn.classList.toggle('active', btn.dataset.filter === filter);
+  });
+  applyMapColors();
+  if (selectedFips) showPanel(selectedFips);
+}
+
+function applyMapColors() {
+  d3.selectAll('.state-path').each(function(d) {
+    var el = d3.select(this);
+    var data = stateData[d.id];
+    if (!data) return;
+    if (currentFilter === 'governor') {
+      var colors = {
+        'R':  { male: '#8b2030', female: '#c75068' },
+        'D':  { male: '#1e4a8a', female: '#4a8ad4' }
+      };
+      var c = colors[data.party];
+      el.style('fill', data.female ? c.female : c.male);
+    } else if (currentFilter === 'sport') {
+      var s = sportData[d.id];
+      var hasSport = s && s.sport !== 'None designated';
+      el.style('fill', hasSport ? '#b5621a' : null);
+    } else {
+      el.style('fill', null);
+    }
+  });
+  var legend = document.getElementById('gov-legend');
+  if (legend) legend.style.display = currentFilter === 'governor' ? 'flex' : 'none';
+  var sportLegend = document.getElementById('sport-legend');
+  if (sportLegend) sportLegend.style.display = currentFilter === 'sport' ? 'flex' : 'none';
+}
+
+function buildContent(data, type, fips) {
+  var labelStyle = 'font-size:0.6rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-dim);margin-bottom:0.1rem;';
+  if (type === 'governor') {
+    return '<div style="' + labelStyle + '">Governor</div><div style="font-size:0.95rem;font-weight:500;">' + data.governor + '<span class="tt-party ' + data.party + '">' + (data.party === 'R' ? 'Republican' : 'Democrat') + '</span></div>';
+  }
+  if (type === 'nickname') {
+    return '<div style="' + labelStyle + '">Nickname</div><div style="font-family:DM Serif Display,serif;font-size:1.05rem;color:#7ecbab;">' + data.nickname + '</div>';
+  }
+  if (type === 'bird') {
+    return '<div style="' + labelStyle + '">State Bird</div><div style="font-size:0.95rem;font-weight:500;color:#e8a4e0;">' + data.bird + '</div>';
+  }
+  if (type === 'sport') {
+    var s = sportData[fips] || {};
+    var isNone = s.sport === 'None designated';
+    return '<div style="' + labelStyle + '">State Sport</div><div style="font-size:0.95rem;font-weight:600;color:' + (isNone ? 'var(--text-dim)' : '#f09856') + ';">' + (s.sport || 'Unknown') + '</div>';
+  }
+  if (type === 'faces') {
+    var f = facesData[fips] || [];
+    return '<div style="' + labelStyle + '">Famous Faces</div><div style="font-size:0.9rem;font-weight:500;color:#e0c370;line-height:1.6;">' + f.join(' &middot; ') + '</div>';
+  }
+  if (type === 'funfact') {
+    var ff = funFactData[fips] || '';
+    var preview = ff.length > 90 ? ff.substring(0, 90) + '...' : ff;
+    return '<div style="' + labelStyle + '">Fun Fact</div><div style="font-size:0.88rem;color:#7ce0b4;line-height:1.45;">' + preview + '</div>';
+  }
+  var h = '<div style="' + labelStyle + '">State Motto</div><div style="font-family:DM Serif Display,serif;font-size:1rem;color:var(--motto-gold);line-height:1.35;">\u201C' + data.motto + '\u201D</div>';
+  if (data.mottoEn) h += '<div style="font-size:0.82rem;color:var(--text-dim);font-style:italic;margin-top:0.15rem;">' + data.mottoEn + '</div>';
+  return h;
+}
+
+function showTooltip(event, fips) {
+  if (isTouchDevice) return;
+  var data = stateData[fips];
+  if (!data) return;
+  tooltip.innerHTML = '<div style="font-family:DM Serif Display,serif;font-size:1.15rem;">' + data.name + '</div><div style="font-size:0.6rem;font-weight:600;color:var(--text-faint);letter-spacing:0.12em;margin-bottom:0.5rem;">' + data.abbr + '</div>' + buildContent(data, currentFilter, fips);
+  tooltip.classList.add('visible');
+  positionTooltip(event);
+}
+
+function positionTooltip(event) {
+  var pad = 14;
+  var r = tooltip.getBoundingClientRect();
+  var x = event.clientX + pad, y = event.clientY + pad;
+  if (x + r.width > window.innerWidth - 10) x = event.clientX - r.width - pad;
+  if (y + r.height > window.innerHeight - 10) y = event.clientY - r.height - pad;
+  tooltip.style.left = x + 'px';
+  tooltip.style.top = y + 'px';
+}
+
+function hideTooltip() { tooltip.classList.remove('visible'); }
+
+function showPanel(fips) {
+  var data = stateData[fips];
+  if (!data) return;
+  selectedFips = fips;
+  d3.selectAll('.state-path').classed('selected', false);
+  d3.select('#state-' + fips).classed('selected', true);
+
+  var html = '<div class="panel-state-name">' + data.name + '</div><div class="panel-abbr">' + data.abbr + '</div>';
+
+  if (currentFilter === 'governor') {
+    html += '<div class="panel-label">Current Governor</div><div class="panel-governor">' + data.governor + '<span class="panel-party ' + data.party + '">' + (data.party === 'R' ? 'Republican' : 'Democrat') + '</span></div>';
+  } else if (currentFilter === 'motto') {
+    html += '<div class="panel-label">State Motto</div><div class="panel-motto">\u201C' + data.motto + '\u201D</div>';
+    if (data.mottoEn) html += '<div class="panel-motto-en">' + data.mottoEn + '</div>';
+  } else if (currentFilter === 'nickname') {
+    html += '<div class="panel-label">State Nickname</div><div style="font-family:DM Serif Display,serif;font-size:1.3rem;color:#7ecbab;margin-top:0.2rem;">' + data.nickname + '</div>';
+  } else if (currentFilter === 'bird') {
+    html += '<div class="panel-label">State Bird</div><div style="font-size:1.2rem;font-weight:500;color:#e8a4e0;margin-top:0.2rem;">' + data.bird + '</div>';
+  } else if (currentFilter === 'sport') {
+    var s = sportData[fips] || {};
+    var isNone = s.sport === 'None designated';
+    html += '<div class="panel-label">State Sport</div><div style="font-size:1.2rem;font-weight:600;color:' + (isNone ? 'var(--text-dim)' : '#f09856') + ';margin-top:0.2rem;">' + (s.sport || 'Unknown') + '</div>';
+    html += '<div style="font-size:0.88rem;color:var(--text-dim);margin-top:0.5rem;line-height:1.5;">' + (s.desc || '') + '</div>';
+    html += '<div style="font-size:0.85rem;color:var(--text);margin-top:0.6rem;line-height:1.5;border-left:2px solid ' + (isNone ? 'var(--border)' : '#f09856') + ';padding-left:0.75rem;">' + (s.origin || '') + '</div>';
+  } else if (currentFilter === 'faces') {
+    var f = facesData[fips] || [];
+    html += '<div class="panel-label">Famous Faces</div>';
+    for (var i = 0; i < f.length; i++) {
+      var num = (i + 1);
+      html += '<div style="display:flex;align-items:center;gap:0.6rem;margin-top:' + (i === 0 ? '0.35rem' : '0.5rem') + ';">';
+      html += '<div style="min-width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#c9973a,#e0c370);display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:#1a1d27;">' + num + '</div>';
+      html += '<div style="font-size:1.05rem;font-weight:500;color:#e0c370;">' + f[i] + '</div>';
+      html += '</div>';
+    }
+  } else if (currentFilter === 'funfact') {
+    var ff = funFactData[fips] || '';
+    html += '<div class="panel-label">Fun Fact</div>';
+    html += '<div style="font-size:1rem;color:#7ce0b4;line-height:1.6;margin-top:0.35rem;">' + ff + '</div>';
+  }
+
+  document.getElementById('panel-content').innerHTML = html;
+  document.getElementById('info-panel').classList.add('open');
+  document.getElementById('overlay').classList.add('open');
+}
+
+function closePanel() {
+  document.getElementById('info-panel').classList.remove('open');
+  document.getElementById('overlay').classList.remove('open');
+  d3.selectAll('.state-path').classed('selected', false);
+  selectedFips = null;
+}
+
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closePanel(); });
+
+async function loadMap() {
+  try {
+    var res = await fetch('https://cdn.jsdelivr.net/npm/us-atlas@3/states-albers-10m.json');
+    var us = await res.json();
+    var container = document.getElementById('map-container');
+    container.innerHTML = '';
+
+    var svg = d3.select(container).append('svg')
+      .attr('viewBox', '0 0 975 610')
+      .attr('preserveAspectRatio', 'xMidYMid meet');
+
+    var path = d3.geoPath();
+    var states = topojson.feature(us, us.objects.states);
+
+    svg.append('g').selectAll('path')
+      .data(states.features)
+      .join('path')
+      .attr('class', 'state-path')
+      .attr('id', function(d) { return 'state-' + d.id; })
+      .attr('d', path)
+      .on('mouseenter', function(event, d) { showTooltip(event, d.id); })
+      .on('mousemove', function(event) { positionTooltip(event); })
+      .on('mouseleave', function() { hideTooltip(); })
+      .on('click', function(event, d) { hideTooltip(); showPanel(d.id); });
+
+    svg.append('path')
+      .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
+      .attr('fill', 'none').attr('stroke', 'var(--border)').attr('stroke-width', 0.6)
+      .attr('stroke-linejoin', 'round').attr('pointer-events', 'none').attr('d', path);
+
+    svg.append('path')
+      .datum(topojson.mesh(us, us.objects.nation))
+      .attr('fill', 'none').attr('stroke', 'var(--border-bright)').attr('stroke-width', 1.2)
+      .attr('stroke-linejoin', 'round').attr('pointer-events', 'none').attr('d', path);
+
+    var offsets = {
+      "09":[34,2],"10":[30,6],"24":[34,-2],"25":[38,-3],"33":[22,-8],
+      "34":[28,3],"44":[36,1],"50":[18,-12],"11":[40,14]
+    };
+
+    svg.append('g').selectAll('text')
+      .data(states.features.filter(function(d) { return stateData[d.id]; }))
+      .join('text')
+      .attr('class', 'state-label')
+      .attr('x', function(d) { var c = path.centroid(d); var o = offsets[d.id]; return c[0] + (o ? o[0] : 0); })
+      .attr('y', function(d) { var c = path.centroid(d); var o = offsets[d.id]; return c[1] + (o ? o[1] : 0); })
+      .text(function(d) { return stateData[d.id].abbr; });
+
+    applyMapColors();
+
+  } catch (err) {
+    console.error('Map load error:', err);
+    document.getElementById('map-container').innerHTML = '<div class="loading" style="color:var(--governor-r)">Failed to load map. Please check your connection and refresh.</div>';
+  }
+}
+
+loadMap();
+</script>
+</body>
+</html>

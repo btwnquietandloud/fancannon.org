@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DenomNation — Explore World Currencies!</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌍</text></svg>">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: sans-serif; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+  <script type="text/babel">
+const { useState, useMemo } = React;
+
+
+const C=[{c:"United States",x:"USD",n:"US Dollar",s:"$",r:1.00,f:"🇺🇸",g:"North America",q:"The dollar is the most popular money in the world! Almost every country keeps some dollars in their piggy bank.",d:[{v:.01,n:"Penny",t:"c"},{v:.05,n:"Nickel",t:"c"},{v:.10,n:"Dime",t:"c"},{v:.25,n:"Quarter",t:"c"},{v:.50,n:"Half Dollar",t:"c"},{v:1,n:"Dollar Coin / Bill",t:"b"},{v:2,n:"Two-Dollar Bill",t:"n"},{v:5,n:"Five (Fiver)",t:"n"},{v:10,n:"Ten (Hamilton)",t:"n"},{v:20,n:"Twenty (Jackson)",t:"n"},{v:50,n:"Fifty (Grant)",t:"n"},{v:100,n:"Hundred (Benjamin)",t:"n"}]},{c:"Eurozone",x:"EUR",n:"Euro",s:"€",r:.847,f:"🇪🇺",g:"Europe",q:"20 countries in Europe all share the same money! The pictures on euro bills show made-up bridges so no country feels left out.",d:[{v:.01,n:"1 Cent",t:"c"},{v:.02,n:"2 Cent",t:"c"},{v:.05,n:"5 Cent",t:"c"},{v:.10,n:"10 Cent",t:"c"},{v:.20,n:"20 Cent",t:"c"},{v:.50,n:"50 Cent",t:"c"},{v:1,n:"One Euro",t:"c"},{v:2,n:"Two Euro",t:"c"},{v:5,n:"Five Euro",t:"n"},{v:10,n:"Ten Euro",t:"n"},{v:20,n:"Twenty Euro",t:"n"},{v:50,n:"Fifty Euro",t:"n"},{v:100,n:"Hundred Euro",t:"n"}]},{c:"United Kingdom",x:"GBP",n:"British Pound Sterling",s:"£",r:.741,f:"🇬🇧",g:"Europe",q:"The pound is over 1,200 years old — that's older than most castles! It's the oldest money still being used.",d:[{v:.01,n:"Penny",t:"c"},{v:.02,n:"Tuppence",t:"c"},{v:.05,n:"5 Pence",t:"c"},{v:.10,n:"10 Pence",t:"c"},{v:.20,n:"20 Pence",t:"c"},{v:.50,n:"50 Pence",t:"c"},{v:1,n:"Pound Coin (Quid)",t:"c"},{v:2,n:"Two Pound Coin",t:"c"},{v:5,n:"Fiver",t:"n"},{v:10,n:"Tenner",t:"n"},{v:20,n:"Twenty",t:"n"},{v:50,n:"Fifty",t:"n"}]},{c:"Japan",x:"JPY",n:"Japanese Yen",s:"¥",r:156.09,f:"🇯🇵",g:"Asia",q:"The 5 yen coin is considered lucky! Japanese bills are super hard to fake because of special shiny strips.",d:[{v:1,n:"Ichi-en (1¥)",t:"c"},{v:5,n:"Go-en — lucky coin! 🍀",t:"c"},{v:10,n:"Jū-en",t:"c"},{v:50,n:"Gojū-en",t:"c"},{v:100,n:"Hyaku-en",t:"c"}]},{c:"Switzerland",x:"CHF",n:"Swiss Franc",s:"Fr",r:.769,f:"🇨🇭",g:"Europe",q:"Swiss money is considered the safest in the world! It's the only 'franc' left in Europe.",d:[{v:.05,n:"5 Rappen",t:"c"},{v:.10,n:"10 Rappen",t:"c"},{v:.20,n:"20 Rappen",t:"c"},{v:.50,n:"Half Franc",t:"c"},{v:1,n:"One Franc",t:"c"},{v:2,n:"Two Francs",t:"c"},{v:5,n:"Five Francs",t:"c"},{v:10,n:"Ten Francs",t:"n"},{v:20,n:"Twenty Francs",t:"n"},{v:50,n:"Fifty Francs",t:"n"},{v:100,n:"Hundred Francs",t:"n"}]},{c:"Canada",x:"CAD",n:"Canadian Dollar",s:"C$",r:1.364,f:"🇨🇦",g:"North America",q:"The $1 coin has a bird called a loon on it, so everyone calls it a 'Loonie'! The $2 coin? That's a 'Toonie'! 🦆",d:[{v:.05,n:"Nickel",t:"c"},{v:.10,n:"Dime",t:"c"},{v:.25,n:"Quarter",t:"c"},{v:1,n:"Loonie 🦆",t:"c"},{v:2,n:"Toonie",t:"c"},{v:5,n:"$5 Note",t:"n"},{v:10,n:"$10 Note",t:"n"},{v:20,n:"$20 Note",t:"n"},{v:50,n:"$50 Note",t:"n"},{v:100,n:"$100 Note",t:"n"}]},{c:"Australia",x:"AUD",n:"Australian Dollar",s:"A$",r:1.404,f:"🇦🇺",g:"Oceania",q:"Australia invented plastic money in 1988! Now over 50 countries copy their idea. You can even get it wet! 💧",d:[{v:.05,n:"Five Cent",t:"c"},{v:.10,n:"Ten Cent",t:"c"},{v:.20,n:"Twenty Cent",t:"c"},{v:.50,n:"Fifty Cent",t:"c"},{v:1,n:"Gold Dollar",t:"c"},{v:2,n:"Two Dollar",t:"c"},{v:5,n:"$5 Note",t:"n"},{v:10,n:"$10 Note",t:"n"},{v:20,n:"$20 Note",t:"n"},{v:50,n:"$50 Note",t:"n"},{v:100,n:"$100 Note",t:"n"}]},{c:"New Zealand",x:"NZD",n:"New Zealand Dollar",s:"NZ$",r:1.667,f:"🇳🇿",g:"Oceania",q:"Called the 'kiwi dollar' 🥝 — the $5 shows Sir Edmund Hillary who climbed Mt. Everest first!",d:[{v:.10,n:"Ten Cent",t:"c"},{v:.20,n:"Twenty Cent",t:"c"},{v:.50,n:"Fifty Cent",t:"c"},{v:1,n:"One Dollar",t:"c"},{v:2,n:"Two Dollar",t:"c"},{v:5,n:"$5 Note",t:"n"},{v:10,n:"$10 Note",t:"n"},{v:20,n:"$20 Note",t:"n"},{v:50,n:"$50 Note",t:"n"},{v:100,n:"$100 Note",t:"n"}]},{c:"China",x:"CNY",n:"Chinese Yuan",s:"¥",r:6.86,f:"🇨🇳",g:"Asia",q:"China invented paper money over 1,000 years ago! Every bill has the same person on it — Mao Zedong. 📜",d:[{v:.1,n:"1 Jiǎo (Máo)",t:"c"},{v:.5,n:"5 Jiǎo",t:"c"},{v:1,n:"Yī Yuán",t:"c"},{v:5,n:"Wǔ Yuán",t:"n"},{v:10,n:"Shí Yuán",t:"n"},{v:20,n:"Èrshí Yuán",t:"n"},{v:50,n:"Wǔshí Yuán",t:"n"},{v:100,n:"Yī Bǎi Yuán",t:"n"}]},{c:"India",x:"INR",n:"Indian Rupee",s:"₹",r:91.07,f:"🇮🇳",g:"Asia",q:"Each bill shows a different famous building from India! The ₹ symbol was only created in 2010. 🏛️",d:[{v:1,n:"1 Rupee",t:"c"},{v:2,n:"2 Rupees",t:"c"},{v:5,n:"5 Rupees",t:"c"},{v:10,n:"10 Rupees",t:"b"},{v:20,n:"20 Rupees",t:"n"},{v:50,n:"50 Rupees",t:"n"},{v:100,n:"Sau ka nota (₹100)",t:"n"}]},{c:"Brazil",x:"BRL",n:"Brazilian Real",s:"R$",r:5.131,f:"🇧🇷",g:"South America",q:"Brazil changed its money 8 TIMES because prices kept going crazy! The Real finally fixed things in 1994. 🎉",d:[{v:.05,n:"5 Centavos",t:"c"},{v:.10,n:"10 Centavos",t:"c"},{v:.25,n:"25 Centavos",t:"c"},{v:.50,n:"50 Centavos",t:"c"},{v:1,n:"1 Real",t:"c"},{v:2,n:"2 Reais",t:"n"},{v:5,n:"5 Reais",t:"n"},{v:10,n:"10 Reais",t:"n"},{v:20,n:"20 Reais",t:"n"},{v:50,n:"50 Reais",t:"n"},{v:100,n:"100 Reais",t:"n"}]},{c:"Mexico",x:"MXN",n:"Mexican Peso",s:"Mex$",r:17.23,f:"🇲🇽",g:"North America",q:"Mexico used the '$' sign before the US did! Their old silver coins were used all around the world. 🪙",d:[{v:.50,n:"50 Centavos",t:"c"},{v:1,n:"1 Peso",t:"c"},{v:2,n:"2 Pesos",t:"c"},{v:5,n:"5 Pesos",t:"c"},{v:10,n:"10 Pesos",t:"c"},{v:20,n:"20 Pesos",t:"n"},{v:50,n:"50 Pesos",t:"n"},{v:100,n:"100 Pesos",t:"n"}]},{c:"South Korea",x:"KRW",n:"South Korean Won",s:"₩",r:1442.67,f:"🇰🇷",g:"Asia",q:"The 50,000 won bill was the first in Korea to show a woman — an artist named Shin Saimdang! 🎨",d:[{v:10,n:"10 Won",t:"c"},{v:50,n:"50 Won",t:"c"},{v:100,n:"Baek won (100₩)",t:"c"}]},{c:"Singapore",x:"SGD",n:"Singapore Dollar",s:"S$",r:1.265,f:"🇸🇬",g:"Asia",q:"Every single bill in Singapore shows the same person — their very first president! 🏙️",d:[{v:.05,n:"5 Cents",t:"c"},{v:.10,n:"10 Cents",t:"c"},{v:.20,n:"20 Cents",t:"c"},{v:.50,n:"50 Cents",t:"c"},{v:1,n:"$1 Coin",t:"c"},{v:2,n:"$2 Note",t:"n"},{v:5,n:"$5 Note",t:"n"},{v:10,n:"$10 Note",t:"n"},{v:50,n:"$50 Note",t:"n"},{v:100,n:"$100 Note",t:"n"}]},{c:"Hong Kong",x:"HKD",n:"Hong Kong Dollar",s:"HK$",r:7.823,f:"🇭🇰",g:"Asia",q:"Three different banks each print their own money! So the same $20 bill can look totally different. 🤯",d:[{v:.10,n:"10 Cents",t:"c"},{v:.20,n:"20 Cents",t:"c"},{v:.50,n:"50 Cents",t:"c"},{v:1,n:"$1 Coin",t:"c"},{v:2,n:"$2 Coin",t:"c"},{v:5,n:"$5 Coin",t:"c"},{v:10,n:"$10",t:"b"},{v:20,n:"$20 Note",t:"n"},{v:50,n:"$50 Note",t:"n"},{v:100,n:"$100 Note",t:"n"}]},{c:"Norway",x:"NOK",n:"Norwegian Krone",s:"kr",r:9.513,f:"🇳🇴",g:"Europe",q:"Norway's money has cool pixel-art designs of the ocean and won awards for being so pretty! 🌊",d:[{v:1,n:"1 Krone",t:"c"},{v:5,n:"5 Kroner",t:"c"},{v:10,n:"10 Kroner",t:"c"},{v:20,n:"20 Kroner",t:"c"},{v:50,n:"50 Kroner",t:"n"},{v:100,n:"Hundrelapp (100kr)",t:"n"}]},{c:"Sweden",x:"SEK",n:"Swedish Krona",s:"kr",r:9.029,f:"🇸🇪",g:"Europe",q:"Almost nobody in Sweden uses cash anymore! Less than 1% of purchases use real coins or bills. 📱",d:[{v:1,n:"1 Krona",t:"c"},{v:2,n:"2 Kronor",t:"c"},{v:5,n:"5 Kronor",t:"c"},{v:10,n:"10 Kronor",t:"c"},{v:20,n:"20 Kronor",t:"n"},{v:50,n:"50 Kronor",t:"n"},{v:100,n:"Hundralapp (100kr)",t:"n"}]},{c:"Denmark",x:"DKK",n:"Danish Krone",s:"kr",r:6.325,f:"🇩🇰",g:"Europe",q:"Denmark's money is linked to the Euro so they always stay close in value — like best friends! 🤝",d:[{v:.50,n:"50 Øre",t:"c"},{v:1,n:"1 Krone",t:"c"},{v:2,n:"2 Kroner",t:"c"},{v:5,n:"5 Kroner",t:"c"},{v:10,n:"10 Kroner",t:"c"},{v:20,n:"20 Kroner",t:"c"},{v:50,n:"50 Kroner",t:"n"},{v:100,n:"100 Kroner",t:"n"}]},{c:"Iceland",x:"ISK",n:"Icelandic Króna",s:"kr",r:121.46,f:"🇮🇸",g:"Europe",q:"Iceland puts sea creatures on their coins! Look for crabs, dolphins, and cod fish. 🦀🐬",d:[{v:1,n:"1 Króna",t:"c"},{v:5,n:"5 Krónur",t:"c"},{v:10,n:"10 Krónur",t:"c"},{v:50,n:"50 Krónur",t:"c"},{v:100,n:"100 Krónur",t:"c"}]},{c:"Poland",x:"PLN",n:"Polish Złoty",s:"zł",r:3.575,f:"🇵🇱",g:"Europe",q:"'Złoty' means 'golden' in Polish! 🥇 Poland might switch to euros someday, but there's no plan yet.",d:[{v:.01,n:"1 Grosz",t:"c"},{v:.02,n:"2 Grosze",t:"c"},{v:.05,n:"5 Groszy",t:"c"},{v:.10,n:"10 Groszy",t:"c"},{v:.20,n:"20 Groszy",t:"c"},{v:.50,n:"50 Groszy",t:"c"},{v:1,n:"1 Złoty",t:"c"},{v:2,n:"2 Złote",t:"c"},{v:5,n:"5 Złotych",t:"c"},{v:10,n:"10 Złotych",t:"n"},{v:20,n:"20 Złotych",t:"n"},{v:50,n:"50 Złotych",t:"n"},{v:100,n:"Stówka (100zł)",t:"n"}]},{c:"Czech Republic",x:"CZK",n:"Czech Koruna",s:"Kč",r:20.52,f:"🇨🇿",g:"Europe",q:"People call it the 'Czech Crown' 👑 — the biggest bill shows the man who started the whole country!",d:[{v:1,n:"1 Koruna",t:"c"},{v:2,n:"2 Koruny",t:"c"},{v:5,n:"5 Korun",t:"c"},{v:10,n:"10 Korun",t:"c"},{v:20,n:"20 Korun",t:"c"},{v:50,n:"50 Korun",t:"c"},{v:100,n:"Stovka (100Kč)",t:"n"}]},{c:"Hungary",x:"HUF",n:"Hungarian Forint",s:"Ft",r:318.98,f:"🇭🇺",g:"Europe",q:"In 1946, prices in Hungary doubled every 15 HOURS — imagine your candy bar costing double by bedtime! 🍬",d:[{v:5,n:"5 Forint",t:"c"},{v:10,n:"10 Forint",t:"c"},{v:20,n:"20 Forint",t:"c"},{v:50,n:"50 Forint",t:"c"},{v:100,n:"100 Forint",t:"c"}]},{c:"Romania",x:"RON",n:"Romanian Leu",s:"lei",r:4.316,f:"🇷🇴",g:"Europe",q:"Romania makes their money out of plastic! In 2005, they chopped off four zeros — 10,000 old = 1 new! ✂️",d:[{v:.01,n:"1 Ban",t:"c"},{v:.05,n:"5 Bani",t:"c"},{v:.10,n:"10 Bani",t:"c"},{v:.50,n:"50 Bani",t:"c"},{v:1,n:"1 Leu",t:"n"},{v:5,n:"5 Lei",t:"n"},{v:10,n:"10 Lei",t:"n"},{v:50,n:"50 Lei",t:"n"},{v:100,n:"100 Lei",t:"n"}]},{c:"Turkey",x:"TRY",n:"Turkish Lira",s:"₺",r:43.93,f:"🇹🇷",g:"Asia",q:"In 2005, Turkey removed SIX zeros from their money! 1,000,000 old lira = 1 new lira. That's a lot of zeros! 0️⃣",d:[{v:.05,n:"5 Kuruş",t:"c"},{v:.10,n:"10 Kuruş",t:"c"},{v:.25,n:"25 Kuruş",t:"c"},{v:.50,n:"50 Kuruş",t:"c"},{v:1,n:"1 Lira",t:"c"},{v:5,n:"5 Lira",t:"n"},{v:10,n:"10 Lira",t:"n"},{v:20,n:"20 Lira",t:"n"},{v:50,n:"50 Lira",t:"n"},{v:100,n:"Yüzlük (₺100)",t:"n"}]},{c:"Russia",x:"RUB",n:"Russian Ruble",s:"₽",r:77.28,f:"🇷🇺",g:"Europe",q:"The ruble is from the 1200s! Its name means 'to chop' because people used to chop up silver bars. ⚔️",d:[{v:.01,n:"1 Kopek",t:"c"},{v:.10,n:"10 Kopeek",t:"c"},{v:.50,n:"50 Kopeek",t:"c"},{v:1,n:"1 Ruble",t:"c"},{v:2,n:"2 Rublya",t:"c"},{v:5,n:"5 Rubley",t:"c"},{v:10,n:"10 Rubley",t:"c"},{v:50,n:"50 Rubley",t:"n"},{v:100,n:"Sotka (₽100)",t:"n"}]},{c:"South Africa",x:"ZAR",n:"South African Rand",s:"R",r:15.93,f:"🇿🇦",g:"Africa",q:"Every single bill has Nelson Mandela's face on it! The 'rand' is named after a famous gold mountain. ⛰️",d:[{v:.10,n:"10 Cents",t:"c"},{v:.20,n:"20 Cents",t:"c"},{v:.50,n:"50 Cents",t:"c"},{v:1,n:"R1",t:"c"},{v:2,n:"R2",t:"c"},{v:5,n:"R5",t:"c"},{v:10,n:"R10 Note",t:"n"},{v:20,n:"R20 Note",t:"n"},{v:50,n:"R50 Note",t:"n"},{v:100,n:"R100 Note",t:"n"}]},{c:"Israel",x:"ILS",n:"Israeli New Shekel",s:"₪",r:3.136,f:"🇮🇱",g:"Asia",q:"The shekel is 4,000 years old as a name! Ancient people used it to weigh things, not just as money. ⚖️",d:[{v:.10,n:"10 Agorot",t:"c"},{v:.50,n:"Half Shekel",t:"c"},{v:1,n:"1 Shekel",t:"c"},{v:2,n:"2 Shekalim",t:"c"},{v:5,n:"5 Shekalim",t:"c"},{v:10,n:"10 Shekalim",t:"c"},{v:20,n:"Esrim (₪20)",t:"n"},{v:50,n:"Hamishim (₪50)",t:"n"},{v:100,n:"Me'a (₪100)",t:"n"}]},{c:"Saudi Arabia",x:"SAR",n:"Saudi Riyal",s:"﷼",r:3.75,f:"🇸🇦",g:"Asia",q:"The riyal is always worth the same in dollars because they locked the price together! 🔒",d:[{v:.05,n:"5 Halalas",t:"c"},{v:.25,n:"25 Halalas",t:"c"},{v:.50,n:"50 Halalas",t:"c"},{v:1,n:"1 Riyal",t:"n"},{v:5,n:"5 Riyal",t:"n"},{v:10,n:"10 Riyal",t:"n"},{v:50,n:"50 Riyal",t:"n"},{v:100,n:"100 Riyal",t:"n"}]},{c:"UAE",x:"AED",n:"UAE Dirham",s:"د.إ",r:3.673,f:"🇦🇪",g:"Asia",q:"UAE money shows the world's tallest building — the Burj Khalifa! It's over 2,700 feet tall! 🏗️",d:[{v:.25,n:"25 Fils",t:"c"},{v:.50,n:"50 Fils",t:"c"},{v:1,n:"1 Dirham",t:"c"},{v:5,n:"5 Dirham",t:"n"},{v:10,n:"10 Dirham",t:"n"},{v:20,n:"20 Dirham",t:"n"},{v:50,n:"50 Dirham",t:"n"},{v:100,n:"100 Dirham",t:"n"}]},{c:"Qatar",x:"QAR",n:"Qatari Riyal",s:"﷼",r:3.64,f:"🇶🇦",g:"Asia",q:"Qatar is tiny but super rich from natural gas! They hosted the 2022 FIFA World Cup. ⚽",d:[{v:.25,n:"25 Dirhams",t:"c"},{v:.50,n:"50 Dirhams",t:"c"},{v:1,n:"1 Riyal",t:"n"},{v:5,n:"5 Riyal",t:"n"},{v:10,n:"10 Riyal",t:"n"},{v:50,n:"50 Riyal",t:"n"},{v:100,n:"100 Riyal",t:"n"}]},{c:"Kuwait",x:"KWD",n:"Kuwaiti Dinar",s:"د.ك",r:.306,f:"🇰🇼",g:"Asia",q:"The most valuable money on Earth! 💎 Just ONE dinar gets you about $3.26 — that's one powerful coin!",d:[{v:.005,n:"5 Fils",t:"c"},{v:.01,n:"10 Fils",t:"c"},{v:.02,n:"20 Fils",t:"c"},{v:.05,n:"50 Fils",t:"c"},{v:.10,n:"100 Fils",t:"c"},{v:.25,n:"¼ Dinar",t:"n"},{v:.50,n:"½ Dinar",t:"n"},{v:1,n:"1 Dinar",t:"n"},{v:5,n:"5 Dinar",t:"n"},{v:10,n:"10 Dinar",t:"n"},{v:20,n:"20 Dinar",t:"n"}]},{c:"Bahrain",x:"BHD",n:"Bahraini Dinar",s:"BD",r:.376,f:"🇧🇭",g:"Asia",q:"Second most valuable money! And it splits into 1,000 tiny pieces called 'fils' instead of just 100.",d:[{v:.005,n:"5 Fils",t:"c"},{v:.01,n:"10 Fils",t:"c"},{v:.025,n:"25 Fils",t:"c"},{v:.05,n:"50 Fils",t:"c"},{v:.10,n:"100 Fils",t:"c"},{v:.50,n:"½ Dinar",t:"n"},{v:1,n:"1 Dinar",t:"n"},{v:5,n:"5 Dinar",t:"n"},{v:10,n:"10 Dinar",t:"n"},{v:20,n:"20 Dinar",t:"n"}]},{c:"Oman",x:"OMR",n:"Omani Rial",s:"﷼",r:.385,f:"🇴🇲",g:"Asia",q:"Third most valuable money in the world! One rial splits into 1,000 baisa. 🥉",d:[{v:.005,n:"5 Baisa",t:"c"},{v:.01,n:"10 Baisa",t:"c"},{v:.025,n:"25 Baisa",t:"c"},{v:.05,n:"50 Baisa",t:"c"},{v:.10,n:"100 Baisa",t:"n"},{v:.50,n:"½ Rial",t:"n"},{v:1,n:"1 Rial",t:"n"},{v:5,n:"5 Rial",t:"n"},{v:10,n:"10 Rial",t:"n"},{v:20,n:"20 Rial",t:"n"},{v:50,n:"50 Rial",t:"n"}]},{c:"Malaysia",x:"MYR",n:"Malaysian Ringgit",s:"RM",r:3.894,f:"🇲🇾",g:"Asia",q:"'Ringgit' means 'jagged' — named after bumpy old Spanish coins that sailors used to trade! 🏴‍☠️",d:[{v:.05,n:"5 Sen",t:"c"},{v:.10,n:"10 Sen",t:"c"},{v:.20,n:"20 Sen",t:"c"},{v:.50,n:"50 Sen",t:"c"},{v:1,n:"RM1",t:"n"},{v:5,n:"RM5",t:"n"},{v:10,n:"RM10",t:"n"},{v:20,n:"RM20",t:"n"},{v:50,n:"RM50",t:"n"},{v:100,n:"RM100",t:"n"}]},{c:"Thailand",x:"THB",n:"Thai Baht",s:"฿",r:31.08,f:"🇹🇭",g:"Asia",q:"Don't step on Thai money! It has the king's picture on it and stepping on it is against the law! 👑",d:[{v:.25,n:"25 Satang",t:"c"},{v:.50,n:"50 Satang",t:"c"},{v:1,n:"1 Baht",t:"c"},{v:2,n:"2 Baht",t:"c"},{v:5,n:"5 Baht",t:"c"},{v:10,n:"10 Baht",t:"c"},{v:20,n:"20 Baht",t:"n"},{v:50,n:"50 Baht",t:"n"},{v:100,n:"Roi Baht (฿100)",t:"n"}]},{c:"Indonesia",x:"IDR",n:"Indonesian Rupiah",s:"Rp",r:16789,f:"🇮🇩",g:"Asia",q:"Indonesia has a 100,000 rupiah bill! That sounds like a lot but it's only about $6. Numbers can be tricky! 🔢",d:[{v:100,n:"Seratus (Rp100)",t:"c"}]},{c:"Philippines",x:"PHP",n:"Philippine Peso",s:"₱",r:57.68,f:"🇵🇭",g:"Asia",q:"The Philippines was the first country in Southeast Asia to use decimal money (like cents and dollars)! 🌴",d:[{v:.25,n:"25 Sentimo",t:"c"},{v:1,n:"1 Piso",t:"c"},{v:5,n:"5 Piso",t:"c"},{v:10,n:"10 Piso",t:"c"},{v:20,n:"Bente (₱20)",t:"n"},{v:50,n:"Singkwenta (₱50)",t:"n"},{v:100,n:"Daan (₱100)",t:"n"}]},{c:"Taiwan",x:"TWD",n:"New Taiwan Dollar",s:"NT$",r:31.39,f:"🇹🇼",g:"Asia",q:"The NT$200 bill is so rare that most people in Taiwan have never even seen one! Like a unicorn bill! 🦄",d:[{v:1,n:"1 Yuan",t:"c"},{v:5,n:"5 Yuan",t:"c"},{v:10,n:"10 Yuan",t:"c"},{v:20,n:"20 Yuan",t:"c"},{v:50,n:"50 Yuan",t:"c"},{v:100,n:"100 Yuan",t:"n"}]},{c:"Pakistan",x:"PKR",n:"Pakistani Rupee",s:"₨",r:279.68,f:"🇵🇰",g:"Asia",q:"Every single bill shows Jinnah, who founded the country, and a famous mosque on the back! 🕌",d:[{v:1,n:"1 Rupee",t:"c"},{v:2,n:"2 Rupees",t:"c"},{v:5,n:"5 Rupees",t:"c"},{v:10,n:"10 Rupees",t:"n"},{v:20,n:"20 Rupees",t:"n"},{v:50,n:"50 Rupees",t:"n"},{v:100,n:"100 Rupees",t:"n"}]},{c:"Nepal",x:"NPR",n:"Nepalese Rupee",s:"₨",r:145.79,f:"🇳🇵",g:"Asia",q:"Nepal's money shows Mount Everest — the tallest mountain in the world! And Bengal tigers too! 🐯🏔️",d:[{v:1,n:"1 Rupee",t:"c"},{v:2,n:"2 Rupees",t:"c"},{v:5,n:"5 Rupees",t:"n"},{v:10,n:"10 Rupees",t:"n"},{v:20,n:"20 Rupees",t:"n"},{v:50,n:"50 Rupees",t:"n"},{v:100,n:"100 Rupees",t:"n"}]},{c:"Sri Lanka",x:"LKR",n:"Sri Lankan Rupee",s:"Rs",r:309.18,f:"🇱🇰",g:"Asia",q:"Sri Lanka's bills show colorful birds, ancient temples, and traditional dancers! 🦜💃",d:[{v:1,n:"1 Rupee",t:"c"},{v:2,n:"2 Rupees",t:"c"},{v:5,n:"5 Rupees",t:"c"},{v:10,n:"10 Rupees",t:"c"},{v:20,n:"20 Rupees",t:"n"},{v:50,n:"50 Rupees",t:"n"},{v:100,n:"100 Rupees",t:"n"}]},{c:"Bangladesh",x:"BDT",n:"Bangladeshi Taka",s:"৳",r:121.5,f:"🇧🇩",g:"Asia",q:"'Taka' comes from an ancient word meaning 'coin.' The bills show the father of the nation! 🪙",d:[{v:1,n:"1 Taka",t:"c"},{v:2,n:"2 Taka",t:"c"},{v:5,n:"5 Taka",t:"n"},{v:10,n:"10 Taka",t:"n"},{v:20,n:"20 Taka",t:"n"},{v:50,n:"50 Taka",t:"n"},{v:100,n:"100 Taka",t:"n"}]},{c:"Vietnam",x:"VND",n:"Vietnamese Đồng",s:"₫",r:25450,f:"🇻🇳",g:"Asia",q:"Vietnamese money is made of plastic so it's waterproof! They don't even use coins anymore. 🌧️",d:[{v:100,n:"Trăm (100₫)",t:"n"}]},{c:"Kazakhstan",x:"KZT",n:"Kazakhstani Tenge",s:"₸",r:498.35,f:"🇰🇿",g:"Asia",q:"Kazakhstan's money keeps winning 'Most Beautiful Banknote' awards — it's basically art! 🎨🏆",d:[{v:1,n:"1 Tenge",t:"c"},{v:2,n:"2 Tenge",t:"c"},{v:5,n:"5 Tenge",t:"c"},{v:10,n:"10 Tenge",t:"c"},{v:20,n:"20 Tenge",t:"c"},{v:50,n:"50 Tenge",t:"c"},{v:100,n:"100 Tenge",t:"c"}]},{c:"Argentina",x:"ARS",n:"Argentine Peso",s:"AR$",r:1396.97,f:"🇦🇷",g:"South America",q:"Argentina has removed 13 zeros from its money over the years! Imagine $10,000,000,000,000 becoming $1! 🤯",d:[{v:1,n:"1 Peso",t:"c"},{v:2,n:"2 Pesos",t:"c"},{v:5,n:"5 Pesos",t:"c"},{v:10,n:"10 Pesos",t:"n"},{v:20,n:"20 Pesos",t:"n"},{v:50,n:"50 Pesos",t:"n"},{v:100,n:"100 Pesos",t:"n"}]},{c:"Colombia",x:"COP",n:"Colombian Peso",s:"Col$",r:3753.93,f:"🇨🇴",g:"South America",q:"Colombia's new bills show amazing animals and rainforests from the Andes to the Amazon! 🦜🌿",d:[{v:50,n:"50 Pesos",t:"c"},{v:100,n:"100 Pesos",t:"c"}]},{c:"Chile",x:"CLP",n:"Chilean Peso",s:"CL$",r:873.75,f:"🇨🇱",g:"South America",q:"Chile's 500 peso coin is made of two different metals stuck together! Their bills show famous poets. 📝",d:[{v:1,n:"1 Peso",t:"c"},{v:5,n:"5 Pesos",t:"c"},{v:10,n:"10 Pesos",t:"c"},{v:50,n:"50 Pesos",t:"c"},{v:100,n:"100 Pesos",t:"c"}]},{c:"Peru",x:"PEN",n:"Peruvian Sol",s:"S/",r:3.7,f:"🇵🇪",g:"South America",q:"'Sol' means 'sun' in Spanish! ☀️ Before this, their money was called 'inti' — the Incan sun god!",d:[{v:.10,n:"10 Céntimos",t:"c"},{v:.20,n:"20 Céntimos",t:"c"},{v:.50,n:"50 Céntimos",t:"c"},{v:1,n:"1 Sol",t:"c"},{v:2,n:"2 Soles",t:"c"},{v:5,n:"5 Soles",t:"c"},{v:10,n:"10 Soles",t:"n"},{v:20,n:"20 Soles",t:"n"},{v:50,n:"50 Soles",t:"n"},{v:100,n:"100 Soles",t:"n"}]},{c:"Iran",x:"IRR",n:"Iranian Rial",s:"﷼",r:1314514,f:"🇮🇷",g:"Asia",q:"You'd need over a MILLION rials for just $1! So people count in 'tomans' (10 rials) to keep it simple.",d:[{v:50,n:"50 Rial",t:"c"},{v:100,n:"100 Rial",t:"c"}]},{c:"Nigeria",x:"NGN",n:"Nigerian Naira",s:"₦",r:1550,f:"🇳🇬",g:"Africa",q:"Nigeria is the most populated country in Africa and the naira is the most traded African money! 🌍",d:[{v:.50,n:"50 Kobo",t:"c"},{v:1,n:"1 Naira",t:"c"},{v:2,n:"2 Naira",t:"c"},{v:5,n:"5 Naira",t:"n"},{v:10,n:"10 Naira",t:"n"},{v:20,n:"20 Naira",t:"n"},{v:50,n:"50 Naira",t:"n"},{v:100,n:"100 Naira",t:"n"}]},{c:"Kenya",x:"KES",n:"Kenyan Shilling",s:"KSh",r:129.5,f:"🇰🇪",g:"Africa",q:"In Kenya, people pay for things with their phones more than with cash! It's called M-Pesa. 📲",d:[{v:.50,n:"50 Cents",t:"c"},{v:1,n:"1 Shilling",t:"c"},{v:5,n:"5 Shillings",t:"c"},{v:10,n:"10 Shillings",t:"c"},{v:20,n:"20 Shillings",t:"c"},{v:50,n:"50 Shillings",t:"n"},{v:100,n:"100 Shillings",t:"n"}]},{c:"Egypt",x:"EGP",n:"Egyptian Pound",s:"E£",r:50.7,f:"🇪🇬",g:"Africa",q:"Egyptian money shows ancient pharaoh stuff AND beautiful mosques — old and new together! 🏛️🕌",d:[{v:.25,n:"25 Piastres",t:"c"},{v:.50,n:"50 Piastres",t:"c"},{v:1,n:"E£1 Coin",t:"c"},{v:5,n:"E£5",t:"n"},{v:10,n:"E£10",t:"n"},{v:20,n:"E£20",t:"n"},{v:50,n:"E£50",t:"n"},{v:100,n:"E£100",t:"n"}]},{c:"Ghana",x:"GHS",n:"Ghanaian Cedi",s:"GH₵",r:15.8,f:"🇬🇭",g:"Africa",q:"'Cedi' means 'cowry shell' — people in Ghana used seashells as money for hundreds of years! 🐚",d:[{v:.01,n:"1 Pesewa",t:"c"},{v:.05,n:"5 Pesewas",t:"c"},{v:.10,n:"10 Pesewas",t:"c"},{v:.50,n:"50 Pesewas",t:"c"},{v:1,n:"1 Cedi",t:"b"},{v:2,n:"2 Cedis",t:"n"},{v:5,n:"5 Cedis",t:"n"},{v:10,n:"10 Cedis",t:"n"},{v:20,n:"20 Cedis",t:"n"},{v:50,n:"50 Cedis",t:"n"},{v:100,n:"100 Cedis",t:"n"}]},{c:"Morocco",x:"MAD",n:"Moroccan Dirham",s:"MAD",r:8.95,f:"🇲🇦",g:"Africa",q:"The name 'dirham' comes from the ancient Greek word 'drachma' — money names travel through time! ⏳",d:[{v:.10,n:"10 Santimat",t:"c"},{v:.50,n:"½ Dirham",t:"c"},{v:1,n:"1 Dirham",t:"c"},{v:2,n:"2 Dirhams",t:"c"},{v:5,n:"5 Dirhams",t:"c"},{v:10,n:"10 Dirhams",t:"c"},{v:20,n:"20 Dirhams",t:"n"},{v:50,n:"50 Dirhams",t:"n"},{v:100,n:"100 Dirhams",t:"n"}]},{c:"Botswana",x:"BWP",n:"Botswana Pula",s:"P",r:12.95,f:"🇧🇼",g:"Africa",q:"'Pula' means 'rain!' 🌧️ Water is so precious in Botswana that they named their money after it!",d:[{v:.05,n:"5 Thebe",t:"c"},{v:.10,n:"10 Thebe",t:"c"},{v:.25,n:"25 Thebe",t:"c"},{v:.50,n:"50 Thebe",t:"c"},{v:1,n:"1 Pula",t:"c"},{v:2,n:"2 Pula",t:"c"},{v:5,n:"5 Pula",t:"c"},{v:10,n:"P10 Note",t:"n"},{v:20,n:"P20 Note",t:"n"},{v:50,n:"P50 Note",t:"n"},{v:100,n:"P100 Note",t:"n"}]},{c:"Mauritius",x:"MUR",n:"Mauritian Rupee",s:"₨",r:46.36,f:"🇲🇺",g:"Africa",q:"The only country in Africa that uses the rupee! It's because of old trading connections across the Indian Ocean. ⛵",d:[{v:.20,n:"20 Cents",t:"c"},{v:.50,n:"½ Rupee",t:"c"},{v:1,n:"1 Rupee",t:"c"},{v:5,n:"5 Rupees",t:"c"},{v:10,n:"10 Rupees",t:"c"},{v:20,n:"20 Rupees",t:"c"},{v:25,n:"25 Rupees",t:"n"},{v:50,n:"50 Rupees",t:"n"},{v:100,n:"100 Rupees",t:"n"}]},{c:"Tanzania",x:"TZS",n:"Tanzanian Shilling",s:"TSh",r:2645,f:"🇹🇿",g:"Africa",q:"The money shows Mount Kilimanjaro, lions on the Serengeti, and Zanzibar — so cool! 🦁🏔️",d:[{v:50,n:"50 Shilingi",t:"c"},{v:100,n:"100 Shilingi",t:"c"}]},{c:"Brunei",x:"BND",n:"Brunei Dollar",s:"B$",r:1.265,f:"🇧🇳",g:"Asia",q:"Brunei dollars and Singapore dollars are worth exactly the same and you can use either in both countries! 🤝",d:[{v:.01,n:"1 Sen",t:"c"},{v:.05,n:"5 Sen",t:"c"},{v:.10,n:"10 Sen",t:"c"},{v:.50,n:"50 Sen",t:"c"},{v:1,n:"B$1",t:"n"},{v:5,n:"B$5",t:"n"},{v:10,n:"B$10",t:"n"},{v:50,n:"B$50",t:"n"},{v:100,n:"B$100",t:"n"}]},{c:"Libya",x:"LYD",n:"Libyan Dinar",s:"LD",r:6.314,f:"🇱🇾",g:"Africa",q:"After a big change in 2011, Libya printed all new money with new designs! 🆕",d:[{v:.05,n:"50 Dirhams",t:"c"},{v:.10,n:"100 Dirhams",t:"c"},{v:.25,n:"¼ Dinar",t:"n"},{v:.50,n:"½ Dinar",t:"n"},{v:1,n:"1 Dinar",t:"n"},{v:5,n:"5 Dinars",t:"n"},{v:10,n:"10 Dinars",t:"n"},{v:20,n:"20 Dinars",t:"n"},{v:50,n:"50 Dinars",t:"n"}]},{c:"Trinidad & Tobago",x:"TTD",n:"Trinidad & Tobago Dollar",s:"TT$",r:6.756,f:"🇹🇹",g:"North America",q:"Their special $50 bill has a beautiful hummingbird on it and was made to celebrate 50 years of freedom! 🐦",d:[{v:.01,n:"1 Cent",t:"c"},{v:.05,n:"5 Cents",t:"c"},{v:.10,n:"10 Cents",t:"c"},{v:.25,n:"25 Cents",t:"c"},{v:1,n:"$1",t:"b"},{v:5,n:"$5",t:"n"},{v:10,n:"$10",t:"n"},{v:20,n:"$20",t:"n"},{v:50,n:"$50",t:"n"},{v:100,n:"$100",t:"n"}]},{c:"Jamaica",x:"JMD",n:"Jamaican Dollar",s:"J$",r:157.5,f:"🇯🇲",g:"North America",q:"Jamaica's biggest bills show national heroes. People call their money 'J-dollars!' 🏝️",d:[{v:1,n:"$1",t:"c"},{v:5,n:"$5",t:"c"},{v:10,n:"$10",t:"c"},{v:20,n:"$20",t:"c"},{v:50,n:"$50 Note",t:"n"},{v:100,n:"$100 Note",t:"n"}]}];
+
+const continents=["All","Africa","Asia","Europe","North America","Oceania","South America"];
+const bands=[{l:"All",a:0,b:Infinity},{l:"💪 Stronger than $1",a:0,b:1},{l:"🤝 Close to $1",a:.5,b:2},{l:"📉 Weaker (2–100)",a:2,b:100},{l:"🔢 Way weaker (100+)",a:100,b:Infinity}];
+const sorts=[{l:"🔤 A → Z",fn:(a,b)=>a.c.localeCompare(b.c)},{l:"🔤 Z → A",fn:(a,b)=>b.c.localeCompare(a.c)},{l:"💎 Strongest first",fn:(a,b)=>a.r-b.r},{l:"🪶 Weakest first",fn:(a,b)=>b.r-a.r}];
+
+const cardColors=["#FF6B6B","#4ECDC4","#45B7D1","#96CEB4","#FFEAA7","#DDA0DD","#F0E68C","#87CEEB","#FFA07A","#98D8C8","#F7DC6F","#BB8FCE","#85C1E9","#F1948A","#82E0AA","#F8C471","#AED6F1","#D2B4DE","#A3E4D7","#FAD7A0"];
+
+const typeInfo={c:{bg:"#FFF3CD",fg:"#856404",icon:"🪙",label:"Coin"},n:{bg:"#D1ECF1",fg:"#0C5460",icon:"💵",label:"Bill"},b:{bg:"#E2D5F1",fg:"#5B2C8E",icon:"✨",label:"Both"}};
+
+function Card({item,open,toggle,colorIdx}){
+  const color = cardColors[colorIdx % cardColors.length];
+  const usd=item.r<1?`${item.s}1 = $${(1/item.r).toFixed(2)} USD`:`$1 USD = ${item.s}${item.r<100?item.r.toFixed(2):item.r.toLocaleString(undefined,{maximumFractionDigits:0})}`;
+  return(
+    <div onClick={toggle} style={{
+      background:"#fff",
+      borderRadius:24,
+      padding:0,
+      cursor:"pointer",
+      transition:"all .3s cubic-bezier(.4,0,.2,1)",
+      boxShadow:open?"0 12px 40px rgba(0,0,0,.15)":"0 4px 12px rgba(0,0,0,.08)",
+      transform:open?"scale(1.02)":"scale(1)",
+      overflow:"hidden",
+      border:`3px solid ${open?color:"#e8e8e8"}`,
+    }}>
+      {/* Color bar top */}
+      <div style={{height:6,background:`linear-gradient(90deg, ${color}, ${color}88)`}}/>
+      <div style={{padding:"16px 20px"}}>
+        <div style={{display:"flex",alignItems:"center",gap:14}}>
+          <div style={{
+            fontSize:52,lineHeight:1,flexShrink:0,
+            filter:"drop-shadow(2px 2px 4px rgba(0,0,0,.15))",
+            animation:open?"bounce .5s ease":"none",
+          }}>{item.f}</div>
+          <div style={{flex:1,minWidth:0}}>
+            <div style={{display:"flex",alignItems:"center",gap:8,flexWrap:"wrap"}}>
+              <span style={{fontFamily:"'Fredoka',sans-serif",fontSize:22,color:"#2d3436",fontWeight:600}}>{item.c}</span>
+              <span style={{fontFamily:"'Space Mono',monospace",fontSize:11,color:"#fff",background:color,padding:"3px 10px",borderRadius:20,fontWeight:700,letterSpacing:1}}>{item.x}</span>
+            </div>
+            <div style={{fontFamily:"'Nunito',sans-serif",fontSize:15,color:"#636e72",marginTop:2}}>{item.n} ({item.s})</div>
+          </div>
+          <div style={{textAlign:"right",flexShrink:0}}>
+            <div style={{
+              fontFamily:"'Space Mono',monospace",fontSize:20,fontWeight:700,
+              color:item.r<1?"#00b894":item.r<=2?"#fdcb6e":"#e17055",
+              background:item.r<1?"#00b89422":item.r<=2?"#fdcb6e22":"#e1705522",
+              padding:"4px 12px",borderRadius:14,
+            }}>
+              {item.r<.01?item.r.toFixed(4):item.r<1?item.r.toFixed(3):item.r<100?item.r.toFixed(2):item.r.toLocaleString(undefined,{maximumFractionDigits:0})}
+            </div>
+            <div style={{fontSize:11,color:"#b2bec3",fontFamily:"'Nunito',sans-serif",marginTop:4,fontWeight:600}}>per $1 USD</div>
+          </div>
+          <div style={{
+            fontSize:24,color:color,
+            transform:open?"rotate(180deg)":"rotate(0)",
+            transition:"transform .3s cubic-bezier(.4,0,.2,1)",
+            flexShrink:0,marginLeft:4,
+          }}>▼</div>
+        </div>
+
+        {open&&(
+          <div style={{marginTop:16,paddingTop:16,borderTop:"2px dashed #dfe6e9"}}>
+            {/* Exchange rate */}
+            <div style={{
+              background:`linear-gradient(135deg, ${color}22, ${color}11)`,
+              borderRadius:16,padding:"12px 16px",marginBottom:14,
+              border:`2px solid ${color}44`,
+            }}>
+              <div style={{fontFamily:"'Nunito',sans-serif",fontSize:13,fontWeight:800,color:"#636e72",textTransform:"uppercase",letterSpacing:1,marginBottom:4}}>💱 Exchange Rate</div>
+              <div style={{fontFamily:"'Space Mono',monospace",fontSize:17,color:"#2d3436",fontWeight:700}}>{usd}</div>
+            </div>
+
+            {/* Fun fact */}
+            <div style={{
+              background:"#FFF9DB",borderRadius:16,padding:"12px 16px",marginBottom:14,
+              border:"2px solid #FFEAA744",
+            }}>
+              <div style={{fontFamily:"'Nunito',sans-serif",fontSize:13,fontWeight:800,color:"#636e72",textTransform:"uppercase",letterSpacing:1,marginBottom:4}}>🧠 Did You Know?</div>
+              <div style={{fontFamily:"'Nunito',sans-serif",fontSize:15,color:"#2d3436",lineHeight:1.6,fontWeight:500}}>{item.q}</div>
+            </div>
+
+            {/* Denominations */}
+            <div style={{
+              background:"#F0F3F8",borderRadius:16,padding:"12px 16px",
+              border:"2px solid #dfe6e933",
+            }}>
+              <div style={{fontFamily:"'Nunito',sans-serif",fontSize:13,fontWeight:800,color:"#636e72",textTransform:"uppercase",letterSpacing:1,marginBottom:10}}>🪙💵 What does the money look like? <span style={{fontWeight:500,fontSize:11,textTransform:"none"}}>(up to 100)</span></div>
+              <div style={{display:"flex",flexWrap:"wrap",gap:8}}>
+                {item.d.map((dm,i)=>{const ti=typeInfo[dm.t];return(
+                  <div key={i} style={{
+                    background:ti.bg,color:ti.fg,padding:"6px 12px",borderRadius:12,
+                    fontSize:13,fontFamily:"'Nunito',sans-serif",fontWeight:600,
+                    display:"flex",alignItems:"center",gap:6,
+                    border:`1.5px solid ${ti.fg}33`,
+                    transition:"transform .15s",
+                  }}>
+                    <span style={{fontSize:14}}>{ti.icon}</span>
+                    <span><strong>{dm.v<1?dm.v:dm.v}</strong> — {dm.n}</span>
+                  </div>
+                );})}
+              </div>
+              <div style={{display:"flex",gap:16,marginTop:10,fontSize:13,color:"#636e72",fontFamily:"'Nunito',sans-serif",fontWeight:600}}>
+                {Object.entries(typeInfo).map(([k,v])=>(
+                  <span key={k} style={{display:"flex",alignItems:"center",gap:4}}>{v.icon} {v.label}</span>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function App(){
+  const[search,setSearch]=useState("");
+  const[cont,setCont]=useState("All");
+  const[bandIdx,setBandIdx]=useState(0);
+  const[sortIdx,setSortIdx]=useState(0);
+  const[openCode,setOpenCode]=useState(null);
+
+  const filtered=useMemo(()=>{
+    const b=bands[bandIdx];const q=search.toLowerCase();
+    let list=C.filter(i=>{
+      if(cont!=="All"&&i.g!==cont)return false;
+      if(i.r<b.a||i.r>=b.b)return false;
+      if(q&&!(i.c.toLowerCase().includes(q)||i.n.toLowerCase().includes(q)||i.x.toLowerCase().includes(q)))return false;
+      return true;
+    });
+    list.sort(sorts[sortIdx].fn);return list;
+  },[search,cont,bandIdx,sortIdx]);
+
+  const sel={appearance:"none",background:"#fff",border:"2.5px solid #dfe6e9",borderRadius:14,padding:"10px 38px 10px 14px",fontSize:14,fontFamily:"'Nunito',sans-serif",fontWeight:600,color:"#2d3436",cursor:"pointer",backgroundImage:`url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23636e72' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E")`,backgroundRepeat:"no-repeat",backgroundPosition:"right 12px center",minWidth:140,transition:"border-color .2s"};
+
+  return(
+    <div style={{minHeight:"100vh",background:"linear-gradient(180deg,#E8F8F5 0%,#FEF9E7 30%,#FDEDEC 60%,#EBF5FB 100%)",fontFamily:"'Nunito',sans-serif"}}>
+      <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+      <style>{`
+        @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+        @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+        @keyframes wiggle{0%,100%{transform:rotate(0)}25%{transform:rotate(-3deg)}75%{transform:rotate(3deg)}}
+        input::placeholder{color:#b2bec3}
+        select:hover{border-color:#74b9ff!important}
+        input:focus{border-color:#74b9ff!important;box-shadow:0 0 0 3px #74b9ff44!important}
+      `}</style>
+      <div style={{maxWidth:880,margin:"0 auto",padding:"32px 20px 60px"}}>
+        {/* Fun header */}
+        <div style={{textAlign:"center",marginBottom:32}}>
+          <div style={{fontSize:40,marginBottom:8,animation:"float 3s ease-in-out infinite"}}>🌍💰🪙</div>
+          <h1 style={{fontFamily:"'Fredoka',sans-serif",fontSize:"clamp(36px,7vw,64px)",margin:0,lineHeight:1.1,letterSpacing:-1}}>
+            <span style={{color:"#e17055"}}>D</span>
+            <span style={{color:"#fdcb6e"}}>e</span>
+            <span style={{color:"#00b894"}}>n</span>
+            <span style={{color:"#0984e3"}}>o</span>
+            <span style={{color:"#6c5ce7"}}>m</span>
+            <span style={{color:"#e17055"}}>N</span>
+            <span style={{color:"#00b894"}}>a</span>
+            <span style={{color:"#fdcb6e"}}>t</span>
+            <span style={{color:"#0984e3"}}>i</span>
+            <span style={{color:"#6c5ce7"}}>o</span>
+            <span style={{color:"#e17055"}}>n</span>
+          </h1>
+          <p style={{fontSize:18,color:"#636e72",maxWidth:480,margin:"8px auto 0",lineHeight:1.5,fontWeight:600}}>
+            Explore money from {C.length} countries around the world! 🗺️
+          </p>
+          <div style={{display:"inline-flex",gap:8,marginTop:12,flexWrap:"wrap",justifyContent:"center"}}>
+            <span style={{background:"#00b89433",color:"#00b894",padding:"6px 14px",borderRadius:20,fontSize:13,fontWeight:700}}>💱 Exchange Rates</span>
+            <span style={{background:"#e1705533",color:"#e17055",padding:"6px 14px",borderRadius:20,fontSize:13,fontWeight:700}}>🪙 Denominations</span>
+            <span style={{background:"#0984e333",color:"#0984e3",padding:"6px 14px",borderRadius:20,fontSize:13,fontWeight:700}}>🧠 Fun Facts</span>
+          </div>
+        </div>
+
+        {/* Filters */}
+        <div style={{
+          background:"#fff",borderRadius:20,padding:"18px 20px",marginBottom:20,
+          boxShadow:"0 4px 16px rgba(0,0,0,.06)",border:"2.5px solid #dfe6e9",
+          display:"flex",flexWrap:"wrap",gap:10,alignItems:"center",
+        }}>
+          <div style={{flex:"1 1 200px"}}>
+            <input type="text" placeholder="🔍 Search any country or currency…" value={search} onChange={e=>setSearch(e.target.value)} style={{
+              width:"100%",padding:"10px 14px",border:"2.5px solid #dfe6e9",borderRadius:14,
+              fontSize:15,fontFamily:"'Nunito',sans-serif",fontWeight:600,color:"#2d3436",
+              background:"#fafafa",outline:"none",boxSizing:"border-box",transition:"all .2s",
+            }}/>
+          </div>
+          <select value={cont} onChange={e=>setCont(e.target.value)} style={sel}>{continents.map(c=><option key={c} value={c}>{c==="All"?"🌎 All Continents":c}</option>)}</select>
+          <select value={bandIdx} onChange={e=>setBandIdx(+e.target.value)} style={sel}>{bands.map((b,i)=><option key={i} value={i}>{b.l}</option>)}</select>
+          <select value={sortIdx} onChange={e=>setSortIdx(+e.target.value)} style={sel}>{sorts.map((s,i)=><option key={i} value={i}>{s.l}</option>)}</select>
+        </div>
+
+        {/* Count */}
+        <div style={{fontSize:15,color:"#636e72",fontFamily:"'Nunito',sans-serif",fontWeight:700,marginBottom:14,paddingLeft:4}}>
+          {filtered.length===0?"😢 No results!":`🎯 ${filtered.length} ${filtered.length===1?"country":"countries"} found`}{search&&<span> for "<em>{search}</em>"</span>}
+        </div>
+
+        {/* Cards */}
+        <div style={{display:"flex",flexDirection:"column",gap:14}}>
+          {filtered.map((item,idx)=><Card key={item.x} item={item} open={openCode===item.x} toggle={()=>setOpenCode(openCode===item.x?null:item.x)} colorIdx={idx}/>)}
+          {filtered.length===0&&(
+            <div style={{textAlign:"center",padding:60,fontSize:48}}>
+              <div style={{animation:"wiggle 1s ease-in-out infinite"}}>🤷</div>
+              <div style={{fontSize:16,color:"#b2bec3",fontWeight:600,marginTop:8}}>Try a different search or filter!</div>
+            </div>
+          )}
+        </div>
+
+        {/* Footer */}
+        <div style={{textAlign:"center",marginTop:40,fontSize:13,color:"#b2bec3",fontWeight:600,lineHeight:2}}>
+          Made with ❤️ · Rates from Feb 28, 2026 · Tap any country to explore!
+        </div>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>
