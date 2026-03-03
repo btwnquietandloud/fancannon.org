@@ -7,7 +7,7 @@
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Chewy&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #0c0b10; --surface: #141318; --border: #2a2838;
@@ -27,14 +27,13 @@
 
   /* Hero */
   .hero { text-align: center; margin-bottom: 64px; padding-top: 24px; }
-  .hero-logo {
-    width: 160px; height: 160px; border-radius: 50%; margin: 0 auto 24px; display: block;
-    animation: float 4s ease-in-out infinite;
+  .hero-banner {
+    max-width: 600px; width: 100%; margin: 0 auto 16px; display: block;
     filter: drop-shadow(0 8px 32px rgba(45,106,94,0.3));
   }
   @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
   .hero h1 {
-    font-family: 'Playfair Display', serif; font-size: clamp(36px, 6vw, 60px);
+    font-family: 'Chewy', cursive; font-size: clamp(36px, 6vw, 60px);
     font-weight: 700; line-height: 1.1; margin-bottom: 16px;
     background: linear-gradient(135deg, var(--gold), #e8d088, var(--teal), #5aa89a);
     -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
@@ -47,7 +46,7 @@
     margin-bottom: 24px; margin-top: 0;
   }
   .section-header h2 {
-    font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700;
+    font-family: 'Chewy', cursive; font-size: 28px; font-weight: 700;
   }
   .section-header .section-icon { font-size: 28px; }
   .section-header .section-line {
@@ -72,7 +71,7 @@
   .card:hover::before { opacity: 1; }
   .card:hover .card-arrow { opacity: 1; transform: translateX(0); }
   .card-emoji { font-size: 40px; margin-bottom: 16px; display: block; position: relative; z-index: 1; }
-  .card-title { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; margin-bottom: 8px; position: relative; z-index: 1; }
+  .card-title { font-family: 'Chewy', cursive; font-size: 22px; font-weight: 700; margin-bottom: 8px; position: relative; z-index: 1; }
   .card-sub { font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 12px; position: relative; z-index: 1; }
   .card-desc { font-size: 14px; color: var(--text-muted); line-height: 1.7; position: relative; z-index: 1; }
   .card-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 16px; position: relative; z-index: 1; }
@@ -85,6 +84,7 @@
   .card-kotlc { --card-color: #a855f7; } .card-kotlc::before { background: linear-gradient(135deg, rgba(168,85,247,0.06), transparent 60%); } .card-kotlc .card-sub { color: #a855f7; }
   .card-sfw { --card-color: #c0392b; } .card-sfw::before { background: linear-gradient(135deg, rgba(192,57,43,0.06), transparent 60%); } .card-sfw .card-sub { color: #d4a03c; }
 
+  .card-opm { --card-color: #ffe033; } .card-opm::before { background: linear-gradient(135deg, rgba(255,224,51,0.06), transparent 60%); } .card-opm .card-sub { color: #ffe033; }
   /* Knowledge Cannon card accents */
   .card-states { --card-color: #3b82f6; } .card-states::before { background: linear-gradient(135deg, rgba(59,130,246,0.06), transparent 60%); } .card-states .card-sub { color: #3b82f6; }
   .card-size { --card-color: #10b981; } .card-size::before { background: linear-gradient(135deg, rgba(16,185,129,0.06), transparent 60%); } .card-size .card-sub { color: #10b981; }
@@ -109,14 +109,12 @@
 
 <div class="page">
   <div class="hero">
-    <img src="fancannonlogo.png" alt="Fan Cannon" class="hero-logo">
-    <h1>Fan Cannon</h1>
-    <p>Interactive universe guides, learning tools, and fun stuff &mdash; all in one place.</p>
+    <img src="fancannon-banner.png" alt="Fan Cannon - Your Universe of Knowledge" class="hero-banner">
   </div>
 
   <!-- ══════════ UNIVERSE GUIDES ══════════ -->
   <div class="section-header">
-    <span class="section-icon">&#127758;</span>
+    <span class="section-icon"><img src="momo.png" alt="Momo" class="section-mascot"></span>
     <h2>Universe Guides</h2>
     <div class="section-line"></div>
   </div>
@@ -158,13 +156,22 @@
       <p class="card-desc">Larry Correia's epic fantasy. Ancestor blades, the caste system of Lok, and demons from the deep.</p>
       <div class="card-tags"><span class="card-tag">25 Characters</span><span class="card-tag">4 Castes</span><span class="card-tag">100 Trivia Qs</span></div>
     </a>
+
+    <a href="opm-universe.html" class="card card-opm">
+      <span class="card-arrow">\&rarr;</span>
+      <span class="card-emoji">\&#x1F44A;</span>
+      <div class="card-sub">Manga / Anime</div>
+      <div class="card-title">One Punch Man</div>
+      <p class="card-desc">ONE's superhero parody masterpiece. Saitama, the Hero Association, S-Class heroes, and 100 trivia questions.</p>
+      <div class="card-tags"><span class="card-tag">25 Characters</span><span class="card-tag">Hero Classes</span><span class="card-tag">100 Trivia Qs</span></div>
+    </a>
   </div>
 
   <!-- ══════════ KNOWLEDGE CANNON ══════════ -->
   <div class="section-divider"></div>
 
   <div class="section-header">
-    <span class="section-icon"><img src="knowledge-cannon.png" alt="Knowledge Cannon" class="section-mascot"></span>
+    <span class="section-icon"><img src="momo-telescope.png" alt="Knowledge Cannon" class="section-mascot"></span>
     <h2>Knowledge Cannon</h2>
     <div class="section-line"></div>
   </div>
