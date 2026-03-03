@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Keeper of the Lost Cities — The Universe Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Bungee+Shade&family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #090812;
+    --bg-card: #110f20;
+    --bg-card-hover: #1a1830;
+    --accent: #a855f7;
+    --accent2: #60c0e8;
+    --accent3: #f0a848;
+    --accent4: #e06088;
+    --text: #eae8f4;
+    --text-muted: #9090b8;
+    --text-dim: #606088;
+    --border: #282848;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;overflow-x:hidden}
+  ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes floatObj{0%,100%{transform:translateY(0) rotate(0)}25%{transform:translateY(-30px) rotate(5deg)}50%{transform:translateY(-10px) rotate(-3deg)}75%{transform:translateY(-40px) rotate(3deg)}}
+  @keyframes pulseGlow{0%,100%{filter:drop-shadow(0 0 8px rgba(168,85,247,0.3))}50%{filter:drop-shadow(0 0 20px rgba(168,85,247,0.6))}}
+  @keyframes shakeWrong{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+  .fade-in{animation:fadeUp .5s ease both}.fade-in-delay{animation:fadeUp .4s ease both}.shake{animation:shakeWrong .4s ease}
+  #floating-bg{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+  .float-obj{position:absolute;animation:floatObj var(--dur) ease-in-out infinite;animation-delay:var(--delay);opacity:var(--opa);font-size:var(--size);left:var(--x);top:var(--y)}
+  .container{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:24px 16px 64px}
+  .tab-nav{display:flex;gap:4px;padding:6px;background:var(--bg-card);border-radius:16px;border:1px solid var(--border);margin-bottom:32px;flex-wrap:wrap;justify-content:center}
+  .tab-btn{padding:10px 20px;border:none;border-radius:12px;cursor:pointer;font-family:'Fredoka',sans-serif;font-size:15px;font-weight:600;background:transparent;color:var(--text-muted);transition:all .25s ease;display:flex;align-items:center;gap:8px}
+  .tab-btn.active{background:var(--accent);color:#fff}.tab-btn:hover:not(.active){color:var(--text)}.tab-btn .icon{font-size:18px}
+  .section{display:none}.section.active{display:block}
+  .hero{text-align:center;padding:48px 24px;margin-bottom:32px;background:linear-gradient(135deg,var(--bg-card) 0%,rgba(168,85,247,0.08) 50%,var(--bg-card) 100%);border-radius:24px;border:1px solid var(--border);position:relative;overflow:hidden}
+  .hero-pattern{position:absolute;inset:0;opacity:.04;background:repeating-linear-gradient(45deg,transparent,transparent 20px,rgba(168,85,247,0.3) 20px,rgba(168,85,247,0.3) 22px)}
+  .hero-content{position:relative;z-index:1}.hero-island{font-size:64px;margin-bottom:16px;animation:pulseGlow 3s ease-in-out infinite}
+  .hero h1{font-family:'Bungee Shade',cursive;font-size:clamp(22px,4.5vw,42px);color:var(--accent);margin:0 0 8px;line-height:1.2;text-shadow:0 0 40px rgba(168,85,247,0.3)}
+  .hero .subtitle{font-family:'Fredoka',sans-serif;font-size:18px;color:var(--accent2);margin:0 0 8px;font-weight:500}
+  .hero .meta{font-size:14px;color:var(--text-muted);margin:0 0 24px}
+  .stats-row{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin-top:24px}
+  .stat-box{background:rgba(255,255,255,.03);border-radius:16px;padding:16px 24px;border:1px solid var(--border);min-width:100px}
+  .stat-box .num{font-family:'Bungee',cursive;font-size:24px}.stat-box .label{font-size:12px;color:var(--text-muted)}
+  .about-card{background:var(--bg-card);border-radius:20px;padding:32px;border:1px solid var(--border);margin-bottom:24px}
+  .about-card h2{font-family:'Fredoka',sans-serif;font-size:22px;color:var(--text);margin:0 0 16px}
+  .about-card p{font-size:15px;line-height:1.8;color:var(--text-muted)}.about-card strong{color:var(--text)}
+  .about-card .hl-p{color:var(--accent)}.about-card .hl-b{color:var(--accent2)}.about-card .hl-g{color:var(--accent3)}
+  .quick-links{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+  .quick-card{background:var(--bg-card);border-radius:16px;padding:20px;border:1px solid var(--border);cursor:pointer;text-align:left;transition:all .2s ease;font-family:inherit;color:inherit;width:100%}
+  .quick-card:hover{transform:translateY(-2px)}.quick-card .title{font-family:'Fredoka',sans-serif;font-size:16px;font-weight:600;margin-bottom:6px}.quick-card .desc{font-size:13px;color:var(--text-muted)}
+  .section-heading{font-family:'Bungee Shade',cursive;font-size:clamp(22px,4vw,32px);margin:0 0 8px;text-align:center}
+  .section-sub{font-size:14px;color:var(--text-muted);text-align:center;margin-bottom:32px}
+  .timeline-wrap{position:relative;max-width:700px;margin:0 auto}
+  .timeline-line{position:absolute;left:24px;top:0;bottom:0;width:3px;background:linear-gradient(to bottom,var(--accent),var(--accent2),var(--accent4));border-radius:2px;opacity:.3}
+  .timeline-item{position:relative;margin-bottom:16px;padding-left:60px;cursor:pointer}
+  .timeline-dot{position:absolute;left:14px;top:18px;width:22px;height:22px;border-radius:50%;border:3px solid var(--bg);z-index:1}
+  .tl-card{background:var(--bg-card);border-radius:16px;padding:20px;border:1px solid var(--border);transition:all .25s ease}
+  .tl-card:hover,.tl-card.expanded{border-color:var(--tl-color,var(--accent))}.tl-card.expanded{background:var(--bg-card-hover)}
+  .tl-header{display:flex;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap}
+  .tl-icon{font-size:22px}.tl-year{font-family:'Bungee',cursive;font-size:13px;padding:2px 10px;border-radius:8px}
+  .tl-season-tag{font-family:'Fredoka',sans-serif;font-size:11px;color:var(--text-dim);background:rgba(96,96,136,.13);padding:2px 8px;border-radius:6px}
+  .tl-title{font-family:'Fredoka',sans-serif;font-size:17px;color:var(--text);margin:0 0 4px}
+  .tl-desc{font-size:14px;color:var(--text-muted);line-height:1.6;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;max-height:2.8em;transition:max-height .4s ease}
+  .tl-card.expanded .tl-desc{-webkit-line-clamp:unset;max-height:500px}
+  .tl-toggle{font-size:12px;margin-top:6px;display:inline-block;cursor:pointer;opacity:.8}.tl-toggle:hover{opacity:1}
+  .char-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;margin-bottom:24px}
+  .char-btn{background:var(--bg-card);border-radius:16px;padding:20px 12px;border:2px solid var(--border);cursor:pointer;transition:all .25s ease;display:flex;flex-direction:column;align-items:center;gap:8px;font-family:inherit;color:inherit;width:100%}
+  .char-btn:hover{transform:translateY(-3px)}.char-btn.selected{transform:scale(1.03)}
+  .char-emoji{font-size:36px;transition:filter .25s ease}.char-btn.selected .char-emoji{filter:drop-shadow(0 0 10px var(--char-color))}
+  .char-name{font-family:'Fredoka',sans-serif;font-size:14px;font-weight:600}.char-role{font-size:10px;color:var(--text-dim);text-align:center}
+  .char-detail{background:var(--bg-card);border-radius:20px;padding:28px;border:2px solid rgba(255,255,255,.1);animation:fadeUp .3s ease both;display:none}
+  .char-detail.visible{display:block}
+  .char-detail-header{display:flex;align-items:center;gap:16px;margin-bottom:16px;flex-wrap:wrap}
+  .char-detail-emoji{font-size:48px}.char-detail-name{font-family:'Bungee',cursive;font-size:24px;margin:0}
+  .char-detail-role{font-family:'Fredoka',sans-serif;font-size:14px;color:var(--text-muted);margin:2px 0 0}
+  .char-detail-desc{font-size:15px;line-height:1.8;margin:0 0 16px}
+  .char-seasons{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+  .char-season-tag{font-family:'Fredoka',sans-serif;font-size:12px;font-weight:600;padding:4px 12px;border-radius:8px}
+  .char-trivia{border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:10px}
+  .char-trivia span:first-child{font-size:18px}.char-trivia span:last-child{font-size:13px;color:var(--accent3);font-style:italic}
+  .filter-row{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:24px}
+  .filter-btn{padding:6px 16px;border-radius:10px;border:none;cursor:pointer;font-family:'Fredoka',sans-serif;font-size:13px;font-weight:500;background:var(--bg-card);color:var(--text-muted);transition:all .2s ease}
+  .filter-btn.active{background:var(--accent2);color:var(--bg)}
+  .facts-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+  .fact-card{background:var(--bg-card);border-radius:16px;padding:22px;border:1px solid var(--border);transition:all .25s ease}
+  .fact-card:hover{border-color:rgba(96,192,232,.4);transform:translateY(-2px)}
+  .fact-inner{display:flex;gap:14px;align-items:flex-start}
+  .fact-icon{font-size:28px;flex-shrink:0;background:rgba(96,192,232,.07);border-radius:12px;width:48px;height:48px;display:flex;align-items:center;justify-content:center}
+  .fact-cat{font-family:'Fredoka',sans-serif;font-size:10px;font-weight:600;color:var(--accent2);text-transform:uppercase;letter-spacing:1px}
+  .fact-text{font-size:14px;color:var(--text);margin:4px 0 0;line-height:1.6}
+  .trivia-start-screen{text-align:center;padding:60px 24px;background:var(--bg-card);border-radius:24px;border:1px solid var(--border)}
+  .trivia-start-icon{font-size:72px;margin-bottom:20px;animation:pulseGlow 3s ease-in-out infinite}
+  .trivia-start-title{font-family:'Fredoka',sans-serif;font-size:24px;color:var(--text);margin:0 0 12px}
+  .trivia-start-desc{font-size:15px;color:var(--text-muted);margin:0 0 28px;max-width:420px;margin-left:auto;margin-right:auto;line-height:1.6}
+  .trivia-action-btn{font-family:'Fredoka',sans-serif;font-size:16px;font-weight:600;padding:14px 36px;border:none;border-radius:14px;background:linear-gradient(135deg,#a855f7,#60c0e8);color:#fff;cursor:pointer;transition:all .25s ease;box-shadow:0 4px 20px rgba(168,85,247,.3)}
+  .trivia-action-btn:hover{transform:translateY(-2px);box-shadow:0 6px 28px rgba(168,85,247,.4)}
+  .trivia-hud{display:flex;justify-content:center;gap:16px;margin-bottom:16px;flex-wrap:wrap}
+  .trivia-hud-item{background:var(--bg-card);border-radius:14px;padding:12px 20px;border:1px solid var(--border);text-align:center;min-width:90px}
+  .trivia-hud-label{display:block;font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;font-family:'Fredoka',sans-serif}
+  .trivia-hud-value{display:block;font-family:'Bungee',cursive;font-size:18px;color:var(--text);margin-top:4px}
+  .trivia-progress-bar{width:100%;height:6px;background:var(--border);border-radius:3px;margin-bottom:24px;overflow:hidden}
+  .trivia-progress-fill{height:100%;border-radius:3px;transition:width .4s ease;background:linear-gradient(90deg,#a855f7,#60c0e8,#f0a848);width:0%}
+  .trivia-card{background:var(--bg-card);border-radius:20px;padding:32px;border:1px solid var(--border);max-width:680px;margin:0 auto}
+  .trivia-category{font-family:'Fredoka',sans-serif;font-size:11px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px}
+  .trivia-question{font-family:'Fredoka',sans-serif;font-size:20px;font-weight:600;color:var(--text);margin:0 0 24px;line-height:1.5}
+  .trivia-options{display:flex;flex-direction:column;gap:10px}
+  .trivia-option{width:100%;text-align:left;padding:16px 20px;background:rgba(255,255,255,.03);border:2px solid var(--border);border-radius:14px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:15px;color:var(--text);transition:all .2s ease;display:flex;align-items:center;gap:12px}
+  .trivia-option:hover:not(.disabled){border-color:rgba(168,85,247,.4);background:rgba(168,85,247,.05);transform:translateX(4px)}
+  .trivia-option .opt-letter{font-family:'Bungee',cursive;font-size:14px;color:var(--text-dim);width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:rgba(255,255,255,.04);border:1px solid var(--border);transition:all .2s ease}
+  .trivia-option:hover:not(.disabled) .opt-letter{border-color:rgba(168,85,247,.4);color:var(--accent)}
+  .trivia-option.correct{border-color:#2a9d8f;background:rgba(42,157,143,.1);animation:fadeUp .3s ease}
+  .trivia-option.correct .opt-letter{background:#2a9d8f;color:#fff;border-color:#2a9d8f}
+  .trivia-option.wrong{border-color:#e63946;background:rgba(230,57,70,.1);animation:fadeUp .3s ease}
+  .trivia-option.wrong .opt-letter{background:#e63946;color:#fff;border-color:#e63946}
+  .trivia-option.disabled{cursor:default;opacity:.5;pointer-events:none}
+  .trivia-option.disabled.correct,.trivia-option.disabled.wrong{opacity:1}
+  .trivia-feedback{margin-top:20px;padding:16px 20px;border-radius:14px;font-family:'Nunito',sans-serif;font-size:14px;line-height:1.6}
+  .trivia-feedback.correct-fb{background:rgba(42,157,143,.08);border:1px solid rgba(42,157,143,.2);color:#2a9d8f}
+  .trivia-feedback.wrong-fb{background:rgba(230,57,70,.08);border:1px solid rgba(230,57,70,.2);color:#ff8090}
+  .trivia-next-btn{margin-top:20px;width:100%;font-size:15px;padding:14px}
+  footer{text-align:center;margin-top:48px;padding:20px;border-top:1px solid var(--border)}
+  footer p{font-size:12px;color:var(--text-dim)}
+</style>
+</head>
+<body>
+<div id="floating-bg"></div>
+<div class="container">
+  <nav class="tab-nav" id="tabNav">
+    <button class="tab-btn active" data-tab="home"><span class="icon">🏠</span> Home</button>
+    <button class="tab-btn" data-tab="timeline"><span class="icon">📜</span> Timeline</button>
+    <button class="tab-btn" data-tab="characters"><span class="icon">👥</span> Characters</button>
+    <button class="tab-btn" data-tab="facts"><span class="icon">🎲</span> Fun Facts</button>
+    <button class="tab-btn" data-tab="trivia"><span class="icon">🧠</span> Trivia</button>
+  </nav>
+
+  <div class="section active fade-in" id="sec-home">
+    <div class="hero"><div class="hero-pattern"></div><div class="hero-content">
+      <div class="hero-island">✨</div>
+      <h1>Keeper of the Lost Cities</h1>
+      <p class="subtitle">The Universe Guide</p>
+      <p class="meta">by Shannon Messenger · First published October 2, 2012</p>
+      <div class="stats-row">
+        <div class="stat-box"><div class="num" style="color:var(--accent)">10+</div><div class="label">Books</div></div>
+        <div class="stat-box"><div class="num" style="color:var(--accent2)">NYT</div><div class="label">Bestseller</div></div>
+        <div class="stat-box"><div class="num" style="color:var(--accent3)">6</div><div class="label">Intelligent Species</div></div>
+        <div class="stat-box"><div class="num" style="color:var(--accent4)">20+</div><div class="label">Special Abilities</div></div>
+      </div>
+    </div></div>
+    <div class="about-card">
+      <h2>🌟 What is Keeper of the Lost Cities?</h2>
+      <p><strong>Keeper of the Lost Cities</strong> (KOTLC) is an upper-middle-grade fantasy series by <strong class="hl-g">Shannon Messenger</strong>. The story follows <strong class="hl-p">Sophie Foster</strong>, a 12-year-old telepathic girl who discovers she's actually an elf — created by a rebel organization called the <strong class="hl-b">Black Swan</strong> as part of a secret project. Sophie must leave her human family and enter the <strong>Lost Cities</strong>, a hidden civilization of elves, where she attends <strong class="hl-g">Foxfire Academy</strong> and uncovers dangerous secrets about her origins while battling the sinister <strong class="hl-p">Neverseen</strong>. The series explores themes of identity, belonging, and loyalty across a richly built world of magical abilities, ancient conspiracies, and six intelligent species.</p>
+    </div>
+    <div class="quick-links">
+      <button class="quick-card" data-nav="timeline"><div class="title" style="color:var(--accent)">10+ Books</div><div class="desc">From KOTLC to Stellarlune and beyond</div></button>
+      <button class="quick-card" data-nav="characters"><div class="title" style="color:var(--accent2)">25 Key Characters</div><div class="desc">Sophie, Keefe, Fitz, and the whole crew</div></button>
+      <button class="quick-card" data-nav="facts"><div class="title" style="color:var(--accent3)">Deep Lore</div><div class="desc">Abilities, species, and the Lost Cities</div></button>
+    </div>
+  </div>
+
+  <div class="section" id="sec-timeline">
+    <h2 class="section-heading" style="color:var(--accent)">📜 The KOTLC Timeline</h2>
+    <p class="section-sub">Book releases and real-world milestones</p>
+    <div class="timeline-wrap"><div class="timeline-line"></div><div id="timeline-items"></div></div>
+  </div>
+
+  <div class="section" id="sec-characters">
+    <h2 class="section-heading" style="color:var(--accent2)">👥 Key Characters</h2>
+    <p class="section-sub">Tap a character to learn more</p>
+    <div class="char-grid" id="char-grid"></div>
+    <div class="char-detail" id="char-detail"></div>
+  </div>
+
+  <div class="section" id="sec-facts">
+    <h2 class="section-heading" style="color:var(--accent3)">🎲 Fun Facts</h2>
+    <p class="section-sub">Things you might not know about KOTLC</p>
+    <div class="filter-row" id="filter-row"></div>
+    <div class="facts-grid" id="facts-grid"></div>
+  </div>
+
+  <div class="section" id="sec-trivia">
+    <h2 class="section-heading" style="color:var(--accent)">🧠 KOTLC Trivia Challenge</h2>
+    <p class="section-sub">Test your knowledge of the Lost Cities!</p>
+    <div id="trivia-container">
+      <div id="trivia-start" class="trivia-start-screen">
+        <div class="trivia-start-icon">✨</div>
+        <h3 class="trivia-start-title">Ready to Prove You Belong at Foxfire?</h3>
+        <p class="trivia-start-desc">100 questions on characters, abilities, lore, books, and the elvin world. How well do you know Sophie's story?</p>
+        <button id="trivia-start-btn" class="trivia-action-btn">Light Leap In!</button>
+      </div>
+      <div id="trivia-game" style="display:none">
+        <div class="trivia-hud">
+          <div class="trivia-hud-item"><span class="trivia-hud-label">Question</span><span class="trivia-hud-value" id="trivia-qnum">1 / 100</span></div>
+          <div class="trivia-hud-item"><span class="trivia-hud-label">Score</span><span class="trivia-hud-value" id="trivia-score">0</span></div>
+          <div class="trivia-hud-item"><span class="trivia-hud-label">Streak</span><span class="trivia-hud-value" id="trivia-streak">🔥 0</span></div>
+        </div>
+        <div class="trivia-progress-bar"><div class="trivia-progress-fill" id="trivia-progress"></div></div>
+        <div class="trivia-card" id="trivia-card">
+          <div class="trivia-category" id="trivia-category"></div>
+          <p class="trivia-question" id="trivia-question">Loading...</p>
+          <div class="trivia-options" id="trivia-options"></div>
+          <div class="trivia-feedback" id="trivia-feedback" style="display:none"></div>
+          <button class="trivia-action-btn trivia-next-btn" id="trivia-next" style="display:none">Next Question →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer><p>Fan-made guide · Keeper of the Lost Cities is created by Shannon Messenger · Published by Aladdin/Simon & Schuster</p></footer>
+</div>
+
+<script>
+const characters=[
+  {name:"Sophie",emoji:"🌟",color:"#a855f7",role:"The Moonlark",seasons:["Books 1-9"],description:"Sophie Foster is the protagonist — a telepathic elf who was raised by humans without knowing her true identity. Created by the Black Swan as 'Project Moonlark,' she possesses an unprecedented five special abilities: Telepath, Inflictor, Polyglot, Teleporter, and Enhancer. Her biological mother is Councillor Oralie.",trivia:"Has five special abilities — more than almost any elf in history"},
+  {name:"Keefe",emoji:"🎨",color:"#60c0e8",role:"The Empath",seasons:["Books 1-9"],description:"Keefe Sencen is Sophie's close friend and love interest. An Empath who can sense others' emotions, he hides his pain behind humor and pranks. His mother, Lady Gisela, experimented on him before birth, giving him additional mysterious abilities that emerge later in the series.",trivia:"His mother experimented on him before birth, giving him hidden abilities"},
+  {name:"Fitz",emoji:"🔷",color:"#3080d0",role:"The Telepath",seasons:["Books 1-9"],description:"Fitzroy Avery Vacker is the teal-eyed boy who finds Sophie in the human world and brings her to the Lost Cities. A powerful Telepath and Sophie's first Cognate partner. Member of the prestigious Vacker family.",trivia:"Found Sophie in a museum field trip and changed her life forever"},
+  {name:"Biana",emoji:"💎",color:"#e060a0",role:"The Vanisher",seasons:["Books 1-9"],description:"Biana Vacker is Fitz's younger sister and one of Sophie's closest friends. A Vanisher who can turn herself invisible. Initially befriended Sophie at her parents' request, but their friendship became genuine and deep.",trivia:"Can turn invisible — she's a Vanisher who keeps getting stronger"},
+  {name:"Dex",emoji:"⚙️",color:"#50b860",role:"The Technopath",seasons:["Books 1-9"],description:"Dex Dizznee is Sophie's first friend in the Lost Cities and a brilliant Technopath who can manipulate technology. His family is looked down upon because his parents' marriage is considered a 'Bad Match.' Creates many of the group's essential gadgets.",trivia:"Creates almost all of the crew's gadgets and tech, including the Twiggler"},
+  {name:"Tam",emoji:"🌑",color:"#505070",role:"The Shade",seasons:["Books 4-9"],description:"Tam Song is a Shade who can read and control shadows. Initially banished to Exillium with his twin sister Linh. Distrustful and brooding, he was forced to work with the Neverseen to protect his sister but ultimately fought back.",trivia:"Can read shadows — revealing secrets others try to hide"},
+  {name:"Linh",emoji:"🌊",color:"#70b8d8",role:"The Hydrokinetic",seasons:["Books 4-9"],description:"Linh Song is Tam's twin sister and a powerful Hydrokinetic who can control water. Known as 'the girl of many floods' because she struggled to control her power, causing floods that led to her banishment. Saved Atlantis in Book 6.",trivia:"Known as 'the girl of many floods' — she once saved all of Atlantis"},
+  {name:"Mr. Forkle",emoji:"🦉",color:"#a08040",role:"Leader of the Black Swan",seasons:["Books 1-9"],description:"The mysterious leader of the Black Swan and the creator of Project Moonlark. Actually a set of identical twins who secretly held multiple identities including Magnate Leto (Foxfire's principal) and Sir Astin (Sophie's teacher). One of the twins was killed by the Neverseen.",trivia:"Was actually identical twins — one was killed by the Neverseen"},
+  {name:"Grady",emoji:"🦁",color:"#c89030",role:"Sophie's Adoptive Father",seasons:["Books 1-9"],description:"Grady Ruewen is Sophie's adoptive father and a powerful Mesmer who can control others' actions. He and Edaline care for animals at Havenfield, including rare and dangerous creatures. Fiercely protective of Sophie.",trivia:"A Mesmer — he can control people's actions with his mind"},
+  {name:"Edaline",emoji:"🌸",color:"#d880a0",role:"Sophie's Adoptive Mother",seasons:["Books 1-9"],description:"Edaline Ruewen is Sophie's adoptive mother and a Conjurer who can teleport objects. She and Grady lost their biological daughter Jolie before adopting Sophie. Warm, caring, and an amazing cook of elvin treats.",trivia:"A Conjurer who can teleport objects from anywhere in the world"},
+  {name:"Councillor Oralie",emoji:"👑",color:"#f0a0c0",role:"Sophie's Biological Mother",seasons:["Books 1-9"],description:"A member of the elvin Council and a powerful Empath. Secretly Sophie's biological mother — a devastating revelation since Councillors are forbidden from having children. Gave Sophie her Enhancer ability through her DNA.",trivia:"Sophie's biological mother — Councillors are forbidden from having children"},
+  {name:"Councillor Bronte",emoji:"⚡",color:"#808090",role:"Ancient Councillor",seasons:["Books 1-9"],description:"One of the oldest and most intimidating members of the Council at over 5,000 years old. An Inflictor like Sophie, he initially clashes with her but gradually becomes one of her strongest allies. Voted to sink Atlantis in ancient times.",trivia:"Over 5,000 years old — one of the most ancient elves alive"},
+  {name:"Silveny",emoji:"🦄",color:"#d0d0f0",role:"The Alicorn",seasons:["Books 2-9"],description:"A rare female alicorn — a winged unicorn-like creature — who forms a telepathic bond with Sophie. Can teleport through space and communicates by projecting emotions and simple words. Possibly the last of her kind before her babies are born.",trivia:"Communicates by projecting 'KEEFE! KEEFE! KEEFE!' into Sophie's mind"},
+  {name:"Sandor",emoji:"🛡️",color:"#708090",role:"Sophie's Bodyguard",seasons:["Books 2-9"],description:"A goblin warrior assigned as Sophie's personal bodyguard. Despite his fearsome appearance, he's deeply devoted to protecting Sophie and often clashes with her reckless plans. Goblins are the sworn protectors of the elves.",trivia:"A goblin — the fiercest warrior species, sworn to protect elves"},
+  {name:"Ro",emoji:"⚔️",color:"#d05040",role:"Keefe's Bodyguard",seasons:["Books 7-9"],description:"Princess Romhilda — known as Ro — is an ogre warrior princess assigned as Keefe's bodyguard. Sarcastic, fierce, and surprisingly loyal. Loves teasing Keefe about his feelings for Sophie and is always ready for a fight.",trivia:"An ogre princess — loves teasing Keefe about his crush on Sophie"},
+  {name:"Lady Gisela",emoji:"🐍",color:"#505848",role:"Neverseen Leader",seasons:["Books 5-9"],description:"Keefe's mother and a key leader of the Neverseen. A Polyglot and Conjurer who manipulated her own son's genetics before birth as part of her secret plans. Ruthless and calculating, she eventually split from the Neverseen to pursue her own agenda.",trivia:"Experimented on her unborn son to give him new, unprecedented abilities"},
+  {name:"Alvar",emoji:"🌀",color:"#384848",role:"Neverseen Spy / Vanisher",seasons:["Books 1-7"],description:"Alvar Vacker is Fitz and Biana's older brother who was secretly a member of the Neverseen. His betrayal devastated the Vacker family and shattered their reputation. A powerful Vanisher whose treachery was one of the series' biggest shocks.",trivia:"His betrayal as a Neverseen spy devastated the prestigious Vacker family"},
+  {name:"Elwin",emoji:"💊",color:"#40a880",role:"The Healer",seasons:["Books 1-9"],description:"The beloved elvin physician who heals Sophie (and her friends) countless times throughout the series. Known for his warm bedside manner and for giving patients stuffed animals. A Flasher who can see and manipulate light to diagnose injuries.",trivia:"Gives his patients stuffed animals — Sophie has a whole collection"},
+  {name:"Stina",emoji:"💅",color:"#a87050",role:"The Rival",seasons:["Books 1-9"],description:"Stina Heks begins as Sophie's school bully at Foxfire, mocking her and causing trouble. Over the course of the series, they develop a grudging respect. Her parents are secretly members of the Black Swan.",trivia:"Started as Sophie's bully but gradually becomes an unlikely ally"},
+  {name:"King Dimitar",emoji:"👹",color:"#808048",role:"King of the Ogres",seasons:["Books 3-9"],description:"The fearsome King of the Ogres, one of the six intelligent species. A powerful and cunning ruler who has an uneasy alliance with the elves. Sophie once illegally read his mind, causing a massive diplomatic incident.",trivia:"Sophie illegally reading his mind caused a major diplomatic crisis"},
+  {name:"Marella",emoji:"🔥",color:"#e08030",role:"The Pyrokinetic",seasons:["Books 4-9"],description:"Marella Redek is Sophie's classmate who manifests as a Pyrokinetic — one of the most feared and forbidden abilities. She can create and control fire. Deliberately triggered her ability to help fight the Neverseen despite the social stigma.",trivia:"Pyrokinesis is a forbidden ability — she triggered it on purpose to help fight"},
+  {name:"Wylie",emoji:"💡",color:"#e0d060",role:"Son of Prentice",seasons:["Books 5-9"],description:"Wylie Endal is the son of Prentice, a key Black Swan member whose mind was broken. A Flasher who can manipulate light. His mother was killed in what appeared to be a light leaping accident but was actually murder. Targeted by the Neverseen for information.",trivia:"His mother's 'accident' was actually a planned murder by the Neverseen"},
+  {name:"Councillor Kenric",emoji:"❤️",color:"#d04040",role:"Councillor (Deceased)",seasons:["Books 1-3"],description:"A beloved Councillor with a strong connection to Oralie. Killed in the Everblaze fire set by Fintan — one of the series' most emotional deaths. His loss deeply affected the Council and Sophie personally. A Telepath.",trivia:"His death in the Everblaze fire is one of the series' most devastating moments"},
+  {name:"Fintan",emoji:"🔥",color:"#c03020",role:"Neverseen Leader",seasons:["Books 3-9"],description:"Fintan Pyren is a former Councillor and powerful Pyrokinetic who leads the Neverseen. He created Everblaze — an unstoppable flame. Extremely dangerous and manipulative, he represents the dark side of elvin society.",trivia:"Created Everblaze — an unquenchable flame that killed Councillor Kenric"},
+  {name:"Jolie",emoji:"🕊️",color:"#b0a0c0",role:"Grady & Edaline's Daughter",seasons:["Books 1-5"],description:"Jolie Ruewen was Grady and Edaline's biological daughter who died before Sophie arrived. She was secretly a member of the Black Swan. Her death — and its mysterious circumstances — are central to several plot revelations.",trivia:"Was secretly a Black Swan member — her death holds key series mysteries"},
+];
+
+const timeline=[
+  {year:"2012",title:"Keeper of the Lost Cities (Book 1)",desc:"The debut novel introduces Sophie Foster, a telepathic girl who discovers she's an elf. She's brought to the Lost Cities, enrolls at Foxfire Academy, and learns she was created by the mysterious Black Swan.",season:"Book",icon:"📖",color:"#a855f7"},
+  {year:"2013",title:"Exile (Book 2)",desc:"Sophie trains the rare alicorn Silveny while unraveling Black Swan clues. Kidnapping threats resurface, and Sophie's powers grow stronger. Introduces deeper conspiracies about Sophie's origins.",season:"Book",icon:"📖",color:"#60c0e8"},
+  {year:"2014",title:"Everblaze (Book 3)",desc:"Sophie's search for kidnappers sparks catastrophe. Fintan creates the unstoppable Everblaze flame, killing Councillor Kenric. One of the series' most devastating and game-changing entries.",season:"Book",icon:"🔥",color:"#f0a848"},
+  {year:"2015",title:"Neverseen (Book 4)",desc:"Sophie joins the Black Swan and attends Exillium, where she meets Tam and Linh. The Neverseen's plans threaten an entire species with plague. A major shift as Sophie actively enters the conflict.",season:"Book",icon:"🦅",color:"#a855f7"},
+  {year:"2016",title:"Lodestar (Book 5)",desc:"War looms as lines between friend and enemy blur. A mysterious symbol called the Lodestar holds answers. Alvar is revealed as a Neverseen spy, shattering the Vacker family.",season:"Book",icon:"⭐",color:"#60c0e8"},
+  {year:"2017",title:"Nightfall (Book 6)",desc:"Sophie's human parents are kidnapped by the Neverseen. The group infiltrates Nightfall — Vespera's ancient facility. Linh saves Atlantis. Keefe suffers serious consequences.",season:"Book",icon:"🌙",color:"#e060a0"},
+  {year:"2018",title:"Flashback (Book 7)",desc:"Sophie and Fitz become Cognates while recovering from devastating injuries. Sophie and her friends face new enemies and uncover hidden memories. Introduces Ro as Keefe's bodyguard.",season:"Book",icon:"⚡",color:"#f0a848"},
+  {year:"2019",title:"Legacy (Book 8)",desc:"Hard truths emerge about Sophie's origins and matchmaking status. Devastating revelations about her biological mother. The Neverseen's plans reach a critical point. Ends on a major cliffhanger.",season:"Book",icon:"👑",color:"#a855f7"},
+  {year:"2020",title:"Unlocked (Book 8.5)",desc:"A novella told from both Sophie and Keefe's perspectives, plus a comprehensive guide to the Lost Cities world with maps, character details, illustrations, and recipes. Keefe develops new abilities.",season:"Guide",icon:"🔓",color:"#60c0e8"},
+  {year:"2021",title:"Movie Announced",desc:"Ben Affleck is announced as director for a Keeper of the Lost Cities film adaptation for Walt Disney Pictures. The fandom erupts with excitement about seeing the Lost Cities on screen.",season:"Adaptation",icon:"🎬",color:"#e060a0"},
+  {year:"2022",title:"Stellarlune (Book 9)",desc:"Keefe's new abilities force him to flee to the human world. Sophie searches desperately for answers. Major revelations about elvin history and the Neverseen's true goals unfold.",season:"Book",icon:"🌠",color:"#a855f7"},
+  {year:"2023",title:"Graphic Novel Released",desc:"The first Keeper of the Lost Cities graphic novel is published, adapting the first half of Book 1 with beautiful full-color artwork by Gabriella Chianello.",season:"Adaptation",icon:"🎨",color:"#f0a848"},
+  {year:"2024",title:"Unraveled (Book 9.5) & Warner Bros.",desc:"A novella following Keefe's perspective during Stellarlune. Warner Bros. lands the film rights with Emma Watts producing and Shannon Messenger as executive producer.",season:"Book",icon:"📖",color:"#60c0e8"},
+  {year:"2026",title:"Elysian (Book 10)",desc:"The highly anticipated tenth book — potentially the series finale. Fans await the resolution of Sophie's story, the Neverseen conflict, and the mysteries of the Lost Cities.",season:"Book",icon:"🏛️",color:"#a855f7"},
+];
+
+const funFacts=[
+  {fact:"Shannon Messenger originally planned Keeper of the Lost Cities as a standalone novel before it expanded into 10+ books.",icon:"📖",category:"Author"},
+  {fact:"Sophie has five special abilities — Telepath, Inflictor, Polyglot, Teleporter, and Enhancer — making her one of the most powerful elves ever.",icon:"⚡",category:"Characters"},
+  {fact:"Elves in the Lost Cities don't age the way humans do. Some Councillors like Bronte are over 5,000 years old.",icon:"⏰",category:"Lore"},
+  {fact:"The matchmaking system forces elves to choose partners from approved lists. Marrying outside the system creates a 'Bad Match' and social stigma.",icon:"💍",category:"Lore"},
+  {fact:"There are six intelligent species in the KOTLC world: Elves, Ogres, Goblins, Gnomes, Dwarves, and Trolls. Humans used to be included.",icon:"🌍",category:"Species"},
+  {fact:"Atlantis is real in the KOTLC world — it was sunk by the elves when humans became greedy and tried to take over other species.",icon:"🏛️",category:"Lore"},
+  {fact:"Mr. Forkle was actually identical twins living separate lives. One was killed by the Neverseen, and the other continued the mission.",icon:"👥",category:"Characters"},
+  {fact:"Foxfire Academy is the elvin school where students take ability detecting lessons to discover their special powers.",icon:"🏫",category:"Lore"},
+  {fact:"Goblins are the fiercest warriors and serve as bodyguards for the elves. Ogres are their sworn enemies.",icon:"⚔️",category:"Species"},
+  {fact:"The series was announced for a movie adaptation — first by Disney with Ben Affleck directing, then the rights moved to Warner Bros. in 2024.",icon:"🎬",category:"Adaptation"},
+  {fact:"Elves travel via 'light leaping' — essentially teleporting through beams of light using special crystals.",icon:"✨",category:"Lore"},
+  {fact:"Pyrokinesis (fire control) is a forbidden ability in elvin society because it's considered too dangerous and unstable.",icon:"🔥",category:"Abilities"},
+  {fact:"Every elf receives a massive 'birth fund' — essentially millions of dollars — so wealth discrimination doesn't exist in elvin society.",icon:"💰",category:"Lore"},
+  {fact:"The 'Talentless' are elves born without any special ability. They face significant social discrimination in elvin society.",icon:"😔",category:"Lore"},
+  {fact:"Silveny the alicorn communicates telepathically, often projecting 'KEEFE! KEEFE! KEEFE!' into Sophie's mind — a beloved running gag.",icon:"🦄",category:"Characters"},
+  {fact:"Book 8.5 'Unlocked' includes a full encyclopedia of the Lost Cities world, with maps, recipes, and character files never revealed before.",icon:"🗺️",category:"Books"},
+];
+
+const seasonColors={Book:"#a855f7",Guide:"#60c0e8",Adaptation:"#e060a0"};
+
+// ═══════════ FLOATING BG ═══════════
+(function(){const o=["✨","🌟","💫","🦄","⚡","🔮","🌙","💎","🦉","🌊","🔥","🛡️"];const c=document.getElementById('floating-bg');
+o.forEach(e=>{const d=document.createElement('div');d.className='float-obj';d.textContent=e;d.style.setProperty('--dur',(20+Math.random()*30)+'s');d.style.setProperty('--delay',(-Math.random()*20)+'s');d.style.setProperty('--opa',(0.06+Math.random()*0.06));d.style.setProperty('--size',(14+Math.random()*16)+'px');d.style.setProperty('--x',(Math.random()*100)+'%');d.style.setProperty('--y',(Math.random()*100)+'%');c.appendChild(d)})})();
+
+// ═══════════ NAV ═══════════
+let activeTab='home';
+function switchTab(t){activeTab=t;document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===t));document.querySelectorAll('.section').forEach(s=>{s.classList.remove('active');if(s.id==='sec-'+t){s.classList.add('active');s.classList.remove('fade-in');void s.offsetWidth;s.classList.add('fade-in')}});window.scrollTo({top:0,behavior:'smooth'})}
+document.getElementById('tabNav').addEventListener('click',e=>{const b=e.target.closest('.tab-btn');if(b)switchTab(b.dataset.tab)});
+document.querySelectorAll('.quick-card[data-nav]').forEach(c=>{c.addEventListener('click',()=>switchTab(c.dataset.nav));const cl=c.querySelector('.title').style.color;c.addEventListener('mouseenter',()=>{c.style.borderColor=cl});c.addEventListener('mouseleave',()=>{c.style.borderColor=''})});
+
+// ═══════════ TIMELINE ═══════════
+(function(){const w=document.getElementById('timeline-items');let ei=-1;
+timeline.forEach((it,i)=>{const cl=it.color||'#a855f7';const d=document.createElement('div');d.className='timeline-item';d.style.setProperty('--tl-color',cl);
+d.innerHTML=`<div class="timeline-dot" style="background:${cl};box-shadow:0 0 12px ${cl}44"></div><div class="tl-card"><div class="tl-header"><span class="tl-icon">${it.icon}</span><span class="tl-year" style="color:${cl};background:${cl}18">${it.year}</span><span class="tl-season-tag">${it.season}</span></div><h3 class="tl-title">${it.title}</h3><p class="tl-desc">${it.desc}</p>${it.desc.length>80?`<span class="tl-toggle" style="color:${cl}">▼ More</span>`:''}</div>`;
+d.addEventListener('click',()=>{const c=d.querySelector('.tl-card'),t=d.querySelector('.tl-toggle');if(ei===i){c.classList.remove('expanded');if(t)t.textContent='▼ More';ei=-1}else{w.querySelectorAll('.tl-card.expanded').forEach(x=>{x.classList.remove('expanded');const y=x.parentElement.querySelector('.tl-toggle');if(y)y.textContent='▼ More'});c.classList.add('expanded');if(t)t.textContent='▲ Less';ei=i}});w.appendChild(d)})})();
+
+// ═══════════ CHARACTERS ═══════════
+(function(){const g=document.getElementById('char-grid'),dt=document.getElementById('char-detail');let si=-1;
+characters.forEach((c,i)=>{const b=document.createElement('button');b.className='char-btn';b.style.setProperty('--char-color',c.color);
+b.innerHTML=`<span class="char-emoji">${c.emoji}</span><span class="char-name">${c.name}</span><span class="char-role">${c.role}</span>`;
+b.addEventListener('mouseenter',()=>{if(si!==i)b.style.borderColor=c.color+'66'});b.addEventListener('mouseleave',()=>{if(si!==i)b.style.borderColor=''});
+b.addEventListener('click',()=>{if(si===i){si=-1;b.classList.remove('selected');b.style.borderColor='';dt.classList.remove('visible');return}
+g.querySelectorAll('.char-btn').forEach(x=>{x.classList.remove('selected');x.style.borderColor='';x.style.background=''});si=i;b.classList.add('selected');b.style.borderColor=c.color;b.style.background=c.color+'18';
+const sh=c.seasons.map(s=>`<span class="char-season-tag" style="background:${c.color}18;color:${c.color}">${s}</span>`).join('');
+dt.innerHTML=`<div class="char-detail-header"><span class="char-detail-emoji" style="filter:drop-shadow(0 0 15px ${c.color}88)">${c.emoji}</span><div><h3 class="char-detail-name" style="color:${c.color}">${c.name}</h3><p class="char-detail-role">${c.role}</p></div></div><p class="char-detail-desc">${c.description}</p><div class="char-seasons">${sh}</div><div class="char-trivia" style="background:${c.color}0a;border:1px solid ${c.color}22"><span>💡</span><span>${c.trivia}</span></div>`;
+dt.style.borderColor=c.color+'44';dt.style.boxShadow=`0 0 40px ${c.color}10`;dt.classList.remove('visible');void dt.offsetWidth;dt.classList.add('visible');dt.scrollIntoView({behavior:'smooth',block:'nearest'})});g.appendChild(b)})})();
+
+// ═══════════ FUN FACTS ═══════════
+(function(){const fr=document.getElementById('filter-row'),fg=document.getElementById('facts-grid');const cats=['All',...new Set(funFacts.map(f=>f.category))];
+function render(fl){const fi=fl==='All'?funFacts:funFacts.filter(f=>f.category===fl);fg.innerHTML='';fi.forEach((f,i)=>{const c=document.createElement('div');c.className='fact-card fade-in-delay';c.style.animationDelay=(i*.05)+'s';c.innerHTML=`<div class="fact-inner"><span class="fact-icon">${f.icon}</span><div><div class="fact-cat">${f.category}</div><p class="fact-text">${f.fact}</p></div></div>`;fg.appendChild(c)})}
+cats.forEach(c=>{const b=document.createElement('button');b.className='filter-btn'+(c==='All'?' active':'');b.textContent=c;b.addEventListener('click',()=>{fr.querySelectorAll('.filter-btn').forEach(x=>x.classList.toggle('active',x.textContent===c));render(c)});fr.appendChild(b)});render('All')})();
+
+// ═══════════ TRIVIA ═══════════
+(function(){const Q=[
+// Characters (1-25)
+{q:"What is Sophie Foster's code name in the Black Swan?",a:"The Moonlark",d:["The Starling","The Phoenix","The Keeper"],cat:"Characters"},
+{q:"How many special abilities does Sophie have?",a:"Five",d:["Three","Four","Two"],cat:"Characters"},
+{q:"What ability does Keefe Sencen have?",a:"Empath",d:["Telepath","Vanisher","Shade"],cat:"Characters"},
+{q:"Who is Sophie's first friend in the Lost Cities?",a:"Dex Dizznee",d:["Fitz Vacker","Keefe Sencen","Biana Vacker"],cat:"Characters"},
+{q:"What ability does Tam Song have?",a:"Shade (shadow manipulation)",d:["Hydrokinetic","Pyrokinetic","Flasher"],cat:"Characters"},
+{q:"What is Linh Song known as?",a:"The girl of many floods",d:["The water princess","The wave walker","The tide breaker"],cat:"Characters"},
+{q:"Who is Sophie's biological mother?",a:"Councillor Oralie",d:["Edaline Ruewen","Lady Gisela","Della Vacker"],cat:"Characters"},
+{q:"What species is Sandor?",a:"Goblin",d:["Ogre","Dwarf","Troll"],cat:"Characters"},
+{q:"What is Ro's full name?",a:"Princess Romhilda",d:["Princess Roxanne","Princess Rowena","Princess Rosalind"],cat:"Characters"},
+{q:"Who revealed that Alvar was a Neverseen spy?",a:"Alvar's betrayal was revealed in Lodestar (Book 5)",d:["Sophie discovered it in Book 3","Keefe told them in Book 4","Fitz always knew"],cat:"Characters"},
+{q:"What creature is Silveny?",a:"An alicorn",d:["A unicorn","A pegasus","A griffin"],cat:"Characters"},
+{q:"What is Dex's special ability?",a:"Technopath",d:["Empath","Mesmer","Froster"],cat:"Characters"},
+{q:"Which character's mother experimented on them before birth?",a:"Keefe Sencen",d:["Sophie Foster","Tam Song","Fitz Vacker"],cat:"Characters"},
+{q:"What is Grady Ruewen's ability?",a:"Mesmer",d:["Telepath","Flasher","Vanisher"],cat:"Characters"},
+{q:"Who killed one of the Mr. Forkle twins?",a:"The Neverseen",d:["King Dimitar","The Council","Lady Gisela"],cat:"Characters"},
+{q:"What does Elwin give his patients?",a:"Stuffed animals",d:["Candy","Flowers","Crystals"],cat:"Characters"},
+{q:"Who created the Everblaze flame?",a:"Fintan",d:["Marella","Lady Gisela","Brant"],cat:"Characters"},
+{q:"What is Biana's special ability?",a:"Vanisher",d:["Telepath","Empath","Conjurer"],cat:"Characters"},
+{q:"Whose death in Book 3 is one of the series' most devastating?",a:"Councillor Kenric",d:["Mr. Forkle","Jolie","Prentice"],cat:"Characters"},
+{q:"What is Marella's forbidden ability?",a:"Pyrokinesis",d:["Shade","Mesmer","Inflictor"],cat:"Characters"},
+// Abilities (21-40)
+{q:"What is a Telepath?",a:"Someone who can read and project thoughts",d:["Someone who controls fire","Someone who moves objects","Someone who turns invisible"],cat:"Abilities"},
+{q:"What does an Inflictor do?",a:"Overwhelms others with negative emotions",d:["Creates illusions","Controls shadows","Heals injuries"],cat:"Abilities"},
+{q:"What is an Enhancer?",a:"Someone who amplifies others' abilities through touch",d:["Someone with super strength","Someone who enhances their own powers","Someone who makes elixirs stronger"],cat:"Abilities"},
+{q:"What does a Polyglot do?",a:"Speak and understand any language, including animal languages",d:["Control multiple elements","Copy others' abilities","Read ancient texts"],cat:"Abilities"},
+{q:"What is a Cognate pair?",a:"Two Telepaths with a perfect mental bond, amplifying their power",d:["Twin elves with shared abilities","Two elves who share one ability","A teacher-student relationship"],cat:"Abilities"},
+{q:"What ability does a Froster have?",a:"They can create ice and snow",d:["They can freeze time","They can see the future","They can read ice crystals"],cat:"Abilities"},
+{q:"What ability does a Flasher have?",a:"They can manipulate and control light",d:["They can run at super speed","They can create explosions","They can read memories"],cat:"Abilities"},
+{q:"Why is Pyrokinesis forbidden?",a:"It's considered too dangerous and unstable to control",d:["It was outlawed after a war","Only villains can have it","It kills the user eventually"],cat:"Abilities"},
+{q:"What makes a Shade different from other abilities?",a:"They can read and manipulate shadows",d:["They can become invisible in darkness","They drain others' abilities","They control nightmares"],cat:"Abilities"},
+{q:"What is a Mesmer?",a:"Someone who can control others' physical actions",d:["Someone who hypnotizes through music","Someone who creates illusions","Someone who reads emotions"],cat:"Abilities"},
+{q:"Who are the 'Talentless'?",a:"Elves born without any special ability",d:["Humans who can't use magic","Exiled criminals","Elves who lost their abilities"],cat:"Abilities"},
+{q:"What are 'skills' vs. 'abilities' in the Lost Cities?",a:"Skills are natural powers ALL elves have; abilities are rare special powers",d:["Skills are weaker abilities","They're the same thing","Skills are learned, abilities are born"],cat:"Abilities"},
+{q:"What universal skill lets elves move objects with their mind?",a:"Telekinesis",d:["Levitation","Channeling","Mesmerism"],cat:"Abilities"},
+{q:"What is a Conjurer?",a:"Someone who can teleport objects from one place to another",d:["Someone who creates objects from nothing","Someone who summons creatures","Someone who makes potions"],cat:"Abilities"},
+{q:"How do elves discover their special ability?",a:"Through ability detecting lessons at Foxfire",d:["At birth","During a special ceremony at age 16","By eating a special fruit"],cat:"Abilities"},
+{q:"What is a Hydrokinetic?",a:"Someone who can control water",d:["Someone who breathes underwater","Someone who talks to sea creatures","Someone who creates rain"],cat:"Abilities"},
+{q:"What happens when Sophie enhances another elf?",a:"Their ability becomes dramatically more powerful through her touch",d:["She absorbs their ability","They lose control temporarily","She copies their power"],cat:"Abilities"},
+{q:"Can an elf have more than one special ability?",a:"It's very rare, but yes — Sophie has five",d:["Never, it's impossible","Only Councillors can","Only if they're twins"],cat:"Abilities"},
+{q:"What is a Teleporter?",a:"Someone who can teleport themselves to other locations",d:["Someone who sends messages instantly","Someone who time travels","Someone who creates portals for others"],cat:"Abilities"},
+{q:"What unique ability does Sophie have that no other elf is known to possess?",a:"She can Teleport — she's the only known Teleporter",d:["She can fly","She can stop time","She can become invisible"],cat:"Abilities"},
+// World & Lore (41-65)
+{q:"What is the name of the elvin school Sophie attends?",a:"Foxfire Academy",d:["Exillium","Lumenaria","Havenfield"],cat:"Lore"},
+{q:"What is Exillium?",a:"A school for banished or 'unruly' elves",d:["The elvin prison","A training ground for warriors","A secret Black Swan base"],cat:"Lore"},
+{q:"How do elves travel in the Lost Cities?",a:"Light leaping — teleporting through beams of light",d:["Flying on alicorns","Underground tunnels","Teleportation circles"],cat:"Lore"},
+{q:"What is Havenfield?",a:"Sophie's home with Grady and Edaline, also an animal sanctuary",d:["The elvin capital","Foxfire's campus","The Council's headquarters"],cat:"Lore"},
+{q:"What happened to Atlantis in the KOTLC world?",a:"The elves sunk it when humans became greedy and dangerous",d:["It was destroyed in a war","It never existed","It floated into the sky"],cat:"Lore"},
+{q:"How many intelligent species exist in the Lost Cities world?",a:"Six (Elves, Ogres, Goblins, Gnomes, Dwarves, Trolls)",d:["Four","Eight","Three"],cat:"Lore"},
+{q:"What is the matchmaking system?",a:"Elves must choose partners from approved lists of 500 elves",d:["A magical ceremony that picks your partner","A school dance tradition","A test to find your Cognate"],cat:"Lore"},
+{q:"What is a 'Bad Match'?",a:"When elves marry someone not on their approved match lists",d:["A failed Cognate bond","A battle that goes wrong","An elf who breaks a law"],cat:"Lore"},
+{q:"What is the Black Swan?",a:"A rebel organization that created Sophie to fight the Neverseen",d:["The elvin Council's secret police","A school club at Foxfire","A species of bird in the Lost Cities"],cat:"Lore"},
+{q:"What is the Neverseen?",a:"A group of criminal extremists opposing the elvin establishment",d:["The elvin military","A banned book","A type of ability"],cat:"Lore"},
+{q:"What is Lumenaria?",a:"A castle where peace negotiations between species take place",d:["Sophie's bedroom","The ogre capital","A type of crystal"],cat:"Lore"},
+{q:"What are Imparters?",a:"Communication devices — like elvin smartphones",d:["Weapons","Healing tools","Transportation crystals"],cat:"Lore"},
+{q:"What are Leaping Crystals?",a:"Crystals that bend light to specific locations for light leaping",d:["Decorative gems","Weapons","Musical instruments"],cat:"Lore"},
+{q:"What is the Sanctuary?",a:"A hidden preserve inside the Himalayas for endangered creatures",d:["The elvin prison","A hospital","The Council's meeting room"],cat:"Lore"},
+{q:"What role do Gnomes play in elvin society?",a:"They grow all the food and tend to plants and gardens",d:["They are warriors","They mine underground","They govern the Council"],cat:"Lore"},
+{q:"What role do Dwarves play?",a:"They live underground and control the elvin prison system",d:["They are healers","They build all buildings","They cook all food"],cat:"Lore"},
+{q:"What is Ravagog?",a:"The capital city of the Ogres",d:["The Gnome homeland","A Dwarf tunnel system","The Troll marketplace"],cat:"Lore"},
+{q:"What do elves receive at birth that eliminates wealth inequality?",a:"A massive birth fund (equivalent to millions of dollars)",d:["A crystal mansion","A special ability","A guardian goblin"],cat:"Lore"},
+{q:"What is the Enlightened Language?",a:"The universal language shared by all elves",d:["A secret Black Swan code","A forbidden ancient tongue","A language only Councillors know"],cat:"Lore"},
+{q:"What is Project Moonlark?",a:"The Black Swan's secret project that created Sophie",d:["A plan to destroy the Neverseen","A program to train new Councillors","An experiment to create new abilities"],cat:"Lore"},
+// Books & Meta (66-85)
+{q:"Who wrote the Keeper of the Lost Cities series?",a:"Shannon Messenger",d:["Rick Riordan","Suzanne Collins","Brandon Mull"],cat:"Books"},
+{q:"What year was the first book published?",a:"2012",d:["2010","2014","2009"],cat:"Books"},
+{q:"How many main books are in the series (not counting novellas)?",a:"9 (with Book 10 announced)",d:["7","8","12"],cat:"Books"},
+{q:"What is Book 2 called?",a:"Exile",d:["Everblaze","Neverseen","Lodestar"],cat:"Books"},
+{q:"What is Book 3 called?",a:"Everblaze",d:["Neverseen","Flashback","Nightfall"],cat:"Books"},
+{q:"What is Book 4 called?",a:"Neverseen",d:["Lodestar","Nightfall","Legacy"],cat:"Books"},
+{q:"What is special about Book 8.5 (Unlocked)?",a:"It's a novella plus a full encyclopedia of the Lost Cities world",d:["It's entirely in Keefe's POV","It's a prequel","It's a graphic novel"],cat:"Books"},
+{q:"What is the title of Book 9?",a:"Stellarlune",d:["Elysian","Unraveled","Luminaria"],cat:"Books"},
+{q:"What is the title of the anticipated Book 10?",a:"Elysian",d:["Stellarlune","Illuminate","Evermore"],cat:"Books"},
+{q:"Which studio first announced a KOTLC movie?",a:"Walt Disney Pictures (with Ben Affleck directing)",d:["Warner Bros.","Universal","Netflix"],cat:"Books"},
+{q:"Which studio eventually landed the film rights in 2024?",a:"Warner Bros.",d:["Disney","Paramount","Sony"],cat:"Books"},
+{q:"In what city was Sophie living as a human?",a:"San Diego, California",d:["New York","Los Angeles","San Francisco"],cat:"Books"},
+{q:"What genre is KOTLC classified as?",a:"Upper-middle-grade fantasy",d:["Young adult sci-fi","Adult fantasy","Picture book"],cat:"Books"},
+{q:"What publisher releases the KOTLC books?",a:"Aladdin (Simon & Schuster)",d:["Scholastic","HarperCollins","Penguin Random House"],cat:"Books"},
+{q:"What happened with the graphic novel adaptation?",a:"The first half of Book 1 was adapted as a graphic novel in 2023",d:["All 9 books were adapted","It was cancelled","It was an anime"],cat:"Books"},
+{q:"What is Book 9.5 called?",a:"Unraveled",d:["Unlocked","Elysian","Decoded"],cat:"Books"},
+{q:"What age range is the series targeted at?",a:"Ages 8-12 (middle grade)",d:["Ages 4-7","Ages 13-17","Adults only"],cat:"Books"},
+{q:"Which book introduces Tam and Linh?",a:"Neverseen (Book 4)",d:["Exile (Book 2)","Lodestar (Book 5)","Flashback (Book 7)"],cat:"Books"},
+{q:"Which book reveals Alvar as a Neverseen spy?",a:"Lodestar (Book 5)",d:["Neverseen (Book 4)","Nightfall (Book 6)","Everblaze (Book 3)"],cat:"Books"},
+{q:"In which book does Councillor Kenric die?",a:"Everblaze (Book 3)",d:["Exile (Book 2)","Neverseen (Book 4)","Nightfall (Book 6)"],cat:"Books"},
+// Mixed/Advanced (86-100)
+{q:"What does Silveny often project into Sophie's mind?",a:"KEEFE! KEEFE! KEEFE!",d:["SOPHIE! SOPHIE!","FLY! FLY! FLY!","HELP! HELP! HELP!"],cat:"Characters"},
+{q:"Why was Dex's family considered a 'Bad Match'?",a:"His father is Talentless but married his mother who has an ability",d:["They had too many children","They lived in the human world","They were different species"],cat:"Lore"},
+{q:"What happened to Jolie Ruewen?",a:"She died under mysterious circumstances — she was secretly in the Black Swan",d:["She ran away to the human world","She became a Councillor","She joined the Neverseen"],cat:"Characters"},
+{q:"Why is multiple births frowned upon in elvin society?",a:"It's considered abnormal and is socially stigmatized",d:["It's illegal","Twins always have forbidden abilities","It drains the mother's abilities"],cat:"Lore"},
+{q:"What is Nightfall?",a:"An ancient facility created by Vespera for human experimentation",d:["A Neverseen hideout","The name of Book 4","A type of crystal"],cat:"Lore"},
+{q:"What did Sophie do to King Dimitar that caused a crisis?",a:"She illegally read his mind",d:["She attacked him","She stole his crown","She insulted his species"],cat:"Characters"},
+{q:"Who serves as Foxfire's principal while secretly being Mr. Forkle?",a:"Magnate Leto",d:["Sir Astin","Councillor Bronte","Lord Cassius"],cat:"Characters"},
+{q:"How many lists does an elf receive from the matchmakers?",a:"Five lists of 100 names each (500 total)",d:["One list of 50","Three lists of 200","Ten lists of 10"],cat:"Lore"},
+{q:"What is an Ability Restrictor?",a:"A device that blocks an elf's special ability — Sophie was forced to wear one",d:["A training tool","A type of crystal","A Foxfire exam"],cat:"Lore"},
+{q:"Who built the Twiggler?",a:"Dex Dizznee",d:["Mr. Forkle","Tinker","Lady Gisela"],cat:"Characters"},
+{q:"Why can't Councillors have children?",a:"It's forbidden — they must remain unattached to serve impartially",d:["They lose their abilities","It's a genetic limitation","Children would inherit too much power"],cat:"Lore"},
+{q:"What species is Ro?",a:"Ogre",d:["Goblin","Troll","Dwarf"],cat:"Characters"},
+{q:"How does an elf become 'unmatchable'?",a:"If their biological parents are unknown, they can't be properly matched",d:["If they fail their Foxfire exams","If they commit a crime","If they're Talentless"],cat:"Lore"},
+{q:"What did Keefe do in Stellarlune that shocked everyone?",a:"He fled to the human world because of his dangerous new abilities",d:["He joined the Neverseen","He became a Councillor","He lost all his abilities"],cat:"Characters"},
+{q:"What is the Forbidden Cities?",a:"The elvin term for the human world",d:["The Neverseen's hideout","An ancient elvin ruin","The ogre kingdom"],cat:"Lore"},
+];
+
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b}
+let queue=[],currentQ=null,qn=0,score=0,streak=0,best=0,answered=false;
+const el={ss:document.getElementById('trivia-start'),gm:document.getElementById('trivia-game'),sb:document.getElementById('trivia-start-btn'),qn:document.getElementById('trivia-qnum'),sc:document.getElementById('trivia-score'),st:document.getElementById('trivia-streak'),pr:document.getElementById('trivia-progress'),ct:document.getElementById('trivia-category'),qq:document.getElementById('trivia-question'),op:document.getElementById('trivia-options'),fb:document.getElementById('trivia-feedback'),nx:document.getElementById('trivia-next')};
+
+function start(){el.ss.style.display='none';el.gm.style.display='block';queue=shuffle(Q);qn=0;score=0;streak=0;best=0;load()}
+function load(){if(!queue.length)queue=shuffle(Q);currentQ=queue.pop();qn++;answered=false;const d=((qn-1)%100)+1;el.qn.textContent=d+' / 100';el.sc.textContent=score;el.st.textContent='🔥 '+streak;el.pr.style.width=(d/100*100)+'%';el.ct.textContent=currentQ.cat;el.qq.textContent=currentQ.q;
+const opts=shuffle([currentQ.a,...currentQ.d]),lt=['A','B','C','D'];el.op.innerHTML='';
+opts.forEach((o,i)=>{const b=document.createElement('button');b.className='trivia-option';b.innerHTML=`<span class="opt-letter">${lt[i]}</span><span>${o}</span>`;b.addEventListener('click',()=>ans(b,o));el.op.appendChild(b)});
+el.fb.style.display='none';el.nx.style.display='none';document.getElementById('trivia-card').scrollIntoView({behavior:'smooth',block:'nearest'})}
+function ans(b,ch){if(answered)return;answered=true;const ok=ch===currentQ.a;el.op.querySelectorAll('.trivia-option').forEach(x=>{x.classList.add('disabled');if(x.querySelector('span:last-child').textContent===currentQ.a)x.classList.add('correct')});
+if(ok){b.classList.add('correct');score++;streak++;if(streak>best)best=streak;el.fb.className='trivia-feedback correct-fb';el.fb.innerHTML=`<strong>✅ Correct!</strong>${streak>1?' 🔥 '+streak+' in a row!':''}`}
+else{b.classList.add('wrong');b.classList.add('shake');const ps=streak;streak=0;el.fb.className='trivia-feedback wrong-fb';el.fb.innerHTML=`<strong>❌ Not quite.</strong> The answer is <strong>${currentQ.a}</strong>.${ps>=3?' Streak of '+ps+' ended.':''}`}
+el.sc.textContent=score;el.st.textContent='🔥 '+streak;el.fb.style.display='block';el.nx.style.display='block';el.nx.focus()}
+el.sb.addEventListener('click',start);el.nx.addEventListener('click',load);
+document.addEventListener('keydown',e=>{if(activeTab!=='trivia')return;if(!answered){const n=parseInt(e.key);if(n>=1&&n<=4){const bs=el.op.querySelectorAll('.trivia-option');if(bs[n-1])bs[n-1].click()}}else if(e.key==='Enter'||e.key===' '){e.preventDefault();el.nx.click()}})})();
+</script>
+</body>
+</html>

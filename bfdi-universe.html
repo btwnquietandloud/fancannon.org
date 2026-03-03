@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Battle for Dream Island — The Universe Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Bungee+Shade&family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a12;
+    --bg-card: #12121f;
+    --bg-card-hover: #1a1a2e;
+    --accent: #ff6b35;
+    --accent2: #ffd166;
+    --accent3: #06d6a0;
+    --accent4: #118ab2;
+    --text: #e8e8f0;
+    --text-muted: #8888a8;
+    --text-dim: #55557a;
+    --border: #2a2a3e;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Nunito', sans-serif;
+    overflow-x: hidden;
+  }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  /* ── Animations ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes floatObj {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    25% { transform: translateY(-30px) rotate(5deg); }
+    50% { transform: translateY(-10px) rotate(-3deg); }
+    75% { transform: translateY(-40px) rotate(3deg); }
+  }
+  @keyframes pulseGlow {
+    0%, 100% { filter: drop-shadow(0 0 8px rgba(255,107,53,0.3)); }
+    50% { filter: drop-shadow(0 0 20px rgba(255,107,53,0.5)); }
+  }
+
+  .fade-in { animation: fadeUp 0.5s ease both; }
+  .fade-in-delay { animation: fadeUp 0.4s ease both; }
+
+  /* ── Floating BG ── */
+  #floating-bg {
+    position: fixed; inset: 0; overflow: hidden;
+    pointer-events: none; z-index: 0;
+  }
+  .float-obj {
+    position: absolute;
+    animation: floatObj var(--dur) ease-in-out infinite;
+    animation-delay: var(--delay);
+    opacity: var(--opa);
+    font-size: var(--size);
+    left: var(--x);
+    top: var(--y);
+  }
+
+  /* ── Layout ── */
+  .container {
+    position: relative; z-index: 1;
+    max-width: 900px; margin: 0 auto;
+    padding: 24px 16px 64px;
+  }
+
+  /* ── Nav ── */
+  .tab-nav {
+    display: flex; gap: 4px; padding: 6px;
+    background: var(--bg-card); border-radius: 16px;
+    border: 1px solid var(--border);
+    margin-bottom: 32px;
+    flex-wrap: wrap; justify-content: center;
+  }
+  .tab-btn {
+    padding: 10px 20px; border: none; border-radius: 12px;
+    cursor: pointer; font-family: 'Fredoka', sans-serif;
+    font-size: 15px; font-weight: 600;
+    background: transparent; color: var(--text-muted);
+    transition: all 0.25s ease;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .tab-btn.active {
+    background: var(--accent); color: #fff;
+  }
+  .tab-btn:hover:not(.active) { color: var(--text); }
+  .tab-btn .icon { font-size: 18px; }
+
+  /* ── Section (hidden by default) ── */
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* ── Home ── */
+  .hero {
+    text-align: center; padding: 48px 24px; margin-bottom: 32px;
+    background: linear-gradient(135deg, var(--bg-card) 0%, rgba(255,107,53,0.08) 50%, var(--bg-card) 100%);
+    border-radius: 24px; border: 1px solid var(--border);
+    position: relative; overflow: hidden;
+  }
+  .hero-pattern {
+    position: absolute; inset: 0; opacity: 0.05;
+    background: repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(255,107,53,0.3) 20px, rgba(255,107,53,0.3) 22px);
+  }
+  .hero-content { position: relative; z-index: 1; }
+  .hero-island {
+    font-size: 64px; margin-bottom: 16px;
+    animation: pulseGlow 3s ease-in-out infinite;
+  }
+  .hero h1 {
+    font-family: 'Bungee Shade', cursive;
+    font-size: clamp(28px, 5vw, 48px);
+    color: var(--accent); margin: 0 0 8px; line-height: 1.2;
+    text-shadow: 0 0 40px rgba(255,107,53,0.3);
+  }
+  .hero .subtitle {
+    font-family: 'Fredoka', sans-serif; font-size: 18px;
+    color: var(--accent2); margin: 0 0 8px; font-weight: 500;
+  }
+  .hero .meta {
+    font-size: 14px; color: var(--text-muted); margin: 0 0 24px;
+  }
+  .stats-row {
+    display: flex; flex-wrap: wrap; gap: 16px;
+    justify-content: center; margin-top: 24px;
+  }
+  .stat-box {
+    background: rgba(255,255,255,0.03); border-radius: 16px;
+    padding: 16px 24px; border: 1px solid var(--border); min-width: 100px;
+  }
+  .stat-box .num {
+    font-family: 'Bungee', cursive; font-size: 24px;
+  }
+  .stat-box .label {
+    font-size: 12px; color: var(--text-muted);
+  }
+
+  .about-card {
+    background: var(--bg-card); border-radius: 20px; padding: 32px;
+    border: 1px solid var(--border); margin-bottom: 24px;
+  }
+  .about-card h2 {
+    font-family: 'Fredoka', sans-serif; font-size: 22px;
+    color: var(--text); margin: 0 0 16px;
+  }
+  .about-card p {
+    font-size: 15px; line-height: 1.8; color: var(--text-muted);
+  }
+  .about-card strong { color: var(--text); }
+  .about-card .hl-orange { color: var(--accent); }
+  .about-card .hl-yellow { color: var(--accent2); }
+  .about-card .hl-green { color: var(--accent3); }
+
+  .quick-links {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px;
+  }
+  .quick-card {
+    background: var(--bg-card); border-radius: 16px; padding: 20px;
+    border: 1px solid var(--border); cursor: pointer;
+    text-align: left; transition: all 0.2s ease;
+    font-family: inherit; color: inherit; width: 100%;
+  }
+  .quick-card:hover { transform: translateY(-2px); }
+  .quick-card .title {
+    font-family: 'Fredoka', sans-serif; font-size: 16px; font-weight: 600; margin-bottom: 6px;
+  }
+  .quick-card .desc {
+    font-size: 13px; color: var(--text-muted);
+  }
+
+  /* ── Timeline ── */
+  .section-heading {
+    font-family: 'Bungee Shade', cursive;
+    font-size: clamp(22px, 4vw, 32px);
+    margin: 0 0 8px; text-align: center;
+  }
+  .section-sub {
+    font-size: 14px; color: var(--text-muted);
+    text-align: center; margin-bottom: 32px;
+  }
+
+  .timeline-wrap {
+    position: relative; max-width: 700px; margin: 0 auto;
+  }
+  .timeline-line {
+    position: absolute; left: 24px; top: 0; bottom: 0; width: 3px;
+    background: linear-gradient(to bottom, var(--accent), var(--accent3), var(--accent4));
+    border-radius: 2px; opacity: 0.3;
+  }
+  .timeline-item {
+    position: relative; margin-bottom: 16px; padding-left: 60px; cursor: pointer;
+  }
+  .timeline-dot {
+    position: absolute; left: 14px; top: 18px; width: 22px; height: 22px;
+    border-radius: 50%; border: 3px solid var(--bg); z-index: 1;
+  }
+  .tl-card {
+    background: var(--bg-card); border-radius: 16px; padding: 20px;
+    border: 1px solid var(--border); transition: all 0.25s ease;
+  }
+  .tl-card:hover, .tl-card.expanded { border-color: var(--tl-color, var(--accent)); }
+  .tl-card.expanded { background: var(--bg-card-hover); }
+  .tl-header { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; flex-wrap: wrap; }
+  .tl-icon { font-size: 22px; }
+  .tl-year {
+    font-family: 'Bungee', cursive; font-size: 13px;
+    padding: 2px 10px; border-radius: 8px;
+  }
+  .tl-season-tag {
+    font-family: 'Fredoka', sans-serif; font-size: 11px;
+    color: var(--text-dim); background: rgba(85,85,122,0.13);
+    padding: 2px 8px; border-radius: 6px;
+  }
+  .tl-title {
+    font-family: 'Fredoka', sans-serif; font-size: 17px;
+    color: var(--text); margin: 0 0 4px;
+  }
+  .tl-desc {
+    font-size: 14px; color: var(--text-muted); line-height: 1.6;
+    max-height: 44px; overflow: hidden; transition: max-height 0.3s ease;
+  }
+  .tl-card.expanded .tl-desc { max-height: 300px; }
+  .tl-toggle { font-size: 12px; margin-top: 4px; display: inline-block; }
+
+  /* ── Characters ── */
+  .char-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px; margin-bottom: 24px;
+  }
+  .char-btn {
+    background: var(--bg-card); border-radius: 16px; padding: 20px 12px;
+    border: 2px solid var(--border); cursor: pointer;
+    transition: all 0.25s ease;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    font-family: inherit; color: inherit; width: 100%;
+  }
+  .char-btn:hover { transform: translateY(-3px); }
+  .char-btn.selected { transform: scale(1.03); }
+  .char-emoji { font-size: 36px; transition: filter 0.25s ease; }
+  .char-btn.selected .char-emoji { filter: drop-shadow(0 0 10px var(--char-color)); }
+  .char-name {
+    font-family: 'Fredoka', sans-serif; font-size: 14px; font-weight: 600;
+  }
+  .char-role { font-size: 10px; color: var(--text-dim); text-align: center; }
+
+  .char-detail {
+    background: var(--bg-card); border-radius: 20px; padding: 28px;
+    border: 2px solid rgba(255,255,255,0.1);
+    animation: fadeUp 0.3s ease both;
+    display: none;
+  }
+  .char-detail.visible { display: block; }
+  .char-detail-header {
+    display: flex; align-items: center; gap: 16px; margin-bottom: 16px; flex-wrap: wrap;
+  }
+  .char-detail-emoji { font-size: 48px; }
+  .char-detail-name {
+    font-family: 'Bungee', cursive; font-size: 24px; margin: 0;
+  }
+  .char-detail-role {
+    font-family: 'Fredoka', sans-serif; font-size: 14px;
+    color: var(--text-muted); margin: 2px 0 0;
+  }
+  .char-detail-desc {
+    font-size: 15px; line-height: 1.8; margin: 0 0 16px;
+  }
+  .char-seasons { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+  .char-season-tag {
+    font-family: 'Fredoka', sans-serif; font-size: 12px; font-weight: 600;
+    padding: 4px 12px; border-radius: 8px;
+  }
+  .char-trivia {
+    border-radius: 12px; padding: 14px 18px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .char-trivia span:first-child { font-size: 18px; }
+  .char-trivia span:last-child {
+    font-size: 13px; color: var(--accent2); font-style: italic;
+  }
+
+  /* ── Fun Facts ── */
+  .filter-row {
+    display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; margin-bottom: 24px;
+  }
+  .filter-btn {
+    padding: 6px 16px; border-radius: 10px; border: none; cursor: pointer;
+    font-family: 'Fredoka', sans-serif; font-size: 13px; font-weight: 500;
+    background: var(--bg-card); color: var(--text-muted);
+    transition: all 0.2s ease;
+  }
+  .filter-btn.active {
+    background: var(--accent2); color: var(--bg);
+  }
+  .facts-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px;
+  }
+  .fact-card {
+    background: var(--bg-card); border-radius: 16px; padding: 22px;
+    border: 1px solid var(--border); transition: all 0.25s ease;
+  }
+  .fact-card:hover { border-color: rgba(255,209,102,0.4); transform: translateY(-2px); }
+  .fact-inner { display: flex; gap: 14px; align-items: flex-start; }
+  .fact-icon {
+    font-size: 28px; flex-shrink: 0;
+    background: rgba(255,209,102,0.07); border-radius: 12px;
+    width: 48px; height: 48px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .fact-cat {
+    font-family: 'Fredoka', sans-serif; font-size: 10px; font-weight: 600;
+    color: var(--accent2); text-transform: uppercase; letter-spacing: 1px;
+  }
+  .fact-text { font-size: 14px; color: var(--text); margin: 4px 0 0; line-height: 1.6; }
+
+  /* ── Footer ── */
+  footer {
+    text-align: center; margin-top: 48px; padding: 20px;
+    border-top: 1px solid var(--border);
+  }
+  footer p { font-size: 12px; color: var(--text-dim); }
+</style>
+</head>
+<body>
+
+<!-- Floating Background -->
+<div id="floating-bg"></div>
+
+<div class="container">
+  <!-- Navigation -->
+  <nav class="tab-nav" id="tabNav">
+    <button class="tab-btn active" data-tab="home"><span class="icon">🏠</span> Home</button>
+    <button class="tab-btn" data-tab="timeline"><span class="icon">📜</span> Timeline</button>
+    <button class="tab-btn" data-tab="characters"><span class="icon">👥</span> Characters</button>
+    <button class="tab-btn" data-tab="facts"><span class="icon">🎲</span> Fun Facts</button>
+  </nav>
+
+  <!-- ════════════ HOME ════════════ -->
+  <div class="section active fade-in" id="sec-home">
+    <div class="hero">
+      <div class="hero-pattern"></div>
+      <div class="hero-content">
+        <div class="hero-island">🏝️</div>
+        <h1>Battle for Dream Island</h1>
+        <p class="subtitle">The Universe Guide</p>
+        <p class="meta">by jacknjellify · Est. January 1, 2010</p>
+        <div class="stats-row">
+          <div class="stat-box"><div class="num" style="color:var(--accent)">3M+</div><div class="label">Subscribers</div></div>
+          <div class="stat-box"><div class="num" style="color:var(--accent2)">2B+</div><div class="label">Total Views</div></div>
+          <div class="stat-box"><div class="num" style="color:var(--accent3)">100+</div><div class="label">Episodes</div></div>
+          <div class="stat-box"><div class="num" style="color:var(--accent4)">16</div><div class="label">Years Running</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="about-card">
+      <h2>🎬 What is BFDI?</h2>
+      <p>
+        <strong>Battle for Dream Island</strong> is an American animated web series created by twin brothers
+        <strong class="hl-yellow">Cary and Michael Huang</strong> — who started making it when they were just 12 years old.
+        The show features anthropomorphic inanimate objects competing in Survivor-style elimination challenges, with
+        <strong class="hl-green">viewers voting</strong> to decide who stays and who goes. First premiering on
+        <strong class="hl-orange">January 1, 2010</strong>, it became the first-ever "object show" and spawned an entire
+        microgenre of similar series. The show is hosted on the YouTube channel <strong>jacknjellify</strong> and
+        has grown across 6 seasons over 16 years, building a passionate community known as the Object Show Community (OSC).
+      </p>
+    </div>
+
+    <div class="quick-links">
+      <button class="quick-card" data-nav="timeline" style="--qc:var(--accent)">
+        <div class="title" style="color:var(--accent)">6 Seasons</div>
+        <div class="desc">BFDI → BFDIA → IDFB → BFB → TPOT → BFDIE</div>
+      </button>
+      <button class="quick-card" data-nav="characters" style="--qc:var(--accent3)">
+        <div class="title" style="color:var(--accent3)">100+ Characters</div>
+        <div class="desc">From Firey to Four, an ever-growing cast</div>
+      </button>
+      <button class="quick-card" data-nav="facts" style="--qc:var(--accent2)">
+        <div class="title" style="color:var(--accent2)">Object Show Pioneer</div>
+        <div class="desc">Started an entire genre of animation</div>
+      </button>
+    </div>
+  </div>
+
+  <!-- ════════════ TIMELINE ════════════ -->
+  <div class="section" id="sec-timeline">
+    <h2 class="section-heading" style="color:var(--accent)">📜 The BFDI Timeline</h2>
+    <p class="section-sub">16 years of object show history</p>
+    <div class="timeline-wrap">
+      <div class="timeline-line"></div>
+      <div id="timeline-items"></div>
+    </div>
+  </div>
+
+  <!-- ════════════ CHARACTERS ════════════ -->
+  <div class="section" id="sec-characters">
+    <h2 class="section-heading" style="color:var(--accent3)">👥 Key Characters</h2>
+    <p class="section-sub">Tap a character to learn more</p>
+    <div class="char-grid" id="char-grid"></div>
+    <div class="char-detail" id="char-detail"></div>
+  </div>
+
+  <!-- ════════════ FUN FACTS ════════════ -->
+  <div class="section" id="sec-facts">
+    <h2 class="section-heading" style="color:var(--accent2)">🎲 Fun Facts</h2>
+    <p class="section-sub">Things you might not know about BFDI</p>
+    <div class="filter-row" id="filter-row"></div>
+    <div class="facts-grid" id="facts-grid"></div>
+  </div>
+
+  <footer>
+    <p>Fan-made guide · BFDI is created by Cary & Michael Huang · jacknjellify on YouTube</p>
+  </footer>
+</div>
+
+<script>
+// ═══════════ DATA ═══════════
+const characters = [
+  { name:"Firey", emoji:"🔥", color:"#ff6b35", role:"Season 1 Winner", seasons:["BFDI","BFDIA","IDFB","BFB"], description:"The very first object show character ever created. A passionate and sometimes forgetful flame who won Season 1 with 406 votes. His rivalry with Coiny and complicated friendship with Leafy are central to the series.", trivia:"First ever object show winner in history" },
+  { name:"Leafy", emoji:"🍃", color:"#06d6a0", role:"Fan Favorite / Anti-Hero", seasons:["BFDI","BFDIA","IDFB","BFB","TPOT"], description:"Appears kind and friendly on the surface, but has a complex two-faced nature. She infamously stole Dream Island with fake money after Firey wouldn't let her in, turning every contestant against her.", trivia:"Has a 'niceness chart' ranking other characters' kindness" },
+  { name:"Bubble", emoji:"🫧", color:"#88ccff", role:"Season 1 Finalist", seasons:["BFDI","BFDIA","BFB","TPOT"], description:"Sweet and innocent with a distinctive accent, replacing vowels with 'oi' sounds. Extremely fragile and pops constantly, but always recovers thanks to the Bubble Recovery Center. One of the most rational characters.", trivia:"Says 'Yoylecake!' as her catchphrase" },
+  { name:"Four", emoji:"4️⃣", color:"#ffe74c", role:"Host (BFB / TPOT)", seasons:["BFB","TPOT"], description:"A powerful and unpredictable Algebralian number who hosts Battle for BFB. Can screech contestants to kill them, recover the dead, and has reality-warping powers. Both feared and loved by fans.", trivia:"Based on the number 4 — part of the 'Algebralian' species" },
+  { name:"X", emoji:"✖️", color:"#ffd166", role:"Co-Host", seasons:["BFB","TPOT"], description:"Four's best friend and co-host. A kind and gentle Algebralian who treasures their baskets. Much more empathetic toward contestants than Four.", trivia:"X's 'value' has been debated by contestants in the show" },
+  { name:"Flower", emoji:"🌸", color:"#ff69b4", role:"BFB Winner", seasons:["BFDI","BFDIA","BFB"], description:"Initially a loud, aggressive bully who destroys recovery centers and attacks others. Undergoes major character development in BFB, becoming more self-aware and ultimately winning the season.", trivia:"Second contestant ever to win a season of BFDI" },
+  { name:"Pencil", emoji:"✏️", color:"#ff4757", role:"Alliance Leader", seasons:["BFDI","BFDIA","BFB","TPOT"], description:"Leader of the FreeSmart alliance with Match, Bubble, Ruby, and Book. Can be bossy and harsh to those she considers beneath her. Won the unreleased prequel 'Total Firey Island'.", trivia:"Leader of the iconic 'FreeSmart' alliance" },
+  { name:"Woody", emoji:"🪵", color:"#c8956c", role:"Underdog Hero", seasons:["BFDI","BFB","BFDIA"], description:"Originally a terrified balsa wood character afraid of everything. Gets incredible character development in BFB, overcoming his fears and becoming genuinely brave. Fan favorite redemption arc.", trivia:"Known for screaming — initially could barely speak" },
+  { name:"Two", emoji:"2️⃣", color:"#06d6a0", role:"Host (TPOT)", seasons:["TPOT"], description:"Another Algebralian who arrives to host The Power of Two. Much friendlier and more helpful than Four, genuinely wanting to assist contestants. Split BFB's 64 contestants, taking 40 for their own show.", trivia:"Caused the BFB/TPOT split by offering their powers as a prize" },
+  { name:"Golf Ball", emoji:"⛳", color:"#e8e8e8", role:"The Strategist", seasons:["BFDI","BFDIA","BFB","TPOT"], description:"Bossy, highly intelligent, and always trying to lead. Often paired with Tennis Ball, her closest ally. Runs a factory called 'Golf Ball's Underground Factory' and considers herself the smartest contestant.", trivia:"Has her own underground factory with advanced tech" },
+  { name:"Announcer", emoji:"📢", color:"#888888", role:"Original Host", seasons:["BFDI","BFDIA","BFDIE"], description:"The mysterious robotic speaker box who started the entire competition by offering Dream Island as a prize. Monotone and detached, treating contestants more like game pieces than people.", trivia:"Dropped from the sky to start the very first competition" },
+  { name:"Loser", emoji:"🏆", color:"#f0c040", role:"Fan Idol", seasons:["BFB"], description:"Despite the name, Loser is beloved by almost every contestant. Charismatic and inspirational, though revealed to have been dishonest about some achievements. His elimination was a major shock.", trivia:"Every contestant wanted to be on his team" },
+];
+
+const timeline = [
+  { year:"2008", title:"Channel Created", desc:"The jacknjellify YouTube channel is formed on February 4. Cary Huang draws the first BFDI characters on May 2. The Total Firey Island comic series begins in September.", season:"pre", icon:"🎬" },
+  { year:"2009", title:"Production Begins", desc:"After returning from Hawaii, the Huang twins (age 12) decide to turn their comics into a Flash animated web series. BFDI enters production in September.", season:"pre", icon:"⚡" },
+  { year:"2010", title:"BFDI Premieres", desc:"The first episode 'Take the Plunge' releases on January 1, launching the first-ever object show. 20 anthropomorphic objects compete for Dream Island.", season:"S1", icon:"🏝️" },
+  { year:"2012", title:"Season 1 Ends / BFDIA Begins", desc:"BFDI concludes on January 1 after 25 episodes. Firey wins but controversially doesn't let Leafy onto Dream Island. BFDIA launches on June 29 with new and returning characters.", season:"S2", icon:"🔄" },
+  { year:"2013", title:"The Hiatus Begins", desc:"After BFDIA Episode 5, the series goes on indefinite hiatus as the twins focus on school. The BFDIA 5b platformer game is released. Channel reaches 10,000 subscribers.", season:"S2", icon:"⏸️" },
+  { year:"2016", title:"IDFB (Season 3)", desc:"jacknjellify returns with 'IDFB' (Island Dream For Battle) — a single experimental episode with improved animation. The AdSense account is restored after being suspended since 2014.", season:"S3", icon:"🔬" },
+  { year:"2017", title:"BFB Launches", desc:"Battle for BFB debuts with a massive cast of 64 contestants and new hosts Four and X. The show adopts a new art style and faster production schedule, revitalizing the series.", season:"S4", icon:"🚀" },
+  { year:"2020", title:"The BFB / TPOT Split", desc:"In a groundbreaking move, Two arrives and splits the show in half. 40 contestants leave for The Power of Two, while 14 remain in BFB. Both shows run concurrently.", season:"S4/S5", icon:"✂️" },
+  { year:"2021", title:"BFB Ends / 1M Subscribers", desc:"Battle for BFB concludes with Flower winning. The channel hits 1 million subscribers in April, becoming the first object show channel to reach this milestone.", season:"S4", icon:"🎉" },
+  { year:"2023", title:"BFDIA Returns / Theater Events", desc:"After a decade-long hiatus, BFDIA resumes production! The first-ever theatrical BFDI screening happens. jacknjellify opens an office in Santa Monica and hits 2 million subscribers.", season:"S2/S5", icon:"🎭" },
+  { year:"2025", title:"Wikipedia & Theater Tour", desc:"After nearly 16 years, BFDI finally gets a Wikipedia article. BFDIA Episode 23 'Shattered!' screens in theaters. The channel surpasses 3 million subscribers and 2 billion views.", season:"S2/S5/S6", icon:"📰" },
+  { year:"2026", title:"BFDIE Launches", desc:"Battle for Dream Island Elsewhere (Season 6) debuts on January 1, exploring what the Announcer was doing during the original competition. BFDI turns 16 years old.", season:"S6", icon:"🌍" },
+];
+
+const funFacts = [
+  { fact:"Cary and Michael Huang were only 12 years old when they started making BFDI in 2009.", icon:"👦", category:"Creators" },
+  { fact:"BFDI is widely recognized as the very first 'object show' ever created, spawning an entire microgenre.", icon:"🥇", category:"Legacy" },
+  { fact:"The jacknjellify channel has over 3 million subscribers and 2+ billion total views as of 2025.", icon:"📊", category:"Stats" },
+  { fact:"Season 1 had a perfectly consistent monthly release schedule — the only season to achieve this.", icon:"📅", category:"Production" },
+  { fact:"Viewers vote to save or eliminate characters, directly controlling who stays in the competition.", icon:"🗳️", category:"Format" },
+  { fact:"Battle for BFB featured a massive 64 contestants — the largest cast in any BFDI season.", icon:"👥", category:"Records" },
+  { fact:"The channel's first viral moment came from 'Scale of the Universe', which was featured on ABC News.", icon:"📺", category:"Viral" },
+  { fact:"BFDIA went on a decade-long hiatus (2013-2023) while the twins attended college.", icon:"🎓", category:"History" },
+  { fact:"Despite 2+ billion views, BFDI didn't get a Wikipedia article until late 2025 due to notability rules.", icon:"📖", category:"Fun" },
+  { fact:"Cary attended Stanford and Michael studied film at UC Berkeley during the hiatus years.", icon:"🏫", category:"Creators" },
+  { fact:"The show is set in a fictional world called 'Goiky' where all the object characters live.", icon:"🗺️", category:"Lore" },
+  { fact:"BFDI episodes have been screened in actual movie theaters (Cinemark & Marcus) since 2023.", icon:"🎞️", category:"Events" },
+  { fact:"Characters who die can be recovered by machines called Recovery Centers — death is temporary!", icon:"💀", category:"Lore" },
+  { fact:"Inanimate Insanity, created shortly after BFDI, is considered its 'unofficial sister show'.", icon:"🤝", category:"Legacy" },
+  { fact:"The Algebralians (Four, X, Two, One) are number-based beings with reality-warping powers.", icon:"🔢", category:"Lore" },
+  { fact:"Bubble speaks with a distinctive accent, replacing vowels with 'oi' — 'Leafy' becomes 'Loify'.", icon:"💬", category:"Fun" },
+];
+
+const seasonColors = { pre:"#888888", S1:"#ff6b35", S2:"#ffd166", S3:"#06d6a0", S4:"#118ab2", "S4/S5":"#9b5de5", "S2/S5":"#ffd166", "S2/S5/S6":"#ff69b4", S5:"#9b5de5", S6:"#ff69b4" };
+
+// ═══════════ FLOATING BACKGROUND ═══════════
+(function initFloating() {
+  const objects = ["🔥","🍃","🫧","⭐","✏️","🌸","🪵","⛳","❄️","💧","🪨","🎈"];
+  const container = document.getElementById('floating-bg');
+  objects.forEach(obj => {
+    const el = document.createElement('div');
+    el.className = 'float-obj';
+    el.textContent = obj;
+    el.style.setProperty('--dur', (20 + Math.random() * 30) + 's');
+    el.style.setProperty('--delay', (-Math.random() * 20) + 's');
+    el.style.setProperty('--opa', (0.08 + Math.random() * 0.07));
+    el.style.setProperty('--size', (14 + Math.random() * 16) + 'px');
+    el.style.setProperty('--x', (Math.random() * 100) + '%');
+    el.style.setProperty('--y', (Math.random() * 100) + '%');
+    container.appendChild(el);
+  });
+})();
+
+// ═══════════ TAB NAVIGATION ═══════════
+let activeTab = 'home';
+
+function switchTab(tab) {
+  activeTab = tab;
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+  document.querySelectorAll('.section').forEach(s => {
+    s.classList.remove('active');
+    if (s.id === 'sec-' + tab) {
+      s.classList.add('active');
+      s.classList.remove('fade-in');
+      void s.offsetWidth; // trigger reflow
+      s.classList.add('fade-in');
+    }
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.getElementById('tabNav').addEventListener('click', e => {
+  const btn = e.target.closest('.tab-btn');
+  if (btn) switchTab(btn.dataset.tab);
+});
+
+// Quick-links on home page
+document.querySelectorAll('.quick-card[data-nav]').forEach(card => {
+  card.addEventListener('click', () => switchTab(card.dataset.nav));
+  const color = card.querySelector('.title').style.color;
+  card.addEventListener('mouseenter', () => { card.style.borderColor = color; });
+  card.addEventListener('mouseleave', () => { card.style.borderColor = ''; });
+});
+
+// ═══════════ RENDER TIMELINE ═══════════
+(function renderTimeline() {
+  const wrap = document.getElementById('timeline-items');
+  let expandedIdx = -1;
+
+  timeline.forEach((item, i) => {
+    const color = seasonColors[item.season] || '#ff6b35';
+    const div = document.createElement('div');
+    div.className = 'timeline-item';
+    div.style.setProperty('--tl-color', color);
+    div.innerHTML = `
+      <div class="timeline-dot" style="background:${color};box-shadow:0 0 12px ${color}44"></div>
+      <div class="tl-card" data-idx="${i}">
+        <div class="tl-header">
+          <span class="tl-icon">${item.icon}</span>
+          <span class="tl-year" style="color:${color};background:${color}18">${item.year}</span>
+          <span class="tl-season-tag">${item.season}</span>
+        </div>
+        <h3 class="tl-title">${item.title}</h3>
+        <p class="tl-desc">${item.desc}</p>
+        ${item.desc.length > 80 ? `<span class="tl-toggle" style="color:${color}">▼ More</span>` : ''}
+      </div>
+    `;
+    div.addEventListener('click', () => {
+      const card = div.querySelector('.tl-card');
+      const toggle = div.querySelector('.tl-toggle');
+      if (expandedIdx === i) {
+        card.classList.remove('expanded');
+        if (toggle) toggle.textContent = '▼ More';
+        expandedIdx = -1;
+      } else {
+        wrap.querySelectorAll('.tl-card.expanded').forEach(c => {
+          c.classList.remove('expanded');
+          const t = c.parentElement.querySelector('.tl-toggle');
+          if (t) t.textContent = '▼ More';
+        });
+        card.classList.add('expanded');
+        if (toggle) toggle.textContent = '▲ Less';
+        expandedIdx = i;
+      }
+    });
+    wrap.appendChild(div);
+  });
+})();
+
+// ═══════════ RENDER CHARACTERS ═══════════
+(function renderCharacters() {
+  const grid = document.getElementById('char-grid');
+  const detail = document.getElementById('char-detail');
+  let selectedIdx = -1;
+
+  characters.forEach((c, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'char-btn';
+    btn.dataset.idx = i;
+    btn.style.setProperty('--char-color', c.color);
+    btn.innerHTML = `
+      <span class="char-emoji">${c.emoji}</span>
+      <span class="char-name">${c.name}</span>
+      <span class="char-role">${c.role}</span>
+    `;
+    btn.addEventListener('mouseenter', () => {
+      if (selectedIdx !== i) btn.style.borderColor = c.color + '66';
+    });
+    btn.addEventListener('mouseleave', () => {
+      if (selectedIdx !== i) btn.style.borderColor = '';
+    });
+    btn.addEventListener('click', () => {
+      if (selectedIdx === i) {
+        selectedIdx = -1;
+        btn.classList.remove('selected');
+        btn.style.borderColor = '';
+        detail.classList.remove('visible');
+        return;
+      }
+      grid.querySelectorAll('.char-btn').forEach(b => {
+        b.classList.remove('selected');
+        b.style.borderColor = '';
+        b.style.background = '';
+      });
+      selectedIdx = i;
+      btn.classList.add('selected');
+      btn.style.borderColor = c.color;
+      btn.style.background = c.color + '18';
+
+      const seasonsHTML = c.seasons.map(s =>
+        `<span class="char-season-tag" style="background:${c.color}18;color:${c.color}">${s}</span>`
+      ).join('');
+
+      detail.innerHTML = `
+        <div class="char-detail-header">
+          <span class="char-detail-emoji" style="filter:drop-shadow(0 0 15px ${c.color}88)">${c.emoji}</span>
+          <div>
+            <h3 class="char-detail-name" style="color:${c.color}">${c.name}</h3>
+            <p class="char-detail-role">${c.role}</p>
+          </div>
+        </div>
+        <p class="char-detail-desc">${c.description}</p>
+        <div class="char-seasons">${seasonsHTML}</div>
+        <div class="char-trivia" style="background:${c.color}0a;border:1px solid ${c.color}22">
+          <span>💡</span>
+          <span>${c.trivia}</span>
+        </div>
+      `;
+      detail.style.borderColor = c.color + '44';
+      detail.style.boxShadow = `0 0 40px ${c.color}10`;
+      detail.classList.remove('visible');
+      void detail.offsetWidth;
+      detail.classList.add('visible');
+      detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+    grid.appendChild(btn);
+  });
+})();
+
+// ═══════════ RENDER FUN FACTS ═══════════
+(function renderFacts() {
+  const filterRow = document.getElementById('filter-row');
+  const factsGrid = document.getElementById('facts-grid');
+  const categories = ['All', ...new Set(funFacts.map(f => f.category))];
+  let activeFilter = 'All';
+
+  function renderCards(filter) {
+    const filtered = filter === 'All' ? funFacts : funFacts.filter(f => f.category === filter);
+    factsGrid.innerHTML = '';
+    filtered.forEach((f, i) => {
+      const card = document.createElement('div');
+      card.className = 'fact-card fade-in-delay';
+      card.style.animationDelay = (i * 0.05) + 's';
+      card.innerHTML = `
+        <div class="fact-inner">
+          <span class="fact-icon">${f.icon}</span>
+          <div>
+            <div class="fact-cat">${f.category}</div>
+            <p class="fact-text">${f.fact}</p>
+          </div>
+        </div>
+      `;
+      factsGrid.appendChild(card);
+    });
+  }
+
+  categories.forEach(cat => {
+    const btn = document.createElement('button');
+    btn.className = 'filter-btn' + (cat === 'All' ? ' active' : '');
+    btn.textContent = cat;
+    btn.addEventListener('click', () => {
+      activeFilter = cat;
+      filterRow.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.textContent === cat));
+      renderCards(cat);
+    });
+    filterRow.appendChild(btn);
+  });
+
+  renderCards('All');
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Saga of the Forgotten Warrior — The Universe Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Bungee+Shade&family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0a0908;--bg-card:#14120e;--bg-card-hover:#1e1a14;--accent:#c0392b;--accent2:#d4a03c;--accent3:#607848;--accent4:#6888a0;--text:#e8e4dc;--text-muted:#9890a0;--text-dim:#606068;--border:#2a2820}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;overflow-x:hidden}
+  ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes floatObj{0%,100%{transform:translateY(0) rotate(0)}25%{transform:translateY(-30px) rotate(5deg)}50%{transform:translateY(-10px) rotate(-3deg)}75%{transform:translateY(-40px) rotate(3deg)}}
+  @keyframes pulseGlow{0%,100%{filter:drop-shadow(0 0 8px rgba(192,57,43,.3))}50%{filter:drop-shadow(0 0 20px rgba(192,57,43,.6))}}
+  @keyframes shakeWrong{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+  .fade-in{animation:fadeUp .5s ease both}.fade-in-delay{animation:fadeUp .4s ease both}.shake{animation:shakeWrong .4s ease}
+  #floating-bg{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+  .float-obj{position:absolute;animation:floatObj var(--dur) ease-in-out infinite;animation-delay:var(--delay);opacity:var(--opa);font-size:var(--size);left:var(--x);top:var(--y)}
+  .container{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:24px 16px 64px}
+  .tab-nav{display:flex;gap:4px;padding:6px;background:var(--bg-card);border-radius:16px;border:1px solid var(--border);margin-bottom:32px;flex-wrap:wrap;justify-content:center}
+  .tab-btn{padding:10px 20px;border:none;border-radius:12px;cursor:pointer;font-family:'Fredoka',sans-serif;font-size:15px;font-weight:600;background:transparent;color:var(--text-muted);transition:all .25s;display:flex;align-items:center;gap:8px}
+  .tab-btn.active{background:var(--accent);color:#fff}.tab-btn:hover:not(.active){color:var(--text)}.tab-btn .icon{font-size:18px}
+  .section{display:none}.section.active{display:block}
+  .hero{text-align:center;padding:48px 24px;margin-bottom:32px;background:linear-gradient(135deg,var(--bg-card) 0%,rgba(192,57,43,.08) 50%,var(--bg-card) 100%);border-radius:24px;border:1px solid var(--border);position:relative;overflow:hidden}
+  .hero-pattern{position:absolute;inset:0;opacity:.04;background:repeating-linear-gradient(45deg,transparent,transparent 20px,rgba(192,57,43,.3) 20px,rgba(192,57,43,.3) 22px)}
+  .hero-content{position:relative;z-index:1}.hero-island{font-size:64px;margin-bottom:16px;animation:pulseGlow 3s ease-in-out infinite}
+  .hero h1{font-family:'Bungee Shade',cursive;font-size:clamp(18px,4vw,36px);color:var(--accent);margin:0 0 8px;line-height:1.2;text-shadow:0 0 40px rgba(192,57,43,.3)}
+  .hero .subtitle{font-family:'Fredoka',sans-serif;font-size:18px;color:var(--accent2);margin:0 0 8px;font-weight:500}
+  .hero .meta{font-size:14px;color:var(--text-muted);margin:0 0 24px}
+  .stats-row{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin-top:24px}
+  .stat-box{background:rgba(255,255,255,.03);border-radius:16px;padding:16px 24px;border:1px solid var(--border);min-width:100px}
+  .stat-box .num{font-family:'Bungee',cursive;font-size:24px}.stat-box .label{font-size:12px;color:var(--text-muted)}
+  .about-card{background:var(--bg-card);border-radius:20px;padding:32px;border:1px solid var(--border);margin-bottom:24px}
+  .about-card h2{font-family:'Fredoka',sans-serif;font-size:22px;color:var(--text);margin:0 0 16px}
+  .about-card p{font-size:15px;line-height:1.8;color:var(--text-muted)}.about-card strong{color:var(--text)}
+  .about-card .hl-r{color:var(--accent)}.about-card .hl-g{color:var(--accent2)}.about-card .hl-t{color:var(--accent3)}
+  .quick-links{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+  .quick-card{background:var(--bg-card);border-radius:16px;padding:20px;border:1px solid var(--border);cursor:pointer;text-align:left;transition:all .2s;font-family:inherit;color:inherit;width:100%}
+  .quick-card:hover{transform:translateY(-2px)}.quick-card .title{font-family:'Fredoka',sans-serif;font-size:16px;font-weight:600;margin-bottom:6px}.quick-card .desc{font-size:13px;color:var(--text-muted)}
+  .section-heading{font-family:'Bungee Shade',cursive;font-size:clamp(22px,4vw,32px);margin:0 0 8px;text-align:center}
+  .section-sub{font-size:14px;color:var(--text-muted);text-align:center;margin-bottom:32px}
+  .timeline-wrap{position:relative;max-width:700px;margin:0 auto}.timeline-line{position:absolute;left:24px;top:0;bottom:0;width:3px;background:linear-gradient(to bottom,var(--accent),var(--accent2),var(--accent4));border-radius:2px;opacity:.3}
+  .timeline-item{position:relative;margin-bottom:16px;padding-left:60px;cursor:pointer}
+  .timeline-dot{position:absolute;left:14px;top:18px;width:22px;height:22px;border-radius:50%;border:3px solid var(--bg);z-index:1}
+  .tl-card{background:var(--bg-card);border-radius:16px;padding:20px;border:1px solid var(--border);transition:all .25s}
+  .tl-card:hover,.tl-card.expanded{border-color:var(--tl-color,var(--accent))}.tl-card.expanded{background:var(--bg-card-hover)}
+  .tl-header{display:flex;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap}
+  .tl-icon{font-size:22px}.tl-year{font-family:'Bungee',cursive;font-size:13px;padding:2px 10px;border-radius:8px}
+  .tl-season-tag{font-family:'Fredoka',sans-serif;font-size:11px;color:var(--text-dim);background:rgba(96,96,104,.13);padding:2px 8px;border-radius:6px}
+  .tl-title{font-family:'Fredoka',sans-serif;font-size:17px;color:var(--text);margin:0 0 4px}
+  .tl-desc{font-size:14px;color:var(--text-muted);line-height:1.6;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;max-height:2.8em;transition:max-height .4s}
+  .tl-card.expanded .tl-desc{-webkit-line-clamp:unset;max-height:500px}
+  .tl-toggle{font-size:12px;margin-top:6px;display:inline-block;cursor:pointer;opacity:.8}.tl-toggle:hover{opacity:1}
+  .char-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;margin-bottom:24px}
+  .char-btn{background:var(--bg-card);border-radius:16px;padding:20px 12px;border:2px solid var(--border);cursor:pointer;transition:all .25s;display:flex;flex-direction:column;align-items:center;gap:8px;font-family:inherit;color:inherit;width:100%}
+  .char-btn:hover{transform:translateY(-3px)}.char-btn.selected{transform:scale(1.03)}
+  .char-emoji{font-size:36px;transition:filter .25s}.char-btn.selected .char-emoji{filter:drop-shadow(0 0 10px var(--char-color))}
+  .char-name{font-family:'Fredoka',sans-serif;font-size:14px;font-weight:600}.char-role{font-size:10px;color:var(--text-dim);text-align:center}
+  .char-detail{background:var(--bg-card);border-radius:20px;padding:28px;border:2px solid rgba(255,255,255,.1);animation:fadeUp .3s ease both;display:none}.char-detail.visible{display:block}
+  .char-detail-header{display:flex;align-items:center;gap:16px;margin-bottom:16px;flex-wrap:wrap}
+  .char-detail-emoji{font-size:48px}.char-detail-name{font-family:'Bungee',cursive;font-size:24px;margin:0}
+  .char-detail-role{font-family:'Fredoka',sans-serif;font-size:14px;color:var(--text-muted);margin:2px 0 0}
+  .char-detail-desc{font-size:15px;line-height:1.8;margin:0 0 16px}
+  .char-seasons{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+  .char-season-tag{font-family:'Fredoka',sans-serif;font-size:12px;font-weight:600;padding:4px 12px;border-radius:8px}
+  .char-trivia{border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:10px}
+  .char-trivia span:first-child{font-size:18px}.char-trivia span:last-child{font-size:13px;color:var(--accent2);font-style:italic}
+  .filter-row{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:24px}
+  .filter-btn{padding:6px 16px;border-radius:10px;border:none;cursor:pointer;font-family:'Fredoka',sans-serif;font-size:13px;font-weight:500;background:var(--bg-card);color:var(--text-muted);transition:all .2s}.filter-btn.active{background:var(--accent2);color:var(--bg)}
+  .facts-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+  .fact-card{background:var(--bg-card);border-radius:16px;padding:22px;border:1px solid var(--border);transition:all .25s}.fact-card:hover{border-color:rgba(212,160,60,.4);transform:translateY(-2px)}
+  .fact-inner{display:flex;gap:14px;align-items:flex-start}
+  .fact-icon{font-size:28px;flex-shrink:0;background:rgba(212,160,60,.07);border-radius:12px;width:48px;height:48px;display:flex;align-items:center;justify-content:center}
+  .fact-cat{font-family:'Fredoka',sans-serif;font-size:10px;font-weight:600;color:var(--accent2);text-transform:uppercase;letter-spacing:1px}
+  .fact-text{font-size:14px;color:var(--text);margin:4px 0 0;line-height:1.6}
+  .trivia-start-screen{text-align:center;padding:60px 24px;background:var(--bg-card);border-radius:24px;border:1px solid var(--border)}
+  .trivia-start-icon{font-size:72px;margin-bottom:20px;animation:pulseGlow 3s ease-in-out infinite}
+  .trivia-start-title{font-family:'Fredoka',sans-serif;font-size:24px;color:var(--text);margin:0 0 12px}
+  .trivia-start-desc{font-size:15px;color:var(--text-muted);margin:0 0 28px;max-width:420px;margin-left:auto;margin-right:auto;line-height:1.6}
+  .trivia-action-btn{font-family:'Fredoka',sans-serif;font-size:16px;font-weight:600;padding:14px 36px;border:none;border-radius:14px;background:linear-gradient(135deg,#c0392b,#d4a03c);color:#fff;cursor:pointer;transition:all .25s;box-shadow:0 4px 20px rgba(192,57,43,.3)}
+  .trivia-action-btn:hover{transform:translateY(-2px);box-shadow:0 6px 28px rgba(192,57,43,.4)}
+  .trivia-hud{display:flex;justify-content:center;gap:16px;margin-bottom:16px;flex-wrap:wrap}
+  .trivia-hud-item{background:var(--bg-card);border-radius:14px;padding:12px 20px;border:1px solid var(--border);text-align:center;min-width:90px}
+  .trivia-hud-label{display:block;font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;font-family:'Fredoka',sans-serif}
+  .trivia-hud-value{display:block;font-family:'Bungee',cursive;font-size:18px;color:var(--text);margin-top:4px}
+  .trivia-progress-bar{width:100%;height:6px;background:var(--border);border-radius:3px;margin-bottom:24px;overflow:hidden}
+  .trivia-progress-fill{height:100%;border-radius:3px;transition:width .4s;background:linear-gradient(90deg,#c0392b,#d4a03c,#607848);width:0%}
+  .trivia-card{background:var(--bg-card);border-radius:20px;padding:32px;border:1px solid var(--border);max-width:680px;margin:0 auto}
+  .trivia-category{font-family:'Fredoka',sans-serif;font-size:11px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px}
+  .trivia-question{font-family:'Fredoka',sans-serif;font-size:20px;font-weight:600;color:var(--text);margin:0 0 24px;line-height:1.5}
+  .trivia-options{display:flex;flex-direction:column;gap:10px}
+  .trivia-option{width:100%;text-align:left;padding:16px 20px;background:rgba(255,255,255,.03);border:2px solid var(--border);border-radius:14px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:15px;color:var(--text);transition:all .2s;display:flex;align-items:center;gap:12px}
+  .trivia-option:hover:not(.disabled){border-color:rgba(192,57,43,.4);background:rgba(192,57,43,.05);transform:translateX(4px)}
+  .trivia-option .opt-letter{font-family:'Bungee',cursive;font-size:14px;color:var(--text-dim);width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:rgba(255,255,255,.04);border:1px solid var(--border);transition:all .2s}
+  .trivia-option:hover:not(.disabled) .opt-letter{border-color:rgba(192,57,43,.4);color:var(--accent)}
+  .trivia-option.correct{border-color:#607848;background:rgba(96,120,72,.1);animation:fadeUp .3s}.trivia-option.correct .opt-letter{background:#607848;color:#fff;border-color:#607848}
+  .trivia-option.wrong{border-color:#c0392b;background:rgba(192,57,43,.1);animation:fadeUp .3s}.trivia-option.wrong .opt-letter{background:#c0392b;color:#fff;border-color:#c0392b}
+  .trivia-option.disabled{cursor:default;opacity:.5;pointer-events:none}.trivia-option.disabled.correct,.trivia-option.disabled.wrong{opacity:1}
+  .trivia-feedback{margin-top:20px;padding:16px 20px;border-radius:14px;font-family:'Nunito',sans-serif;font-size:14px;line-height:1.6}
+  .trivia-feedback.correct-fb{background:rgba(96,120,72,.08);border:1px solid rgba(96,120,72,.2);color:#8ca868}
+  .trivia-feedback.wrong-fb{background:rgba(192,57,43,.08);border:1px solid rgba(192,57,43,.2);color:#e08080}
+  .trivia-next-btn{margin-top:20px;width:100%;font-size:15px;padding:14px}
+  footer{text-align:center;margin-top:48px;padding:20px;border-top:1px solid var(--border)}footer p{font-size:12px;color:var(--text-dim)}
+</style>
+</head>
+<body>
+<div id="floating-bg"></div>
+<div class="container">
+  <nav class="tab-nav" id="tabNav">
+    <button class="tab-btn active" data-tab="home"><span class="icon">🏠</span> Home</button>
+    <button class="tab-btn" data-tab="timeline"><span class="icon">📜</span> Timeline</button>
+    <button class="tab-btn" data-tab="characters"><span class="icon">👥</span> Characters</button>
+    <button class="tab-btn" data-tab="facts"><span class="icon">🎲</span> Fun Facts</button>
+    <button class="tab-btn" data-tab="trivia"><span class="icon">🧠</span> Trivia</button>
+  </nav>
+
+  <div class="section active fade-in" id="sec-home">
+    <div class="hero"><div class="hero-pattern"></div><div class="hero-content">
+      <div class="hero-island">⚔️</div>
+      <h1>Saga of the Forgotten Warrior</h1>
+      <p class="subtitle">The Universe Guide</p>
+      <p class="meta">by Larry Correia · Baen Books · 2015–2025</p>
+      <div class="stats-row">
+        <div class="stat-box"><div class="num" style="color:var(--accent)">6</div><div class="label">Books</div></div>
+        <div class="stat-box"><div class="num" style="color:var(--accent2)">NYT</div><div class="label">Bestseller</div></div>
+        <div class="stat-box"><div class="num" style="color:var(--accent3)">4</div><div class="label">Castes</div></div>
+        <div class="stat-box"><div class="num" style="color:var(--accent4)">🐉</div><div class="label">Dragon Award</div></div>
+      </div>
+    </div></div>
+    <div class="about-card">
+      <h2>⚔️ What is Saga of the Forgotten Warrior?</h2>
+      <p>Set on the continent of <strong class="hl-r">Lok</strong>, surrounded by a demon-infested ocean, this epic fantasy series follows <strong class="hl-g">Ashok Vadal</strong> — the greatest warrior alive and bearer of the ancient ancestor blade <strong>Angruvadal</strong>. As a <strong class="hl-t">Protector</strong>, Ashok ruthlessly enforced <strong>the Law</strong>, a rigid caste system that replaced all religion after the gods were forgotten. When he discovers his entire life is a lie — that he himself is <strong class="hl-r">casteless</strong>, the lowest of the low — everything changes. Alongside the reluctant prophet <strong class="hl-g">Thera</strong> and the rebel army called the <strong>Sons of the Black Sword</strong>, Ashok wages a war against tyranny, demons, and a conspiracy that threatens all of Lok. The culture of Lok draws heavily from Indian mythology, with its caste system, naming conventions, and echoes of Hindu and Buddhist traditions.</p>
+    </div>
+    <div class="quick-links">
+      <button class="quick-card" data-nav="timeline"><div class="title" style="color:var(--accent)">6 Books</div><div class="desc">Son of the Black Sword → Heart of the Mountain</div></button>
+      <button class="quick-card" data-nav="characters"><div class="title" style="color:var(--accent3)">25 Key Characters</div><div class="desc">Ashok, Thera, Devedas, and the factions of Lok</div></button>
+      <button class="quick-card" data-nav="facts"><div class="title" style="color:var(--accent2)">Deep Lore</div><div class="desc">Ancestor blades, castes, demons, and the forgotten gods</div></button>
+    </div>
+  </div>
+
+  <div class="section" id="sec-timeline">
+    <h2 class="section-heading" style="color:var(--accent)">📜 The Series Timeline</h2>
+    <p class="section-sub">Books and milestones in the saga</p>
+    <div class="timeline-wrap"><div class="timeline-line"></div><div id="timeline-items"></div></div>
+  </div>
+
+  <div class="section" id="sec-characters">
+    <h2 class="section-heading" style="color:var(--accent3)">👥 Key Characters</h2>
+    <p class="section-sub">Tap a character to learn more</p>
+    <div class="char-grid" id="char-grid"></div>
+    <div class="char-detail" id="char-detail"></div>
+  </div>
+
+  <div class="section" id="sec-facts">
+    <h2 class="section-heading" style="color:var(--accent2)">🎲 Fun Facts</h2>
+    <p class="section-sub">Things you might not know about the world of Lok</p>
+    <div class="filter-row" id="filter-row"></div>
+    <div class="facts-grid" id="facts-grid"></div>
+  </div>
+
+  <div class="section" id="sec-trivia">
+    <h2 class="section-heading" style="color:var(--accent)">🧠 Trivia Challenge</h2>
+    <p class="section-sub">Test your knowledge of Lok!</p>
+    <div id="trivia-container">
+      <div id="trivia-start" class="trivia-start-screen">
+        <div class="trivia-start-icon">⚔️</div>
+        <h3 class="trivia-start-title">Are You Worthy of the Black Sword?</h3>
+        <p class="trivia-start-desc">100 questions on characters, castes, lore, and the battles for Lok's future.</p>
+        <button id="trivia-start-btn" class="trivia-action-btn">Draw Your Blade</button>
+      </div>
+      <div id="trivia-game" style="display:none">
+        <div class="trivia-hud">
+          <div class="trivia-hud-item"><span class="trivia-hud-label">Question</span><span class="trivia-hud-value" id="trivia-qnum">1 / 100</span></div>
+          <div class="trivia-hud-item"><span class="trivia-hud-label">Score</span><span class="trivia-hud-value" id="trivia-score">0</span></div>
+          <div class="trivia-hud-item"><span class="trivia-hud-label">Streak</span><span class="trivia-hud-value" id="trivia-streak">🔥 0</span></div>
+        </div>
+        <div class="trivia-progress-bar"><div class="trivia-progress-fill" id="trivia-progress"></div></div>
+        <div class="trivia-card" id="trivia-card">
+          <div class="trivia-category" id="trivia-category"></div>
+          <p class="trivia-question" id="trivia-question">Loading...</p>
+          <div class="trivia-options" id="trivia-options"></div>
+          <div class="trivia-feedback" id="trivia-feedback" style="display:none"></div>
+          <button class="trivia-action-btn trivia-next-btn" id="trivia-next" style="display:none">Next Question →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer><p>Fan-made guide · Saga of the Forgotten Warrior is written by Larry Correia · Published by Baen Books</p></footer>
+</div>
+
+<script>
+const characters=[
+  {name:"Ashok Vadal",emoji:"⚔️",color:"#c0392b",role:"The Forgotten Warrior",seasons:["Books 1-6"],description:"The protagonist — once the most feared Protector in all of Lok. Bearer of the ancestor blade Angruvadal, Ashok enforced the Law without mercy until he discovered he was secretly casteless. This revelation shattered his world and set him on a path from merciless enforcer to reluctant revolutionary and leader of the Sons of the Black Sword. Known as 'Black Hearted Ashok, the finest killer that ever lived.'",trivia:"Known throughout Lok as 'Black Hearted Ashok, the finest killer that ever lived'"},
+  {name:"Thera",emoji:"🔮",color:"#d4a03c",role:"The Prophet",seasons:["Books 1-6"],description:"First daughter of House Vane and a warrior caste woman who was struck by lightning and began hearing 'the Voice' — making her the reluctant Prophet of the Forgotten god. She fights alongside Ashok and leads the faithful refugees seeking a casteless paradise. A capable fighter and diplomatic leader who never wanted the role thrust upon her.",trivia:"Was struck by lightning and began hearing the Voice of the Forgotten god"},
+  {name:"Devedas",emoji:"🛡️",color:"#6888a0",role:"Lord Protector",seasons:["Books 1-6"],description:"Once Ashok's closest friend and brother-in-arms, Devedas becomes Lord Protector and is tasked with hunting down the man he grew up with. Consumed by resentment and ambition, he's manipulated by Omand into becoming a puppet king. A tragic figure torn between duty, friendship, and his own darker impulses.",trivia:"Ashok's former best friend turned into his most dangerous hunter"},
+  {name:"Omand Vokkan",emoji:"🎭",color:"#484050",role:"Grand Inquisitor",seasons:["Books 1-6"],description:"The primary antagonist — Grand Inquisitor of the Order of Inquisition. A brilliant, ruthless schemer who orchestrates the Great Extermination to genocide the casteless. He seeks to become a god by striking a secret bargain with a demon. Wears a horrifying mask with sharp horns and leering teeth.",trivia:"Struck a secret bargain with a demon to gain the power of the ancient gods"},
+  {name:"Keta",emoji:"📜",color:"#607848",role:"Keeper of Names",seasons:["Books 1-6"],description:"The Keeper of Names — a religious title passed down among the faithful who secretly preserve the old ways. Keta is a former slave who carries a butcher's cleaver (a 'tool, not a weapon'). He becomes a great spiritual leader of the rebellion and guides Thera in her role as Prophet.",trivia:"Carries a butcher's cleaver and insists it's 'a tool, not a weapon'"},
+  {name:"Jagdish",emoji:"🗡️",color:"#b07030",role:"Commander / Sons of the Black Sword",seasons:["Books 2-6"],description:"A warrior caste officer who was dishonored in a fight with Ashok and wants to regain his honor by defeating Ashok in a fair duel. To gain the necessary skill, he takes swordsmanship lessons — from Ashok himself. Eventually becomes a key commander of the Sons of the Black Sword and Ashok's vitriolic best friend.",trivia:"Takes sword lessons from Ashok to get good enough to defeat Ashok in a duel"},
+  {name:"Rada",emoji:"📖",color:"#8070a0",role:"The Librarian",seasons:["Books 1-6"],description:"A first-caste Archivist and reluctant adventurer who prefers books to people. She uncovers crucial information in the Capitol's libraries and archives. Her discovery of historical truths proves vital to understanding Lok's real history and the conspiracy surrounding the casteless.",trivia:"An antisocial bookworm who becomes a reluctant but vital adventurer"},
+  {name:"Gutch",emoji:"💰",color:"#a08850",role:"Criminal Turned Ally",seasons:["Books 2-6"],description:"A resourceful criminal and smuggler who becomes an unlikely ally of the rebellion. Gutch brings street smarts, underworld connections, and creative problem-solving to the Sons of the Black Sword. Despite his shady past, he proves loyal and capable.",trivia:"A former criminal whose underworld connections become invaluable to the rebellion"},
+  {name:"Ratul",emoji:"⚡",color:"#886040",role:"Protector / Black Swan Agent",seasons:["Books 1-4"],description:"A gruff, harsh senior Protector who served as a sink-or-swim mentor to Ashok and other acolytes. Secretly an agent working with deeper plans for the continent. His testimony reveals hidden truths about the Protector Order and the nature of the world.",trivia:"A gruff mentor whose secret testimony reveals hidden truths about the world"},
+  {name:"Mother Dawn",emoji:"🌅",color:"#c08860",role:"The Ancient One",seasons:["Books 1-6"],description:"A mysterious old woman with cataracts whom the casteless revere. She has been setting preparations in place across the entire continent of Lok in accordance with a long-term plan. Revealed to be far more than merely human — her true nature is one of the series' deepest mysteries.",trivia:"Revealed to be far more than human — she's been planning across the entire continent"},
+  {name:"Angruvadal",emoji:"🗡️",color:"#202020",role:"The Ancestor Blade",seasons:["Books 1-2"],description:"Ashok's sentient ancestor blade — a weapon forged from black steel that chooses its own bearer. It imparts the martial prowess of all its previous wielders into the current owner. If touched by someone unworthy, it may injure or kill them. Shattered in Book 2 during a battle with a demon-possessed warrior.",trivia:"A sentient weapon that can kill anyone it deems unworthy of wielding it"},
+  {name:"Harta Vadal",emoji:"🏛️",color:"#706040",role:"Thakoor of House Vadal",seasons:["Books 1-6"],description:"Ashok's political 'brother' and the Thakoor (ruler) of Great House Vadal. A Machiavellian leader who is surprisingly strong and capable despite his scheming nature. Cares deeply for his House even as he plays dangerous political games with other Houses and the Capitol.",trivia:"A cunning Machiavellian ruler who nonetheless genuinely cares for House Vadal"},
+  {name:"Nandan Somsak",emoji:"🐍",color:"#505030",role:"Villain / House Somsak",seasons:["Books 1-3"],description:"A treacherous nobleman from Great House Somsak who makes deals with dark forces to destroy Ashok. Allies with the Lost House wizards and uses any underhanded means to gain power. Represents the corruption and cruelty of the first caste at its worst.",trivia:"Made a deal with the Lost House wizards just to have a chance at destroying Ashok"},
+  {name:"Sikasso",emoji:"🔄",color:"#584860",role:"Shapeshifting Wizard",seasons:["Books 1-3"],description:"A powerful wizard from the Lost House who can change his physical shape using black steel technology. He kidnaps Thera for her powers of precognition and holds her prisoner in the House of Assassins. His shapeshifting is revealed to work by rearranging atomic structure.",trivia:"His shapeshifting works by rearranging atomic structure using black steel"},
+  {name:"Mindarin",emoji:"🎯",color:"#608880",role:"Protector",seasons:["Books 3-6"],description:"An eloquent and philosophical Protector who serves as a counterpoint to Ratul's gruff approach. One of the leaders of the Protector Order who must navigate the organization's role as Lok descends into chaos and civil war.",trivia:"An eloquent, philosophical Protector — the calm counterpart to Ratul's harshness"},
+  {name:"Shekar Somsak",emoji:"🔥",color:"#a04030",role:"Havildar / Sons of the Black Sword",seasons:["Books 3-6"],description:"A Havildar (sergeant) of the Sons of the Black Sword from House Somsak. Smart and crafty but still fundamentally a wild, crazy thug. Forms an effective contrast with the more organized Eklayeva.",trivia:"Smart and crafty but still fundamentally a wild, crazy thug at heart"},
+  {name:"Eklayeva",emoji:"🏹",color:"#506878",role:"Havildar / Sons of the Black Sword",seasons:["Books 3-6"],description:"A Havildar of the Sons of the Black Sword from the Kharsawan. Organized, calm, and collected — the polar opposite of Shekar. Together they represent the two styles of rebel leadership under Ashok and Jagdish.",trivia:"Calm and organized — the perfect counterbalance to Shekar's wild nature"},
+  {name:"Pakpa",emoji:"🌾",color:"#a8a060",role:"Jagdish's Wife",seasons:["Books 2-6"],description:"A worker-caste woman married to Jagdish in what was meant as a deliberate insult — matching a warrior with a worker. Against all expectations, their arranged marriage becomes genuine and loving. She proves far more capable and intelligent than her caste would suggest.",trivia:"Her arranged marriage to Jagdish was meant as an insult but became a true partnership"},
+  {name:"Ramrowan",emoji:"🌟",color:"#d0a020",role:"The Ancient Hero (Legendary)",seasons:["Backstory"],description:"The legendary hero sent by the gods to save mankind from the demons. He united the tribes, gave them magic, and drove the demons into the sea. His descendants became the first kings. When they grew tyrannical, the people overthrew them — and his descendants became the casteless.",trivia:"His descendants went from being kings to being the despised casteless untouchables"},
+  {name:"Karno",emoji:"💪",color:"#707880",role:"Protector",seasons:["Books 2-6"],description:"A large, powerful Protector known for his immense physical strength. Initially sent to hunt Ashok but finds himself questioning the rigid absolutes of the Law as he witnesses the realities on the ground. One of the more nuanced members of the Protector Order.",trivia:"Sent to hunt Ashok but begins questioning the rigid absolutes of the Law"},
+  {name:"Bidaya",emoji:"👑",color:"#906050",role:"First-Caste Noble",seasons:["Books 1-3"],description:"A first-caste noblewoman who hosts a memorable party where Ashok attempts (and fails) to smile diplomatically. She represents the pampered, disconnected first caste who benefit from the system while remaining willfully ignorant of its cruelty.",trivia:"Hosted a party where Ashok tried to smile — it made everything worse"},
+  {name:"Chattarak",emoji:"⚒️",color:"#686870",role:"Worker Caste Leader",seasons:["Books 3-6"],description:"A worker-caste man who rises to become an important figure in the rebellion. Represents the silent majority of Lok's population who are neither privileged nor casteless but caught between the extremes of the caste system.",trivia:"A worker-caste man whose rise shows the rebellion reaches beyond just the casteless"},
+  {name:"Thera's Father",emoji:"🦅",color:"#806848",role:"First Daughter's Father / Vane",seasons:["Books 1-2"],description:"Thera was the first daughter of House Vane and very close to her father. Her mother died while she was young. Her warrior heritage and her father's influence shaped her into the capable fighter she became before the Voice changed her destiny.",trivia:"Thera was his first daughter — she was very close to him before destiny called"},
+  {name:"Protector Acolytes",emoji:"⚡",color:"#585858",role:"Trainees",seasons:["Backstory"],description:"Young candidates selected to join the Protector Order undergo brutal sink-or-swim training. Devedas nearly died at age fourteen during his acolyte trials. The training produces the superhuman warriors who enforce the Law, but at a terrible physical and psychological cost.",trivia:"Devedas nearly died at fourteen during the brutal sink-or-swim training"},
+  {name:"The Demons",emoji:"🐙",color:"#303840",role:"Oceanic Horrors",seasons:["Books 1-6"],description:"Ancient beings that infest the oceans surrounding Lok. They emerge without warning to annihilate all in their path. Attacks usually only end when they run out of victims. After the War of the Gods, they were cast into the sea — but they never stopped trying to return. One demon strikes a bargain with Omand.",trivia:"They attack from the ocean without warning and annihilate everything in their path"},
+];
+
+const timeline=[
+  {year:"2015",title:"Son of the Black Sword (Book 1)",desc:"The series debut introduces Ashok Vadal, the continent of Lok, and its brutal caste system. Ashok discovers he is secretly casteless, shattering his identity as the Law's greatest enforcer. Wins the 2016 Dragon Award for Best Fantasy Novel.",season:"Book",icon:"⚔️",color:"#c0392b"},
+  {year:"2016",title:"Dragon Award Winner",desc:"Son of the Black Sword wins Best Fantasy Novel at the inaugural Dragon Awards. Also nominated for the 2015 AML Award and the 2016 Gemmell Legend Award. Places ninth in the Locus Award for Best Fantasy Novel readers' poll.",season:"Award",icon:"🏆",color:"#d4a03c"},
+  {year:"2019",title:"House of Assassins (Book 2)",desc:"Angruvadal is shattered. Ashok must fight without his ancestor blade for the first time while rescuing Thera from the shapeshifting wizard Sikasso. Strange forces work behind the scenes as the rebellion grows.",season:"Book",icon:"🗡️",color:"#c0392b"},
+  {year:"2020",title:"Destroyer of Worlds (Book 3)",desc:"Grand Inquisitor Omand launches the Great Extermination — a genocide of all casteless. Devedas hunts his former best friend. The rebels seek a legendary casteless paradise while battles rage across Lok.",season:"Book",icon:"🔥",color:"#c0392b"},
+  {year:"2023",title:"Tower of Silence (Book 4)",desc:"Ashok is imprisoned on the island fortress surrounded by demon-infested seas. He must escape and cross the ocean to return to Thera. Meanwhile, Omand launches a coup to install Devedas as his puppet king.",season:"Book",icon:"🏰",color:"#6888a0"},
+  {year:"2024",title:"Graveyard of Demons (Book 5)",desc:"Ashok returns from Fortress to find Lok in chaos. The Sons of the Black Sword wage war against the warrior caste. Thera's visions rally the faithful. Battles against both human enemies and supernatural forces intensify.",season:"Book",icon:"💀",color:"#607848"},
+  {year:"2025",title:"Heart of the Mountain (Book 6)",desc:"The final novel. What happens after the War of the Gods? The answer lies in the Heart of the Mountain. Ashok, Thera, and the Sons face the ultimate confrontation for the future of Lok. The saga concludes.",season:"Book",icon:"⛰️",color:"#d4a03c"},
+];
+
+const funFacts=[
+  {fact:"The culture of Lok is heavily inspired by Indian civilization — the caste system, naming conventions, and echoes of Hindu and Buddhist traditions permeate the world.",icon:"🌏",category:"World"},
+  {fact:"Ancestor blades are sentient weapons forged from black steel that choose their own bearers. If an unworthy person touches one, the blade may kill them.",icon:"⚔️",category:"Lore"},
+  {fact:"The Protector Order's Heart of the Mountain artifact grants superhuman abilities — enhanced strength, heightened senses, faster healing — but only one at a time.",icon:"💎",category:"Lore"},
+  {fact:"Son of the Black Sword won the Dragon Award for Best Fantasy Novel in 2016, the first year the award existed.",icon:"🏆",category:"Author"},
+  {fact:"Larry Correia is also the creator of the Monster Hunter International series and the Grimnoir Chronicles — all New York Times bestsellers.",icon:"📚",category:"Author"},
+  {fact:"The series has hints of a hidden sci-fi background. Sikasso's shapeshifting is explained as rearranging atomic structure using black steel.",icon:"🔬",category:"Lore"},
+  {fact:"Lok's caste system has four levels: First Caste (rulers/judges), Warrior Caste, Worker Caste, and the casteless 'untouchables' who aren't even considered people.",icon:"⚖️",category:"World"},
+  {fact:"The casteless are actually descendants of the ancient kings — the Sons of Ramrowan — who were overthrown and stripped of all status.",icon:"👑",category:"Lore"},
+  {fact:"All religion was banned in Lok and replaced by the Law after the people stopped believing in the gods and overthrew the old religious rulers.",icon:"📜",category:"World"},
+  {fact:"Demons infest the ocean surrounding Lok, making sea travel essentially impossible and leaving the continent completely isolated from the outside world.",icon:"🌊",category:"World"},
+  {fact:"The Inquisitors wear terrifying masks with sharp horns and leering teeth — Omand's mask is particularly intimidating.",icon:"🎭",category:"Characters"},
+  {fact:"Ashok's attempt to smile diplomatically at a noble's party 'actually made things worse, so he stopped.' His social skills are legendarily bad.",icon:"😐",category:"Characters"},
+  {fact:"The 'Fortress rods' are essentially early firearms — gunpowder weapons that are known but extremely rare in Lok's main civilization.",icon:"💥",category:"Lore"},
+  {fact:"Tim Gerard Reynolds narrates the audiobook series, with each book running over 16 hours in length.",icon:"🎧",category:"Author"},
+  {fact:"Before becoming a full-time writer, Larry Correia was a military contract accountant, competitive shooter, and small business manager.",icon:"✍️",category:"Author"},
+  {fact:"The Great Houses of Lok constantly vie for power, raiding and warring with neighbors — making the political intrigue as deadly as the demon attacks.",icon:"🏛️",category:"World"},
+];
+
+// ═══════════ ENGINE ═══════════
+(function(){const o=["⚔️","🗡️","🛡️","🔥","💀","🏛️","⛰️","🌊","🐙","📜","👑","🎭"];const c=document.getElementById('floating-bg');
+o.forEach(e=>{const d=document.createElement('div');d.className='float-obj';d.textContent=e;d.style.setProperty('--dur',(20+Math.random()*30)+'s');d.style.setProperty('--delay',(-Math.random()*20)+'s');d.style.setProperty('--opa',(0.05+Math.random()*0.05));d.style.setProperty('--size',(14+Math.random()*16)+'px');d.style.setProperty('--x',(Math.random()*100)+'%');d.style.setProperty('--y',(Math.random()*100)+'%');c.appendChild(d)})})();
+
+let activeTab='home';
+function switchTab(t){activeTab=t;document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===t));document.querySelectorAll('.section').forEach(s=>{s.classList.remove('active');if(s.id==='sec-'+t){s.classList.add('active');s.classList.remove('fade-in');void s.offsetWidth;s.classList.add('fade-in')}});window.scrollTo({top:0,behavior:'smooth'})}
+document.getElementById('tabNav').addEventListener('click',e=>{const b=e.target.closest('.tab-btn');if(b)switchTab(b.dataset.tab)});
+document.querySelectorAll('.quick-card[data-nav]').forEach(c=>{c.addEventListener('click',()=>switchTab(c.dataset.nav));const cl=c.querySelector('.title').style.color;c.addEventListener('mouseenter',()=>{c.style.borderColor=cl});c.addEventListener('mouseleave',()=>{c.style.borderColor=''})});
+
+(function(){const w=document.getElementById('timeline-items');let ei=-1;
+timeline.forEach((it,i)=>{const cl=it.color||'#c0392b';const d=document.createElement('div');d.className='timeline-item';d.style.setProperty('--tl-color',cl);
+d.innerHTML=`<div class="timeline-dot" style="background:${cl};box-shadow:0 0 12px ${cl}44"></div><div class="tl-card"><div class="tl-header"><span class="tl-icon">${it.icon}</span><span class="tl-year" style="color:${cl};background:${cl}18">${it.year}</span><span class="tl-season-tag">${it.season}</span></div><h3 class="tl-title">${it.title}</h3><p class="tl-desc">${it.desc}</p>${it.desc.length>80?`<span class="tl-toggle" style="color:${cl}">▼ More</span>`:''}</div>`;
+d.addEventListener('click',()=>{const c=d.querySelector('.tl-card'),t=d.querySelector('.tl-toggle');if(ei===i){c.classList.remove('expanded');if(t)t.textContent='▼ More';ei=-1}else{w.querySelectorAll('.tl-card.expanded').forEach(x=>{x.classList.remove('expanded');const y=x.parentElement.querySelector('.tl-toggle');if(y)y.textContent='▼ More'});c.classList.add('expanded');if(t)t.textContent='▲ Less';ei=i}});w.appendChild(d)})})();
+
+(function(){const g=document.getElementById('char-grid'),dt=document.getElementById('char-detail');let si=-1;
+characters.forEach((c,i)=>{const b=document.createElement('button');b.className='char-btn';b.style.setProperty('--char-color',c.color);
+b.innerHTML=`<span class="char-emoji">${c.emoji}</span><span class="char-name">${c.name}</span><span class="char-role">${c.role}</span>`;
+b.addEventListener('mouseenter',()=>{if(si!==i)b.style.borderColor=c.color+'66'});b.addEventListener('mouseleave',()=>{if(si!==i)b.style.borderColor=''});
+b.addEventListener('click',()=>{if(si===i){si=-1;b.classList.remove('selected');b.style.borderColor='';dt.classList.remove('visible');return}
+g.querySelectorAll('.char-btn').forEach(x=>{x.classList.remove('selected');x.style.borderColor='';x.style.background=''});si=i;b.classList.add('selected');b.style.borderColor=c.color;b.style.background=c.color+'18';
+const sh=c.seasons.map(s=>`<span class="char-season-tag" style="background:${c.color}18;color:${c.color}">${s}</span>`).join('');
+dt.innerHTML=`<div class="char-detail-header"><span class="char-detail-emoji" style="filter:drop-shadow(0 0 15px ${c.color}88)">${c.emoji}</span><div><h3 class="char-detail-name" style="color:${c.color}">${c.name}</h3><p class="char-detail-role">${c.role}</p></div></div><p class="char-detail-desc">${c.description}</p><div class="char-seasons">${sh}</div><div class="char-trivia" style="background:${c.color}0a;border:1px solid ${c.color}22"><span>💡</span><span>${c.trivia}</span></div>`;
+dt.style.borderColor=c.color+'44';dt.style.boxShadow=`0 0 40px ${c.color}10`;dt.classList.remove('visible');void dt.offsetWidth;dt.classList.add('visible');dt.scrollIntoView({behavior:'smooth',block:'nearest'})});g.appendChild(b)})})();
+
+(function(){const fr=document.getElementById('filter-row'),fg=document.getElementById('facts-grid');const cats=['All',...new Set(funFacts.map(f=>f.category))];
+function render(fl){const fi=fl==='All'?funFacts:funFacts.filter(f=>f.category===fl);fg.innerHTML='';fi.forEach((f,i)=>{const c=document.createElement('div');c.className='fact-card fade-in-delay';c.style.animationDelay=(i*.05)+'s';c.innerHTML=`<div class="fact-inner"><span class="fact-icon">${f.icon}</span><div><div class="fact-cat">${f.category}</div><p class="fact-text">${f.fact}</p></div></div>`;fg.appendChild(c)})}
+cats.forEach(c=>{const b=document.createElement('button');b.className='filter-btn'+(c==='All'?' active':'');b.textContent=c;b.addEventListener('click',()=>{fr.querySelectorAll('.filter-btn').forEach(x=>x.classList.toggle('active',x.textContent===c));render(c)});fr.appendChild(b)});render('All')})();
+
+// ═══════════ TRIVIA ═══════════
+(function(){const Q=[
+// Characters (1-25)
+{q:"Who is the protagonist of the Saga of the Forgotten Warrior?",a:"Ashok Vadal",d:["Devedas","Keta","Jagdish"],cat:"Characters"},
+{q:"What is Ashok's famous epithet throughout Lok?",a:"Black Hearted Ashok, the finest killer that ever lived",d:["The Demon Slayer","The Lawbreaker","The Casteless King"],cat:"Characters"},
+{q:"What is Thera's role in the rebellion?",a:"The Prophet of the Forgotten god",d:["The General","The Keeper of Names","The Healer"],cat:"Characters"},
+{q:"How did Thera gain her prophetic powers?",a:"She was struck by lightning",d:["She touched an ancestor blade","She was born with them","A demon granted them"],cat:"Characters"},
+{q:"What is Devedas' relationship to Ashok?",a:"Former best friend and brother-in-arms",d:["Biological brother","Sworn enemy from birth","Teacher and student"],cat:"Characters"},
+{q:"What title does Devedas hold?",a:"Lord Protector",d:["Grand Inquisitor","Thakoor","Keeper of Names"],cat:"Characters"},
+{q:"Who is the Grand Inquisitor and primary villain?",a:"Omand Vokkan",d:["Nandan Somsak","Sikasso","Harta Vadal"],cat:"Characters"},
+{q:"What does Omand secretly bargain with?",a:"A demon",d:["The Forgotten god","An ancestor blade","The Lost House"],cat:"Characters"},
+{q:"What is Keta's title?",a:"Keeper of Names",d:["Keeper of the Law","Keeper of Blades","Keeper of the Faith"],cat:"Characters"},
+{q:"What weapon does Keta carry?",a:"A butcher's cleaver (which he insists is 'a tool, not a weapon')",d:["An ancestor blade","A Fortress rod","A ceremonial dagger"],cat:"Characters"},
+{q:"Why does Jagdish take sword lessons from Ashok?",a:"To get skilled enough to defeat Ashok in an honor duel",d:["To join the Protectors","To impress Thera","To defend his House"],cat:"Characters"},
+{q:"What is Rada's occupation?",a:"Archivist / Librarian",d:["Healer","Warrior","Merchant"],cat:"Characters"},
+{q:"What is the name of Ashok's ancestor blade?",a:"Angruvadal",d:["Ramrowan","Vadal's Fang","The Black Sword"],cat:"Characters"},
+{q:"What happens to Angruvadal in Book 2?",a:"It is shattered fighting a demon-possessed warrior",d:["Ashok loses it at sea","Devedas steals it","It returns to the mountain"],cat:"Characters"},
+{q:"Who is the shapeshifting wizard who kidnaps Thera?",a:"Sikasso",d:["Omand","Nandan","Ratul"],cat:"Characters"},
+{q:"Who is the Thakoor of Great House Vadal?",a:"Harta Vadal",d:["Ashok Vadal","Nandan Somsak","Devedas"],cat:"Characters"},
+{q:"What was Jagdish's wife Pakpa's caste?",a:"Worker caste",d:["First caste","Warrior caste","Casteless"],cat:"Characters"},
+{q:"Why was Jagdish's marriage to Pakpa meant as an insult?",a:"Matching a warrior with a worker-caste woman was a deliberate humiliation",d:["Pakpa was casteless","She was from an enemy House","She was too old"],cat:"Characters"},
+{q:"Who is Mother Dawn?",a:"A mysterious ancient figure revealed to be more than human",d:["Thera's mother","A Protector leader","A first-caste judge"],cat:"Characters"},
+{q:"What is the name of the rebel army?",a:"The Sons of the Black Sword",d:["The Army of Ramrowan","The Forgotten Legion","The Casteless Guard"],cat:"Characters"},
+{q:"What did Omand want the Great Extermination to accomplish?",a:"The genocide of every casteless person in Lok",d:["Destruction of all ancestor blades","Killing the demons","Overthrowing the Council"],cat:"Characters"},
+{q:"Who was the legendary ancient hero who saved mankind?",a:"Ramrowan",d:["Ashok","Vadal","Angruvadal"],cat:"Characters"},
+{q:"What happened to Ashok at Bidaya's party?",a:"He tried to smile diplomatically and made things worse",d:["He killed a demon","He broke the Law","He drew his sword"],cat:"Characters"},
+{q:"Who narrates the audiobook series?",a:"Tim Gerard Reynolds",d:["Steven Pacey","Nick Podehl","Travis Baldree"],cat:"Meta"},
+{q:"What was Ashok's role before discovering he was casteless?",a:"Senior Protector and enforcer of the Law",d:["Thakoor of House Vadal","Grand Inquisitor","Keeper of Names"],cat:"Characters"},
+// World & Castes (26-50)
+{q:"What is the name of the continent where the series takes place?",a:"Lok",d:["Pangaea","Ashara","Vadhana"],cat:"World"},
+{q:"How many castes does Lok's society have?",a:"Four (plus the casteless)",d:["Three","Five","Seven"],cat:"World"},
+{q:"What is the First Caste?",a:"Rulers, judges, and nobility",d:["Warriors","Workers","Priests"],cat:"World"},
+{q:"What surrounds the continent of Lok?",a:"A demon-infested ocean",d:["A magical barrier","Mountains","An endless desert"],cat:"World"},
+{q:"What replaced religion in Lok?",a:"The Law — a rigid legal and social code",d:["Science","The Protector Order","Democracy"],cat:"World"},
+{q:"Why were the casteless made untouchables?",a:"They're descendants of the overthrown kings and their priests",d:["They committed crimes","They lost a war","They refused to work"],cat:"World"},
+{q:"What are the Great Houses of Lok?",a:"Powerful noble families that control territories and vie for power",d:["Religious temples","Military bases","Trading companies"],cat:"World"},
+{q:"What do the Protectors do?",a:"Enforce the Law and protect Lok from demons",d:["Guard the casteless","Serve as judges","Trade between Houses"],cat:"World"},
+{q:"What supernatural ability do Protectors gain?",a:"Enhanced strength, senses, healing from the Heart of the Mountain",d:["They can fly","They control fire","They read minds"],cat:"World"},
+{q:"What limitation does the Heart of the Mountain have?",a:"It can only enhance one ability at a time",d:["It only works at night","It drains lifespan","It only lasts one hour"],cat:"World"},
+{q:"What are ancestor blades made from?",a:"Black steel",d:["Dragon bone","Demon metal","Enchanted iron"],cat:"Lore"},
+{q:"What makes ancestor blades special?",a:"They're sentient and impart all previous bearers' skills to the current wielder",d:["They can cut through anything","They fly to their owner","They shoot lightning"],cat:"Lore"},
+{q:"What happens if an unworthy person touches an ancestor blade?",a:"The blade may injure or kill them",d:["Nothing happens","They become casteless","The blade breaks"],cat:"Lore"},
+{q:"What is the Order of Inquisition?",a:"A secretive order that investigates heresy and enforces orthodoxy",d:["The warrior caste's army","A merchant guild","A religious order"],cat:"World"},
+{q:"What do Inquisitors wear?",a:"Terrifying masks with sharp horns and leering teeth",d:["White robes","Plain armor","No distinctive uniform"],cat:"World"},
+{q:"What are 'Fortress rods'?",a:"Primitive gunpowder weapons — essentially early firearms",d:["Demon-killing spears","Magical staffs","Prison bars"],cat:"Lore"},
+{q:"Where is the Fortress located?",a:"On an island surrounded by demon-infested seas",d:["On top of a mountain","In the Capitol","Underground"],cat:"World"},
+{q:"What is the casteless' real heritage?",a:"They are descendants of the great hero Ramrowan and the original kings",d:["They are descended from demons","They are from another continent","They are fallen Protectors"],cat:"Lore"},
+{q:"What did Ramrowan do for mankind?",a:"United the tribes, gave them magic, and drove demons into the sea",d:["Built the Capitol","Created the Law","Forged the ancestor blades"],cat:"Lore"},
+{q:"What happened to the old religion of Lok?",a:"It was banned and all religious practice became illegal",d:["It evolved into the Law","People just forgot","The gods destroyed it"],cat:"World"},
+{q:"What is a Thakoor?",a:"The ruler of a Great House",d:["A priest","A Protector rank","A judge"],cat:"World"},
+{q:"What is the Capitol?",a:"The seat of government and the Judges who rule Lok",d:["The largest Great House","A prison","A temple"],cat:"World"},
+{q:"What does the Warrior Caste value above all?",a:"Honor and duty",d:["Wealth","Knowledge","Family"],cat:"World"},
+{q:"How does Sikasso's shapeshifting work?",a:"By rearranging atomic structure using black steel",d:["Through demon possession","With magical potions","By illusion"],cat:"Lore"},
+{q:"What paradise do the casteless rebels seek?",a:"A secret kingdom with no castes where people rule themselves",d:["The demon realm","The old Capitol","An island fortress"],cat:"Lore"},
+// Books & Plot (51-75)
+{q:"What is Book 1 titled?",a:"Son of the Black Sword",d:["House of Assassins","Destroyer of Worlds","Heart of the Mountain"],cat:"Books"},
+{q:"What is Book 2 titled?",a:"House of Assassins",d:["Tower of Silence","Graveyard of Demons","Destroyer of Worlds"],cat:"Books"},
+{q:"What is Book 3 titled?",a:"Destroyer of Worlds",d:["Tower of Silence","Son of the Black Sword","Graveyard of Demons"],cat:"Books"},
+{q:"What is Book 4 titled?",a:"Tower of Silence",d:["Graveyard of Demons","Heart of the Mountain","House of Assassins"],cat:"Books"},
+{q:"What is Book 5 titled?",a:"Graveyard of Demons",d:["Heart of the Mountain","Destroyer of Worlds","Tower of Silence"],cat:"Books"},
+{q:"What is the final book (Book 6) titled?",a:"Heart of the Mountain",d:["Son of the Black Sword","Graveyard of Demons","Tower of Silence"],cat:"Books"},
+{q:"Who published the series?",a:"Baen Books",d:["Tor","Del Rey","Orbit"],cat:"Books"},
+{q:"What award did Son of the Black Sword win?",a:"Dragon Award for Best Fantasy Novel (2016)",d:["Hugo Award","Nebula Award","World Fantasy Award"],cat:"Books"},
+{q:"What year was Son of the Black Sword published?",a:"2015",d:["2017","2013","2019"],cat:"Books"},
+{q:"What year did the series conclude with Heart of the Mountain?",a:"2025",d:["2024","2023","2026"],cat:"Books"},
+{q:"What is the 'Great Extermination' in Book 3?",a:"Omand's plan to genocide every casteless person in Lok",d:["A demon invasion","A plague","A natural disaster"],cat:"Books"},
+{q:"Where is Ashok imprisoned in Book 4?",a:"On the island of Fortress",d:["In the Capitol","In a mountain cave","In the House of Assassins"],cat:"Books"},
+{q:"What must Ashok cross to escape Fortress?",a:"The demon-infested sea",d:["A mountain range","A desert","An underground tunnel"],cat:"Books"},
+{q:"What does Omand try to install Devedas as?",a:"His puppet king",d:["Grand Inquisitor","Head Protector","A judge"],cat:"Books"},
+{q:"What does Omand ultimately seek to become?",a:"A god",d:["King of Lok","Lord Protector","Immortal"],cat:"Books"},
+{q:"How many books are in the complete series?",a:"Six",d:["Five","Seven","Four"],cat:"Books"},
+{q:"What other series is Larry Correia best known for?",a:"Monster Hunter International",d:["The Stormlight Archive","The First Law","Malazan Book of the Fallen"],cat:"Meta"},
+{q:"What is the Grimnoir Chronicles?",a:"Another fantasy series by Larry Correia",d:["A prequel to the Saga","An in-world history book","A graphic novel adaptation"],cat:"Meta"},
+{q:"What is Larry Correia's home state?",a:"Utah",d:["Texas","Colorado","Montana"],cat:"Meta"},
+{q:"What was Correia's profession before writing?",a:"Military contract accountant and competitive shooter",d:["Soldier","Teacher","Blacksmith"],cat:"Meta"},
+{q:"What fighting style is Ashok associated with?",a:"Sword combat with an ancestor blade",d:["Hand-to-hand martial arts","Archery","Spear fighting"],cat:"Characters"},
+{q:"What were demon attacks on Lok like?",a:"Sudden oceanic incursions that annihilate everything in their path",d:["Slow sieges","Aerial attacks","Underground ambushes"],cat:"Lore"},
+{q:"What typically ends a demon attack?",a:"They run out of victims and return to the ocean",d:["Sunlight drives them away","Ancestor blades scare them","They dissolve after 24 hours"],cat:"Lore"},
+{q:"What is black steel?",a:"A mysterious material from which ancestor blades and other artifacts are forged",d:["Regular iron painted black","Demon bone","Volcanic glass"],cat:"Lore"},
+{q:"Publishers Weekly described Book 1 as having what qualities?",a:"Full of action, intrigue, and wry humor with complex, sympathetic characters",d:["Slow but thoughtful","Pure action with no depth","Experimental and literary"],cat:"Meta"},
+// Mixed Advanced (76-100)
+{q:"What is the War of the Gods?",a:"An ancient conflict after which demons were cast into the sea",d:["A current civil war","A battle between Great Houses","A Protector training exercise"],cat:"Lore"},
+{q:"What did the descendants of Ramrowan become?",a:"First kings, then tyrants, then the overthrown casteless",d:["The Protectors","The Inquisitors","The demons"],cat:"Lore"},
+{q:"Why did the people of Lok overthrow the kings?",a:"The kings grew tyrannical and their religion became an excuse for greed",d:["The demons told them to","A plague killed the kings","The Law was always there"],cat:"Lore"},
+{q:"What makes Ashok unique among Protectors?",a:"He was secretly casteless — someone not legally a person",d:["He has two ancestor blades","He can control demons","He's immortal"],cat:"Characters"},
+{q:"What is a 'bearer' of an ancestor blade?",a:"The person chosen by the sentient blade to wield it",d:["Anyone strong enough to lift it","The firstborn of a Great House","A Protector assigned one"],cat:"Lore"},
+{q:"What caste was Thera born into?",a:"Warrior caste (First Daughter of Vane)",d:["First caste","Worker caste","Casteless"],cat:"Characters"},
+{q:"What drives Devedas' conflict?",a:"Resentment toward Ashok combined with genuine loyalty to the Law",d:["Greed for power","Revenge for a family death","Demon possession"],cat:"Characters"},
+{q:"How does Nandan Somsak try to destroy Ashok?",a:"By making a deal with the Lost House wizards",d:["By poisoning him","By challenging him to a duel","By hiring assassins"],cat:"Characters"},
+{q:"What is the 'House of Assassins'?",a:"Sikasso's stronghold where Thera is held prisoner",d:["A warrior caste training school","Omand's headquarters","The Capitol dungeon"],cat:"Lore"},
+{q:"What is the Lost House?",a:"A secretive faction of wizards operating outside normal Lok society",d:["A destroyed Great House","The casteless homeland","A demon cult"],cat:"Lore"},
+{q:"What revelation about Ratul is significant?",a:"His secret testimony reveals hidden truths about the world and Protector Order",d:["He is Ashok's father","He is a demon in disguise","He created the Law"],cat:"Characters"},
+{q:"What makes Ashok's social skills notable?",a:"They are legendarily terrible — he cannot smile without making things worse",d:["He is an excellent diplomat","He speaks many languages","He is a charming leader"],cat:"Characters"},
+{q:"What does the Worker Caste include?",a:"Traders, artisans, cooks, and many other professions",d:["Only farmers","Only soldiers","Only servants"],cat:"World"},
+{q:"How does Jim Butcher describe Son of the Black Sword?",a:"'This book has everything I like in fantasy' with intense action and gorgeously flawed humans",d:["'A good first effort'","'Needs more magic'","'Similar to my own work'"],cat:"Meta"},
+{q:"What happens when Ashok finally decides to protect casteless children?",a:"It marks his break from blindly following the Law",d:["He is immediately arrested","Nothing changes","He becomes casteless"],cat:"Characters"},
+{q:"What is unique about Lok's relationship with magic?",a:"Magic was given by the gods through Ramrowan but is now mostly forgotten or forbidden",d:["There is no magic in Lok","Everyone can use magic","Only demons have magic"],cat:"Lore"},
+{q:"What is the significance of the 'Voice' Thera hears?",a:"It's the voice of the Forgotten god communicating through the Prophet",d:["It's her own conscience","It's a demon trick","It's an ancestor blade speaking"],cat:"Lore"},
+{q:"Why are the gods called 'Forgotten'?",a:"All religion was banned, so belief in gods became illegal and was suppressed",d:["The gods erased everyone's memories","They left and never returned","They were never real"],cat:"Lore"},
+{q:"What is Ashok's defining character trait?",a:"Absolute, unflinching devotion to his oath — even when it costs him everything",d:["Charming diplomacy","Cowardice","Greed"],cat:"Characters"},
+{q:"How does the series blend genres?",a:"It combines epic fantasy with political intrigue, military action, and hints of sci-fi",d:["It's purely sword and sorcery","It's a romance","It's primarily comedy"],cat:"Meta"},
+{q:"What is the central theme of the series?",a:"What happens when a man built to serve an unjust system discovers the truth and must choose his own path",d:["The power of friendship","Coming of age","Revenge"],cat:"Meta"},
+{q:"What caste are the Protectors drawn from?",a:"The Warrior Caste",d:["First Caste","Worker Caste","Casteless"],cat:"World"},
+{q:"What happens at the end of the Great Extermination plotline?",a:"It spreads chaos across Lok as the casteless fight for survival",d:["It succeeds completely","Omand cancels it","The demons stop it"],cat:"Books"},
+{q:"How long are the audiobooks approximately?",a:"Over 16 hours each",d:["About 8 hours","About 4 hours","About 24 hours"],cat:"Meta"},
+];
+
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b}
+let queue=[],currentQ=null,qn=0,score=0,streak=0,best=0,answered=false;
+const el={ss:document.getElementById('trivia-start'),gm:document.getElementById('trivia-game'),sb:document.getElementById('trivia-start-btn'),qn:document.getElementById('trivia-qnum'),sc:document.getElementById('trivia-score'),st:document.getElementById('trivia-streak'),pr:document.getElementById('trivia-progress'),ct:document.getElementById('trivia-category'),qq:document.getElementById('trivia-question'),op:document.getElementById('trivia-options'),fb:document.getElementById('trivia-feedback'),nx:document.getElementById('trivia-next')};
+function start(){el.ss.style.display='none';el.gm.style.display='block';queue=shuffle(Q);qn=0;score=0;streak=0;best=0;load()}
+function load(){if(!queue.length)queue=shuffle(Q);currentQ=queue.pop();qn++;answered=false;const d=((qn-1)%100)+1;el.qn.textContent=d+' / 100';el.sc.textContent=score;el.st.textContent='🔥 '+streak;el.pr.style.width=(d/100*100)+'%';el.ct.textContent=currentQ.cat;el.qq.textContent=currentQ.q;
+const opts=shuffle([currentQ.a,...currentQ.d]),lt=['A','B','C','D'];el.op.innerHTML='';
+opts.forEach((o,i)=>{const b=document.createElement('button');b.className='trivia-option';b.innerHTML=`<span class="opt-letter">${lt[i]}</span><span>${o}</span>`;b.addEventListener('click',()=>ans(b,o));el.op.appendChild(b)});
+el.fb.style.display='none';el.nx.style.display='none';document.getElementById('trivia-card').scrollIntoView({behavior:'smooth',block:'nearest'})}
+function ans(b,ch){if(answered)return;answered=true;const ok=ch===currentQ.a;el.op.querySelectorAll('.trivia-option').forEach(x=>{x.classList.add('disabled');if(x.querySelector('span:last-child').textContent===currentQ.a)x.classList.add('correct')});
+if(ok){b.classList.add('correct');score++;streak++;if(streak>best)best=streak;el.fb.className='trivia-feedback correct-fb';el.fb.innerHTML=`<strong>✅ Correct!</strong>${streak>1?' 🔥 '+streak+' in a row!':''}`}
+else{b.classList.add('wrong');b.classList.add('shake');const ps=streak;streak=0;el.fb.className='trivia-feedback wrong-fb';el.fb.innerHTML=`<strong>❌ Not quite.</strong> The answer is <strong>${currentQ.a}</strong>.${ps>=3?' Streak of '+ps+' ended.':''}`}
+el.sc.textContent=score;el.st.textContent='🔥 '+streak;el.fb.style.display='block';el.nx.style.display='block';el.nx.focus()}
+el.sb.addEventListener('click',start);el.nx.addEventListener('click',load);
+document.addEventListener('keydown',e=>{if(activeTab!=='trivia')return;if(!answered){const n=parseInt(e.key);if(n>=1&&n<=4){const bs=el.op.querySelectorAll('.trivia-option');if(bs[n-1])bs[n-1].click()}}else if(e.key==='Enter'||e.key===' '){e.preventDefault();el.nx.click()}})})();
+</script>
+</body>
+</html>

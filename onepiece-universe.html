@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>One Piece — The Universe Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Bungee+Shade&family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080810;
+    --bg-card: #101020;
+    --bg-card-hover: #181830;
+    --accent: #e63946;
+    --accent2: #f4a261;
+    --accent3: #2a9d8f;
+    --accent4: #457b9d;
+    --text: #eae8f0;
+    --text-muted: #8888a8;
+    --text-dim: #55557a;
+    --border: #252540;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Nunito', sans-serif;
+    overflow-x: hidden;
+  }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes floatObj {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    25% { transform: translateY(-30px) rotate(5deg); }
+    50% { transform: translateY(-10px) rotate(-3deg); }
+    75% { transform: translateY(-40px) rotate(3deg); }
+  }
+  @keyframes pulseGlow {
+    0%, 100% { filter: drop-shadow(0 0 8px rgba(230,57,70,0.3)); }
+    50% { filter: drop-shadow(0 0 20px rgba(230,57,70,0.6)); }
+  }
+
+  .fade-in { animation: fadeUp 0.5s ease both; }
+  .fade-in-delay { animation: fadeUp 0.4s ease both; }
+
+  #floating-bg { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
+  .float-obj {
+    position: absolute;
+    animation: floatObj var(--dur) ease-in-out infinite;
+    animation-delay: var(--delay);
+    opacity: var(--opa); font-size: var(--size);
+    left: var(--x); top: var(--y);
+  }
+
+  .container { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 24px 16px 64px; }
+
+  .tab-nav {
+    display: flex; gap: 4px; padding: 6px;
+    background: var(--bg-card); border-radius: 16px;
+    border: 1px solid var(--border);
+    margin-bottom: 32px; flex-wrap: wrap; justify-content: center;
+  }
+  .tab-btn {
+    padding: 10px 20px; border: none; border-radius: 12px; cursor: pointer;
+    font-family: 'Fredoka', sans-serif; font-size: 15px; font-weight: 600;
+    background: transparent; color: var(--text-muted);
+    transition: all 0.25s ease; display: flex; align-items: center; gap: 8px;
+  }
+  .tab-btn.active { background: var(--accent); color: #fff; }
+  .tab-btn:hover:not(.active) { color: var(--text); }
+  .tab-btn .icon { font-size: 18px; }
+
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* ── Home ── */
+  .hero {
+    text-align: center; padding: 48px 24px; margin-bottom: 32px;
+    background: linear-gradient(135deg, var(--bg-card) 0%, rgba(230,57,70,0.08) 50%, var(--bg-card) 100%);
+    border-radius: 24px; border: 1px solid var(--border); position: relative; overflow: hidden;
+  }
+  .hero-pattern {
+    position: absolute; inset: 0; opacity: 0.04;
+    background: repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(230,57,70,0.3) 20px, rgba(230,57,70,0.3) 22px);
+  }
+  .hero-content { position: relative; z-index: 1; }
+  .hero-island { font-size: 64px; margin-bottom: 16px; animation: pulseGlow 3s ease-in-out infinite; }
+  .hero h1 {
+    font-family: 'Bungee Shade', cursive; font-size: clamp(28px, 5vw, 48px);
+    color: var(--accent); margin: 0 0 8px; line-height: 1.2;
+    text-shadow: 0 0 40px rgba(230,57,70,0.3);
+  }
+  .hero .subtitle { font-family: 'Fredoka', sans-serif; font-size: 18px; color: var(--accent2); margin: 0 0 8px; font-weight: 500; }
+  .hero .meta { font-size: 14px; color: var(--text-muted); margin: 0 0 24px; }
+  .stats-row { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; margin-top: 24px; }
+  .stat-box { background: rgba(255,255,255,0.03); border-radius: 16px; padding: 16px 24px; border: 1px solid var(--border); min-width: 100px; }
+  .stat-box .num { font-family: 'Bungee', cursive; font-size: 24px; }
+  .stat-box .label { font-size: 12px; color: var(--text-muted); }
+
+  .about-card { background: var(--bg-card); border-radius: 20px; padding: 32px; border: 1px solid var(--border); margin-bottom: 24px; }
+  .about-card h2 { font-family: 'Fredoka', sans-serif; font-size: 22px; color: var(--text); margin: 0 0 16px; }
+  .about-card p { font-size: 15px; line-height: 1.8; color: var(--text-muted); }
+  .about-card strong { color: var(--text); }
+  .about-card .hl-red { color: var(--accent); }
+  .about-card .hl-orange { color: var(--accent2); }
+  .about-card .hl-teal { color: var(--accent3); }
+
+  .quick-links { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+  .quick-card {
+    background: var(--bg-card); border-radius: 16px; padding: 20px;
+    border: 1px solid var(--border); cursor: pointer; text-align: left;
+    transition: all 0.2s ease; font-family: inherit; color: inherit; width: 100%;
+  }
+  .quick-card:hover { transform: translateY(-2px); }
+  .quick-card .title { font-family: 'Fredoka', sans-serif; font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+  .quick-card .desc { font-size: 13px; color: var(--text-muted); }
+
+  /* ── Timeline ── */
+  .section-heading { font-family: 'Bungee Shade', cursive; font-size: clamp(22px, 4vw, 32px); margin: 0 0 8px; text-align: center; }
+  .section-sub { font-size: 14px; color: var(--text-muted); text-align: center; margin-bottom: 32px; }
+
+  .timeline-wrap { position: relative; max-width: 700px; margin: 0 auto; }
+  .timeline-line {
+    position: absolute; left: 24px; top: 0; bottom: 0; width: 3px;
+    background: linear-gradient(to bottom, var(--accent), var(--accent2), var(--accent4));
+    border-radius: 2px; opacity: 0.3;
+  }
+  .timeline-item { position: relative; margin-bottom: 16px; padding-left: 60px; cursor: pointer; }
+  .timeline-dot {
+    position: absolute; left: 14px; top: 18px; width: 22px; height: 22px;
+    border-radius: 50%; border: 3px solid var(--bg); z-index: 1;
+  }
+  .tl-card { background: var(--bg-card); border-radius: 16px; padding: 20px; border: 1px solid var(--border); transition: all 0.25s ease; }
+  .tl-card:hover, .tl-card.expanded { border-color: var(--tl-color, var(--accent)); }
+  .tl-card.expanded { background: var(--bg-card-hover); }
+  .tl-header { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; flex-wrap: wrap; }
+  .tl-icon { font-size: 22px; }
+  .tl-year { font-family: 'Bungee', cursive; font-size: 13px; padding: 2px 10px; border-radius: 8px; }
+  .tl-season-tag { font-family: 'Fredoka', sans-serif; font-size: 11px; color: var(--text-dim); background: rgba(85,85,122,0.13); padding: 2px 8px; border-radius: 6px; }
+  .tl-title { font-family: 'Fredoka', sans-serif; font-size: 17px; color: var(--text); margin: 0 0 4px; }
+  .tl-desc {
+    font-size: 14px; color: var(--text-muted); line-height: 1.6;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+    overflow: hidden; max-height: 2.8em; transition: max-height 0.4s ease;
+  }
+  .tl-card.expanded .tl-desc { -webkit-line-clamp: unset; max-height: 500px; }
+  .tl-toggle { font-size: 12px; margin-top: 6px; display: inline-block; cursor: pointer; opacity: 0.8; }
+  .tl-toggle:hover { opacity: 1; }
+
+  /* ── Characters ── */
+  .char-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; margin-bottom: 24px; }
+  .char-btn {
+    background: var(--bg-card); border-radius: 16px; padding: 20px 12px;
+    border: 2px solid var(--border); cursor: pointer; transition: all 0.25s ease;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    font-family: inherit; color: inherit; width: 100%;
+  }
+  .char-btn:hover { transform: translateY(-3px); }
+  .char-btn.selected { transform: scale(1.03); }
+  .char-emoji { font-size: 36px; transition: filter 0.25s ease; }
+  .char-btn.selected .char-emoji { filter: drop-shadow(0 0 10px var(--char-color)); }
+  .char-name { font-family: 'Fredoka', sans-serif; font-size: 14px; font-weight: 600; }
+  .char-role { font-size: 10px; color: var(--text-dim); text-align: center; }
+
+  .char-detail {
+    background: var(--bg-card); border-radius: 20px; padding: 28px;
+    border: 2px solid rgba(255,255,255,0.1); animation: fadeUp 0.3s ease both; display: none;
+  }
+  .char-detail.visible { display: block; }
+  .char-detail-header { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; flex-wrap: wrap; }
+  .char-detail-emoji { font-size: 48px; }
+  .char-detail-name { font-family: 'Bungee', cursive; font-size: 24px; margin: 0; }
+  .char-detail-role { font-family: 'Fredoka', sans-serif; font-size: 14px; color: var(--text-muted); margin: 2px 0 0; }
+  .char-detail-desc { font-size: 15px; line-height: 1.8; margin: 0 0 16px; }
+  .char-seasons { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+  .char-season-tag { font-family: 'Fredoka', sans-serif; font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 8px; }
+  .char-trivia { border-radius: 12px; padding: 14px 18px; display: flex; align-items: center; gap: 10px; }
+  .char-trivia span:first-child { font-size: 18px; }
+  .char-trivia span:last-child { font-size: 13px; color: var(--accent2); font-style: italic; }
+
+  /* ── Fun Facts ── */
+  .filter-row { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; margin-bottom: 24px; }
+  .filter-btn {
+    padding: 6px 16px; border-radius: 10px; border: none; cursor: pointer;
+    font-family: 'Fredoka', sans-serif; font-size: 13px; font-weight: 500;
+    background: var(--bg-card); color: var(--text-muted); transition: all 0.2s ease;
+  }
+  .filter-btn.active { background: var(--accent2); color: var(--bg); }
+  .facts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+  .fact-card { background: var(--bg-card); border-radius: 16px; padding: 22px; border: 1px solid var(--border); transition: all 0.25s ease; }
+  .fact-card:hover { border-color: rgba(244,162,97,0.4); transform: translateY(-2px); }
+  .fact-inner { display: flex; gap: 14px; align-items: flex-start; }
+  .fact-icon {
+    font-size: 28px; flex-shrink: 0; background: rgba(244,162,97,0.07); border-radius: 12px;
+    width: 48px; height: 48px; display: flex; align-items: center; justify-content: center;
+  }
+  .fact-cat { font-family: 'Fredoka', sans-serif; font-size: 10px; font-weight: 600; color: var(--accent2); text-transform: uppercase; letter-spacing: 1px; }
+  .fact-text { font-size: 14px; color: var(--text); margin: 4px 0 0; line-height: 1.6; }
+
+  /* ── Trivia ── */
+  .trivia-start-screen { text-align: center; padding: 60px 24px; background: var(--bg-card); border-radius: 24px; border: 1px solid var(--border); }
+  .trivia-start-icon { font-size: 72px; margin-bottom: 20px; animation: pulseGlow 3s ease-in-out infinite; }
+  .trivia-start-title { font-family: 'Fredoka', sans-serif; font-size: 24px; color: var(--text); margin: 0 0 12px; }
+  .trivia-start-desc { font-size: 15px; color: var(--text-muted); margin: 0 0 28px; max-width: 420px; margin-left: auto; margin-right: auto; line-height: 1.6; }
+  .trivia-action-btn {
+    font-family: 'Fredoka', sans-serif; font-size: 16px; font-weight: 600;
+    padding: 14px 36px; border: none; border-radius: 14px;
+    background: linear-gradient(135deg, #e63946, #f4a261); color: #fff;
+    cursor: pointer; transition: all 0.25s ease; box-shadow: 0 4px 20px rgba(230,57,70,0.3);
+  }
+  .trivia-action-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 28px rgba(230,57,70,0.4); }
+  .trivia-hud { display: flex; justify-content: center; gap: 16px; margin-bottom: 16px; flex-wrap: wrap; }
+  .trivia-hud-item { background: var(--bg-card); border-radius: 14px; padding: 12px 20px; border: 1px solid var(--border); text-align: center; min-width: 90px; }
+  .trivia-hud-label { display: block; font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; font-family: 'Fredoka', sans-serif; }
+  .trivia-hud-value { display: block; font-family: 'Bungee', cursive; font-size: 18px; color: var(--text); margin-top: 4px; }
+  .trivia-progress-bar { width: 100%; height: 6px; background: var(--border); border-radius: 3px; margin-bottom: 24px; overflow: hidden; }
+  .trivia-progress-fill { height: 100%; border-radius: 3px; transition: width 0.4s ease; background: linear-gradient(90deg, #e63946, #f4a261, #2a9d8f); width: 0%; }
+  .trivia-card { background: var(--bg-card); border-radius: 20px; padding: 32px; border: 1px solid var(--border); max-width: 680px; margin: 0 auto; }
+  .trivia-category { font-family: 'Fredoka', sans-serif; font-size: 11px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 12px; }
+  .trivia-question { font-family: 'Fredoka', sans-serif; font-size: 20px; font-weight: 600; color: var(--text); margin: 0 0 24px; line-height: 1.5; }
+  .trivia-options { display: flex; flex-direction: column; gap: 10px; }
+  .trivia-option {
+    width: 100%; text-align: left; padding: 16px 20px;
+    background: rgba(255,255,255,0.03); border: 2px solid var(--border);
+    border-radius: 14px; cursor: pointer; font-family: 'Nunito', sans-serif;
+    font-size: 15px; color: var(--text); transition: all 0.2s ease;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .trivia-option:hover:not(.disabled) { border-color: rgba(230,57,70,0.4); background: rgba(230,57,70,0.05); transform: translateX(4px); }
+  .trivia-option .opt-letter {
+    font-family: 'Bungee', cursive; font-size: 14px; color: var(--text-dim);
+    width: 32px; height: 32px; border-radius: 10px; display: flex;
+    align-items: center; justify-content: center; flex-shrink: 0;
+    background: rgba(255,255,255,0.04); border: 1px solid var(--border); transition: all 0.2s ease;
+  }
+  .trivia-option:hover:not(.disabled) .opt-letter { border-color: rgba(230,57,70,0.4); color: var(--accent); }
+  .trivia-option.correct { border-color: #2a9d8f; background: rgba(42,157,143,0.1); animation: fadeUp 0.3s ease; }
+  .trivia-option.correct .opt-letter { background: #2a9d8f; color: #fff; border-color: #2a9d8f; }
+  .trivia-option.wrong { border-color: #e63946; background: rgba(230,57,70,0.1); animation: fadeUp 0.3s ease; }
+  .trivia-option.wrong .opt-letter { background: #e63946; color: #fff; border-color: #e63946; }
+  .trivia-option.disabled { cursor: default; opacity: 0.5; pointer-events: none; }
+  .trivia-option.disabled.correct, .trivia-option.disabled.wrong { opacity: 1; }
+  .trivia-feedback { margin-top: 20px; padding: 16px 20px; border-radius: 14px; font-family: 'Nunito', sans-serif; font-size: 14px; line-height: 1.6; }
+  .trivia-feedback.correct-fb { background: rgba(42,157,143,0.08); border: 1px solid rgba(42,157,143,0.2); color: #2a9d8f; }
+  .trivia-feedback.wrong-fb { background: rgba(230,57,70,0.08); border: 1px solid rgba(230,57,70,0.2); color: #ff8090; }
+  .trivia-next-btn { margin-top: 20px; width: 100%; font-size: 15px; padding: 14px; }
+  @keyframes shakeWrong { 0%,100%{transform:translateX(0)} 20%,60%{transform:translateX(-6px)} 40%,80%{transform:translateX(6px)} }
+  .shake { animation: shakeWrong 0.4s ease; }
+
+  footer { text-align: center; margin-top: 48px; padding: 20px; border-top: 1px solid var(--border); }
+  footer p { font-size: 12px; color: var(--text-dim); }
+</style>
+</head>
+<body>
+
+<div id="floating-bg"></div>
+
+<div class="container">
+  <nav class="tab-nav" id="tabNav">
+    <button class="tab-btn active" data-tab="home"><span class="icon">🏠</span> Home</button>
+    <button class="tab-btn" data-tab="timeline"><span class="icon">📜</span> Timeline</button>
+    <button class="tab-btn" data-tab="characters"><span class="icon">👥</span> Characters</button>
+    <button class="tab-btn" data-tab="facts"><span class="icon">🎲</span> Fun Facts</button>
+    <button class="tab-btn" data-tab="trivia"><span class="icon">🧠</span> Trivia</button>
+  </nav>
+
+  <!-- ════════════ HOME ════════════ -->
+  <div class="section active fade-in" id="sec-home">
+    <div class="hero">
+      <div class="hero-pattern"></div>
+      <div class="hero-content">
+        <div class="hero-island">🏴‍☠️</div>
+        <h1>One Piece</h1>
+        <p class="subtitle">The Universe Guide</p>
+        <p class="meta">by Eiichiro Oda · Serialized since July 22, 1997</p>
+        <div class="stats-row">
+          <div class="stat-box"><div class="num" style="color:var(--accent)">1,100+</div><div class="label">Chapters</div></div>
+          <div class="stat-box"><div class="num" style="color:var(--accent2)">1,100+</div><div class="label">Anime Episodes</div></div>
+          <div class="stat-box"><div class="num" style="color:var(--accent3)">500M+</div><div class="label">Copies Sold</div></div>
+          <div class="stat-box"><div class="num" style="color:var(--accent4)">27+</div><div class="label">Years Running</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="about-card">
+      <h2>⚓ What is One Piece?</h2>
+      <p>
+        <strong>One Piece</strong> is a Japanese manga series written and illustrated by
+        <strong class="hl-orange">Eiichiro Oda</strong>. It has been serialized in Shueisha's
+        <strong>Weekly Shōnen Jump</strong> since <strong class="hl-red">July 22, 1997</strong>.
+        The story follows <strong class="hl-teal">Monkey D. Luffy</strong>, a young pirate whose body
+        gained rubber-like properties after eating a Devil Fruit. Luffy explores the Grand Line with his
+        crew, the <strong>Straw Hat Pirates</strong>, in search of the legendary treasure known as the
+        <strong class="hl-red">One Piece</strong> to become the King of the Pirates. With over
+        <strong class="hl-orange">500 million copies</strong> in circulation, it holds the Guinness World
+        Record as the best-selling manga series by a single author.
+      </p>
+    </div>
+
+    <div class="quick-links">
+      <button class="quick-card" data-nav="timeline"><div class="title" style="color:var(--accent)">11 Major Sagas</div><div class="desc">East Blue → Grand Line → New World → Final Saga</div></button>
+      <button class="quick-card" data-nav="characters"><div class="title" style="color:var(--accent3)">25 Key Characters</div><div class="desc">From Luffy to Shanks, the world's greatest pirates</div></button>
+      <button class="quick-card" data-nav="facts"><div class="title" style="color:var(--accent2)">Deep Lore</div><div class="desc">Devil Fruits, Haki, and the Void Century</div></button>
+    </div>
+  </div>
+
+  <!-- ════════════ TIMELINE ════════════ -->
+  <div class="section" id="sec-timeline">
+    <h2 class="section-heading" style="color:var(--accent)">📜 The One Piece Timeline</h2>
+    <p class="section-sub">Key story arcs and real-world milestones</p>
+    <div class="timeline-wrap"><div class="timeline-line"></div><div id="timeline-items"></div></div>
+  </div>
+
+  <!-- ════════════ CHARACTERS ════════════ -->
+  <div class="section" id="sec-characters">
+    <h2 class="section-heading" style="color:var(--accent3)">👥 Key Characters</h2>
+    <p class="section-sub">Tap a character to learn more</p>
+    <div class="char-grid" id="char-grid"></div>
+    <div class="char-detail" id="char-detail"></div>
+  </div>
+
+  <!-- ════════════ FUN FACTS ════════════ -->
+  <div class="section" id="sec-facts">
+    <h2 class="section-heading" style="color:var(--accent2)">🎲 Fun Facts</h2>
+    <p class="section-sub">Things you might not know about One Piece</p>
+    <div class="filter-row" id="filter-row"></div>
+    <div class="facts-grid" id="facts-grid"></div>
+  </div>
+
+  <!-- ════════════ TRIVIA ════════════ -->
+  <div class="section" id="sec-trivia">
+    <h2 class="section-heading" style="color:var(--accent)">🧠 One Piece Trivia Challenge</h2>
+    <p class="section-sub">Test your knowledge of the Grand Line!</p>
+    <div id="trivia-container">
+      <div id="trivia-start" class="trivia-start-screen">
+        <div class="trivia-start-icon">🏴‍☠️</div>
+        <h3 class="trivia-start-title">Ready to Prove You're Pirate King Material?</h3>
+        <p class="trivia-start-desc">100 questions covering characters, Devil Fruits, arcs, lore, and behind-the-scenes history.</p>
+        <button id="trivia-start-btn" class="trivia-action-btn">Set Sail!</button>
+      </div>
+      <div id="trivia-game" style="display:none;">
+        <div class="trivia-hud">
+          <div class="trivia-hud-item"><span class="trivia-hud-label">Question</span><span class="trivia-hud-value" id="trivia-qnum">1 / 100</span></div>
+          <div class="trivia-hud-item"><span class="trivia-hud-label">Score</span><span class="trivia-hud-value" id="trivia-score">0</span></div>
+          <div class="trivia-hud-item"><span class="trivia-hud-label">Streak</span><span class="trivia-hud-value" id="trivia-streak">🔥 0</span></div>
+        </div>
+        <div class="trivia-progress-bar"><div class="trivia-progress-fill" id="trivia-progress"></div></div>
+        <div class="trivia-card" id="trivia-card">
+          <div class="trivia-category" id="trivia-category"></div>
+          <p class="trivia-question" id="trivia-question">Loading...</p>
+          <div class="trivia-options" id="trivia-options"></div>
+          <div class="trivia-feedback" id="trivia-feedback" style="display:none;"></div>
+          <button class="trivia-action-btn trivia-next-btn" id="trivia-next" style="display:none;">Next Question →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer><p>Fan-made guide · One Piece is created by Eiichiro Oda · Published by Shueisha</p></footer>
+</div>
+
+<script>
+// ═══════════ DATA ═══════════
+
+const characters = [
+  // ── Straw Hat Pirates ──
+  { name:"Luffy", emoji:"🏴‍☠️", color:"#e63946", role:"Captain / Straw Hats", seasons:["East Blue","Grand Line","New World","Final Saga"], description:"Monkey D. Luffy is the captain of the Straw Hat Pirates and the man who will become King of the Pirates. After eating the Gomu Gomu no Mi (later revealed to be the Hito Hito no Mi, Model: Nika), his body gained rubber-like properties. Cheerful, reckless, and fiercely loyal to his crew.", trivia:"His Devil Fruit was revealed to be the mythical Hito Hito no Mi, Model: Nika" },
+  { name:"Zoro", emoji:"⚔️", color:"#2a9d8f", role:"Swordsman / Straw Hats", seasons:["East Blue","Grand Line","New World","Final Saga"], description:"Roronoa Zoro is the Straw Hats' combatant and a master of Three-Sword Style. His dream is to become the world's greatest swordsman by defeating Dracule Mihawk. Stoic, loyal, and infamously terrible with directions.", trivia:"Uses Three-Sword Style — holding a sword in each hand and one in his mouth" },
+  { name:"Nami", emoji:"🗺️", color:"#f4a261", role:"Navigator / Straw Hats", seasons:["East Blue","Grand Line","New World","Final Saga"], description:"The Straw Hats' navigator with an encyclopedic knowledge of weather and cartography. Her dream is to draw a complete map of the world. Clever, money-loving, and the crew's voice of reason.", trivia:"Her dream is to draw a complete map of the entire world" },
+  { name:"Usopp", emoji:"🎯", color:"#c8b040", role:"Sniper / Straw Hats", seasons:["East Blue","Grand Line","New World","Final Saga"], description:"The crew's sharpshooter and chronic liar whose tall tales have a habit of coming true. Son of Yasopp of the Red Hair Pirates. His dream is to become a brave warrior of the sea.", trivia:"Many of his lies have eventually come true later in the story" },
+  { name:"Sanji", emoji:"🍳", color:"#457b9d", role:"Cook / Straw Hats", seasons:["East Blue","Grand Line","New World","Final Saga"], description:"The Straw Hats' chef who fights exclusively with his legs to protect his hands for cooking. A prince of the Vinsmoke family who rejected his royal heritage. Dreams of finding the All Blue.", trivia:"Never uses his hands to fight — only kicks, to protect his cooking hands" },
+  { name:"Chopper", emoji:"🩺", color:"#e88090", role:"Doctor / Straw Hats", seasons:["Grand Line","New World","Final Saga"], description:"Tony Tony Chopper is a reindeer who ate the Hito Hito no Mi, giving him human intelligence. The crew's doctor whose dream is to become a doctor capable of curing any disease. Adorable but has a hilariously low bounty.", trivia:"Despite being incredibly powerful, his bounty was only 100 berries for years" },
+  { name:"Robin", emoji:"📚", color:"#8860a8", role:"Archaeologist / Straw Hats", seasons:["Grand Line","New World","Final Saga"], description:"Nico Robin is the sole survivor of Ohara and the only person who can read the Poneglyphs. Her dream is to discover the True History of the Void Century. Initially an antagonist who joined the crew.", trivia:"Can read the ancient Poneglyphs — one of only a few people alive who can" },
+  { name:"Franky", emoji:"🤖", color:"#40a0d0", role:"Shipwright / Straw Hats", seasons:["Grand Line","New World","Final Saga"], description:"A cyborg shipwright who built the Thousand Sunny. Originally Cutty Flam from Water 7, he modified his own body with weapons and gadgets. His dream is to build and sail a dream ship.", trivia:"Built the Thousand Sunny from the legendary Adam Wood" },
+  { name:"Brook", emoji:"💀", color:"#c0c0d0", role:"Musician / Straw Hats", seasons:["Grand Line","New World","Final Saga"], description:"A living skeleton revived by the Yomi Yomi no Mi. The crew's musician who spent 50 years alone on a ghost ship. His dream is to reunite with Laboon, the whale who waits at the Twin Capes.", trivia:"Spent 50 years alone as a skeleton before meeting the Straw Hats" },
+  { name:"Jinbe", emoji:"🦈", color:"#3070b0", role:"Helmsman / Straw Hats", seasons:["Grand Line","New World","Final Saga"], description:"A whale shark Fish-Man and former Warlord of the Sea. The most experienced member of the crew and a master of Fish-Man Karate. Joined as the crew's helmsman during the Wano arc.", trivia:"Former Warlord of the Sea who gave up his title to ally with Luffy" },
+  // ── Major Allies & Rivals ──
+  { name:"Shanks", emoji:"🍷", color:"#c83030", role:"Emperor / Red Hair Pirates", seasons:["East Blue","New World","Final Saga"], description:"Red-Haired Shanks is one of the Four Emperors and Luffy's greatest inspiration. He sacrificed his left arm to save young Luffy and entrusted him with his straw hat. One of the most powerful and mysterious figures.", trivia:"Sacrificed his arm to save young Luffy from a Sea King" },
+  { name:"Ace", emoji:"🔥", color:"#ff6030", role:"Commander / Whitebeard Pirates", seasons:["Grand Line","New World"], description:"Portgas D. Ace was Luffy's sworn brother and the 2nd Division Commander of the Whitebeard Pirates. Son of Gol D. Roger. His death at Marineford is one of the most devastating moments in manga history.", trivia:"His father is Gol D. Roger, the previous King of the Pirates" },
+  { name:"Law", emoji:"⚕️", color:"#e8d040", role:"Captain / Heart Pirates", seasons:["Grand Line","New World","Final Saga"], description:"Trafalgar D. Water Law is captain of the Heart Pirates and a member of the Worst Generation. Wielder of the Op-Op Fruit, one of the most powerful Devil Fruits. A key ally during Dressrosa and Wano.", trivia:"His Op-Op Fruit can grant eternal youth at the cost of the user's life" },
+  { name:"Blackbeard", emoji:"🕳️", color:"#303030", role:"Emperor / Blackbeard Pirates", seasons:["Grand Line","New World","Final Saga"], description:"Marshall D. Teach, aka Blackbeard, is the only person known to wield two Devil Fruit powers simultaneously. A cunning and ruthless schemer who rose from nobody to Emperor through betrayal and manipulation.", trivia:"The only known person to wield two Devil Fruit powers at once" },
+  { name:"Whitebeard", emoji:"🌊", color:"#f0f0f0", role:"Emperor (Deceased)", seasons:["Grand Line","New World"], description:"Edward Newgate, known as Whitebeard, was the 'Strongest Man in the World' and wielder of the Gura Gura no Mi (Tremor-Tremor Fruit). His death at Marineford ushered in a new era of piracy.", trivia:"His last words confirmed that the One Piece treasure is real" },
+  { name:"Kaido", emoji:"🐉", color:"#705898", role:"Emperor (Defeated)", seasons:["New World"], description:"Kaido of the Beasts was an Emperor known as the 'Strongest Creature.' A nearly indestructible being who ruled Wano Country with an iron fist. Wielder of the Fish-Fish Fruit, Model: Azure Dragon.", trivia:"Known as the 'Strongest Creature in the World' — nearly impossible to kill" },
+  { name:"Big Mom", emoji:"👑", color:"#d868a0", role:"Emperor (Defeated)", seasons:["New World"], description:"Charlotte Linlin, aka Big Mom, was an Emperor who ruled Totto Land. Mother of 85 children and wielder of the Soul-Soul Fruit. One of the most powerful and terrifying pirates in history.", trivia:"Has 85 children and used them to forge political marriages" },
+  { name:"Boa Hancock", emoji:"💕", color:"#e84080", role:"Warlord / Kuja Pirates", seasons:["Grand Line","New World","Final Saga"], description:"The 'Pirate Empress' and captain of the Kuja Pirates. A former Warlord whose beauty turns people to stone (literally, via her Devil Fruit). Deeply in love with Luffy despite his obliviousness.", trivia:"Her Love-Love Fruit turns anyone attracted to her into stone" },
+  { name:"Crocodile", emoji:"🪝", color:"#c8a840", role:"Former Warlord", seasons:["Grand Line","New World","Final Saga"], description:"Sir Crocodile was the first major villain Luffy faced in the Grand Line and the secret leader of Baroque Works. Wielder of the Sand-Sand Fruit. Later became an unlikely ally and co-founded Cross Guild.", trivia:"Co-founded Cross Guild with Mihawk, putting bounties on Marines" },
+  { name:"Mihawk", emoji:"🗡️", color:"#e8c830", role:"World's Greatest Swordsman", seasons:["East Blue","Grand Line","New World","Final Saga"], description:"Dracule Mihawk holds the title of World's Greatest Swordsman and is Zoro's ultimate rival and goal. A former Warlord who wields the Black Blade Yoru. Co-founded Cross Guild with Crocodile.", trivia:"Wields 'Yoru,' one of only two known Black Blades in existence" },
+  // ── Key World Figures ──
+  { name:"Garp", emoji:"👊", color:"#808898", role:"Vice Admiral / Marines", seasons:["Grand Line","New World","Final Saga"], description:"Monkey D. Garp is a Marine Vice Admiral and Luffy's grandfather. Known as 'The Hero of the Marines' and 'The Fist,' he's one of the strongest Marines ever. Could have been an Admiral but refused promotion.", trivia:"Luffy's grandfather — he threw Luffy into jungles and off cliffs to train him" },
+  { name:"Dragon", emoji:"🌪️", color:"#306030", role:"Leader / Revolutionary Army", seasons:["East Blue","New World","Final Saga"], description:"Monkey D. Dragon is Luffy's father and the leader of the Revolutionary Army, making him the World Government's most wanted man. One of the most mysterious characters whose full powers remain unknown.", trivia:"The World Government considers him the most dangerous criminal alive" },
+  { name:"Sabo", emoji:"🎩", color:"#4088d0", role:"Chief of Staff / Revolutionaries", seasons:["New World","Final Saga"], description:"Luffy and Ace's sworn brother who was thought dead but survived and joined the Revolutionary Army. Inherited Ace's Flame-Flame Fruit after his death. Known as the 'Flame Emperor' after the Reverie incident.", trivia:"Inherited Ace's Flame-Flame Fruit after Ace's death at Marineford" },
+  { name:"Vivi", emoji:"👸", color:"#60a8e0", role:"Princess of Alabasta", seasons:["Grand Line","Final Saga"], description:"Nefertari Vivi is the princess of Alabasta who traveled with the Straw Hats to save her kingdom from Crocodile. Considered an honorary Straw Hat. Her kingdom's history is tied to the Void Century.", trivia:"Considered an honorary Straw Hat crew member — they hold up the X mark for her" },
+  { name:"Gol D. Roger", emoji:"☠️", color:"#d0a030", role:"Former Pirate King", seasons:["East Blue","Grand Line","New World"], description:"The King of the Pirates who conquered the Grand Line, found the One Piece, and started the Great Pirate Era with his last words at his execution. His real treasure and the truth of the world remain central mysteries.", trivia:"His execution speech launched the entire Great Pirate Era" },
+];
+
+const timeline = [
+  { year:"1997", title:"One Piece Begins", desc:"Eiichiro Oda begins serializing One Piece in Weekly Shōnen Jump on July 22. The East Blue Saga introduces Luffy recruiting his first crewmates: Zoro, Nami, Usopp, and Sanji.", season:"Manga", icon:"📖", color:"#e63946" },
+  { year:"1999", title:"Anime Premieres", desc:"The One Piece anime begins airing on Fuji TV on October 20, produced by Toei Animation. It would go on to become one of the longest-running anime series in history.", season:"Anime", icon:"📺", color:"#f4a261" },
+  { year:"2000", title:"Entering the Grand Line", desc:"The story enters the Grand Line — the most dangerous sea in the world. The Alabasta Saga introduces Chopper, Robin, and Crocodile. One Piece's popularity explodes in Japan.", season:"Story", icon:"🌊", color:"#2a9d8f" },
+  { year:"2004", title:"Water 7 & Enies Lobby", desc:"Considered by many fans to be the peak of One Piece. The crew faces internal conflict, Robin's tragic backstory is revealed, and the iconic 'I Want to Live!' scene becomes legendary.", season:"Story", icon:"⚡", color:"#457b9d" },
+  { year:"2005", title:"100 Million Copies Sold", desc:"One Piece crosses 100 million copies in circulation, cementing its status as a cultural phenomenon in Japan. Oda wins multiple awards for the series.", season:"Milestone", icon:"📊", color:"#e63946" },
+  { year:"2009", title:"Marineford War", desc:"The Summit War Saga culminates in the Battle of Marineford — one of the most epic and devastating arcs. Ace's death shocks the entire fandom and changes the story forever.", season:"Story", icon:"💔", color:"#ff6030" },
+  { year:"2010", title:"Guinness World Record", desc:"One Piece earns a Guinness World Record for the most copies published for the same comic book series by a single author, with over 260 million copies at the time.", season:"Milestone", icon:"🏆", color:"#f4a261" },
+  { year:"2012", title:"New World Begins", desc:"The crew enters the New World — the second half of the Grand Line. Dressrosa, Whole Cake Island, and Wano arcs push the story toward its climax. Law, Kid, and the Worst Generation take center stage.", season:"Story", icon:"🗺️", color:"#2a9d8f" },
+  { year:"2015", title:"Dressrosa & Gear Fourth", desc:"The Dressrosa arc concludes with Luffy unveiling Gear Fourth: Boundman. The Grand Fleet is formed — 5,600+ pirates pledge loyalty to Luffy without him wanting it.", season:"Story", icon:"💪", color:"#e63946" },
+  { year:"2019", title:"Wano Country Arc", desc:"The Wano arc becomes the series' longest, spanning over 4 years. Luffy unlocks Gear Fifth (Nika form), defeats Kaido, and is officially declared an Emperor of the Sea.", season:"Story", icon:"🐉", color:"#705898" },
+  { year:"2022", title:"Film Red & 500M Copies", desc:"One Piece Film: Red becomes the highest-grossing One Piece film ever. The manga crosses 500 million copies in circulation worldwide. Luffy's Gear Fifth breaks the internet.", season:"Milestone", icon:"🎬", color:"#f4a261" },
+  { year:"2023", title:"Netflix Live-Action Debut", desc:"The Netflix live-action One Piece series premieres to critical and fan acclaim, introducing the series to millions of new viewers worldwide. Season 2 is quickly greenlit.", season:"Adaptation", icon:"🎭", color:"#457b9d" },
+  { year:"2024", title:"The Final Saga", desc:"Oda begins the Final Saga of One Piece. The Egghead arc reveals massive lore about Vegapunk, the Void Century, and Joy Boy. The story accelerates toward its conclusion.", season:"Story", icon:"⚓", color:"#e63946" },
+  { year:"2025", title:"Elbaf & Endgame", desc:"The story reaches the land of the giants, Elbaf — a location teased for decades. Major revelations about the One Piece treasure, the World Government, and the D. clan unfold.", season:"Story", icon:"🏔️", color:"#2a9d8f" },
+];
+
+const funFacts = [
+  { fact:"One Piece holds the Guinness World Record for the most copies published for the same comic book series by a single author — over 500 million.", icon:"🏆", category:"Records" },
+  { fact:"Eiichiro Oda originally planned for One Piece to run only 5 years. It's been over 27.", icon:"📅", category:"Creator" },
+  { fact:"Oda sleeps only 3 hours a night during manga production weeks and has been hospitalized multiple times from overwork.", icon:"😴", category:"Creator" },
+  { fact:"Luffy's iconic straw hat actually belongs to Gol D. Roger — Shanks inherited it and passed it to Luffy.", icon:"👒", category:"Lore" },
+  { fact:"There are three types of Haki: Observation (sensing), Armament (hardening), and Conqueror's (willpower). Only one in a million people can use Conqueror's.", icon:"💫", category:"Powers" },
+  { fact:"Devil Fruits are categorized into three types: Paramecia (body alteration), Zoan (animal transformation), and Logia (elemental).", icon:"🍎", category:"Powers" },
+  { fact:"Brook is the oldest Straw Hat at 90 years old (88 pre-timeskip). He spent 50 years alone as a skeleton.", icon:"💀", category:"Characters" },
+  { fact:"Chopper's bounty was 100 berries for years because the World Government thought he was the crew's pet.", icon:"🩺", category:"Characters" },
+  { fact:"The Void Century is a 100-year period erased from history by the World Government. Discovering its truth is a key mystery.", icon:"📜", category:"Lore" },
+  { fact:"Sanji was originally going to be named 'Naruto,' but Oda changed it to avoid conflicting with the other manga.", icon:"🍳", category:"Creator" },
+  { fact:"The One Piece anime has produced over 15 theatrical films, with Film: Red (2022) being the highest-grossing.", icon:"🎬", category:"Media" },
+  { fact:"The Poneglyphs are indestructible stone blocks containing the true history. Only Robin can read them.", icon:"🗿", category:"Lore" },
+  { fact:"Oda has confirmed that the One Piece treasure is a real, physical thing — not friendship or the journey.", icon:"💰", category:"Lore" },
+  { fact:"The 'Will of D.' refers to a mysterious initial shared by key characters: Luffy, Roger, Ace, Law, Blackbeard, and others.", icon:"🔤", category:"Lore" },
+  { fact:"The Netflix live-action adaptation (2023) cost roughly $18 million per episode to produce.", icon:"💵", category:"Media" },
+  { fact:"One Piece manga chapters are released weekly in Jump, and Oda now takes regular breaks for his health after decades of overwork.", icon:"📰", category:"Creator" },
+];
+
+const seasonColors = { Manga:"#e63946", Anime:"#f4a261", Story:"#2a9d8f", Milestone:"#457b9d", Adaptation:"#9b5de5" };
+
+// ═══════════ FLOATING BACKGROUND ═══════════
+(function() {
+  const objs = ["🏴‍☠️","⚔️","🗺️","⚓","🍖","👒","💀","🦈","🔥","🌊","🍎","⛵"];
+  const c = document.getElementById('floating-bg');
+  objs.forEach(o => {
+    const el = document.createElement('div');
+    el.className = 'float-obj'; el.textContent = o;
+    el.style.setProperty('--dur',(20+Math.random()*30)+'s');
+    el.style.setProperty('--delay',(-Math.random()*20)+'s');
+    el.style.setProperty('--opa',(0.06+Math.random()*0.06));
+    el.style.setProperty('--size',(14+Math.random()*16)+'px');
+    el.style.setProperty('--x',(Math.random()*100)+'%');
+    el.style.setProperty('--y',(Math.random()*100)+'%');
+    c.appendChild(el);
+  });
+})();
+
+// ═══════════ TAB NAVIGATION ═══════════
+let activeTab = 'home';
+function switchTab(tab) {
+  activeTab = tab;
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+  document.querySelectorAll('.section').forEach(s => {
+    s.classList.remove('active');
+    if (s.id === 'sec-' + tab) { s.classList.add('active'); s.classList.remove('fade-in'); void s.offsetWidth; s.classList.add('fade-in'); }
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+document.getElementById('tabNav').addEventListener('click', e => { const b = e.target.closest('.tab-btn'); if (b) switchTab(b.dataset.tab); });
+document.querySelectorAll('.quick-card[data-nav]').forEach(card => {
+  card.addEventListener('click', () => switchTab(card.dataset.nav));
+  const color = card.querySelector('.title').style.color;
+  card.addEventListener('mouseenter', () => { card.style.borderColor = color; });
+  card.addEventListener('mouseleave', () => { card.style.borderColor = ''; });
+});
+
+// ═══════════ RENDER TIMELINE ═══════════
+(function() {
+  const wrap = document.getElementById('timeline-items'); let expandedIdx = -1;
+  timeline.forEach((item, i) => {
+    const color = item.color || seasonColors[item.season] || '#e63946';
+    const div = document.createElement('div'); div.className = 'timeline-item'; div.style.setProperty('--tl-color', color);
+    div.innerHTML = `<div class="timeline-dot" style="background:${color};box-shadow:0 0 12px ${color}44"></div>
+      <div class="tl-card"><div class="tl-header"><span class="tl-icon">${item.icon}</span><span class="tl-year" style="color:${color};background:${color}18">${item.year}</span><span class="tl-season-tag">${item.season}</span></div>
+      <h3 class="tl-title">${item.title}</h3><p class="tl-desc">${item.desc}</p>
+      ${item.desc.length > 80 ? `<span class="tl-toggle" style="color:${color}">▼ More</span>` : ''}</div>`;
+    div.addEventListener('click', () => {
+      const card = div.querySelector('.tl-card'), toggle = div.querySelector('.tl-toggle');
+      if (expandedIdx === i) { card.classList.remove('expanded'); if (toggle) toggle.textContent = '▼ More'; expandedIdx = -1; }
+      else { wrap.querySelectorAll('.tl-card.expanded').forEach(c => { c.classList.remove('expanded'); const t = c.parentElement.querySelector('.tl-toggle'); if (t) t.textContent = '▼ More'; });
+        card.classList.add('expanded'); if (toggle) toggle.textContent = '▲ Less'; expandedIdx = i; }
+    });
+    wrap.appendChild(div);
+  });
+})();
+
+// ═══════════ RENDER CHARACTERS ═══════════
+(function() {
+  const grid = document.getElementById('char-grid'), detail = document.getElementById('char-detail'); let selectedIdx = -1;
+  characters.forEach((c, i) => {
+    const btn = document.createElement('button'); btn.className = 'char-btn'; btn.style.setProperty('--char-color', c.color);
+    btn.innerHTML = `<span class="char-emoji">${c.emoji}</span><span class="char-name">${c.name}</span><span class="char-role">${c.role}</span>`;
+    btn.addEventListener('mouseenter', () => { if (selectedIdx !== i) btn.style.borderColor = c.color + '66'; });
+    btn.addEventListener('mouseleave', () => { if (selectedIdx !== i) btn.style.borderColor = ''; });
+    btn.addEventListener('click', () => {
+      if (selectedIdx === i) { selectedIdx = -1; btn.classList.remove('selected'); btn.style.borderColor = ''; detail.classList.remove('visible'); return; }
+      grid.querySelectorAll('.char-btn').forEach(b => { b.classList.remove('selected'); b.style.borderColor = ''; b.style.background = ''; });
+      selectedIdx = i; btn.classList.add('selected'); btn.style.borderColor = c.color; btn.style.background = c.color + '18';
+      const seasonsHTML = c.seasons.map(s => `<span class="char-season-tag" style="background:${c.color}18;color:${c.color}">${s}</span>`).join('');
+      detail.innerHTML = `<div class="char-detail-header"><span class="char-detail-emoji" style="filter:drop-shadow(0 0 15px ${c.color}88)">${c.emoji}</span><div><h3 class="char-detail-name" style="color:${c.color}">${c.name}</h3><p class="char-detail-role">${c.role}</p></div></div>
+        <p class="char-detail-desc">${c.description}</p><div class="char-seasons">${seasonsHTML}</div>
+        <div class="char-trivia" style="background:${c.color}0a;border:1px solid ${c.color}22"><span>💡</span><span>${c.trivia}</span></div>`;
+      detail.style.borderColor = c.color + '44'; detail.style.boxShadow = `0 0 40px ${c.color}10`;
+      detail.classList.remove('visible'); void detail.offsetWidth; detail.classList.add('visible');
+      detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+    grid.appendChild(btn);
+  });
+})();
+
+// ═══════════ RENDER FUN FACTS ═══════════
+(function() {
+  const filterRow = document.getElementById('filter-row'), factsGrid = document.getElementById('facts-grid');
+  const categories = ['All', ...new Set(funFacts.map(f => f.category))]; let activeFilter = 'All';
+  function renderCards(filter) {
+    const filtered = filter === 'All' ? funFacts : funFacts.filter(f => f.category === filter);
+    factsGrid.innerHTML = '';
+    filtered.forEach((f, i) => {
+      const card = document.createElement('div'); card.className = 'fact-card fade-in-delay'; card.style.animationDelay = (i * 0.05) + 's';
+      card.innerHTML = `<div class="fact-inner"><span class="fact-icon">${f.icon}</span><div><div class="fact-cat">${f.category}</div><p class="fact-text">${f.fact}</p></div></div>`;
+      factsGrid.appendChild(card);
+    });
+  }
+  categories.forEach(cat => {
+    const btn = document.createElement('button'); btn.className = 'filter-btn' + (cat === 'All' ? ' active' : ''); btn.textContent = cat;
+    btn.addEventListener('click', () => { activeFilter = cat; filterRow.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.textContent === cat)); renderCards(cat); });
+    filterRow.appendChild(btn);
+  });
+  renderCards('All');
+})();
+
+// ═══════════ TRIVIA ENGINE ═══════════
+(function() {
+  const triviaDB = [
+    // ── Characters (1-25) ──
+    { q:"What is Monkey D. Luffy's dream?", a:"To become King of the Pirates", d:["To find the All Blue","To map the world","To defeat the Marines"], cat:"Characters" },
+    { q:"How many members are in the Straw Hat crew (including Luffy)?", a:"10", d:["8","9","12"], cat:"Characters" },
+    { q:"What is Zoro's fighting style called?", a:"Three-Sword Style (Santoryu)", d:["Two-Sword Style","One-Sword Style","No-Sword Style"], cat:"Characters" },
+    { q:"What is Sanji's dream?", a:"To find the All Blue", d:["To become the best chef","To kick every villain","To find the One Piece"], cat:"Characters" },
+    { q:"Which Straw Hat is an archaeologist?", a:"Nico Robin", d:["Nami","Chopper","Franky"], cat:"Characters" },
+    { q:"Who is the musician of the Straw Hat Pirates?", a:"Brook", d:["Franky","Usopp","Chopper"], cat:"Characters" },
+    { q:"What animal is Tony Tony Chopper?", a:"A reindeer", d:["A raccoon dog","A bear","A deer"], cat:"Characters" },
+    { q:"Who is the shipwright of the Straw Hats?", a:"Franky", d:["Usopp","Jinbe","Brook"], cat:"Characters" },
+    { q:"What role does Jinbe fill on the crew?", a:"Helmsman", d:["Navigator","Lookout","Quartermaster"], cat:"Characters" },
+    { q:"Who sacrificed his arm to save young Luffy?", a:"Shanks", d:["Garp","Ace","Rayleigh"], cat:"Characters" },
+    { q:"What is Boa Hancock's epithet?", a:"Pirate Empress", d:["Sea Witch","Snake Queen","Crimson Queen"], cat:"Characters" },
+    { q:"Who is known as the 'Strongest Creature in the World'?", a:"Kaido", d:["Whitebeard","Big Mom","Shanks"], cat:"Characters" },
+    { q:"How many children does Big Mom have?", a:"85", d:["46","100","72"], cat:"Characters" },
+    { q:"Who co-founded Cross Guild with Crocodile?", a:"Mihawk", d:["Shanks","Buggy","Blackbeard"], cat:"Characters" },
+    { q:"What is Blackbeard's real name?", a:"Marshall D. Teach", d:["Edward Newgate","Rocks D. Xebec","Monkey D. Dragon"], cat:"Characters" },
+    { q:"Who is Luffy's grandfather?", a:"Monkey D. Garp", d:["Monkey D. Dragon","Silvers Rayleigh","Gol D. Roger"], cat:"Characters" },
+    { q:"Who is Luffy's father?", a:"Monkey D. Dragon", d:["Monkey D. Garp","Shanks","Silvers Rayleigh"], cat:"Characters" },
+    { q:"Which Straw Hat has the lowest bounty?", a:"Chopper", d:["Nami","Usopp","Brook"], cat:"Characters" },
+    { q:"Whose last words were 'One Piece does exist!'?", a:"Whitebeard (Edward Newgate)", d:["Gol D. Roger","Ace","Oden"], cat:"Characters" },
+    { q:"Who inherited Ace's Flame-Flame Fruit?", a:"Sabo", d:["Luffy","Blackbeard","Koala"], cat:"Characters" },
+    { q:"Who is considered an honorary Straw Hat member?", a:"Vivi", d:["Law","Hancock","Carrot"], cat:"Characters" },
+    { q:"What is Nami's dream?", a:"To draw a map of the entire world", d:["To become the richest person","To find the All Blue","To become a Marine"], cat:"Characters" },
+    { q:"Who is the 'World's Greatest Swordsman'?", a:"Dracule Mihawk", d:["Roronoa Zoro","Shanks","Silvers Rayleigh"], cat:"Characters" },
+    { q:"Which character spent 50 years alone on a ghost ship?", a:"Brook", d:["Shanks","Jinbe","Franky"], cat:"Characters" },
+    { q:"What is the name of Gol D. Roger's ship?", a:"Oro Jackson", d:["Thousand Sunny","Red Force","Moby Dick"], cat:"Characters" },
+
+    // ── Devil Fruits (26-45) ──
+    { q:"What type of Devil Fruit did Luffy eat?", a:"Mythical Zoan (Hito Hito no Mi, Model: Nika)", d:["Paramecia","Logia","Ancient Zoan"], cat:"Devil Fruits" },
+    { q:"What was Luffy's Devil Fruit originally believed to be?", a:"Gomu Gomu no Mi (Rubber-Rubber Fruit)", d:["Mera Mera no Mi","Bara Bara no Mi","Hana Hana no Mi"], cat:"Devil Fruits" },
+    { q:"What are the three types of Devil Fruits?", a:"Paramecia, Zoan, and Logia", d:["Fire, Water, and Earth","Attack, Defense, and Support","Natural, Artificial, and Ancient"], cat:"Devil Fruits" },
+    { q:"What is Logia-type Devil Fruit's defining trait?", a:"It lets users become and control a natural element", d:["It gives animal transformations","It alters the user's body","It grants psychic powers"], cat:"Devil Fruits" },
+    { q:"What happens if you eat two Devil Fruits?", a:"You die", d:["You gain both powers","The second fruit has no effect","You lose the first power"], cat:"Devil Fruits" },
+    { q:"Who is the exception to the two Devil Fruit rule?", a:"Blackbeard (Marshall D. Teach)", d:["Luffy","Shanks","Kaido"], cat:"Devil Fruits" },
+    { q:"What is the major weakness of all Devil Fruit users?", a:"They lose the ability to swim (seawater drains them)", d:["They can't use Haki","They age faster","They can't eat normal food"], cat:"Devil Fruits" },
+    { q:"What Devil Fruit does Boa Hancock have?", a:"Mero Mero no Mi (Love-Love Fruit)", d:["Hebi Hebi no Mi","Hana Hana no Mi","Suna Suna no Mi"], cat:"Devil Fruits" },
+    { q:"What does Robin's Hana Hana no Mi allow?", a:"Sprouting body parts from any surface", d:["Controlling flowers","Turning into petals","Reading minds"], cat:"Devil Fruits" },
+    { q:"What Devil Fruit did Chopper eat?", a:"Hito Hito no Mi (Human-Human Fruit)", d:["Ushi Ushi no Mi","Tori Tori no Mi","Inu Inu no Mi"], cat:"Devil Fruits" },
+    { q:"What is Crocodile's Devil Fruit?", a:"Suna Suna no Mi (Sand-Sand Fruit)", d:["Magu Magu no Mi","Goro Goro no Mi","Yami Yami no Mi"], cat:"Devil Fruits" },
+    { q:"What does Whitebeard's Gura Gura no Mi do?", a:"Creates earthquakes/tremors", d:["Controls gravity","Manipulates time","Creates barriers"], cat:"Devil Fruits" },
+    { q:"What is Law's Op-Op Fruit's ultimate ability?", a:"It can grant eternal youth at the cost of the user's life", d:["It can destroy any Devil Fruit","It can rewrite memories","It can create clones"], cat:"Devil Fruits" },
+    { q:"What material negates Devil Fruit powers on contact?", a:"Seastone (Kairoseki)", d:["Gold","Diamond","Wapometal"], cat:"Devil Fruits" },
+    { q:"What type of Devil Fruit does Kaido have?", a:"Mythical Zoan (Fish-Fish Fruit, Model: Azure Dragon)", d:["Logia","Paramecia","Ancient Zoan"], cat:"Devil Fruits" },
+    { q:"Which Devil Fruit lets Brook revive from the dead?", a:"Yomi Yomi no Mi (Revive-Revive Fruit)", d:["Kage Kage no Mi","Soru Soru no Mi","Horo Horo no Mi"], cat:"Devil Fruits" },
+    { q:"What power does Big Mom's Soru Soru no Mi grant?", a:"Manipulating and extracting human souls", d:["Controlling shadows","Creating illusions","Time manipulation"], cat:"Devil Fruits" },
+    { q:"What are SMILE fruits?", a:"Artificial Devil Fruits created by Caesar Clown", d:["Natural Zoan variants","Ancient relics","Fruits from the moon"], cat:"Devil Fruits" },
+    { q:"What is Buggy's Devil Fruit?", a:"Bara Bara no Mi (Chop-Chop Fruit)", d:["Baku Baku no Mi","Bomu Bomu no Mi","Bane Bane no Mi"], cat:"Devil Fruits" },
+    { q:"Gear Fifth is the awakened form of which fruit?", a:"Hito Hito no Mi, Model: Nika", d:["Gomu Gomu no Mi","Nikyu Nikyu no Mi","Mochi Mochi no Mi"], cat:"Devil Fruits" },
+
+    // ── Story Arcs (46-65) ──
+    { q:"What is the name of the Straw Hats' first ship?", a:"Going Merry", d:["Thousand Sunny","Oro Jackson","Red Force"], cat:"Story" },
+    { q:"What is the name of the Straw Hats' current ship?", a:"Thousand Sunny", d:["Going Merry","Polar Tang","Victoria Punk"], cat:"Story" },
+    { q:"In which arc does Robin shout 'I want to live!'?", a:"Enies Lobby", d:["Alabasta","Marineford","Dressrosa"], cat:"Story" },
+    { q:"Who killed Portgas D. Ace?", a:"Akainu (Sakazuki)", d:["Blackbeard","Sengoku","Kizaru"], cat:"Story" },
+    { q:"Which arc takes place in the sky?", a:"Skypiea", d:["Thriller Bark","Fishman Island","Zou"], cat:"Story" },
+    { q:"What island is home to the World Government headquarters?", a:"Mary Geoise (Mariejois)", d:["Enies Lobby","Marineford","Impel Down"], cat:"Story" },
+    { q:"In which arc is Luffy's Gear Fifth first revealed?", a:"Wano Country", d:["Egghead","Whole Cake Island","Dressrosa"], cat:"Story" },
+    { q:"What was the Straw Hats' reason for going to Whole Cake Island?", a:"To rescue Sanji from a political marriage", d:["To fight Big Mom","To find a Poneglyph","To recruit Jinbe"], cat:"Story" },
+    { q:"Who is the main villain of the Alabasta arc?", a:"Crocodile", d:["Doflamingo","Enel","Arlong"], cat:"Story" },
+    { q:"What is the Reverie?", a:"A council meeting of world leaders held every 4 years", d:["A pirate festival","A Marine training camp","A Revolutionary gathering"], cat:"Story" },
+    { q:"Which arc features Luffy fighting a 'god' named Enel?", a:"Skypiea", d:["Thriller Bark","Fishman Island","Jaya"], cat:"Story" },
+    { q:"What is Impel Down?", a:"The World Government's underwater maximum-security prison", d:["A Marine base","A pirate hideout","An island in the New World"], cat:"Story" },
+    { q:"Who did Luffy defeat to become an Emperor?", a:"Kaido", d:["Big Mom","Blackbeard","Shanks"], cat:"Story" },
+    { q:"What is the significance of the Poneglyph Road Stones?", a:"They reveal the location of Laugh Tale (the final island)", d:["They contain weapon blueprints","They record Devil Fruit origins","They map the Calm Belt"], cat:"Story" },
+    { q:"What is the last island on the Grand Line called?", a:"Laugh Tale", d:["Raftel","End Point","Final Island"], cat:"Story" },
+    { q:"What is the name of the giant elephant that carries the Mink Tribe?", a:"Zunesha", d:["Oars","San Juan Wolf","Neptune"], cat:"Story" },
+    { q:"Who was the ruler of Dressrosa before Doflamingo took over?", a:"King Riku", d:["King Cobra","King Neptune","King Wapol"], cat:"Story" },
+    { q:"What does Luffy's Gear Second do?", a:"Speeds up blood flow for superhuman speed and power", d:["Inflates his body","Hardens his skin","Creates fire"], cat:"Story" },
+    { q:"What is the Grand Fleet?", a:"An armada of 5,600+ pirates who pledged allegiance to Luffy", d:["The Marine's main fleet","A Yonko alliance","The Revolutionary Navy"], cat:"Story" },
+    { q:"What event kicked off the Great Pirate Era?", a:"Gol D. Roger's execution speech", d:["Whitebeard's death","The Void Century discovery","Luffy's first voyage"], cat:"Story" },
+
+    // ── World & Lore (66-85) ──
+    { q:"What are the Four Emperors (Yonko)?", a:"The four most powerful pirates ruling the New World", d:["The four Marine Admirals","The World Government leaders","The four strongest swordsmen"], cat:"Lore" },
+    { q:"How many types of Haki are there?", a:"3", d:["2","4","5"], cat:"Lore" },
+    { q:"What is Conqueror's Haki?", a:"The ability to overwhelm others' willpower — only 1 in a million has it", d:["The power to see the future","The ability to harden your body","A Devil Fruit technique"], cat:"Lore" },
+    { q:"What is the Void Century?", a:"A 100-year gap in history erased by the World Government", d:["The era before Devil Fruits","A period of world peace","The last ice age"], cat:"Lore" },
+    { q:"What are the Ancient Weapons?", a:"Pluton, Poseidon, and Uranus — weapons capable of mass destruction", d:["Three legendary swords","Three Devil Fruits","Three Marine warships"], cat:"Lore" },
+    { q:"What is the World Government's top authority called?", a:"The Five Elders (Gorosei)", d:["The Admirals","The Celestial Dragons","The Warlords"], cat:"Lore" },
+    { q:"What are Celestial Dragons?", a:"Descendants of the 20 kingdoms that founded the World Government", d:["Actual dragon creatures","A pirate crew","Ancient weapons"], cat:"Lore" },
+    { q:"What is the 'Will of D.'?", a:"A mysterious inherited will shared by people with 'D.' in their name", d:["A treasure map","A type of Haki","A Marine code"], cat:"Lore" },
+    { q:"What is the Red Line?", a:"A massive continent that circles the globe, dividing the oceans", d:["A pirate crew","A type of Haki","A sea current"], cat:"Lore" },
+    { q:"What are the Seven Warlords of the Sea?", a:"Government-sanctioned pirates who work for the World Government", d:["The seven strongest Marines","A pirate alliance","An ancient order"], cat:"Lore" },
+    { q:"What is the Calm Belt?", a:"Windless seas flanking the Grand Line, filled with Sea Kings", d:["A peaceful island chain","The center of the Grand Line","A Marine-controlled zone"], cat:"Lore" },
+    { q:"Who or what is Joy Boy?", a:"A figure from the Void Century connected to a broken promise and the One Piece", d:["Luffy's ancestor","A type of Devil Fruit","The first Marine"], cat:"Lore" },
+    { q:"What is Vegapunk known for?", a:"Being the World Government's top scientist and genius inventor", d:["Being the strongest Marine","Discovering Devil Fruits","Building the Grand Line"], cat:"Lore" },
+    { q:"What race is Jinbe?", a:"Fish-Man (whale shark)", d:["Giant","Mink","Lunarian"], cat:"Lore" },
+    { q:"What is the name of the ocean where Luffy starts his journey?", a:"East Blue", d:["South Blue","West Blue","North Blue"], cat:"Lore" },
+    { q:"How are the Blues connected to the Grand Line?", a:"By the Red Line and Calm Belts — ships enter via Reverse Mountain", d:["Through underground tunnels","By flying","There is no direct connection"], cat:"Lore" },
+    { q:"What does Shanks' crew name 'Red Hair Pirates' refer to?", a:"Shanks' distinctive red hair", d:["Their red ship","A legendary treasure","Their flag design"], cat:"Lore" },
+    { q:"What is a Buster Call?", a:"A massive Marine military strike that completely destroys an island", d:["A pirate war tactic","A type of cannon","A navigation technique"], cat:"Lore" },
+    { q:"What organization does Monkey D. Dragon lead?", a:"The Revolutionary Army", d:["The Marines","The World Government","The Warlords"], cat:"Lore" },
+    { q:"What is the name of the prison beneath the sea?", a:"Impel Down", d:["Enies Lobby","Mary Geoise","Punk Hazard"], cat:"Lore" },
+
+    // ── Meta & Real World (86-100) ──
+    { q:"Who is the creator of One Piece?", a:"Eiichiro Oda", d:["Akira Toriyama","Masashi Kishimoto","Yoshihiro Togashi"], cat:"Meta" },
+    { q:"What magazine serializes the One Piece manga?", a:"Weekly Shōnen Jump", d:["Monthly Shōnen Magazine","Weekly Young Jump","Shōnen Sunday"], cat:"Meta" },
+    { q:"What year did the One Piece manga first start?", a:"1997", d:["1999","1995","2000"], cat:"Meta" },
+    { q:"What year did the One Piece anime start airing?", a:"1999", d:["1997","2000","2001"], cat:"Meta" },
+    { q:"Which studio produces the One Piece anime?", a:"Toei Animation", d:["Studio Pierrot","Madhouse","MAPPA"], cat:"Meta" },
+    { q:"How long did Oda originally plan One Piece to run?", a:"5 years", d:["10 years","15 years","3 years"], cat:"Meta" },
+    { q:"What world record does One Piece hold?", a:"Most copies published for a manga by a single author", d:["Longest running anime","Most characters in a manga","Fastest selling manga volume"], cat:"Meta" },
+    { q:"What name was Sanji originally going to have?", a:"Naruto", d:["Zoro","Kenta","Riku"], cat:"Meta" },
+    { q:"What streaming service produced the One Piece live-action?", a:"Netflix", d:["Crunchyroll","Hulu","Amazon Prime"], cat:"Meta" },
+    { q:"What is the highest-grossing One Piece film?", a:"One Piece Film: Red (2022)", d:["One Piece: Stampede","Strong World","Film Gold"], cat:"Meta" },
+    { q:"Approximately how many copies has One Piece sold worldwide?", a:"Over 500 million", d:["200 million","350 million","700 million"], cat:"Meta" },
+    { q:"What country is One Piece most popular in?", a:"Japan", d:["United States","France","Brazil"], cat:"Meta" },
+    { q:"What is the name of the wood used to build the Thousand Sunny?", a:"Adam Wood (Treasure Tree Adam)", d:["Eve Wood","Sunlight Wood","Grand Oak"], cat:"Meta" },
+    { q:"What arc is widely considered the emotional peak of One Piece?", a:"Enies Lobby / Water 7", d:["Marineford","Wano","Alabasta"], cat:"Meta" },
+    { q:"What is the current saga of One Piece called?", a:"The Final Saga", d:["The New World Saga","The Endgame Saga","The Great War Saga"], cat:"Meta" },
+  ];
+
+  function shuffle(arr) { const a=[...arr]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+
+  let queue=[], currentQ=null, questionNum=0, score=0, streak=0, bestStreak=0, answered=false;
+  const els = {
+    startScreen:document.getElementById('trivia-start'), game:document.getElementById('trivia-game'),
+    startBtn:document.getElementById('trivia-start-btn'), qnum:document.getElementById('trivia-qnum'),
+    score:document.getElementById('trivia-score'), streak:document.getElementById('trivia-streak'),
+    progress:document.getElementById('trivia-progress'), category:document.getElementById('trivia-category'),
+    question:document.getElementById('trivia-question'), options:document.getElementById('trivia-options'),
+    feedback:document.getElementById('trivia-feedback'), next:document.getElementById('trivia-next'),
+  };
+
+  function startGame() { els.startScreen.style.display='none'; els.game.style.display='block'; queue=shuffle(triviaDB); questionNum=0; score=0; streak=0; bestStreak=0; loadQuestion(); }
+
+  function loadQuestion() {
+    if(queue.length===0) queue=shuffle(triviaDB);
+    currentQ=queue.pop(); questionNum++; answered=false;
+    const displayNum=((questionNum-1)%100)+1;
+    els.qnum.textContent=displayNum+' / 100'; els.score.textContent=score; els.streak.textContent='🔥 '+streak;
+    els.progress.style.width=(displayNum/100*100)+'%'; els.category.textContent=currentQ.cat; els.question.textContent=currentQ.q;
+    const options=shuffle([currentQ.a,...currentQ.d]), letters=['A','B','C','D'];
+    els.options.innerHTML='';
+    options.forEach((opt,i) => {
+      const btn=document.createElement('button'); btn.className='trivia-option';
+      btn.innerHTML=`<span class="opt-letter">${letters[i]}</span><span>${opt}</span>`;
+      btn.addEventListener('click',()=>handleAnswer(btn,opt)); els.options.appendChild(btn);
+    });
+    els.feedback.style.display='none'; els.next.style.display='none';
+    document.getElementById('trivia-card').scrollIntoView({behavior:'smooth',block:'nearest'});
+  }
+
+  function handleAnswer(btn,chosen) {
+    if(answered)return; answered=true;
+    const isCorrect=chosen===currentQ.a;
+    els.options.querySelectorAll('.trivia-option').forEach(b=>{b.classList.add('disabled');if(b.querySelector('span:last-child').textContent===currentQ.a)b.classList.add('correct');});
+    if(isCorrect){btn.classList.add('correct');score++;streak++;if(streak>bestStreak)bestStreak=streak;els.feedback.className='trivia-feedback correct-fb';els.feedback.innerHTML=`<strong>✅ Correct!</strong>${streak>1?' 🔥 '+streak+' in a row!':''}`;}
+    else{btn.classList.add('wrong');btn.classList.add('shake');const ps=streak;streak=0;els.feedback.className='trivia-feedback wrong-fb';els.feedback.innerHTML=`<strong>❌ Not quite.</strong> The answer is <strong>${currentQ.a}</strong>.${ps>=3?' Streak of '+ps+' ended.':''}`;}
+    els.score.textContent=score;els.streak.textContent='🔥 '+streak;els.feedback.style.display='block';els.next.style.display='block';els.next.focus();
+  }
+
+  els.startBtn.addEventListener('click',startGame);
+  els.next.addEventListener('click',loadQuestion);
+  document.addEventListener('keydown',e=>{
+    if(activeTab!=='trivia')return;
+    if(!answered){const n=parseInt(e.key);if(n>=1&&n<=4){const btns=els.options.querySelectorAll('.trivia-option');if(btns[n-1])btns[n-1].click();}}
+    else{if(e.key==='Enter'||e.key===' '){e.preventDefault();els.next.click();}}
+  });
+})();
+</script>
+</body>
+</html>

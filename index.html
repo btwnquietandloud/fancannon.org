@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fan Cannon — Universe Guides for Every Fandom</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0b10;
+    --surface: #141318;
+    --surface2: #1c1a22;
+    --border: #2a2838;
+    --text: #e8e6f0;
+    --text-muted: #8884a0;
+    --text-dim: #58566a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    min-height: 100vh; background: var(--bg); color: var(--text);
+    font-family: 'Outfit', sans-serif; overflow-x: hidden;
+  }
+  body::before {
+    content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  }
+
+  .glow { position: fixed; border-radius: 50%; filter: blur(140px); pointer-events: none; z-index: 0; }
+  .g1 { width: 500px; height: 500px; top: -180px; left: -120px; background: rgba(240,88,64,0.06); }
+  .g2 { width: 400px; height: 400px; bottom: -100px; right: -80px; background: rgba(64,200,160,0.05); }
+  .g3 { width: 350px; height: 350px; top: 40%; left: 50%; transform: translateX(-50%); background: rgba(88,144,240,0.04); }
+
+  .page { position: relative; z-index: 1; max-width: 880px; margin: 0 auto; padding: 48px 20px 80px; }
+
+  /* ── Hero ── */
+  .hero { text-align: center; margin-bottom: 64px; padding-top: 32px; }
+  .hero-icon { font-size: 56px; margin-bottom: 20px; display: inline-block; animation: float 4s ease-in-out infinite; }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif; font-size: clamp(36px, 6vw, 60px);
+    font-weight: 700; line-height: 1.1; margin-bottom: 16px;
+    background: linear-gradient(135deg, #f05840, #f0a830, #40c8a0, #5890f0);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero p {
+    font-size: 18px; color: var(--text-muted); max-width: 520px;
+    margin: 0 auto; line-height: 1.7; font-weight: 300;
+  }
+
+  /* ── Cards grid ── */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+
+  .card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 20px; padding: 32px 28px; text-decoration: none;
+    color: inherit; transition: all 0.3s ease; position: relative;
+    overflow: hidden; display: block;
+  }
+  .card::before {
+    content: ''; position: absolute; inset: 0; opacity: 0;
+    transition: opacity 0.3s ease; border-radius: 20px;
+  }
+  .card:hover { transform: translateY(-4px); border-color: var(--card-color); }
+  .card:hover::before { opacity: 1; }
+  .card:hover .card-arrow { opacity: 1; transform: translateX(0); }
+
+  .card-emoji { font-size: 40px; margin-bottom: 16px; display: block; position: relative; z-index: 1; }
+  .card-title {
+    font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700;
+    margin-bottom: 8px; position: relative; z-index: 1;
+  }
+  .card-sub {
+    font-size: 13px; font-weight: 500; text-transform: uppercase;
+    letter-spacing: 1.5px; margin-bottom: 12px; position: relative; z-index: 1;
+  }
+  .card-desc {
+    font-size: 14px; color: var(--text-muted); line-height: 1.7;
+    position: relative; z-index: 1;
+  }
+  .card-tags {
+    display: flex; gap: 6px; flex-wrap: wrap; margin-top: 16px;
+    position: relative; z-index: 1;
+  }
+  .card-tag {
+    font-size: 11px; font-weight: 600; padding: 4px 10px;
+    border-radius: 6px; background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .card-arrow {
+    position: absolute; top: 28px; right: 28px; font-size: 20px;
+    opacity: 0; transform: translateX(-8px); transition: all 0.3s ease;
+    z-index: 1;
+  }
+
+  /* Card-specific accent colors */
+  .card-bfdi { --card-color: #ff6b35; }
+  .card-bfdi::before { background: linear-gradient(135deg, rgba(255,107,53,0.06), transparent 60%); }
+  .card-bfdi .card-sub { color: #ff6b35; }
+
+  .card-op { --card-color: #e63946; }
+  .card-op::before { background: linear-gradient(135deg, rgba(230,57,70,0.06), transparent 60%); }
+  .card-op .card-sub { color: #e63946; }
+
+  .card-kotlc { --card-color: #a855f7; }
+  .card-kotlc::before { background: linear-gradient(135deg, rgba(168,85,247,0.06), transparent 60%); }
+  .card-kotlc .card-sub { color: #a855f7; }
+
+  .card-sfw { --card-color: #c0392b; }
+  .card-sfw::before { background: linear-gradient(135deg, rgba(192,57,43,0.06), transparent 60%); }
+  .card-sfw .card-sub { color: #d4a03c; }
+
+  /* ── Coming soon ── */
+  .coming-soon {
+    text-align: center; margin-top: 64px; padding: 40px 24px;
+    border: 1px dashed var(--border); border-radius: 20px;
+  }
+  .coming-soon h3 {
+    font-family: 'Playfair Display', serif; font-size: 22px;
+    margin-bottom: 8px; color: var(--text-muted);
+  }
+  .coming-soon p { font-size: 14px; color: var(--text-dim); }
+
+  /* ── Footer ── */
+  footer {
+    text-align: center; margin-top: 64px; padding-top: 24px;
+    border-top: 1px solid var(--border);
+  }
+  footer p { font-size: 12px; color: var(--text-dim); line-height: 1.8; }
+</style>
+</head>
+<body>
+
+<div class="glow g1"></div>
+<div class="glow g2"></div>
+<div class="glow g3"></div>
+
+<div class="page">
+  <div class="hero">
+    <span class="hero-icon">💥</span>
+    <h1>Fan Cannon</h1>
+    <p>Interactive universe guides for the fandoms you love. Characters, timelines, lore, trivia — all in one place.</p>
+  </div>
+
+  <div class="grid">
+    <a href="bfdi-universe.html" class="card card-bfdi">
+      <span class="card-arrow">→</span>
+      <span class="card-emoji">🏝️</span>
+      <div class="card-sub">YouTube Series</div>
+      <div class="card-title">Battle for Dream Island</div>
+      <p class="card-desc">The first-ever object show. 25 characters, 16 years of history, and 100 trivia questions about BFDI and its universe.</p>
+      <div class="card-tags">
+        <span class="card-tag">25 Characters</span>
+        <span class="card-tag">Timeline</span>
+        <span class="card-tag">100 Trivia Qs</span>
+      </div>
+    </a>
+
+    <a href="onepiece-universe.html" class="card card-op">
+      <span class="card-arrow">→</span>
+      <span class="card-emoji">🏴‍☠️</span>
+      <div class="card-sub">Manga / Anime</div>
+      <div class="card-title">One Piece</div>
+      <p class="card-desc">Eiichiro Oda's epic pirate saga. 25 key characters, major arcs, Devil Fruits, Haki, and 100 trivia questions.</p>
+      <div class="card-tags">
+        <span class="card-tag">25 Characters</span>
+        <span class="card-tag">Devil Fruits</span>
+        <span class="card-tag">100 Trivia Qs</span>
+      </div>
+    </a>
+
+    <a href="kotlc-universe.html" class="card card-kotlc">
+      <span class="card-arrow">→</span>
+      <span class="card-emoji">✨</span>
+      <div class="card-sub">Book Series</div>
+      <div class="card-title">Keeper of the Lost Cities</div>
+      <p class="card-desc">Shannon Messenger's elvin world. 25 characters, special abilities, the matchmaking system, and 100 trivia questions.</p>
+      <div class="card-tags">
+        <span class="card-tag">25 Characters</span>
+        <span class="card-tag">Abilities</span>
+        <span class="card-tag">100 Trivia Qs</span>
+      </div>
+    </a>
+
+    <a href="forgotten-warrior-universe.html" class="card card-sfw">
+      <span class="card-arrow">→</span>
+      <span class="card-emoji">⚔️</span>
+      <div class="card-sub">Book Series</div>
+      <div class="card-title">Saga of the Forgotten Warrior</div>
+      <p class="card-desc">Larry Correia's epic fantasy. Ancestor blades, the caste system of Lok, demons, and 100 trivia questions.</p>
+      <div class="card-tags">
+        <span class="card-tag">25 Characters</span>
+        <span class="card-tag">4 Castes</span>
+        <span class="card-tag">100 Trivia Qs</span>
+      </div>
+    </a>
+  </div>
+
+  <div class="coming-soon">
+    <h3>More Universes Coming Soon</h3>
+    <p>New fandom guides are always in the works. Stay tuned.</p>
+  </div>
+
+  <footer>
+    <p>Fan Cannon — fan-made universe guides<br>All properties belong to their respective creators</p>
+  </footer>
+</div>
+
+</body>
+</html>
