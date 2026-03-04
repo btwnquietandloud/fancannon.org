@@ -248,6 +248,45 @@
   .fc-brand-bar span{font-family:sans-serif;font-size:14px;font-weight:600;color:#c9a44a;letter-spacing:0.5px}
   .fc-brand-bar .fc-sep{color:rgba(255,255,255,0.15);font-size:18px;font-weight:300}
   .fc-brand-bar .fc-page-name{font-size:13px;font-weight:500;color:rgba(255,255,255,0.4)}
+
+  /* Tab nav */
+  .main-tabs{display:flex;gap:8px;justify-content:center;margin-bottom:24px}
+  .main-tab{font-family:'Nunito',sans-serif;font-weight:800;font-size:15px;padding:10px 28px;border-radius:99px;border:2px solid var(--pill-bg);background:var(--pill-bg);color:var(--text-dim);cursor:pointer;transition:all .25s}
+  .main-tab:hover{border-color:var(--accent4);color:var(--text)}
+  .main-tab.active{background:var(--accent4);color:#fff;border-color:var(--accent4)}
+  .main-section{display:none}.main-section.active{display:block}
+
+  /* Quiz styles */
+  .quiz-start{text-align:center;padding:60px 24px;background:var(--card-bg);border-radius:24px;border:1px solid rgba(255,255,255,0.06)}
+  .quiz-hud{display:flex;justify-content:center;gap:16px;margin-bottom:16px;flex-wrap:wrap}
+  .quiz-hud-item{background:var(--card-bg);border-radius:14px;padding:12px 20px;border:1px solid rgba(255,255,255,0.06);text-align:center;min-width:90px}
+  .quiz-hud-label{display:block;font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px}
+  .quiz-hud-value{display:block;font-family:'Fredoka One',cursive;font-size:18px;color:var(--text);margin-top:4px}
+  .quiz-card{background:var(--card-bg);border:1px solid rgba(255,255,255,0.06);border-radius:20px;padding:32px;max-width:620px;margin:0 auto;text-align:center}
+  .quiz-cat{font-size:12px;color:var(--accent2);text-transform:uppercase;letter-spacing:2px;font-weight:700;margin-bottom:8px}
+  .quiz-q{font-family:'Fredoka One',cursive;font-size:clamp(20px,4vw,26px);margin-bottom:24px;line-height:1.4;color:var(--text)}
+  .quiz-option{display:flex;align-items:center;gap:12px;width:100%;padding:14px 18px;background:rgba(255,255,255,0.03);border:2px solid rgba(255,255,255,0.08);border-radius:12px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;color:var(--text);transition:all .2s;text-align:left;margin-bottom:8px}
+  .quiz-option:hover{border-color:var(--accent4);background:rgba(77,150,255,0.05)}
+  .quiz-option.correct{border-color:#6bcb77;background:rgba(107,203,119,0.15);color:#6bcb77}
+  .quiz-option.wrong{border-color:#ff6b6b;background:rgba(255,107,107,0.1);color:#ff6b6b}
+  .quiz-option.disabled{pointer-events:none;opacity:0.7}
+  .quiz-option .opt-letter{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:8px;background:rgba(255,255,255,0.06);font-size:12px;font-weight:800;flex-shrink:0}
+  .quiz-feedback{font-size:14px;margin:16px 0;padding:14px;border-radius:12px;line-height:1.6;display:none}
+  .quiz-feedback.correct-fb{background:rgba(107,203,119,0.1);border:1px solid rgba(107,203,119,0.2);color:#6bcb77;display:block}
+  .quiz-feedback.wrong-fb{background:rgba(255,107,107,0.1);border:1px solid rgba(255,107,107,0.2);color:#ff6b6b;display:block}
+  .quiz-next{background:var(--accent4);color:#fff;border:none;padding:12px 32px;border-radius:99px;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:800;font-size:15px;transition:all .2s;display:none}
+  .quiz-next:hover{transform:scale(1.05)}
+  .quiz-select{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-top:20px}
+  .quiz-select-card{background:var(--card-bg);border:2px solid rgba(255,255,255,0.06);border-radius:18px;padding:28px 24px;cursor:pointer;transition:all .3s;text-align:center;text-decoration:none;color:inherit}
+  .quiz-select-card:hover{transform:translateY(-4px);border-color:var(--accent4);box-shadow:0 12px 32px rgba(0,0,0,0.2)}
+  .quiz-select-icon{font-size:48px;margin-bottom:12px;display:block}
+  .quiz-select-title{font-family:'Fredoka One',cursive;font-size:20px;margin-bottom:6px}
+  .quiz-select-desc{font-size:13px;color:var(--text-dim);line-height:1.6}
+  .quiz-back{background:none;border:1px solid rgba(255,255,255,0.1);color:var(--text-dim);padding:8px 20px;border-radius:99px;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;transition:all .2s;margin-bottom:20px}
+  .quiz-back:hover{border-color:var(--accent4);color:var(--text)}
+  @keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-4px)}40%,80%{transform:translateX(4px)}}
+  .shake{animation:shake 0.4s ease}
+
 </style>
 </head>
 <body>
@@ -262,6 +301,13 @@
     <p>Tap anything to discover fun facts!</p>
   </header>
 
+  <div class="main-tabs">
+    <button class="main-tab active" onclick="switchMainTab('explore',this)">&#x1F52D; Explorer</button>
+    <button class="main-tab" onclick="switchMainTab('quizzes',this)">&#x1F9E0; Quizzes</button>
+  </div>
+
+  <div id="sec-explore" class="main-section active">
+
   <div class="pills-wrap" id="pills"></div>
 
   <div class="controls">
@@ -272,7 +318,56 @@
   <div class="tap-hint" id="tapHint">👆 Tap a card to reveal fun facts!</div>
 
   <div class="list" id="list"></div>
-</div>
+</div><!-- end sec-explore -->
+
+  <div id="sec-quizzes" class="main-section">
+    <div id="quiz-menu">
+      <h2 style="font-family:'Fredoka One',cursive;font-size:28px;text-align:center;margin-bottom:8px;background:linear-gradient(135deg,var(--accent1),var(--accent2),var(--accent3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">&#x1F9E0; Size Quizzes</h2>
+      <p style="text-align:center;color:var(--text-dim);margin-bottom:24px">Test your knowledge of measurements, sizes, and the world around you!</p>
+      <div class="quiz-select">
+        <div class="quiz-select-card" onclick="startQuiz('body')">
+          <span class="quiz-select-icon">&#x1F9CD;</span>
+          <div class="quiz-select-title">Human Body</div>
+          <div class="quiz-select-desc">100 questions about bones, organs, muscles, and the amazing human body.</div>
+        </div>
+        <div class="quiz-select-card" onclick="startQuiz('buildings')">
+          <span class="quiz-select-icon">&#x1F3D7;</span>
+          <div class="quiz-select-title">Buildings &amp; Structures</div>
+          <div class="quiz-select-desc">100 questions about skyscrapers, bridges, monuments, and engineering marvels.</div>
+        </div>
+        <div class="quiz-select-card" onclick="startQuiz('earth')">
+          <span class="quiz-select-icon">&#x1F30D;</span>
+          <div class="quiz-select-title">Planet Earth</div>
+          <div class="quiz-select-desc">100 questions about oceans, mountains, volcanoes, weather, and our planet.</div>
+        </div>
+      </div>
+    </div>
+    <div id="quiz-area" style="display:none">
+      <button class="quiz-back" onclick="backToMenu()">&#x2190; Back to Quizzes</button>
+      <div id="quiz-start" class="quiz-start">
+        <div style="font-size:72px;margin-bottom:20px">&#x1F9CD;</div>
+        <h3 style="font-family:'Fredoka One',cursive;font-size:24px;color:var(--text);margin:0 0 12px">Human Body Quiz</h3>
+        <p style="font-size:15px;color:var(--text-dim);margin:0 0 28px;max-width:420px;margin-left:auto;margin-right:auto;line-height:1.6">100 questions about the incredible human body &mdash; bones, organs, senses, and more!</p>
+        <button class="quiz-next" style="display:inline-block" onclick="beginQuiz()">&#x1F4AA; Start Quiz</button>
+      </div>
+      <div id="quiz-game" style="display:none">
+        <div class="quiz-hud">
+          <div class="quiz-hud-item"><span class="quiz-hud-label">Question</span><span class="quiz-hud-value" id="q-num">1 / 100</span></div>
+          <div class="quiz-hud-item"><span class="quiz-hud-label">Score</span><span class="quiz-hud-value" id="q-score">0</span></div>
+          <div class="quiz-hud-item"><span class="quiz-hud-label">Streak</span><span class="quiz-hud-value" id="q-streak">&#x1F525; 0</span></div>
+        </div>
+        <div style="width:100%;height:6px;background:rgba(255,255,255,0.06);border-radius:3px;margin-bottom:24px;overflow:hidden"><div id="q-progress" style="height:100%;background:linear-gradient(90deg,var(--accent4),var(--accent3));border-radius:3px;width:0%;transition:width 0.3s"></div></div>
+        <div class="quiz-card" id="q-card">
+          <div class="quiz-cat" id="q-cat"></div>
+          <p class="quiz-q" id="q-question">Loading...</p>
+          <div id="q-options"></div>
+          <div class="quiz-feedback" id="q-feedback"></div>
+          <button class="quiz-next" id="q-next" onclick="loadQuizQ()">Next Question &#x2192;</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 
 <script>
 // ── DATA ──
@@ -638,6 +733,373 @@ function toggleSort() {
 createStars();
 renderPills();
 renderList();
+
+// ── TAB SWITCHING ──
+function switchMainTab(tab, btn) {
+  document.querySelectorAll('.main-tab').forEach(function(b){b.classList.remove('active')});
+  btn.classList.add('active');
+  document.querySelectorAll('.main-section').forEach(function(s){s.classList.remove('active')});
+  document.getElementById('sec-'+tab).classList.add('active');
+}
+
+// ── QUIZ ENGINE ──
+var BODY_Q=[
+{q:"How many bones are in the adult human body?",a:"206",d:["195","212","186"],cat:"Skeletal"},
+{q:"What is the largest organ in the human body?",a:"Skin",d:["Liver","Lungs","Brain"],cat:"Organs"},
+{q:"What is the smallest bone in the human body?",a:"Stapes (stirrup bone in the ear)",d:["Toe bone","Kneecap","Hyoid"],cat:"Skeletal"},
+{q:"How many muscles are in the human body?",a:"Over 600",d:["About 200","About 400","About 800"],cat:"Muscular"},
+{q:"What is the longest bone in the human body?",a:"Femur (thigh bone)",d:["Tibia","Humerus","Spine"],cat:"Skeletal"},
+{q:"What percentage of the human body is water?",a:"About 60%",d:["About 40%","About 75%","About 90%"],cat:"General"},
+{q:"How many teeth does an adult human have?",a:"32",d:["28","36","24"],cat:"Skeletal"},
+{q:"What is the hardest substance in the human body?",a:"Tooth enamel",d:["Bone","Fingernails","Cartilage"],cat:"General"},
+{q:"Which organ filters blood and removes toxins?",a:"Liver",d:["Kidneys","Spleen","Pancreas"],cat:"Organs"},
+{q:"How many chambers does the human heart have?",a:"4",d:["2","3","6"],cat:"Organs"},
+{q:"What is the largest muscle in the body?",a:"Gluteus maximus",d:["Quadriceps","Latissimus dorsi","Biceps"],cat:"Muscular"},
+{q:"How many vertebrae are in the human spine?",a:"33",d:["26","30","36"],cat:"Skeletal"},
+{q:"What organ produces insulin?",a:"Pancreas",d:["Liver","Kidneys","Gallbladder"],cat:"Organs"},
+{q:"How long is the average adult small intestine?",a:"About 20 feet (6 meters)",d:["About 5 feet","About 10 feet","About 35 feet"],cat:"Organs"},
+{q:"What is the strongest muscle in the body (by weight)?",a:"Masseter (jaw muscle)",d:["Heart","Tongue","Gluteus maximus"],cat:"Muscular"},
+{q:"How many liters of blood does the average adult have?",a:"About 5 liters",d:["About 3 liters","About 8 liters","About 10 liters"],cat:"Circulatory"},
+{q:"What is the only bone in the body not connected to another bone?",a:"Hyoid bone (in the throat)",d:["Kneecap","Stapes","Coccyx"],cat:"Skeletal"},
+{q:"How many times does the heart beat per day?",a:"About 100,000",d:["About 50,000","About 200,000","About 500,000"],cat:"Circulatory"},
+{q:"What is the average weight of the human brain?",a:"About 3 pounds (1.4 kg)",d:["About 1 pound","About 5 pounds","About 8 pounds"],cat:"Nervous"},
+{q:"Which finger has the strongest grip?",a:"Middle finger",d:["Index finger","Ring finger","Thumb"],cat:"Muscular"},
+{q:"How fast do nerve impulses travel?",a:"Up to 268 mph (431 km/h)",d:["About 50 mph","About 100 mph","About 500 mph"],cat:"Nervous"},
+{q:"How many taste buds does the average person have?",a:"About 10,000",d:["About 2,000","About 5,000","About 50,000"],cat:"Senses"},
+{q:"What is the body's largest joint?",a:"Knee",d:["Hip","Shoulder","Elbow"],cat:"Skeletal"},
+{q:"How much does the average human head weigh?",a:"About 10-11 pounds (4.5-5 kg)",d:["About 5 pounds","About 15 pounds","About 20 pounds"],cat:"General"},
+{q:"How many bones does a baby have at birth?",a:"About 270",d:["206","150","300"],cat:"Skeletal"},
+{q:"What is the only organ that can regenerate itself?",a:"Liver",d:["Heart","Brain","Kidneys"],cat:"Organs"},
+{q:"How long is the average adult large intestine?",a:"About 5 feet (1.5 meters)",d:["About 2 feet","About 10 feet","About 20 feet"],cat:"Organs"},
+{q:"What percentage of the body's oxygen does the brain use?",a:"About 20%",d:["About 5%","About 10%","About 40%"],cat:"Nervous"},
+{q:"How many sweat glands does the human body have?",a:"2-4 million",d:["About 500,000","About 1 million","About 10 million"],cat:"General"},
+{q:"What is the smallest muscle in the body?",a:"Stapedius (in the ear)",d:["Palmaris longus","Extensor digiti minimi","Arrector pili"],cat:"Muscular"},
+{q:"How many pairs of ribs do humans have?",a:"12 pairs (24 total)",d:["10 pairs","14 pairs","8 pairs"],cat:"Skeletal"},
+{q:"What color is blood inside the body?",a:"Always red (dark red when deoxygenated)",d:["Blue when deoxygenated","Purple when deoxygenated","Colorless until exposed to air"],cat:"Circulatory"},
+{q:"How fast does a sneeze travel?",a:"Up to 100 mph (160 km/h)",d:["About 30 mph","About 50 mph","About 200 mph"],cat:"General"},
+{q:"What is the average length of the human esophagus?",a:"About 10 inches (25 cm)",d:["About 4 inches","About 18 inches","About 24 inches"],cat:"Organs"},
+{q:"How many miles of blood vessels are in the human body?",a:"About 60,000 miles",d:["About 10,000 miles","About 30,000 miles","About 100,000 miles"],cat:"Circulatory"},
+{q:"Which organ uses the most energy in the body?",a:"Brain",d:["Heart","Liver","Muscles"],cat:"Nervous"},
+{q:"How long does a red blood cell live?",a:"About 120 days",d:["About 30 days","About 7 days","About 1 year"],cat:"Circulatory"},
+{q:"What is the largest artery in the body?",a:"Aorta",d:["Carotid artery","Femoral artery","Pulmonary artery"],cat:"Circulatory"},
+{q:"How many bones are in the human hand?",a:"27",d:["19","22","32"],cat:"Skeletal"},
+{q:"What is the average body temperature?",a:"98.6°F (37°C)",d:["97.0°F","100.4°F","96.8°F"],cat:"General"},
+{q:"Which body part grows the fastest?",a:"Bone marrow",d:["Hair","Fingernails","Skin"],cat:"General"},
+{q:"How much saliva does a person produce per day?",a:"About 1-2 liters",d:["About 0.2 liters","About 5 liters","About 0.5 liters"],cat:"Organs"},
+{q:"What is the most common blood type?",a:"O positive",d:["A positive","B positive","AB positive"],cat:"Circulatory"},
+{q:"How many neurons are in the human brain?",a:"About 86 billion",d:["About 10 billion","About 1 trillion","About 1 billion"],cat:"Nervous"},
+{q:"What is the rarest blood type?",a:"AB negative",d:["O negative","B negative","A negative"],cat:"Circulatory"},
+{q:"How many bones are in the human foot?",a:"26",d:["20","30","18"],cat:"Skeletal"},
+{q:"What organ is responsible for filtering blood?",a:"Kidneys",d:["Liver","Spleen","Lungs"],cat:"Organs"},
+{q:"How much does the human heart weigh?",a:"About 8-12 ounces (230-340g)",d:["About 2 ounces","About 1 pound","About 2 pounds"],cat:"Organs"},
+{q:"What is the longest muscle in the body?",a:"Sartorius (thigh)",d:["Biceps femoris","Rectus femoris","Iliopsoas"],cat:"Muscular"},
+{q:"How thick is human skin on average?",a:"About 2mm",d:["About 0.5mm","About 5mm","About 10mm"],cat:"General"},
+{q:"How many chromosomes do human cells have?",a:"46 (23 pairs)",d:["44","48","42"],cat:"General"},
+{q:"What is the average lung capacity?",a:"About 6 liters",d:["About 2 liters","About 4 liters","About 10 liters"],cat:"Organs"},
+{q:"How many miles do you walk in a lifetime?",a:"About 100,000 miles",d:["About 25,000 miles","About 50,000 miles","About 200,000 miles"],cat:"General"},
+{q:"What bone protects the brain?",a:"Skull (cranium)",d:["Vertebrae","Sternum","Pelvis"],cat:"Skeletal"},
+{q:"How fast does hair grow per month?",a:"About half an inch (1.25 cm)",d:["About 2 inches","About 0.1 inches","About 1 inch"],cat:"General"},
+{q:"What are the tiny air sacs in the lungs called?",a:"Alveoli",d:["Bronchioles","Cilia","Capillaries"],cat:"Organs"},
+{q:"How many alveoli are in both lungs combined?",a:"About 300-500 million",d:["About 10 million","About 50 million","About 1 billion"],cat:"Organs"},
+{q:"What is the body's largest internal organ?",a:"Liver",d:["Stomach","Lungs","Brain"],cat:"Organs"},
+{q:"How many times do your eyes blink per day?",a:"About 15,000-20,000",d:["About 5,000","About 50,000","About 2,000"],cat:"Senses"},
+{q:"What is the width of a human hair?",a:"About 70 micrometers",d:["About 10 micrometers","About 200 micrometers","About 1 millimeter"],cat:"General"},
+{q:"How many smell receptors does the human nose have?",a:"About 400 types",d:["About 50 types","About 100 types","About 1,000 types"],cat:"Senses"},
+{q:"What is the average weight of the human liver?",a:"About 3 pounds (1.4 kg)",d:["About 1 pound","About 5 pounds","About 8 pounds"],cat:"Organs"},
+{q:"How many breaths does a person take per day?",a:"About 20,000",d:["About 5,000","About 10,000","About 50,000"],cat:"General"},
+{q:"What connects muscles to bones?",a:"Tendons",d:["Ligaments","Cartilage","Fascia"],cat:"Muscular"},
+{q:"What connects bones to other bones?",a:"Ligaments",d:["Tendons","Cartilage","Muscles"],cat:"Muscular"},
+{q:"How many cranial nerves are there?",a:"12 pairs",d:["8 pairs","10 pairs","15 pairs"],cat:"Nervous"},
+{q:"What is the average weight of the human skeleton?",a:"About 15% of body weight",d:["About 5%","About 25%","About 40%"],cat:"Skeletal"},
+{q:"How many layers does human skin have?",a:"3 (epidermis, dermis, hypodermis)",d:["2","4","5"],cat:"General"},
+{q:"What is the pH of human blood?",a:"About 7.35-7.45",d:["About 6.0","About 7.0","About 8.0"],cat:"Circulatory"},
+{q:"How much blood does the heart pump per minute?",a:"About 5 liters (at rest)",d:["About 1 liter","About 10 liters","About 20 liters"],cat:"Circulatory"},
+{q:"What percentage of the human body is made up of just 4 elements?",a:"About 96% (oxygen, carbon, hydrogen, nitrogen)",d:["About 60%","About 80%","About 99%"],cat:"General"},
+{q:"How many hairs does the average person have on their head?",a:"About 100,000",d:["About 10,000","About 50,000","About 500,000"],cat:"General"},
+{q:"What is the largest cell in the human body?",a:"Egg cell (ovum)",d:["Red blood cell","Neuron","Muscle fiber"],cat:"General"},
+{q:"What is the smallest cell in the human body?",a:"Sperm cell",d:["Red blood cell","Platelet","White blood cell"],cat:"General"},
+{q:"How many bones are in the human skull?",a:"22",d:["8","14","28"],cat:"Skeletal"},
+{q:"What organ produces bile?",a:"Liver",d:["Gallbladder","Pancreas","Stomach"],cat:"Organs"},
+{q:"Where is bile stored?",a:"Gallbladder",d:["Liver","Stomach","Small intestine"],cat:"Organs"},
+{q:"How long does it take food to pass through the digestive system?",a:"24-72 hours",d:["6-8 hours","12 hours","1 week"],cat:"Organs"},
+{q:"What is the average human body surface area?",a:"About 1.7 square meters",d:["About 0.5 sq meters","About 3 sq meters","About 5 sq meters"],cat:"General"},
+{q:"How many muscles does it take to smile?",a:"About 12",d:["About 5","About 26","About 43"],cat:"Muscular"},
+{q:"How many muscles does it take to frown?",a:"About 11",d:["About 5","About 26","About 43"],cat:"Muscular"},
+{q:"What is the average speed of a human cough?",a:"About 50 mph (80 km/h)",d:["About 10 mph","About 100 mph","About 200 mph"],cat:"General"},
+{q:"How many gallons of blood does the heart pump per day?",a:"About 2,000 gallons",d:["About 500 gallons","About 1,000 gallons","About 5,000 gallons"],cat:"Circulatory"},
+{q:"What percentage of bones are in the hands and feet?",a:"Over 50% (106 of 206)",d:["About 25%","About 35%","About 70%"],cat:"Skeletal"},
+{q:"What is the heaviest organ in the body?",a:"Skin (about 16% of body weight)",d:["Liver","Brain","Skeleton"],cat:"Organs"},
+{q:"How many types of tissue are in the human body?",a:"4 (epithelial, connective, muscle, nervous)",d:["2","6","8"],cat:"General"},
+{q:"What is the diameter of the aorta?",a:"About 1 inch (2.5 cm)",d:["About 0.25 inches","About 2 inches","About 3 inches"],cat:"Circulatory"},
+{q:"How many white blood cells does the body produce daily?",a:"About 100 billion",d:["About 1 billion","About 10 billion","About 1 trillion"],cat:"Circulatory"},
+{q:"What is the average grip strength of a human hand?",a:"About 70-80 pounds",d:["About 20 pounds","About 40 pounds","About 150 pounds"],cat:"Muscular"},
+{q:"How far can the human eye see on a clear day?",a:"About 3 miles to the horizon",d:["About 0.5 miles","About 10 miles","About 30 miles"],cat:"Senses"},
+{q:"How many megapixels is the human eye equivalent to?",a:"About 576 megapixels",d:["About 12 megapixels","About 50 megapixels","About 1,000 megapixels"],cat:"Senses"},
+{q:"What is the average human reaction time?",a:"About 250 milliseconds",d:["About 50 milliseconds","About 100 milliseconds","About 500 milliseconds"],cat:"Nervous"},
+{q:"How much ATP does the body produce daily?",a:"About equal to body weight",d:["About 1 gram","About 1 ounce","About 1 pound"],cat:"General"},
+{q:"How many different proteins does the human body make?",a:"Over 100,000",d:["About 1,000","About 10,000","About 1 million"],cat:"General"},
+{q:"What is the strongest bone in the body?",a:"Femur (thigh bone)",d:["Skull","Tibia","Pelvis"],cat:"Skeletal"},
+{q:"How many hairs does a person lose per day?",a:"50-100",d:["5-10","200-300","500+"],cat:"General"},
+{q:"What is the average length of the human digestive tract?",a:"About 30 feet (9 meters)",d:["About 10 feet","About 15 feet","About 50 feet"],cat:"Organs"},
+{q:"How much force can the jaw exert?",a:"About 200 pounds (90 kg)",d:["About 50 pounds","About 100 pounds","About 500 pounds"],cat:"Muscular"},
+{q:"What is the cornea's diameter?",a:"About 11.5 mm",d:["About 5 mm","About 20 mm","About 30 mm"],cat:"Senses"},
+{q:"How many sensory receptors are in the skin?",a:"About 5 million",d:["About 100,000","About 500,000","About 50 million"],cat:"Senses"}
+];
+
+
+var BUILDINGS_Q=[
+{q:"How tall is the Burj Khalifa?",a:"2,717 feet (828 m)",d:["2,200 feet","3,100 feet","1,800 feet"],cat:"Skyscrapers"},
+{q:"What is the tallest building in the United States?",a:"One World Trade Center (1,776 ft)",d:["Empire State Building","Willis Tower","432 Park Avenue"],cat:"Skyscrapers"},
+{q:"How long is the Great Wall of China?",a:"About 13,171 miles (21,196 km)",d:["About 5,000 miles","About 8,000 miles","About 20,000 miles"],cat:"Monuments"},
+{q:"What is the largest pyramid in the world by volume?",a:"Great Pyramid of Cholula (Mexico)",d:["Great Pyramid of Giza","Pyramid of the Sun","Red Pyramid"],cat:"Monuments"},
+{q:"How tall is the Eiffel Tower?",a:"1,083 feet (330 m)",d:["984 feet","1,200 feet","850 feet"],cat:"Monuments"},
+{q:"What is the longest bridge in the world?",a:"Danyang-Kunshan Grand Bridge (102 miles)",d:["Lake Pontchartrain Causeway","Hong Kong-Zhuhai-Macau Bridge","Akashi Kaikyo Bridge"],cat:"Bridges"},
+{q:"How wide is the Hoover Dam?",a:"660 feet (201 m) at the base",d:["200 feet","1,000 feet","400 feet"],cat:"Dams"},
+{q:"What is the tallest statue in the world?",a:"Statue of Unity, India (597 ft / 182 m)",d:["Spring Temple Buddha","Statue of Liberty","Christ the Redeemer"],cat:"Monuments"},
+{q:"How tall is the Statue of Liberty from base to torch?",a:"305 feet (93 m)",d:["200 feet","450 feet","150 feet"],cat:"Monuments"},
+{q:"What is the largest stadium in the world by capacity?",a:"Narendra Modi Stadium, India (132,000)",d:["Michigan Stadium","Rungrado May Day Stadium","Melbourne Cricket Ground"],cat:"Stadiums"},
+{q:"How long is the Golden Gate Bridge?",a:"1.7 miles (2.7 km)",d:["0.5 miles","3.2 miles","1.0 miles"],cat:"Bridges"},
+{q:"What is the largest airport by area?",a:"King Fahd International Airport, Saudi Arabia",d:["Denver International","Dallas/Fort Worth","Beijing Daxing"],cat:"Buildings"},
+{q:"How tall is the Empire State Building?",a:"1,454 feet (443 m) including antenna",d:["1,200 feet","1,600 feet","1,050 feet"],cat:"Skyscrapers"},
+{q:"What is the deepest building foundation ever built?",a:"About 250 feet (76 m) deep",d:["About 50 feet","About 100 feet","About 500 feet"],cat:"Engineering"},
+{q:"How many floors does the Burj Khalifa have?",a:"163",d:["120","200","145"],cat:"Skyscrapers"},
+{q:"What is the largest shopping mall in the world by area?",a:"Iran Mall, Tehran",d:["Mall of America","Dubai Mall","West Edmonton Mall"],cat:"Buildings"},
+{q:"How long did it take to build the Great Pyramid of Giza?",a:"About 20 years",d:["About 5 years","About 50 years","About 100 years"],cat:"Monuments"},
+{q:"What is the tallest dam in the world?",a:"Jinping-I Dam, China (1,001 ft / 305 m)",d:["Hoover Dam","Three Gorges Dam","Nurek Dam"],cat:"Dams"},
+{q:"How much does the Eiffel Tower weigh?",a:"About 7,300 tons of iron",d:["About 2,000 tons","About 15,000 tons","About 50,000 tons"],cat:"Monuments"},
+{q:"What is the longest tunnel in the world?",a:"Gotthard Base Tunnel, Switzerland (35.5 mi / 57 km)",d:["Channel Tunnel","Seikan Tunnel","Laerdal Tunnel"],cat:"Engineering"},
+{q:"How many windows does the Empire State Building have?",a:"6,514",d:["2,500","4,000","10,000"],cat:"Skyscrapers"},
+{q:"What is the largest castle in the world by area?",a:"Prague Castle (750,000 sq ft)",d:["Windsor Castle","Versailles","Forbidden City"],cat:"Buildings"},
+{q:"How thick are the walls of the Hoover Dam?",a:"660 feet (201 m) at the base",d:["100 feet","300 feet","45 feet"],cat:"Dams"},
+{q:"What is the tallest residential building in the world?",a:"Central Park Tower, NYC (1,550 ft)",d:["432 Park Avenue","Burj Khalifa","Shanghai Tower"],cat:"Skyscrapers"},
+{q:"How deep is the Channel Tunnel below the seabed?",a:"About 250 feet (75 m)",d:["About 50 feet","About 150 feet","About 500 feet"],cat:"Engineering"},
+{q:"What is the largest dome structure?",a:"Singapore National Stadium (1,017 ft span)",d:["St. Peter's Basilica","Pantheon","Astrodome"],cat:"Buildings"},
+{q:"How long is the Panama Canal?",a:"50 miles (80 km)",d:["25 miles","100 miles","150 miles"],cat:"Engineering"},
+{q:"What is the tallest church in the world?",a:"Ulm Minster, Germany (530 ft / 162 m)",d:["Sagrada Familia","Cologne Cathedral","St. Patrick's Cathedral"],cat:"Buildings"},
+{q:"How many bricks were used to build the Empire State Building?",a:"About 10 million",d:["About 1 million","About 5 million","About 50 million"],cat:"Skyscrapers"},
+{q:"What is the largest hydroelectric dam?",a:"Three Gorges Dam, China",d:["Itaipu Dam","Hoover Dam","Aswan High Dam"],cat:"Dams"},
+{q:"How wide is the Three Gorges Dam?",a:"7,661 feet (2,335 m)",d:["3,000 feet","5,000 feet","10,000 feet"],cat:"Dams"},
+{q:"What is the tallest observation wheel?",a:"Ain Dubai (820 ft / 250 m)",d:["London Eye","Singapore Flyer","High Roller"],cat:"Buildings"},
+{q:"How much concrete is in the Hoover Dam?",a:"3.25 million cubic yards",d:["500,000 cubic yards","1 million cubic yards","10 million cubic yards"],cat:"Dams"},
+{q:"What is the longest suspension bridge span?",a:"1915 Canakkale Bridge, Turkey (6,637 ft)",d:["Akashi Kaikyo Bridge","Golden Gate Bridge","Verrazano-Narrows Bridge"],cat:"Bridges"},
+{q:"How tall is the Shanghai Tower?",a:"2,073 feet (632 m)",d:["1,800 feet","2,300 feet","1,500 feet"],cat:"Skyscrapers"},
+{q:"What is the oldest known bridge still in use?",a:"Arkadiko Bridge, Greece (~1300 BC)",d:["Ponte Vecchio","London Bridge","Zhaozhou Bridge"],cat:"Bridges"},
+{q:"How many people worked on the Hoover Dam?",a:"About 21,000 over 5 years",d:["About 5,000","About 50,000","About 100,000"],cat:"Dams"},
+{q:"What is the tallest building in Europe?",a:"Lakhta Center, St. Petersburg (1,516 ft)",d:["The Shard","Varso Tower","Federation Tower"],cat:"Skyscrapers"},
+{q:"How much steel is in the Golden Gate Bridge?",a:"83,000 tons",d:["20,000 tons","50,000 tons","150,000 tons"],cat:"Bridges"},
+{q:"What is the largest office building by floor area?",a:"Pentagon (6.5 million sq ft)",d:["Sears Tower","World Trade Center","Taipei 101"],cat:"Buildings"},
+{q:"How tall is the Willis (Sears) Tower?",a:"1,451 feet (442 m)",d:["1,200 feet","1,600 feet","1,800 feet"],cat:"Skyscrapers"},
+{q:"What ancient wonder was the tallest structure for 3,800 years?",a:"Great Pyramid of Giza",d:["Lighthouse of Alexandria","Colossus of Rhodes","Hanging Gardens"],cat:"Monuments"},
+{q:"How many stones make up the Great Pyramid of Giza?",a:"About 2.3 million",d:["About 500,000","About 1 million","About 5 million"],cat:"Monuments"},
+{q:"What is the largest train station in the world?",a:"Grand Central Terminal, NYC (44 platforms)",d:["Tokyo Station","Zurich HB","Mumbai CST"],cat:"Buildings"},
+{q:"How long is the Akashi Kaikyo Bridge?",a:"12,831 feet (3,911 m) total",d:["8,000 feet","15,000 feet","6,000 feet"],cat:"Bridges"},
+{q:"What is the tallest building in Africa?",a:"Iconic Tower, Egypt (1,263 ft)",d:["Carlton Centre","Leonardo","The Pinnacle"],cat:"Skyscrapers"},
+{q:"How many elevators does the Burj Khalifa have?",a:"57",d:["30","80","120"],cat:"Skyscrapers"},
+{q:"What is the world's tallest timber building?",a:"Mjostaarnet, Norway (280 ft / 85.4 m)",d:["HoHo Vienna","Treet Bergen","Brock Commons"],cat:"Buildings"},
+{q:"How much does the Great Pyramid of Giza weigh?",a:"About 6 million tons",d:["About 1 million tons","About 3 million tons","About 12 million tons"],cat:"Monuments"},
+{q:"What is the longest cable-stayed bridge?",a:"Russky Bridge, Russia (3,622 ft main span)",d:["Sutong Bridge","Millau Viaduct","Stonecutters Bridge"],cat:"Bridges"},
+{q:"How tall is the Taipei 101?",a:"1,667 feet (508 m)",d:["1,400 feet","1,800 feet","1,200 feet"],cat:"Skyscrapers"},
+{q:"What is the deepest swimming pool in the world?",a:"Deep Dive Dubai (196 ft / 60 m)",d:["Y-40 (130 ft)","Nemo 33 (113 ft)","Blue Abyss (164 ft)"],cat:"Buildings"},
+{q:"How many workers built the Great Wall of China?",a:"About 1 million (over centuries)",d:["About 100,000","About 5 million","About 10,000"],cat:"Monuments"},
+{q:"What is the largest greenhouse in the world?",a:"Eden Project, UK",d:["Kew Gardens","Gardens by the Bay","Biosphere 2"],cat:"Buildings"},
+{q:"How tall is the Leaning Tower of Pisa?",a:"183 feet (56 m) on the low side",d:["100 feet","250 feet","300 feet"],cat:"Monuments"},
+{q:"What angle does the Leaning Tower of Pisa lean at?",a:"About 3.97 degrees",d:["About 10 degrees","About 1 degree","About 7 degrees"],cat:"Monuments"},
+{q:"What is the longest aqueduct ever built?",a:"Zaghouan Aqueduct, Tunisia (80+ miles)",d:["Pont du Gard","Roman Aqueduct of Segovia","Acqua Vergine"],cat:"Engineering"},
+{q:"How fast were the twin towers of the WTC built?",a:"About 1 floor per week each",d:["1 floor per day","1 floor per month","2 floors per week"],cat:"Skyscrapers"},
+{q:"What is the largest religious building?",a:"Angkor Wat, Cambodia (402 acres)",d:["St. Peter's Basilica","Great Mosque of Mecca","Borobudur"],cat:"Buildings"},
+{q:"How many steps to the top of the Eiffel Tower?",a:"1,665",d:["674","2,500","900"],cat:"Monuments"},
+{q:"What is the tallest building in South America?",a:"Landmark 81 is not in SA - it's Yachthouse, Brazil (919 ft)",d:["Torre de Cali","Gran Torre Santiago","Torres del Parque"],cat:"Skyscrapers"},
+{q:"How wide is the base of the Great Pyramid of Giza?",a:"755 feet (230 m) on each side",d:["400 feet","600 feet","1,000 feet"],cat:"Monuments"},
+{q:"What material is the Taj Mahal made from?",a:"White marble",d:["Limestone","Granite","Sandstone"],cat:"Monuments"},
+{q:"How long did it take to build the Taj Mahal?",a:"About 22 years",d:["About 5 years","About 10 years","About 50 years"],cat:"Monuments"},
+{q:"What is the world's largest concert hall by capacity?",a:"The Colosseum (original, ~50,000)",d:["Madison Square Garden","Royal Albert Hall","Sydney Opera House"],cat:"Stadiums"},
+{q:"How heavy is the Statue of Liberty's copper skin?",a:"About 62,000 pounds (31 tons)",d:["About 10,000 pounds","About 100,000 pounds","About 200,000 pounds"],cat:"Monuments"},
+{q:"What is the oldest skyscraper still standing?",a:"Home Insurance Building successor - Flatiron Building (1902)",d:["Woolworth Building","Singer Building","Park Row Building"],cat:"Skyscrapers"},
+{q:"How deep are the foundations of the Burj Khalifa?",a:"164 feet (50 m)",d:["50 feet","100 feet","250 feet"],cat:"Skyscrapers"},
+{q:"What is the world's largest indoor arena?",a:"Philippine Arena (55,000 capacity)",d:["Madison Square Garden","O2 Arena","Staples Center"],cat:"Stadiums"},
+{q:"How much did the Burj Khalifa cost to build?",a:"About $1.5 billion",d:["About $500 million","About $3 billion","About $5 billion"],cat:"Skyscrapers"},
+{q:"What is the longest road tunnel?",a:"Laerdal Tunnel, Norway (15.2 mi / 24.5 km)",d:["Gotthard Road Tunnel","Mont Blanc Tunnel","Frejus Road Tunnel"],cat:"Engineering"},
+{q:"How tall is the Christ the Redeemer statue?",a:"98 feet (30 m) not including pedestal",d:["50 feet","150 feet","200 feet"],cat:"Monuments"},
+{q:"What is the world's widest bridge?",a:"Sydney Harbour Bridge (160 ft / 49 m wide)",d:["Brooklyn Bridge","Golden Gate Bridge","Tower Bridge"],cat:"Bridges"},
+{q:"How many skyscrapers are taller than 1,000 feet?",a:"Over 100 worldwide",d:["About 20","About 50","About 500"],cat:"Skyscrapers"},
+{q:"What is the tallest lighthouse?",a:"Jeddah Light, Saudi Arabia (436 ft / 133 m)",d:["Ile Vierge Lighthouse","Yokohama Marine Tower","Torre de Hercules"],cat:"Buildings"},
+{q:"How much paint does the Golden Gate Bridge need?",a:"About 10,000 gallons per touch-up",d:["About 1,000 gallons","About 50,000 gallons","About 100 gallons"],cat:"Bridges"},
+{q:"What is the largest man-made lake?",a:"Lake Kariba (by volume)",d:["Lake Mead","Lake Volta","Lake Nasser"],cat:"Dams"},
+{q:"How high is the Millau Viaduct?",a:"1,125 feet (343 m) at tallest mast",d:["800 feet","500 feet","1,500 feet"],cat:"Bridges"},
+{q:"What building has the most floor space?",a:"New Century Global Center, China (18.9M sq ft)",d:["Pentagon","Dubai Mall","Boeing Everett Factory"],cat:"Buildings"},
+{q:"How tall is the One World Trade Center?",a:"1,776 feet (541 m)",d:["1,500 feet","1,900 feet","1,368 feet"],cat:"Skyscrapers"},
+{q:"What was the first building taller than 1,000 feet?",a:"Empire State Building (1931)",d:["Chrysler Building","Woolworth Building","Sears Tower"],cat:"Skyscrapers"},
+{q:"How many workers died building the Hoover Dam?",a:"96 (official count)",d:["About 500","About 25","About 1,000"],cat:"Dams"},
+{q:"What is the largest brick building in the world?",a:"Malbork Castle, Poland",d:["Buckingham Palace","Blenheim Palace","Kremlin"],cat:"Buildings"},
+{q:"How much water does the Three Gorges Dam hold back?",a:"About 39.3 billion cubic meters",d:["About 5 billion","About 15 billion","About 100 billion"],cat:"Dams"},
+{q:"What is the world's tallest hotel?",a:"Gevora Hotel, Dubai (1,168 ft / 356 m)",d:["Burj Al Arab","JW Marriott Marquis","Baiyoke Tower"],cat:"Buildings"},
+{q:"How fast was the Empire State Building constructed?",a:"410 days",d:["2 years","5 years","18 months"],cat:"Skyscrapers"},
+{q:"What is the longest wall in the world besides the Great Wall?",a:"Kumbhalgarh Fort Wall, India (22 mi / 36 km)",d:["Hadrian's Wall","Berlin Wall","Walls of Constantinople"],cat:"Monuments"},
+{q:"How many people visit the Eiffel Tower each year?",a:"About 7 million",d:["About 2 million","About 15 million","About 25 million"],cat:"Monuments"},
+{q:"What is the largest single-span roof?",a:"Boeing Everett Factory (98.3 acres under roof)",d:["O2 Arena","Dallas Cowboys Stadium","Georgia Dome"],cat:"Buildings"},
+{q:"How tall is Big Ben's clock tower?",a:"316 feet (96 m)",d:["200 feet","400 feet","150 feet"],cat:"Monuments"},
+{q:"What is the deepest foundation for a bridge pier?",a:"About 260 feet (79 m) below water",d:["About 50 feet","About 100 feet","About 500 feet"],cat:"Bridges"},
+{q:"How much electricity does the Three Gorges Dam generate?",a:"22,500 MW (world's largest power station)",d:["5,000 MW","10,000 MW","50,000 MW"],cat:"Dams"},
+{q:"What was the tallest building before the Eiffel Tower?",a:"Washington Monument (555 ft)",d:["Cologne Cathedral","Ulm Minster","Pyramid of Giza"],cat:"Monuments"},
+{q:"How many skyscrapers does Hong Kong have?",a:"Over 480 (most in any city)",d:["About 100","About 250","About 700"],cat:"Skyscrapers"},
+{q:"What is the largest window in the world?",a:"In the Vehicle Assembly Building, NASA (456 ft tall)",d:["Sears Tower windows","Louvre Pyramid","Crystal Palace"],cat:"Buildings"},
+{q:"How deep is the deepest building basement?",a:"Syangja Underground, about 5 stories down",d:["2 stories","10 stories","20 stories"],cat:"Engineering"}
+];
+
+var EARTH_Q=[
+{q:"How deep is the Mariana Trench?",a:"About 36,000 feet (11,000 m)",d:["About 20,000 feet","About 50,000 feet","About 15,000 feet"],cat:"Oceans"},
+{q:"How tall is Mount Everest?",a:"29,032 feet (8,849 m)",d:["26,000 feet","32,000 feet","24,000 feet"],cat:"Mountains"},
+{q:"What is the circumference of the Earth?",a:"About 24,901 miles (40,075 km)",d:["About 18,000 miles","About 30,000 miles","About 12,000 miles"],cat:"Planet"},
+{q:"How deep is the average ocean depth?",a:"About 12,100 feet (3,688 m)",d:["About 5,000 feet","About 20,000 feet","About 2,000 feet"],cat:"Oceans"},
+{q:"What is the tallest waterfall in the world?",a:"Angel Falls, Venezuela (3,212 ft / 979 m)",d:["Niagara Falls","Victoria Falls","Iguazu Falls"],cat:"Water"},
+{q:"How wide is the Amazon River at its widest?",a:"About 30 miles (48 km) in wet season",d:["About 5 miles","About 15 miles","About 50 miles"],cat:"Water"},
+{q:"What is the diameter of the Earth?",a:"About 7,918 miles (12,742 km)",d:["About 5,000 miles","About 10,000 miles","About 15,000 miles"],cat:"Planet"},
+{q:"How hot is the Earth's core?",a:"About 10,800°F (6,000°C)",d:["About 3,000°F","About 5,000°F","About 20,000°F"],cat:"Planet"},
+{q:"What is the largest ocean?",a:"Pacific Ocean (63.8 million sq mi)",d:["Atlantic Ocean","Indian Ocean","Arctic Ocean"],cat:"Oceans"},
+{q:"How long is the Nile River?",a:"About 4,132 miles (6,650 km)",d:["About 2,500 miles","About 3,500 miles","About 5,000 miles"],cat:"Water"},
+{q:"What is the largest desert in the world?",a:"Antarctic Desert (5.5 million sq mi)",d:["Sahara","Arabian","Gobi"],cat:"Land"},
+{q:"How thick is the Earth's atmosphere?",a:"About 300 miles (480 km)",d:["About 50 miles","About 100 miles","About 1,000 miles"],cat:"Atmosphere"},
+{q:"What is the highest temperature ever recorded on Earth?",a:"134°F (56.7°C) in Death Valley",d:["122°F","145°F","160°F"],cat:"Weather"},
+{q:"What is the coldest temperature ever recorded?",a:"-128.6°F (-89.2°C) in Antarctica",d:["-100°F","-150°F","-80°F"],cat:"Weather"},
+{q:"How deep is the Grand Canyon?",a:"About 6,000 feet (1,829 m)",d:["About 2,000 feet","About 4,000 feet","About 10,000 feet"],cat:"Land"},
+{q:"What percentage of Earth's water is fresh water?",a:"About 2.5%",d:["About 10%","About 25%","About 1%"],cat:"Water"},
+{q:"How old is the Earth?",a:"About 4.54 billion years",d:["About 2 billion years","About 6 billion years","About 10 billion years"],cat:"Planet"},
+{q:"What is the largest lake by area?",a:"Caspian Sea (143,000 sq mi)",d:["Lake Superior","Lake Victoria","Lake Baikal"],cat:"Water"},
+{q:"How deep is Lake Baikal?",a:"5,387 feet (1,642 m)",d:["3,000 feet","2,000 feet","7,000 feet"],cat:"Water"},
+{q:"What is the longest mountain range?",a:"Andes (4,350 miles / 7,000 km)",d:["Himalayas","Rocky Mountains","Alps"],cat:"Mountains"},
+{q:"How fast does the Earth rotate?",a:"About 1,040 mph (1,674 km/h) at equator",d:["About 500 mph","About 2,000 mph","About 100 mph"],cat:"Planet"},
+{q:"What is the largest island in the world?",a:"Greenland (836,000 sq mi)",d:["Borneo","Madagascar","New Guinea"],cat:"Land"},
+{q:"How much does the atmosphere weigh?",a:"About 5.5 quadrillion tons",d:["About 1 million tons","About 1 billion tons","About 1 trillion tons"],cat:"Atmosphere"},
+{q:"What is the fastest wind speed ever recorded?",a:"253 mph (408 km/h) during Cyclone Olivia",d:["200 mph","180 mph","300 mph"],cat:"Weather"},
+{q:"How far is the Earth from the Sun?",a:"About 93 million miles (150M km)",d:["About 50 million miles","About 150 million miles","About 200 million miles"],cat:"Planet"},
+{q:"What is the largest volcano on Earth?",a:"Mauna Loa, Hawaii",d:["Mount Etna","Mount Vesuvius","Kilauea"],cat:"Volcanoes"},
+{q:"How tall is Mauna Kea from base to peak?",a:"33,500 feet (10,210 m) from ocean floor",d:["20,000 feet","29,000 feet","40,000 feet"],cat:"Mountains"},
+{q:"What percentage of Earth is covered by water?",a:"About 71%",d:["About 50%","About 60%","About 80%"],cat:"Oceans"},
+{q:"How many active volcanoes are on Earth?",a:"About 1,350",d:["About 200","About 500","About 5,000"],cat:"Volcanoes"},
+{q:"What is the driest place on Earth?",a:"Atacama Desert, Chile",d:["Sahara Desert","Death Valley","Antarctica"],cat:"Weather"},
+{q:"What is the wettest place on Earth?",a:"Mawsynram, India (467 inches/year)",d:["Amazon Rainforest","Mount Waialeale","Cherrapunji"],cat:"Weather"},
+{q:"How thick is the Earth's crust?",a:"3-44 miles (5-70 km)",d:["About 1 mile","About 100 miles","About 500 miles"],cat:"Planet"},
+{q:"What is the longest river in the Americas?",a:"Amazon River (about 4,000 miles)",d:["Mississippi","Missouri","Parana"],cat:"Water"},
+{q:"How many tectonic plates does Earth have?",a:"About 15 major plates",d:["About 5","About 8","About 25"],cat:"Planet"},
+{q:"What is the largest cave chamber?",a:"Sarawak Chamber, Malaysia",d:["Mammoth Cave","Son Doong","Carlsbad Caverns"],cat:"Land"},
+{q:"How deep is the deepest cave?",a:"Veryovkina Cave (7,257 ft / 2,212 m)",d:["Krubera Cave","Mammoth Cave","Gouffre Berger"],cat:"Land"},
+{q:"What is the average depth of soil on Earth?",a:"About 5 feet (1.5 m)",d:["About 1 foot","About 10 feet","About 50 feet"],cat:"Land"},
+{q:"How fast do tectonic plates move?",a:"About 1-4 inches (2.5-10 cm) per year",d:["About 1 foot per year","About 10 feet per year","About 0.1 inches per year"],cat:"Planet"},
+{q:"What is the largest coral reef system?",a:"Great Barrier Reef (1,430 miles long)",d:["Belize Barrier Reef","Red Sea Coral Reef","New Caledonia Reef"],cat:"Oceans"},
+{q:"How much of Antarctica is covered by ice?",a:"About 98%",d:["About 70%","About 85%","About 100%"],cat:"Land"},
+{q:"How thick is the Antarctic ice sheet?",a:"Average 1.2 miles (2 km)",d:["About 500 feet","About 0.5 miles","About 3 miles"],cat:"Land"},
+{q:"What is the saltiest body of water?",a:"Don Juan Pond, Antarctica (44% salinity)",d:["Dead Sea","Great Salt Lake","Lake Assal"],cat:"Water"},
+{q:"How high can a tsunami wave reach?",a:"Over 100 feet (30 m), up to 1,720 ft historically",d:["About 20 feet max","About 50 feet max","About 200 feet max"],cat:"Oceans"},
+{q:"What is the hottest place on Earth (sustained)?",a:"Danakil Depression, Ethiopia (avg 94°F / 34°C)",d:["Death Valley","Sahara Desert","Lut Desert"],cat:"Weather"},
+{q:"How far does light from the Sun take to reach Earth?",a:"About 8 minutes 20 seconds",d:["About 1 minute","About 30 seconds","About 1 hour"],cat:"Planet"},
+{q:"What is the largest sinkhole?",a:"Xiaozhai Tiankeng, China (2,172 ft deep)",d:["Great Blue Hole","Dean's Blue Hole","Bimmah Sinkhole"],cat:"Land"},
+{q:"How much rain falls on Earth each year?",a:"About 5 quadrillion tons",d:["About 1 billion tons","About 1 trillion tons","About 100 quadrillion tons"],cat:"Weather"},
+{q:"What is the widest river in the world?",a:"Rio de la Plata (140 miles / 220 km wide)",d:["Amazon","Congo","Mekong"],cat:"Water"},
+{q:"How many earthquakes happen per year?",a:"About 500,000 detectable",d:["About 10,000","About 50,000","About 2 million"],cat:"Planet"},
+{q:"What is the largest glacier outside polar regions?",a:"Fedchenko Glacier, Tajikistan (48 mi long)",d:["Aletsch Glacier","Siachen Glacier","Perito Moreno"],cat:"Land"},
+{q:"How much gold is dissolved in the oceans?",a:"About 20 million tons",d:["About 1,000 tons","About 100,000 tons","About 1 billion tons"],cat:"Oceans"},
+{q:"What is the speed of an average earthquake wave?",a:"About 3-8 miles per second",d:["About 100 mph","About 0.5 miles/second","About 50 miles/second"],cat:"Planet"},
+{q:"How old is the oldest rock found on Earth?",a:"About 4 billion years",d:["About 1 billion years","About 2 billion years","About 4.5 billion years"],cat:"Planet"},
+{q:"What is the largest landslide in recorded history?",a:"Mount St. Helens, 1980 (0.67 cubic miles)",d:["Vajont Dam slide","Elm slide","Frank Slide"],cat:"Land"},
+{q:"How much of the ocean floor has been mapped?",a:"About 25%",d:["About 5%","About 50%","About 80%"],cat:"Oceans"},
+{q:"What is the longest glacier in the world?",a:"Lambert Glacier, Antarctica (250+ mi)",d:["Hubbard Glacier","Bering Glacier","Fedchenko Glacier"],cat:"Land"},
+{q:"How deep is the average river?",a:"About 10-20 feet (3-6 m)",d:["About 3 feet","About 50 feet","About 100 feet"],cat:"Water"},
+{q:"What is the highest cloud type?",a:"Noctilucent clouds (about 50 miles up)",d:["Cirrus (6 miles)","Cumulonimbus (9 miles)","Nacreous (15 miles)"],cat:"Atmosphere"},
+{q:"How much of Earth's fresh water is in glaciers?",a:"About 69%",d:["About 20%","About 40%","About 90%"],cat:"Water"},
+{q:"What is the largest country by area?",a:"Russia (6.6 million sq mi)",d:["Canada","China","United States"],cat:"Land"},
+{q:"How much water flows over Niagara Falls per second?",a:"About 750,000 gallons",d:["About 100,000 gallons","About 2 million gallons","About 10,000 gallons"],cat:"Water"},
+{q:"What is the thickest point of Earth's crust?",a:"About 44 miles (70 km) under Himalayas",d:["About 10 miles","About 20 miles","About 100 miles"],cat:"Planet"},
+{q:"How much dust from space falls on Earth daily?",a:"About 100-300 tons",d:["About 1 ton","About 10 tons","About 1,000 tons"],cat:"Planet"},
+{q:"What is the strongest earthquake ever recorded?",a:"9.5 magnitude, Chile 1960",d:["9.1, Japan 2011","9.2, Alaska 1964","8.8, Chile 2010"],cat:"Planet"},
+{q:"How wide is a tornado on average?",a:"About 500 feet (150 m)",d:["About 50 feet","About 1 mile","About 5 miles"],cat:"Weather"},
+{q:"What is the average temperature of the ocean?",a:"About 39°F (3.9°C)",d:["About 55°F","About 70°F","About 32°F"],cat:"Oceans"},
+{q:"How far does the deepest root system go?",a:"Over 200 feet (60 m) - Shepherd's tree",d:["About 20 feet","About 50 feet","About 500 feet"],cat:"Land"},
+{q:"What is the highest wave ever surfed?",a:"86 feet (26.2 m) at Nazare, Portugal",d:["50 feet","100 feet","120 feet"],cat:"Oceans"},
+{q:"How many species live in the ocean?",a:"An estimated 700,000+ known",d:["About 50,000","About 200,000","About 2 million"],cat:"Oceans"},
+{q:"What percentage of Earth's volcanoes are underwater?",a:"About 80%",d:["About 20%","About 50%","About 95%"],cat:"Volcanoes"},
+{q:"How much lava can a volcano erupt per second?",a:"Up to 100,000 cubic meters",d:["About 100 cubic meters","About 1,000 cubic meters","About 1 million cubic meters"],cat:"Volcanoes"},
+{q:"What is the largest volcanic eruption in recorded history?",a:"Mount Tambora, 1815",d:["Krakatoa, 1883","Mount Pinatubo, 1991","Mount St. Helens, 1980"],cat:"Volcanoes"},
+{q:"How fast can a lava flow move?",a:"Up to 40 mph (64 km/h)",d:["About 5 mph","About 100 mph","About 200 mph"],cat:"Volcanoes"},
+{q:"What is the tallest active volcano?",a:"Ojos del Salado, Chile (22,615 ft)",d:["Mount Kilimanjaro","Mount Cotopaxi","Mount Elbrus"],cat:"Volcanoes"},
+{q:"How much of Earth's surface is land?",a:"About 29%",d:["About 20%","About 35%","About 40%"],cat:"Planet"},
+{q:"What is the average ocean salinity?",a:"About 3.5%",d:["About 1%","About 5%","About 10%"],cat:"Oceans"},
+{q:"How long is the Mid-Atlantic Ridge?",a:"About 10,000 miles (16,000 km)",d:["About 3,000 miles","About 5,000 miles","About 20,000 miles"],cat:"Oceans"},
+{q:"What is the tallest sand dune in the world?",a:"Dune of Pyla, France (357 ft / 109 m)",d:["Star Dune, Colorado","Big Daddy, Namibia","Dune 7, Namibia"],cat:"Land"},
+{q:"How many lightning strikes hit Earth per day?",a:"About 8 million",d:["About 100,000","About 1 million","About 50 million"],cat:"Weather"},
+{q:"What temperature is lightning?",a:"About 54,000°F (30,000°C)",d:["About 5,000°F","About 10,000°F","About 100,000°F"],cat:"Weather"},
+{q:"How much water is in the Earth's atmosphere?",a:"About 3,100 cubic miles",d:["About 100 cubic miles","About 1,000 cubic miles","About 10,000 cubic miles"],cat:"Atmosphere"},
+{q:"What is Earth's mass?",a:"About 13.2 septillion pounds",d:["About 1 billion tons","About 1 quadrillion tons","About 6 quintillion tons"],cat:"Planet"},
+{q:"How fast is Earth orbiting the Sun?",a:"About 67,000 mph (107,000 km/h)",d:["About 10,000 mph","About 30,000 mph","About 100,000 mph"],cat:"Planet"},
+{q:"What is the longest cave system?",a:"Mammoth Cave, Kentucky (420+ miles mapped)",d:["Jewel Cave","Wind Cave","Lechuguilla Cave"],cat:"Land"},
+{q:"How high is the tropopause (where weather ends)?",a:"About 7.5 miles (12 km)",d:["About 2 miles","About 20 miles","About 50 miles"],cat:"Atmosphere"},
+{q:"What is the average snowflake's falling speed?",a:"About 1-4 mph (1.5-6 km/h)",d:["About 10 mph","About 20 mph","About 0.1 mph"],cat:"Weather"},
+{q:"How much water is in all the world's rivers?",a:"About 509 cubic miles",d:["About 50 cubic miles","About 5,000 cubic miles","About 50,000 cubic miles"],cat:"Water"}
+];
+
+var quizQueue=[],quizCurrent=null,quizNum=0,quizScore=0,quizStreak=0,quizBest=0,quizAnswered=false,quizTotal=0;
+var qEl={};
+
+var activeQuizData=BODY_Q;var activeQuizName='Human Body';var activeQuizIcon='&#x1F9CD;';
+function startQuiz(type){
+  if(type==='body'){activeQuizData=BODY_Q;activeQuizName='Human Body';activeQuizIcon='&#x1F9CD;'}
+  else if(type==='buildings'){activeQuizData=BUILDINGS_Q;activeQuizName='Buildings & Structures';activeQuizIcon='&#x1F3D7;'}
+  else if(type==='earth'){activeQuizData=EARTH_Q;activeQuizName='Planet Earth';activeQuizIcon='&#x1F30D;'}
+  quizTotal=activeQuizData.length;
+  document.getElementById('quiz-menu').style.display='none';
+  document.getElementById('quiz-area').style.display='block';
+  document.getElementById('quiz-start').style.display='block';
+  document.getElementById('quiz-game').style.display='none';
+  document.getElementById('quiz-start').innerHTML='<div style="font-size:72px;margin-bottom:20px">'+activeQuizIcon+'</div><h3 style="font-family:\'Fredoka One\',cursive;font-size:24px;color:var(--text);margin:0 0 12px">'+activeQuizName+' Quiz</h3><p style="font-size:15px;color:var(--text-dim);margin:0 0 28px;max-width:420px;margin-left:auto;margin-right:auto;line-height:1.6">'+quizTotal+' questions to test your knowledge!</p><button class="quiz-next" style="display:inline-block" onclick="beginQuiz()">&#x1F4AA; Start Quiz</button>';
+}
+function backToMenu(){
+  document.getElementById('quiz-menu').style.display='block';
+  document.getElementById('quiz-area').style.display='none';
+}
+function beginQuiz(){
+  document.getElementById('quiz-start').style.display='none';
+  document.getElementById('quiz-game').style.display='block';
+  qEl={num:document.getElementById('q-num'),sc:document.getElementById('q-score'),st:document.getElementById('q-streak'),pr:document.getElementById('q-progress'),cat:document.getElementById('q-cat'),qq:document.getElementById('q-question'),op:document.getElementById('q-options'),fb:document.getElementById('q-feedback'),nx:document.getElementById('q-next')};
+  quizQueue=shuffleQ(activeQuizData);quizNum=0;quizScore=0;quizStreak=0;quizBest=0;
+  loadQuizQ();
+}
+function shuffleQ(a){var b=a.slice();for(var i=b.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=b[i];b[i]=b[j];b[j]=t}return b}
+function loadQuizQ(){
+  if(!quizQueue.length)quizQueue=shuffleQ(activeQuizData);
+  quizCurrent=quizQueue.pop();quizNum++;quizAnswered=false;
+  qEl.num.textContent=quizNum+' / '+quizTotal;
+  qEl.sc.textContent=quizScore;
+  qEl.st.textContent='\u{1f525} '+quizStreak;
+  qEl.pr.style.width=(quizNum/quizTotal*100)+'%';
+  qEl.cat.textContent=quizCurrent.cat;
+  qEl.qq.textContent=quizCurrent.q;
+  var opts=shuffleQ([quizCurrent.a].concat(quizCurrent.d));
+  var lt=['A','B','C','D'];
+  qEl.op.innerHTML='';
+  opts.forEach(function(o,i){
+    var b=document.createElement('button');b.className='quiz-option';
+    b.innerHTML='<span class="opt-letter">'+lt[i]+'</span><span>'+o+'</span>';
+    b.addEventListener('click',function(){ansQuiz(b,o)});
+    qEl.op.appendChild(b);
+  });
+  qEl.fb.style.display='none';qEl.fb.className='quiz-feedback';
+  qEl.nx.style.display='none';
+  document.getElementById('q-card').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function ansQuiz(b,ch){
+  if(quizAnswered)return;quizAnswered=true;
+  var ok=ch===quizCurrent.a;
+  qEl.op.querySelectorAll('.quiz-option').forEach(function(x){x.classList.add('disabled');if(x.querySelector('span:last-child').textContent===quizCurrent.a)x.classList.add('correct')});
+  if(ok){b.classList.add('correct');quizScore++;quizStreak++;if(quizStreak>quizBest)quizBest=quizStreak;qEl.fb.className='quiz-feedback correct-fb';qEl.fb.innerHTML='<strong>\u2705 Correct!</strong>'+(quizStreak>1?' \u{1f525} '+quizStreak+' in a row!':'')}
+  else{b.classList.add('wrong');b.classList.add('shake');var ps=quizStreak;quizStreak=0;qEl.fb.className='quiz-feedback wrong-fb';qEl.fb.innerHTML='<strong>\u274c Not quite.</strong> The answer is <strong>'+quizCurrent.a+'</strong>.'+(ps>=3?' Streak of '+ps+' ended.':'')}
+  qEl.sc.textContent=quizScore;qEl.st.textContent='\u{1f525} '+quizStreak;qEl.fb.style.display='block';qEl.nx.style.display='inline-block';qEl.nx.focus();
+}
+document.addEventListener('keydown',function(e){
+  if(document.getElementById('sec-quizzes').classList.contains('active')&&document.getElementById('quiz-game').style.display!=='none'){
+    if(!quizAnswered&&e.key>='1'&&e.key<='4'){var bs=qEl.op.querySelectorAll('.quiz-option');if(bs[parseInt(e.key)-1])bs[parseInt(e.key)-1].click()}
+    else if(quizAnswered&&(e.key==='Enter'||e.key===' ')){e.preventDefault();loadQuizQ()}
+  }
+});
+
 </script>
 </body>
 </html>
