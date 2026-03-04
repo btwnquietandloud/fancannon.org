@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <title>One Piece — The Universe Guide</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Bungee+Shade&family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
@@ -259,9 +261,18 @@
 
   footer { text-align: center; margin-top: 48px; padding: 20px; border-top: 1px solid var(--border); }
   footer p { font-size: 12px; color: var(--text-dim); }
+
+  .fc-brand-bar{position:sticky;top:0;z-index:100;background:rgba(10,9,12,0.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.06);padding:8px 16px;display:flex;align-items:center;gap:10px}
+  .fc-brand-bar a{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit}
+  .fc-brand-bar img{width:32px;height:32px;border-radius:50%}
+  .fc-brand-bar span{font-family:'Fredoka',sans-serif;font-size:14px;font-weight:600;color:#c9a44a;letter-spacing:0.5px}
+  .fc-brand-bar .fc-sep{color:rgba(255,255,255,0.15);font-size:18px;font-weight:300}
+  .fc-brand-bar .fc-page-name{font-family:'Fredoka',sans-serif;font-size:13px;font-weight:500;color:rgba(255,255,255,0.4)}
 </style>
 </head>
 <body>
+<div class="fc-brand-bar"><a href="index.html"><img src="fancannonlogo.png" alt="Fan Cannon"><span>Fan Cannon</span></a><span class="fc-sep">|</span><span class="fc-page-name">One Piece Universe</span></div>
+
 
 <div id="floating-bg"></div>
 
