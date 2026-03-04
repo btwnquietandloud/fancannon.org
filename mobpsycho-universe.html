@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>Mob Psycho 100 — The Universe Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Chewy&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080810;
+    --bg-card: #10101e;
+    --bg-card-hover: #181830;
+    --accent: #7b2ff7;
+    --accent2: #ff4081;
+    --accent3: #00e5ff;
+    --accent4: #ffd740;
+    --text: #e8e8f0;
+    --text-muted: #8888a8;
+    --text-dim: #55557a;
+    --border: #2a2a3e;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;overflow-x:hidden}
+  ::-webkit-scrollbar{width:6px} ::-webkit-scrollbar-track{background:var(--bg)} ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+
+  @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes floatObj{0%,100%{transform:translateY(0) rotate(0deg)}25%{transform:translateY(-30px) rotate(5deg)}50%{transform:translateY(-10px) rotate(-3deg)}75%{transform:translateY(-40px) rotate(3deg)}}
+  @keyframes pulse{0%,100%{opacity:0.6}50%{opacity:1}}
+
+  .float-bg{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+  .float-obj{position:absolute;animation:floatObj var(--dur) ease-in-out infinite;animation-delay:var(--delay);opacity:var(--opa);font-size:var(--size);left:var(--x);top:var(--y)}
+  .container{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:24px 16px 64px}
+
+  .fc-brand-bar{position:sticky;top:0;z-index:100;background:rgba(8,8,16,0.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.06);padding:8px 16px;display:flex;align-items:center;gap:10px}
+  .fc-brand-bar a{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit}
+  .fc-brand-bar img{width:32px;height:32px;border-radius:50%}
+  .fc-brand-bar span{font-family:sans-serif;font-size:14px;font-weight:600;color:#c9a44a;letter-spacing:0.5px}
+  .fc-brand-bar .fc-sep{color:rgba(255,255,255,0.15);font-size:18px;font-weight:300}
+  .fc-brand-bar .fc-page-name{font-size:13px;font-weight:500;color:rgba(255,255,255,0.4)}
+
+  nav{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-bottom:32px;position:sticky;top:49px;z-index:10;background:var(--bg);padding:12px 0;border-bottom:1px solid var(--border)}
+  nav button{background:var(--bg-card);color:var(--text-muted);border:1px solid var(--border);padding:8px 18px;border-radius:99px;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:700;font-size:14px;transition:all .25s}
+  nav button:hover{border-color:var(--accent);color:var(--text)}
+  nav button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+  .section-title{font-family:'Chewy',cursive;font-size:clamp(28px,5vw,42px);margin-bottom:8px}
+  .section-sub{color:var(--text-muted);font-size:15px;margin-bottom:24px;line-height:1.6}
+  .section{display:none;animation:fadeUp .4s ease} .section.active{display:block}
+
+  .hero{text-align:center;padding:48px 24px 32px;background:#141428;border-radius:24px;border:1px solid var(--border);margin-bottom:32px;position:relative;overflow:hidden}
+  .hero-pattern{position:absolute;inset:0;opacity:0.04;background:repeating-linear-gradient(45deg,transparent,transparent 20px,rgba(123,47,247,0.4) 20px,rgba(123,47,247,0.4) 22px)}
+  .hero-content{position:relative;z-index:1}
+  .hero-icon{font-size:72px;margin-bottom:16px;display:block}
+  .hero h1{font-family:'Chewy',cursive;font-size:clamp(28px,5vw,48px);color:var(--accent);margin:0 0 8px;line-height:1.2;text-shadow:0 0 40px rgba(123,47,247,0.3)}
+  .hero .subtitle{font-size:18px;color:var(--accent2);margin:0 0 8px;font-weight:600}
+  .hero .meta{font-size:14px;color:var(--text-muted);margin:0 0 24px}
+  .stat-row{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-top:24px}
+  .stat-box{background:rgba(255,255,255,0.04);border-radius:16px;padding:16px 24px;border:1px solid var(--border);min-width:100px;text-align:center}
+  .stat-num{font-family:'Chewy',cursive;font-size:24px}
+  .stat-label{font-size:12px;color:var(--text-muted)}
+
+  .about-card{background:var(--bg-card);border-radius:20px;padding:32px;border:1px solid var(--border);margin-bottom:24px}
+  .about-card h2{font-family:'Chewy',cursive;font-size:24px;color:var(--text);margin:0 0 16px}
+  .about-card p{font-size:17px;line-height:1.85;color:var(--text-muted)}
+  .about-card strong{color:var(--text)} .about-card .hl-purple{color:var(--accent)} .about-card .hl-pink{color:var(--accent2)} .about-card .hl-cyan{color:var(--accent3)}
+
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+  .card{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:20px;cursor:pointer;transition:all .3s}
+  .card:hover{transform:translateY(-3px);border-color:var(--accent);background:var(--bg-card-hover)}
+  .card-emoji{font-size:32px;margin-bottom:8px}
+  .card-name{font-family:'Chewy',cursive;font-size:20px;color:var(--accent);margin-bottom:4px}
+  .card-role{font-size:12px;color:var(--accent2);text-transform:uppercase;letter-spacing:1px;font-weight:700;margin-bottom:8px}
+  .card-desc{font-size:13px;color:var(--text-muted);line-height:1.6}
+  .card-detail{display:none;margin-top:12px;padding-top:12px;border-top:1px solid var(--border);font-size:13px;color:var(--text-muted);line-height:1.7}
+  .card.expanded .card-detail{display:block}
+  .card-tag{display:inline-block;background:rgba(123,47,247,0.1);color:var(--accent);padding:2px 8px;border-radius:6px;font-size:11px;font-weight:700;margin-top:6px;margin-right:4px}
+
+  .timeline{position:relative;padding-left:32px}
+  .timeline::before{content:'';position:absolute;left:12px;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--accent),var(--accent2),var(--accent3));border-radius:1px}
+  .tl-item{position:relative;margin-bottom:28px;animation:fadeUp .4s ease both}
+  .tl-dot{position:absolute;left:-26px;top:4px;width:14px;height:14px;border-radius:50%;background:var(--accent);border:3px solid var(--bg);box-shadow:0 0 12px rgba(123,47,247,0.4)}
+  .tl-year{font-family:'Chewy',cursive;font-size:20px;color:var(--accent)}
+  .tl-title{font-weight:800;font-size:15px;margin:2px 0}
+  .tl-desc{font-size:13px;color:var(--text-muted);line-height:1.6}
+
+  .fact-card{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:12px;transition:all .3s}
+  .fact-card:hover{border-color:var(--accent3)}
+  .fact-emoji{font-size:24px;margin-right:8px;vertical-align:middle}
+  .fact-title{font-family:'Chewy',cursive;font-size:18px;color:var(--accent3);display:inline;vertical-align:middle}
+  .fact-text{font-size:14px;color:var(--text-muted);line-height:1.7;margin-top:8px}
+
+  .trivia-box{background:var(--bg-card);border:1px solid var(--border);border-radius:20px;padding:32px;max-width:600px;margin:0 auto;text-align:center}
+  .trivia-cat{font-size:12px;color:var(--accent4);text-transform:uppercase;letter-spacing:2px;font-weight:700;margin-bottom:8px}
+  .trivia-q{font-family:'Chewy',cursive;font-size:clamp(20px,4vw,28px);margin-bottom:24px;line-height:1.4;color:var(--text)}
+  .trivia-answers{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+  .trivia-btn{background:var(--bg-card-hover);border:2px solid var(--border);border-radius:12px;padding:14px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;color:var(--text);transition:all .2s;text-align:left}
+  .trivia-btn:hover{border-color:var(--accent);background:rgba(123,47,247,0.05)}
+  .trivia-btn.correct{border-color:#06d6a0;background:rgba(6,214,160,0.15);color:#06d6a0}
+  .trivia-btn.wrong{border-color:#ff4444;background:rgba(255,68,68,0.1);color:#ff4444}
+  .trivia-btn .key-hint{display:inline-block;background:rgba(255,255,255,0.08);padding:1px 7px;border-radius:4px;font-size:11px;margin-right:6px;font-family:monospace}
+  .trivia-progress{display:flex;gap:4px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}
+  .trivia-pip{width:10px;height:10px;border-radius:50%;background:var(--border)}
+  .trivia-pip.right{background:#06d6a0} .trivia-pip.wrong{background:#ff4444} .trivia-pip.current{background:var(--accent);box-shadow:0 0 8px rgba(123,47,247,0.5)}
+  .trivia-score{font-family:'Chewy',cursive;font-size:48px;color:var(--accent)}
+  .trivia-next{background:var(--accent);color:#fff;border:none;padding:12px 32px;border-radius:99px;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:800;font-size:15px;transition:all .2s}
+  .trivia-next:hover{transform:scale(1.05)}
+  .trivia-explanation{font-size:13px;color:var(--text-muted);margin:12px 0;padding:12px;background:rgba(255,255,255,0.03);border-radius:10px;line-height:1.6}
+  .filter-row{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-bottom:20px}
+  .filter-btn{background:var(--bg-card);color:var(--text-muted);border:1px solid var(--border);padding:6px 14px;border-radius:99px;cursor:pointer;font-size:12px;font-weight:700;font-family:'Nunito',sans-serif;transition:all .2s}
+  .filter-btn:hover{border-color:var(--accent)} .filter-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+  /* Bar chart */
+  .bar-chart{display:flex;flex-direction:column;gap:8px}
+  .bar-row{display:flex;align-items:center;gap:10px}
+  .bar-year{width:55px;font-size:12px;font-weight:700;color:var(--text-dim);text-align:right;flex-shrink:0}
+  .bar-track{flex:1;height:22px;background:rgba(255,255,255,0.04);border-radius:6px;overflow:hidden}
+  .bar-fill{height:100%;border-radius:6px;min-width:3px}
+  .bar-val{width:50px;font-size:12px;font-weight:700;color:var(--text-muted);flex-shrink:0}
+
+  .quick-links{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
+  .quick-card{background:var(--bg-card);border-radius:16px;padding:20px;border:1px solid var(--border);text-align:center;transition:all .3s}
+  .quick-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+
+  
+  /* Trivia HUD */
+  .trivia-start-screen{text-align:center;padding:60px 24px;background:var(--bg-card);border-radius:24px;border:1px solid var(--border)}
+  .trivia-hud{display:flex;justify-content:center;gap:16px;margin-bottom:16px;flex-wrap:wrap}
+  .trivia-hud-item{background:var(--bg-card);border-radius:14px;padding:12px 20px;border:1px solid var(--border);text-align:center;min-width:90px}
+  .trivia-hud-label{display:block;font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px}
+  .trivia-hud-value{display:block;font-family:'Chewy',cursive;font-size:18px;color:var(--text);margin-top:4px}
+  .trivia-option{display:flex;align-items:center;gap:12px;width:100%;padding:14px 18px;background:var(--bg-card-hover);border:2px solid var(--border);border-radius:12px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;color:var(--text);transition:all .2s;text-align:left;margin-bottom:8px}
+  .trivia-option:hover{border-color:var(--accent);background:rgba(123,47,247,0.05)}
+  .trivia-option.correct{border-color:#06d6a0;background:rgba(6,214,160,0.15);color:#06d6a0}
+  .trivia-option.wrong{border-color:#ff4444;background:rgba(255,68,68,0.1);color:#ff4444}
+  .trivia-option.disabled{pointer-events:none;opacity:0.7}
+  .trivia-option .opt-letter{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:8px;background:rgba(255,255,255,0.06);font-size:12px;font-weight:800;flex-shrink:0}
+  .correct-fb{background:rgba(6,214,160,0.1);border:1px solid rgba(6,214,160,0.2);color:#06d6a0}
+  .wrong-fb{background:rgba(255,68,68,0.1);border:1px solid rgba(255,68,68,0.2);color:#ff4444}
+  @keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-4px)}40%,80%{transform:translateX(4px)}}
+  .shake{animation:shake 0.4s ease}
+
+  @media(max-width:500px){.trivia-answers{grid-template-columns:1fr}nav button{padding:6px 12px;font-size:12px}}
+</style>
+</head>
+<body>
+<div class="fc-brand-bar"><a href="index.html"><img src="fancannonlogo.png" alt="Fan Cannon"><span>Fan Cannon</span></a><span class="fc-sep">|</span><span class="fc-page-name">Mob Psycho 100 Universe</span></div>
+<div class="float-bg" id="floatBg"></div>
+<div class="container">
+<nav>
+  <button class="active" onclick="showSection('home')">Home</button>
+  <button onclick="showSection('timeline')">Timeline</button>
+  <button onclick="showSection('characters')">Characters</button>
+  <button onclick="showSection('funfacts')">Fun Facts</button>
+  <button onclick="showSection('stats')">Stats</button>
+  <button onclick="showSection('trivia')">Trivia</button>
+</nav>
+
+<div id="home" class="section active">
+  <div class="hero">
+    <div class="hero-pattern"></div>
+    <div class="hero-content">
+      <div class="hero-icon">🔮</div>
+      <h1>Mob Psycho 100</h1>
+      <p class="subtitle">The Universe Guide</p>
+      <p class="meta">by ONE · Manga 2012–2017 · Anime 2016–2022</p>
+      <div class="stat-row">
+        <div class="stat-box"><div class="stat-num" style="color:var(--accent)">25</div><div class="stat-label">Characters</div></div>
+        <div class="stat-box"><div class="stat-num" style="color:var(--accent2)">3</div><div class="stat-label">Anime Seasons</div></div>
+        <div class="stat-box"><div class="stat-num" style="color:var(--accent3)">101</div><div class="stat-label">Manga Chapters</div></div>
+        <div class="stat-box"><div class="stat-num" style="color:var(--accent4)">100</div><div class="stat-label">Trivia Qs</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="about-card">
+    <h2>🔮 What is Mob Psycho 100?</h2>
+    <p><strong>Mob Psycho 100</strong> is a manga and anime series created by <strong class="hl-purple">ONE</strong>, the same creator behind One Punch Man. It follows <strong class="hl-pink">Shigeo Kageyama</strong>, nicknamed "Mob" (meaning "background character"), an incredibly powerful psychic middle schooler who just wants to live a normal life. To learn control over his abilities, he works as an assistant to <strong class="hl-cyan">Arataka Reigen</strong>, a charismatic con man who poses as a spirit medium. The series brilliantly explores themes of self-improvement, emotional growth, and the idea that psychic powers don't make you special — being a good person does. When Mob's suppressed emotions hit 100%, his immense psychic power explodes in spectacular and often devastating ways.</p>
+  </div>
+</div>
+
+<div id="timeline" class="section">
+  <div class="section-title" style="color:var(--accent)">⏳ Timeline</div>
+  <p class="section-sub">From webcomic to beloved anime classic.</p>
+  <div class="timeline" id="timelineList"></div>
+</div>
+
+<div id="characters" class="section">
+  <div class="section-title" style="color:var(--accent)">👥 Characters</div>
+  <p class="section-sub">Espers, spirits, con men, and the Body Improvement Club.</p>
+  <div class="filter-row" id="charFilters"></div>
+  <div class="cards" id="charGrid"></div>
+</div>
+
+<div id="funfacts" class="section">
+  <div class="section-title" style="color:var(--accent3)">💡 Fun Facts</div>
+  <p class="section-sub">Surprising things about the Mob Psycho 100 universe.</p>
+  <div id="factsList"></div>
+</div>
+
+<div id="stats" class="section">
+  <div class="section-title" style="color:var(--accent4)">📊 Stats</div>
+  <p class="section-sub">The series by the numbers.</p>
+  <div class="about-card">
+    <h2>📈 Manga Volume Sales Over Time</h2>
+    <p style="margin-bottom:20px">Cumulative copies in circulation as the series grew from niche webcomic to global phenomenon.</p>
+    <div class="bar-chart">
+      <div class="bar-row"><span class="bar-year">2012</span><div class="bar-track"><div class="bar-fill" style="width:1%;background:var(--accent)"></div></div><span class="bar-val">~10K</span></div>
+      <div class="bar-row"><span class="bar-year">2014</span><div class="bar-track"><div class="bar-fill" style="width:4%;background:var(--accent)"></div></div><span class="bar-val">100K</span></div>
+      <div class="bar-row"><span class="bar-year">2016 S1</span><div class="bar-track"><div class="bar-fill" style="width:18%;background:var(--accent2)"></div></div><span class="bar-val">500K</span></div>
+      <div class="bar-row"><span class="bar-year">2017</span><div class="bar-track"><div class="bar-fill" style="width:36%;background:var(--accent2)"></div></div><span class="bar-val">1.0M</span></div>
+      <div class="bar-row"><span class="bar-year">2019 S2</span><div class="bar-track"><div class="bar-fill" style="width:57%;background:var(--accent3)"></div></div><span class="bar-val">1.6M</span></div>
+      <div class="bar-row"><span class="bar-year">2020</span><div class="bar-track"><div class="bar-fill" style="width:71%;background:var(--accent3)"></div></div><span class="bar-val">2.0M</span></div>
+      <div class="bar-row"><span class="bar-year">2022 S3</span><div class="bar-track"><div class="bar-fill" style="width:93%;background:var(--accent4)"></div></div><span class="bar-val">2.6M</span></div>
+      <div class="bar-row"><span class="bar-year">2023+</span><div class="bar-track"><div class="bar-fill" style="width:100%;background:linear-gradient(90deg,var(--accent),var(--accent2))"></div></div><span class="bar-val">2.8M+</span></div>
+    </div>
+    <p style="margin-top:16px;font-size:13px;color:var(--text-dim)">Each anime season drove major sales spikes. Season 1 alone tripled the manga's circulation.</p>
+  </div>
+  <div class="about-card">
+    <h2>🏆 Awards & Recognition</h2>
+    <div class="quick-links">
+      <div class="quick-card"><div style="font-size:28px;margin-bottom:6px">🏅</div><div style="font-family:'Chewy',cursive;font-size:18px;color:var(--accent)">Shogakukan Award</div><div style="font-size:12px;color:var(--text-muted)">62nd, Shōnen Category (2017)</div></div>
+      <div class="quick-card"><div style="font-size:28px;margin-bottom:6px">⭐</div><div style="font-family:'Chewy',cursive;font-size:18px;color:var(--accent2)">8.6 / 10</div><div style="font-size:12px;color:var(--text-muted)">MyAnimeList Rating</div></div>
+      <div class="quick-card"><div style="font-size:28px;margin-bottom:6px">📺</div><div style="font-family:'Chewy',cursive;font-size:18px;color:var(--accent3)">37 Episodes</div><div style="font-size:12px;color:var(--text-muted)">Across 3 Seasons</div></div>
+      <div class="quick-card"><div style="font-size:28px;margin-bottom:6px">📚</div><div style="font-family:'Chewy',cursive;font-size:18px;color:var(--accent4)">16 Volumes</div><div style="font-size:12px;color:var(--text-muted)">101 Chapters</div></div>
+    </div>
+  </div>
+</div>
+
+<div id="trivia" class="section">
+  <div class="section-title" style="color:var(--accent4)">🧠 Trivia Challenge</div>
+  <p class="section-sub">Test your Mob Psycho 100 knowledge! Keys 1-4 to answer, Enter for next.</p>
+  <div id="trivia-container">
+    <div id="trivia-start" class="trivia-start-screen">
+      <div style="font-size:72px;margin-bottom:20px">🔮</div>
+      <h3 style="font-family:'Chewy',cursive;font-size:24px;color:var(--text);margin:0 0 12px">Can You Hit 100%?</h3>
+      <p style="font-size:15px;color:var(--text-muted);margin:0 0 28px;max-width:420px;margin-left:auto;margin-right:auto;line-height:1.6">69 questions on characters, espers, Claw, and the world of Seasoning City.</p>
+      <button id="trivia-start-btn" class="trivia-next">💥 Begin Challenge</button>
+    </div>
+    <div id="trivia-game" style="display:none">
+      <div class="trivia-hud">
+        <div class="trivia-hud-item"><span class="trivia-hud-label">Question</span><span class="trivia-hud-value" id="trivia-qnum">1 / 69</span></div>
+        <div class="trivia-hud-item"><span class="trivia-hud-label">Score</span><span class="trivia-hud-value" id="trivia-score">0</span></div>
+        <div class="trivia-hud-item"><span class="trivia-hud-label">Streak</span><span class="trivia-hud-value" id="trivia-streak">🔥 0</span></div>
+      </div>
+      <div style="width:100%;height:6px;background:var(--border);border-radius:3px;margin-bottom:24px;overflow:hidden"><div id="trivia-progress" style="height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:3px;width:0%;transition:width 0.3s"></div></div>
+      <div class="trivia-box" id="trivia-card">
+        <div class="trivia-cat" id="trivia-category"></div>
+        <p class="trivia-q" id="trivia-question">Loading...</p>
+        <div class="trivia-answers" id="trivia-options"></div>
+        <div class="trivia-explanation" id="trivia-feedback" style="display:none"></div>
+        <button class="trivia-next" id="trivia-next" style="display:none">Next Question →</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+const TIMELINE=[
+  {year:"2009",title:"ONE Starts the Webcomic",desc:"ONE begins publishing Mob Psycho 100 as a webcomic on the Ura Sunday website, using his signature simple art style. It runs alongside his other hit, One Punch Man."},
+  {year:"2012",title:"Manga Serialization Begins",desc:"Mob Psycho 100 begins official serialization in Shogakukan's Ura Sunday digital manga magazine on April 18, 2012, gaining a dedicated following."},
+  {year:"2016 (Jul-Sep)",title:"Season 1 Anime by Bones",desc:"Studio Bones adapts the manga into a 12-episode anime directed by Yuzuru Tachikawa. The show is praised for its incredible animation, creative art styles, and the iconic opening '99' by Mob Choir."},
+  {year:"2017",title:"Shogakukan Manga Award",desc:"Mob Psycho 100 wins the prestigious 62nd Shogakukan Manga Award in the shōnen category, cementing its status as one of ONE's masterworks."},
+  {year:"2017 (Dec)",title:"Manga Concludes",desc:"The manga reaches its conclusion with chapter 101 in December 2017 after 16 collected volumes. The ending is widely praised as one of the most satisfying in manga."},
+  {year:"2018",title:"Live-Action Drama Airs",desc:"A Japanese live-action television drama adaptation airs on TV Tokyo in January 2018, bringing Mob's story to a new audience."},
+  {year:"2019 (Jan-Apr)",title:"Season 2 Anime",desc:"The second season adapts the Mogami arc, World Domination arc, and more. Episode 5 ('Discord ~Choices~') is considered one of the greatest anime episodes ever made."},
+  {year:"2019",title:"Tumblr #2 Anime of the Year",desc:"Mob Psycho 100 ranks as the second most popular anime on Tumblr's Year in Review, behind only My Hero Academia. Reigen ranks 5th in Top Anime Characters."},
+  {year:"2022 (Oct-Dec)",title:"Season 3 Anime (Final)",desc:"The third and final season adapts the remaining manga, concluding Mob's journey of self-discovery. Studio Bones delivers a stunning finale that moves fans to tears."},
+  {year:"2022",title:"2.8 Million Copies in Circulation",desc:"By December 2022, the manga has over 2.8 million copies in circulation, solidifying its legacy as one of the great modern manga series."}
+];
+
+const CHARACTERS=[
+  {name:"Shigeo Kageyama (Mob)",emoji:"🔮",role:"Protagonist / Esper",cat:"Main",desc:"An unassuming 8th-grader who happens to be the most powerful psychic alive. He suppresses his emotions to keep his powers in check.",detail:"Mob's nickname means 'background character' because he has zero presence. His emotions are tracked on an internal counter from 0-100%, and when they hit 100% his powers explode. He genuinely believes psychic powers don't make you special. He joined the Body Improvement Club to become stronger through effort, not powers.",tags:["???%","Esper","Body Improvement Club"]},
+  {name:"Arataka Reigen",emoji:"🎩",role:"Self-Proclaimed Spirit Medium",cat:"Main",desc:"A charismatic con man who runs 'Spirits and Such Consultation Office.' He's actually Mob's mentor and one of the greatest father figures in anime.",detail:"Despite having zero psychic abilities, Reigen genuinely cares about Mob and gives him life-changing advice. His 'special moves' are actually just self-defense techniques and salt-throwing. He once accidentally became the most powerful psychic in the room when Mob transferred his powers to him. His backstory reveals he's a kind person who fell into conning people.",tags:["Con Man","Mentor","No Powers"]},
+  {name:"Dimple",emoji:"👻",role:"Evil Spirit / Ally",cat:"Main",desc:"A powerful evil spirit who originally tried to take over Mob's body but was defeated and became a reluctant ally.",detail:"Dimple was once a human who wanted to be a god. After Mob destroyed his cult, he stuck around as a green floating spirit. He later takes over the Psycho Helmet cult identity. Despite his selfish goals, he develops genuine affection for Mob. His final arc is one of the most emotional in the series.",tags:["Spirit","LOL Cult","Psycho Helmet"]},
+  {name:"Ritsu Kageyama",emoji:"📐",role:"Mob's Younger Brother",cat:"Main",desc:"Mob's seemingly perfect younger brother who is popular, smart, and athletic — but secretly jealous of Mob's psychic powers.",detail:"Ritsu was traumatized as a child when Mob's powers went out of control. He eventually awakens his own (weaker) psychic abilities, which initially corrupts him before Mob helps him find his way back. He serves as student council president at Salt Middle School.",tags:["Esper","Student Council","Sibling"]},
+  {name:"Teruki Hanazawa",emoji:"⚡",role:"Esper / Rival-turned-Friend",cat:"Main",desc:"A flashy esper who believed his powers made him special — until Mob completely destroyed that worldview in one fight.",detail:"Teru was the psychic top dog at Black Vinegar Middle School and used his powers to bully others. After Mob defeated him without even trying, he had a genuine change of heart and became one of Mob's closest friends. He lost his iconic wig after their fight.",tags:["Esper","Black Vinegar","Reformed"]},
+  {name:"Shou Suzuki",emoji:"🔥",role:"Esper / Claw Boss's Son",cat:"Claw",desc:"The energetic, rebellious son of Claw's leader Toichiro. He secretly works against his father's organization from within.",detail:"Shou has been storing psychic energy for years for a final confrontation with his father. He faked burning Mob's house down to motivate him. Despite his young age, he's incredibly powerful and strategic. His relationship with his father is the emotional core of the World Domination arc.",tags:["Esper","Claw","Rebel"]},
+  {name:"Toichiro Suzuki",emoji:"💀",role:"Claw Boss / Ultimate Esper",cat:"Claw",desc:"The leader of the terrorist organization Claw, and one of the most powerful espers in the world. He seeks world domination.",detail:"Toichiro has spent 20 years accumulating psychic energy, making him powerful enough to destroy a city. He abandoned his family to pursue power. His defeat by Mob and reconciliation with Shou is a powerful moment. After the World Domination arc, he turns himself in to the police.",tags:["Esper","World Domination","Ultimate 5"]},
+  {name:"Katsuya Serizawa",emoji:"☂️",role:"Claw Ultimate 5 / Reformed",cat:"Claw",desc:"An extremely powerful esper who was a shut-in for years until Toichiro gave him a magic umbrella and recruited him into Claw.",detail:"Serizawa's powers were so uncontrollable he never left his room. Toichiro manipulated him by giving him an umbrella as a 'power limiter.' After Mob shows him the truth, he reforms and gets a job at Reigen's office. His story is about overcoming anxiety and finding your place in the world.",tags:["Ultimate 5","Umbrella","Spirits and Such"]},
+  {name:"Keiji Mogami",emoji:"😈",role:"Most Powerful Evil Spirit",cat:"Villain",desc:"The ghost of a once-famous psychic who became evil after a lifetime of suffering. He's the strongest evil spirit Mob has ever faced.",detail:"Mogami traps Mob in an alternate reality for what feels like 6 months, trying to break his spirit by making him experience bullying and despair. Mob's refusal to become evil despite everything is one of the series' most powerful moments. Mogami was voiced by the legendary Kazuhiro Yamaji.",tags:["Evil Spirit","Psychic","Mogami Arc"]},
+  {name:"Musashi Gouda",emoji:"💪",role:"Body Improvement Club President",cat:"Salt Middle",desc:"The muscular, intimidating-looking president of the Body Improvement Club who is actually one of the kindest characters in the series.",detail:"Despite looking like a bully, Musashi and the entire Body Improvement Club genuinely support Mob's goal of self-improvement through physical training. They carry Mob when he collapses from exhaustion. They're the wholesome heroes the series needs.",tags:["Body Improvement","Salt Middle","Wholesome"]},
+  {name:"Tome Kurata",emoji:"📡",role:"Telepathy Club President",cat:"Salt Middle",desc:"The lazy leader of the Telepathy Club who wastes the club budget on snacks. She later becomes genuinely interested in finding real telepaths.",detail:"Tome starts as a slacker but develops real ambition. In the final arc, she organizes a genuine attempt to contact telepathic aliens, which becomes one of the most heartwarming storylines. She represents the theme that it's never too late to find your passion.",tags:["Telepathy Club","Salt Middle","Growth"]},
+  {name:"Mezato Ichi",emoji:"📰",role:"Journalism Club",cat:"Salt Middle",desc:"A student journalist at Salt Middle School who discovers Mob's powers and tries to use them for her stories, eventually founding the Psycho Helmet cult.",detail:"Mezato is ambitious and somewhat manipulative, using Mob's reputation as 'Psycho Helmet' to build a following. She represents the media's tendency to create narratives around people without their consent.",tags:["Journalism Club","Psycho Helmet","Salt Middle"]},
+  {name:"Tenga Onigawara",emoji:"👊",role:"Delinquent / Reformed",cat:"Salt Middle",desc:"A tough delinquent at Salt Middle School who inadvertently started the 'White T Poison' rumor about Mob.",detail:"After being framed by Kamuro and abandoned by his classmates, Onigawara joins the Body Improvement Club and genuinely reforms. He becomes one of Mob's loyal allies despite his rough exterior.",tags:["Delinquent","Body Improvement","Reformed"]},
+  {name:"Tsubomi Takane",emoji:"🌸",role:"Mob's Crush",cat:"Salt Middle",desc:"Mob's childhood crush and the girl he's been trying to confess to throughout the entire series. She represents his desire for normalcy.",detail:"Tsubomi was impressed by Mob's powers as a child but grew out of it. Mob's entire emotional journey is building toward confessing to her. The series finale revolves around this confession and its outcome, which delivers one of anime's most mature takes on unrequited love.",tags:["Childhood Friend","Salt Middle","Finale"]},
+  {name:"Sakurai",emoji:"🗡️",role:"Claw Scar / Reformed",cat:"Claw",desc:"A Claw agent who fights using cursed toys — a sword, a gun, and drowsiness-inducing cologne, all enhanced with psychic curses.",detail:"Sakurai was abandoned as a child and bullied in an orphanage, leading him to join Claw to escape society. After being defeated by Reigen, he reforms and gets a convenience store job alongside Koyama. He returns to help fight Toichiro.",tags:["Scar","Cursed Weapons","Reformed"]},
+  {name:"Koyama",emoji:"🥊",role:"Claw Scar / Reformed",cat:"Claw",desc:"A muscular, mohawked Claw agent with psychic-enhanced physical attacks. He kidnapped Ritsu, which caused Mob to go 100% Rage.",detail:"Koyama's beating of Ritsu triggered one of Mob's most terrifying power explosions. Despite being a villain, he later reforms after Claw's defeat and works at a convenience store with Sakurai.",tags:["Scar","Telekinetic Helix","Reformed"]},
+  {name:"Shimazaki",emoji:"👁️",role:"Claw Ultimate 5",cat:"Claw",desc:"A blindfolded teleporter and one of the Ultimate 5. His Mind's Eye technique makes him nearly unbeatable.",detail:"Shimazaki can teleport and predict movements with his eyes closed. His trump card, Mind's Eye, reveals red irises and black sclera. He was ultimately defeated by Reigen, whose lack of psychic aura made him invisible to Shimazaki's detection.",tags:["Ultimate 5","Teleporter","Mind's Eye"]},
+  {name:"Minegishi",emoji:"🌿",role:"Claw Ultimate 5 / Reformed",cat:"Claw",desc:"A plant-controlling esper and member of the Ultimate 5 who becomes a florist after Claw's defeat.",detail:"Minegishi uses plants as weapons during the World Domination arc. They were defeated by Mogami. After Claw disbands, they reform and open a flower shop — a wholesome ending that fits the series' theme of redemption.",tags:["Ultimate 5","Plant Control","Florist"]},
+  {name:"Hatori",emoji:"🎭",role:"Claw Ultimate 5",cat:"Claw",desc:"A bald member of the Ultimate 5 whose Ethereal Body Technique lets him create psychic clones of himself.",detail:"Hatori was one of the first Ultimate 5 members to question Claw's mission after Reigen talked him into leaving. He later returns to help fight against Toichiro's world domination plan.",tags:["Ultimate 5","Clone Technique","Reformed"]},
+  {name:"Psycho Helmet",emoji:"🧠",role:"Broccoli Entity / Final Villain",cat:"Villain",desc:"A mysterious entity born from Mob's residual psychic energy that takes over Dimple's Psycho Helmet cult and becomes the final antagonist.",detail:"Psycho Helmet is essentially a fragment of Mob's power that gained sentience. It creates a giant broccoli over Seasoning City and tries to 'improve' humanity through mind control. Its defeat requires Mob to confront his own suppressed emotions and accept every part of himself.",tags:["Final Boss","Broccoli","???%"]},
+  {name:"???%",emoji:"💥",role:"Mob's True Power",cat:"Other",desc:"The manifestation of Mob's power when his emotional counter exceeds 100%, representing his raw, uncontrolled psychic energy.",detail:"???% appears when Mob is unconscious or his emotions completely overwhelm him. It's essentially Mob without any restraint — devastatingly powerful and dangerous to everyone nearby. The final arc reveals that ???% is the part of himself Mob has been most afraid of.",tags:["Power State","Uncontrollable","Climax"]},
+  {name:"Mob's Parents",emoji:"👨‍👩‍👦‍👦",role:"Kageyama Family",cat:"Other",desc:"Shigeo and Ritsu's loving but ordinary parents who provide stability and normalcy in a world of psychic battles.",detail:"Unlike many anime parents, the Kageyama parents are present, caring, and involved. They represent the normal life Mob desperately wants. Their home being threatened during the World Domination arc raises the emotional stakes dramatically.",tags:["Family","Normalcy","Support"]},
+  {name:"Ekubo (Dimple's True Form)",emoji:"🟢",role:"Supreme Spirit Form",cat:"Other",desc:"Dimple's ultimate form achieved by absorbing the Divine Tree's power, making him temporarily one of the strongest beings in the series.",detail:"In the Psycho Helmet arc, Dimple absorbs the broccoli's power and becomes godlike. His final confrontation with Mob, where he has to choose between power and friendship, is one of the most emotional moments in the entire series.",tags:["Divine Tree","God Form","Friendship"]},
+  {name:"Kamuro Shinji",emoji:"🎓",role:"Former Student Council VP",cat:"Salt Middle",desc:"The scheming former student council vice president who framed Onigawara to maintain his own power.",detail:"Kamuro represents the toxic side of school politics. He planted evidence to frame Onigawara as a thief. After being exposed, his downfall mirrors the series' message that manipulation and deception always catch up to you.",tags:["Student Council","Schemer","Salt Middle"]},
+  {name:"Body Improvement Club",emoji:"🏋️",role:"Salt Middle Club / Support",cat:"Salt Middle",desc:"The wholesome muscle-bound club that unconditionally supports Mob's goal of physical self-improvement, no matter how many times he collapses.",detail:"The BIC members are walking proof that you shouldn't judge by appearances. Despite looking intimidating, they're the kindest group in the series. They carry Mob when he passes out, cheer for his tiny progress, and protect him without hesitation. Fan favorites for their pure hearts.",tags:["Wholesome","Salt Middle","Protectors"]}
+];
+
+const FUNFACTS=[
+  {emoji:"✍️",title:"Same Creator as One Punch Man",text:"ONE created both Mob Psycho 100 and One Punch Man. Both feature overpowered protagonists, but while Saitama is bored by his strength, Mob is afraid of his."},
+  {emoji:"🎨",title:"Intentionally 'Bad' Art Style",text:"ONE's original webcomic art is deliberately simple and rough. Studio Bones turned this into an advantage by using wildly creative animation styles, mixing paint-on-glass, charcoal, and digital techniques."},
+  {emoji:"💯",title:"The Emotion Counter",text:"Mob's internal emotion counter (0-100%) is a core visual mechanic. Different emotions (rage, sadness, gratitude, courage) produce different power effects when they hit 100%."},
+  {emoji:"🧂",title:"Seasoning City",text:"The entire series takes place in Seasoning City (Spice City in some translations). The city name is a pun — 'Mob' means 'background character,' and he lives in a generically-named city."},
+  {emoji:"👔",title:"Reigen's Self-Defense Rush",text:"Reigen's signature 'special moves' are just normal self-defense techniques and salt-throwing. His 'Hypnosis Punch' is literally just a punch. Despite this, he genuinely solves problems through empathy and quick thinking."},
+  {emoji:"🥦",title:"The Giant Broccoli",text:"The series' final arc features a giant broccoli growing over Seasoning City. This absurd image is actually one of the most emotionally devastating storylines, dealing with identity and self-acceptance."},
+  {emoji:"🏆",title:"Best Episode Ever Debate",text:"Season 2, Episode 5 ('Discord ~Choices~') featuring the Mogami arc is frequently cited as one of the greatest single anime episodes ever produced, with animation that pushed the medium's boundaries."},
+  {emoji:"🎵",title:"99 by Mob Choir",text:"The Season 1 opening '99' by Mob Choir became iconic. The number 99 represents Mob always being one step away from losing control — perpetually at 99% before the explosion."},
+  {emoji:"🏃",title:"Running is Key",text:"Mob's running scenes are a recurring motif. His physical growth through the Body Improvement Club parallels his emotional growth, and the final season's running sequence is considered a masterpiece of animation."},
+  {emoji:"🎭",title:"Eric Trump Made It Go Viral",text:"In 2020, the series accidentally went viral in the US when Eric Trump tweeted about Google censorship — Google's results for 'mob' showed Mob's face instead of an actual mob."},
+  {emoji:"💚",title:"Dimple's Redemption",text:"Dimple starts as a villain trying to possess Mob but gradually becomes his genuine friend. His arc is considered one of the best redemption stories in anime, ending with a heartbreaking sacrifice."},
+  {emoji:"🎬",title:"Studio Bones' Magnum Opus",text:"Studio Bones (My Hero Academia, Fullmetal Alchemist) considers Mob Psycho 100 one of their most creatively ambitious projects, with animators fighting over which scenes to work on."},
+  {emoji:"🧘",title:"Mob Says 'Okay'",text:"Mob's most common response is a deadpan 'okay' or 'is that so.' This running gag highlights how his incredible power means nothing to him — he'd rather be normal."},
+  {emoji:"📖",title:"Only 101 Chapters",text:"Unlike most popular manga that run for hundreds of chapters, Mob Psycho 100 told its complete story in just 101 chapters across 16 volumes. ONE knew exactly when to end it."},
+  {emoji:"🌟",title:"The Power of Kindness",text:"The series' ultimate message is that being a good person matters more than any special ability. Reigen, who has zero powers, is often the one who saves the day through kindness and understanding."},
+  {emoji:"🎪",title:"Live-Action and Stage Plays",text:"Mob Psycho 100 has been adapted into a live-action TV drama (2018) and three separate stage play productions in Japan, showing its broad cultural appeal."}
+];
+
+
+// ── RENDER ──
+const floatEmojis=["🔮","💜","✨","👻","💯","🧠","⚡","🌟","💥","🟣"];
+const fb=document.getElementById('floatBg');
+for(let i=0;i<14;i++){const d=document.createElement('div');d.className='float-obj';d.textContent=floatEmojis[i%floatEmojis.length];d.style.setProperty('--x',Math.random()*90+'%');d.style.setProperty('--y',Math.random()*90+'%');d.style.setProperty('--dur',(15+Math.random()*25)+'s');d.style.setProperty('--delay',(-Math.random()*20)+'s');d.style.setProperty('--opa',(0.04+Math.random()*0.06).toFixed(2));d.style.setProperty('--size',(18+Math.random()*28)+'px');fb.appendChild(d);}
+
+function showSection(id){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));event.target.classList.add('active');window.scrollTo({top:0,behavior:'smooth'});}
+
+// Timeline
+const tl=document.getElementById('timelineList');
+TIMELINE.forEach((t,i)=>{tl.innerHTML+=`<div class="tl-item" style="animation-delay:${i*0.06}s"><div class="tl-dot"></div><div class="tl-year">${t.year}</div><div class="tl-title">${t.title}</div><div class="tl-desc">${t.desc}</div></div>`;});
+
+// Characters
+const charCats=[...new Set(CHARACTERS.map(c=>c.cat))];
+const cf=document.getElementById('charFilters');
+var allBtn=document.createElement('button');allBtn.className='filter-btn active';allBtn.textContent='All';allBtn.onclick=function(){filterChars('all',this)};cf.appendChild(allBtn);
+charCats.forEach(function(c){var b=document.createElement('button');b.className='filter-btn';b.textContent=c;b.onclick=function(){filterChars(c,this)};cf.appendChild(b)});
+function renderChars(filter){const g=document.getElementById('charGrid');const chars=filter==='all'?CHARACTERS:CHARACTERS.filter(c=>c.cat===filter);g.innerHTML=chars.map(c=>`<div class="card" onclick="this.classList.toggle('expanded')"><div class="card-emoji">${c.emoji}</div><div class="card-name">${c.name}</div><div class="card-role">${c.role}</div><div class="card-desc">${c.desc}</div>${c.tags.map(t=>`<span class="card-tag">${t}</span>`).join('')}<div class="card-detail">${c.detail}</div></div>`).join('');}
+function filterChars(cat,btn){cf.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderChars(cat);}
+renderChars('all');
+
+// Fun Facts
+const fl=document.getElementById('factsList');
+FUNFACTS.forEach(f=>{fl.innerHTML+=`<div class="fact-card"><span class="fact-emoji">${f.emoji}</span><div class="fact-title">${f.title}</div><div class="fact-text">${f.text}</div></div>`;});
+
+// ── TRIVIA ──
+const Q=[
+{q:"What does 'Mob' mean as a nickname?",a:"Background character",d:["Powerful one","Angry child","Lonely kid"],cat:"Characters"},
+{q:"What business does Reigen run?",a:"Spirits and Such Consultation",d:["Ghost Busters Inc","Psychic Solutions","Medium Readings"],cat:"Characters"},
+{q:"What happens when Mob's emotions reach 100%?",a:"His psychic power explodes",d:["He passes out","He loses his memory","He becomes invisible"],cat:"Abilities"},
+{q:"What club did Mob join at school?",a:"Body Improvement Club",d:["Telepathy Club","Art Club","Track Team"],cat:"Characters"},
+{q:"Who is the creator of Mob Psycho 100?",a:"ONE",d:["Yusuke Murata","Akira Toriyama","Hajime Isayama"],cat:"Meta"},
+{q:"Which studio animated Mob Psycho 100?",a:"Bones",d:["Madhouse","MAPPA","Toei"],cat:"Meta"},
+{q:"What is Reigen's actual psychic ability?",a:"He has none",d:["Minor telekinesis","Spirit sensing","Aura reading"],cat:"Characters"},
+{q:"What evil organization does Toichiro lead?",a:"Claw",d:["Fang","Shadow","The Organization"],cat:"World"},
+{q:"What is the name of Mob's younger brother?",a:"Ritsu",d:["Riku","Ren","Ryota"],cat:"Characters"},
+{q:"What nickname do delinquents give Mob?",a:"White T Poison",d:["Ghost Boy","Psycho Kid","Mind Breaker"],cat:"World"},
+{q:"What is Dimple originally?",a:"An evil spirit",d:["A stuffed toy","Mob's imaginary friend","A former esper"],cat:"Characters"},
+{q:"What form does the final villain take?",a:"A giant broccoli",d:["A dragon","A black hole","A shadow"],cat:"World"},
+{q:"What year did the manga start?",a:"2012",d:["2009","2015","2011"],cat:"Meta"},
+{q:"How many anime seasons does Mob Psycho 100 have?",a:"3",d:["2","4","1"],cat:"Meta"},
+{q:"What does ???% represent?",a:"Mob's uncontrolled power beyond 100%",d:["A secret character","An error","Mob's future self"],cat:"Abilities"},
+{q:"What weapon does Serizawa use?",a:"An umbrella",d:["A sword","A staff","His fists"],cat:"Characters"},
+{q:"What award did the manga win in 2017?",a:"Shogakukan Manga Award",d:["Kodansha Award","Tezuka Award","Japan Media Arts Award"],cat:"Meta"},
+{q:"What is Teruki's school?",a:"Black Vinegar Middle School",d:["Salt Middle School","Seasoning Academy","White Pepper High"],cat:"World"},
+{q:"How many chapters does the manga have?",a:"101",d:["200","52","150"],cat:"Meta"},
+{q:"What is the name of the Season 1 opening?",a:"99",d:["100","Mob","Spirit"],cat:"Meta"},
+{q:"Who defeats Shimazaki?",a:"Reigen",d:["Mob","Teru","Ritsu"],cat:"Characters"},
+{q:"What city does the series take place in?",a:"Seasoning City",d:["Spice Town","Salt City","Pepper Village"],cat:"World"},
+{q:"What does Minegishi become after Claw dissolves?",a:"A florist",d:["A teacher","A chef","A doctor"],cat:"Characters"},
+{q:"What triggers Mob's 100% Rage?",a:"Seeing Ritsu get hurt",d:["Losing a game","Being insulted","Failing a test"],cat:"Abilities"},
+{q:"How long did Mogami trap Mob in his illusion?",a:"6 months (perceived)",d:["1 year","1 day","1 hour"],cat:"World"},
+{q:"What kind of character is Mob described as?",a:"A background character",d:["The chosen one","A genius","A delinquent"],cat:"Characters"},
+{q:"What is Shou's relationship to Toichiro?",a:"His son",d:["His student","His clone","His rival"],cat:"Characters"},
+{q:"What does the Body Improvement Club do when Mob collapses?",a:"They carry him",d:["They leave him","They call an ambulance","They make fun of him"],cat:"World"},
+{q:"What is Tome's final arc about?",a:"Contacting telepathic aliens",d:["Winning a competition","Finding a boyfriend","Graduating school"],cat:"Characters"},
+{q:"What happened when Eric Trump tweeted about 'mob'?",a:"Google showed Mob's face for the search",d:["The anime got cancelled","ONE responded angrily","Nothing happened"],cat:"Meta"},
+{q:"What is Claw's goal?",a:"World domination",d:["Destroying all spirits","Creating super soldiers","Finding ancient artifacts"],cat:"World"},
+{q:"What is Mob's real first name?",a:"Shigeo",d:["Shigeru","Shinji","Shiro"],cat:"Characters"},
+{q:"What cult does Dimple create?",a:"LOL Cult (later Psycho Helmet)",d:["Spirit World Cult","Claw","Esper Church"],cat:"World"},
+{q:"Who voices Mob in the Japanese anime?",a:"Setsuo Ito",d:["Takahiro Sakurai","Yuki Kaji","Daisuke Ono"],cat:"Meta"},
+{q:"What is Reigen's 'special technique'?",a:"Self-Defense Rush (just punching)",d:["Spirit Cannon","Mind Crush","Psychic Beam"],cat:"Characters"},
+{q:"What school does Mob attend?",a:"Salt Middle School",d:["Seasoning Academy","Pepper Junior High","Spice Middle School"],cat:"World"},
+{q:"How many manga volumes does MP100 have?",a:"16",d:["20","10","25"],cat:"Meta"},
+{q:"What is the Mogami arc about?",a:"Mob trapped in a nightmare reality",d:["A fighting tournament","A school festival","A treasure hunt"],cat:"World"},
+{q:"Who is the president of the Body Improvement Club?",a:"Musashi Gouda",d:["Teruki Hanazawa","Tenga Onigawara","Kamuro Shinji"],cat:"Characters"},
+{q:"What happens to Mob at the end of the series?",a:"He confesses to Tsubomi and accepts himself",d:["He loses his powers","He defeats a god","He moves away"],cat:"World"},
+{q:"How many copies has the manga sold?",a:"Over 2.8 million",d:["Over 10 million","About 500,000","Over 50 million"],cat:"Meta"},
+{q:"What is Dimple's true wish?",a:"To become a god",d:["To destroy Mob","To be reborn as human","To find treasure"],cat:"Characters"},
+{q:"Which season adapts the World Domination arc?",a:"Season 2",d:["Season 1","Season 3","It wasn't adapted"],cat:"Meta"},
+{q:"What is unique about Mob Psycho 100's animation?",a:"It mixes many different art styles",d:["It's all CGI","It uses rotoscoping only","It has no color"],cat:"Meta"},
+{q:"What does Teru lose in his first fight with Mob?",a:"His hair (wig)",d:["His powers","His memory","His school"],cat:"Characters"},
+{q:"What is Mob's relationship to One Punch Man?",a:"Same creator (ONE)",d:["Same universe","Sequel","No connection"],cat:"Meta"},
+{q:"What emotion first triggered ???%?",a:"Fear/trauma as a child",d:["Anger at a villain","Joy at winning","Sadness over loss"],cat:"Abilities"},
+{q:"What is the Psycho Helmet cult?",a:"A cult worshipping Mob's image",d:["A gaming clan","A school club","A Claw division"],cat:"World"},
+{q:"When did Season 1 air?",a:"July-September 2016",d:["January 2015","October 2017","April 2018"],cat:"Meta"},
+{q:"What makes Reigen special despite having no powers?",a:"His empathy and quick thinking",d:["A hidden technique","Ancient bloodline","Special equipment"],cat:"Characters"},
+{q:"What is the Ultimate 5?",a:"Claw's top 5 espers",d:["A boy band","A school ranking","An anime award"],cat:"World"},
+{q:"What does Mob want most in life?",a:"To be normal and confess to Tsubomi",d:["World peace","Unlimited power","To defeat all villains"],cat:"Characters"},
+{q:"What type of spirit is Dimple?",a:"Upper-class evil spirit",d:["A demon","A poltergeist","An angel"],cat:"Characters"},
+{q:"What does Sakurai fight with?",a:"Cursed toy weapons",d:["Real swords","Psychic blasts","Martial arts"],cat:"Characters"},
+{q:"How does the manga end differently from typical shonen?",a:"The hero gets rejected by his crush",d:["The hero wins everything","The villain escapes","A time skip shows the future"],cat:"Meta"},
+{q:"What live-action adaptation exists?",a:"A Japanese TV drama (2018)",d:["A Hollywood movie","A Netflix series","A Korean drama"],cat:"Meta"},
+{q:"Who framed Onigawara?",a:"Kamuro Shinji",d:["Ritsu","Teru","Dimple"],cat:"World"},
+{q:"What is Mob's training routine?",a:"Running and basic exercises with the Body Improvement Club",d:["Psychic meditation","Fighting spirits daily","Weight lifting alone"],cat:"Characters"},
+{q:"What genre is Mob Psycho 100?",a:"Action comedy / coming-of-age",d:["Pure horror","Sports","Romance"],cat:"Meta"},
+{q:"What is Mob's emotional counter at the start of most episodes?",a:"It varies, building toward 100%",d:["Always at 0%","Always at 50%","Always at 99%"],cat:"Abilities"},
+{q:"How did Toichiro store his power?",a:"By accumulating it for 20 years",d:["Through a machine","By stealing from others","With a magic item"],cat:"Abilities"},
+{q:"What is the Seasoning City naming convention?",a:"Cities and schools named after seasonings",d:["Named after famous people","Named after colors","Named after animals"],cat:"World"},
+{q:"What is Mob Choir?",a:"The band that performs the opening themes",d:["Mob's school choir","A character group","A fan club"],cat:"Meta"},
+{q:"Who composed the anime's music?",a:"Kenji Kawai",d:["Hiroyuki Sawano","Yoko Kanno","Joe Hisaishi"],cat:"Meta"},
+{q:"Why can't Mob use his powers freely?",a:"He fears hurting people like he hurt Ritsu",d:["It's illegal","He promised Reigen","His powers are sealed"],cat:"Characters"},
+{q:"What is the significance of the number 100?",a:"Mob's emotion threshold for power explosion",d:["His class ranking","His age in spirit years","Episodes in the manga"],cat:"Abilities"},
+{q:"How many stage plays has Mob Psycho 100 had?",a:"Three",d:["One","Five","None"],cat:"Meta"},
+{q:"What happened to Claw members after defeat?",a:"Many reformed and got normal jobs",d:["They were all imprisoned","They disappeared","They formed a new group"],cat:"World"},
+{q:"What is the central theme of Mob Psycho 100?",a:"Being a good person matters more than special abilities",d:["Power conquers all","Revenge is justified","The strong should rule"],cat:"Meta"}
+];
+
+
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b}
+let queue=[],currentQ=null,qn=0,score=0,streak=0,best=0,answered=false;
+const el={ss:document.getElementById('trivia-start'),gm:document.getElementById('trivia-game'),sb:document.getElementById('trivia-start-btn'),qn:document.getElementById('trivia-qnum'),sc:document.getElementById('trivia-score'),st:document.getElementById('trivia-streak'),pr:document.getElementById('trivia-progress'),ct:document.getElementById('trivia-category'),qq:document.getElementById('trivia-question'),op:document.getElementById('trivia-options'),fb:document.getElementById('trivia-feedback'),nx:document.getElementById('trivia-next')};
+function startTrivia(){el.ss.style.display='none';el.gm.style.display='block';queue=shuffle(Q);qn=0;score=0;streak=0;best=0;loadQ()}
+function loadQ(){if(!queue.length)queue=shuffle(Q);currentQ=queue.pop();qn++;answered=false;const d=((qn-1)%Q.length)+1;el.qn.textContent=d+' / '+Q.length;el.sc.textContent=score;el.st.textContent='\u{1f525} '+streak;el.pr.style.width=(d/Q.length*100)+'%';el.ct.textContent=currentQ.cat;el.qq.textContent=currentQ.q;
+const opts=shuffle([currentQ.a,...currentQ.d]),lt=['A','B','C','D'];el.op.innerHTML='';
+opts.forEach((o,i)=>{const b=document.createElement('button');b.className='trivia-option';b.innerHTML='<span class="opt-letter">'+lt[i]+'</span><span>'+o+'</span>';b.addEventListener('click',()=>ansQ(b,o));el.op.appendChild(b)});
+el.fb.style.display='none';el.nx.style.display='none';document.getElementById('trivia-card').scrollIntoView({behavior:'smooth',block:'nearest'})}
+function ansQ(b,ch){if(answered)return;answered=true;const ok=ch===currentQ.a;el.op.querySelectorAll('.trivia-option').forEach(x=>{x.classList.add('disabled');if(x.querySelector('span:last-child').textContent===currentQ.a)x.classList.add('correct')});
+if(ok){b.classList.add('correct');score++;streak++;if(streak>best)best=streak;el.fb.className='trivia-explanation correct-fb';el.fb.innerHTML='<strong>\u2705 Correct!</strong>'+(streak>1?' \u{1f525} '+streak+' in a row!':'')}
+else{b.classList.add('wrong');b.classList.add('shake');const ps=streak;streak=0;el.fb.className='trivia-explanation wrong-fb';el.fb.innerHTML='<strong>\u274c Not quite.</strong> The answer is <strong>'+currentQ.a+'</strong>.'+(ps>=3?' Streak of '+ps+' ended.':'')}
+el.sc.textContent=score;el.st.textContent='\u{1f525} '+streak;el.fb.style.display='block';el.nx.style.display='block';el.nx.focus()}
+el.sb.addEventListener('click',startTrivia);el.nx.addEventListener('click',loadQ);
+document.addEventListener('keydown',e=>{const ts=document.getElementById('trivia');if(!ts||!ts.classList.contains('active'))return;if(!answered&&e.key>='1'&&e.key<='4'){const bs=el.op.querySelectorAll('.trivia-option');if(bs[parseInt(e.key)-1])bs[parseInt(e.key)-1].click();}else if(answered&&(e.key==='Enter'||e.key===' ')){e.preventDefault();el.nx.click();}});
+</script>
+</body>
+</html>
