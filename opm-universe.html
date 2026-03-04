@@ -120,6 +120,18 @@
   .filter-btn:hover { border-color:var(--accent); }
   .filter-btn.active { background:var(--accent); color:#0a0a12; border-color:var(--accent); }
 
+  
+  .trivia-option{display:flex;align-items:center;gap:12px;width:100%;padding:14px 18px;background:var(--bg-card-hover);border:2px solid var(--border);border-radius:12px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;color:var(--text);transition:all .2s;text-align:left}
+  .trivia-option:hover{border-color:var(--accent);background:rgba(255,224,51,0.05)}
+  .trivia-option.correct{border-color:#06d6a0;background:rgba(6,214,160,0.15);color:#06d6a0}
+  .trivia-option.wrong{border-color:#ff4444;background:rgba(255,68,68,0.1);color:#ff4444}
+  .trivia-option.disabled{pointer-events:none;opacity:0.7}
+  .trivia-option .opt-letter{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:8px;background:rgba(255,255,255,0.06);font-size:12px;font-weight:800;flex-shrink:0}
+  .correct-fb{background:rgba(6,214,160,0.1);border:1px solid rgba(6,214,160,0.2);color:#06d6a0}
+  .wrong-fb{background:rgba(255,68,68,0.1);border:1px solid rgba(255,68,68,0.2);color:#ff4444}
+  @keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-4px)}40%,80%{transform:translateX(4px)}}
+  .shake{animation:shake 0.4s ease}
+
   @media(max-width:500px) {
     .trivia-answers { grid-template-columns:1fr; }
     nav button { padding:6px 12px; font-size:12px; }
@@ -179,10 +191,31 @@
 
 <!-- ══════════ TRIVIA ══════════ -->
 <div id="trivia" class="section">
-  <div class="section-title" style="color:var(--accent4);">&#127942; Trivia Challenge</div>
-  <p class="section-sub">Test your One Punch Man knowledge! Use keys 1-4 to answer, Enter/Space for next.</p>
-  <div class="filter-row" id="triviaFilters"></div>
-  <div class="trivia-box" id="triviaBox"></div>
+  <div class="section-title" style="color:var(--accent4);">🏆 Trivia Challenge</div>
+  <p class="section-sub">Test your One Punch Man knowledge! Keys 1-4 to answer, Enter for next.</p>
+  <div id="trivia-container">
+    <div id="trivia-start" style="text-align:center;padding:60px 24px;background:var(--bg-card);border-radius:24px;border:1px solid var(--border)">
+      <div style="font-size:72px;margin-bottom:20px">👊</div>
+      <h3 style="font-family:'Chewy',cursive;font-size:24px;color:var(--text);margin:0 0 12px">One Punch Trivia!</h3>
+      <p style="font-size:15px;color:var(--text-muted);margin:0 0 28px;max-width:420px;margin-left:auto;margin-right:auto;line-height:1.6">66 questions on heroes, villains, abilities, and the world of One Punch Man.</p>
+      <button id="trivia-start-btn" class="trivia-next">💥 Begin Challenge</button>
+    </div>
+    <div id="trivia-game" style="display:none">
+      <div style="display:flex;justify-content:center;gap:16px;margin-bottom:16px;flex-wrap:wrap">
+        <div style="background:var(--bg-card);border-radius:14px;padding:12px 20px;border:1px solid var(--border);text-align:center;min-width:90px"><span style="display:block;font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px">Question</span><span style="display:block;font-family:'Chewy',cursive;font-size:18px;color:var(--text);margin-top:4px" id="trivia-qnum">1</span></div>
+        <div style="background:var(--bg-card);border-radius:14px;padding:12px 20px;border:1px solid var(--border);text-align:center;min-width:90px"><span style="display:block;font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px">Score</span><span style="display:block;font-family:'Chewy',cursive;font-size:18px;color:var(--text);margin-top:4px" id="trivia-score">0</span></div>
+        <div style="background:var(--bg-card);border-radius:14px;padding:12px 20px;border:1px solid var(--border);text-align:center;min-width:90px"><span style="display:block;font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px">Streak</span><span style="display:block;font-family:'Chewy',cursive;font-size:18px;color:var(--text);margin-top:4px" id="trivia-streak">🔥 0</span></div>
+      </div>
+      <div style="width:100%;height:6px;background:var(--border);border-radius:3px;margin-bottom:24px;overflow:hidden"><div id="trivia-progress" style="height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:3px;width:0%;transition:width 0.3s"></div></div>
+      <div class="trivia-box" id="trivia-card">
+        <div class="trivia-cat" id="trivia-category"></div>
+        <p class="trivia-q" id="trivia-question">Loading...</p>
+        <div id="trivia-options" style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px"></div>
+        <div class="trivia-explanation" id="trivia-feedback" style="display:none"></div>
+        <button class="trivia-next" id="trivia-next" style="display:none">Next Question →</button>
+      </div>
+    </div>
+  </div>
 </div>
 </div>
 
@@ -251,195 +284,117 @@ const FUNFACTS = [
   { emoji:"\u{1F9B8}", title:"Mumen Rider: The True Hero", text:"Despite having zero powers and riding a bicycle, Mumen Rider is considered the moral heart of the series. His willingness to fight hopeless battles to protect others represents true heroism." }
 ];
 
-const TRIVIA = [
-  // Characters (25)
-  {q:"What is Saitama's hero alias?",a:["Caped Baldy","One Punch Man","Bald Cape","The Bald Hero"],c:0,cat:"Characters",exp:"Despite his incredible power, the Hero Association gave Saitama the unflattering alias 'Caped Baldy.'"},
-  {q:"What is Genos' hero classification?",a:["S-Class","A-Class","B-Class","Unregistered"],c:0,cat:"Characters",exp:"Genos is an S-Class hero, ranked 14th (later promoted). He achieved this rank almost immediately after registering."},
-  {q:"What rank is Tatsumaki in S-Class?",a:["Rank 2","Rank 1","Rank 3","Rank 5"],c:0,cat:"Characters",exp:"Tatsumaki (Tornado of Terror) is ranked 2nd in S-Class, just behind the mysterious Blast."},
-  {q:"Who is Bang's most infamous former student?",a:["Garou","Saitama","Sonic","Suiryu"],c:0,cat:"Characters",exp:"Garou was Bang's top student who mastered Water Stream Rock Smashing Fist before going rogue as the 'Hero Hunter.'"},
-  {q:"What is King's supposed power?",a:["The King Engine","Super strength","Time control","Psychic power"],c:0,cat:"Characters",exp:"The 'King Engine' is actually just his heart beating loudly from fear, but everyone believes it's a terrifying power."},
-  {q:"Which S-Class hero is a 10-year-old genius?",a:["Child Emperor","Metal Bat","Watchdog Man","Zombieman"],c:0,cat:"Characters",exp:"Child Emperor is 10 years old and the youngest S-Class hero, fighting with self-invented gadgets and robots."},
-  {q:"What weapon does Metal Bat use?",a:["A metal baseball bat","A sword","His fists","A metal pipe"],c:0,cat:"Characters",exp:"Metal Bat fights exclusively with a metal baseball bat, and his Fighting Spirit ability makes him stronger the more damage he takes."},
-  {q:"Who is the #1 ranked S-Class hero?",a:["Blast","Tatsumaki","King","Saitama"],c:0,cat:"Characters",exp:"Blast holds the top S-Class rank but rarely appears, remaining one of the most mysterious characters in the series."},
-  {q:"What type of hero is Zombieman?",a:["Immortal/regenerating","Undead necromancer","Ghost type","Zombie controller"],c:0,cat:"Characters",exp:"Zombieman has extreme regeneration that makes him virtually unkillable. He was a former test subject of the House of Evolution."},
-  {q:"What is Fubuki's hero class?",a:["B-Class Rank 1","A-Class Rank 1","S-Class Rank 17","C-Class Rank 1"],c:0,cat:"Characters",exp:"Fubuki intentionally stays at B-Class Rank 1 to maintain dominance over the B-Class rather than compete in A-Class."},
-  {q:"What is Speed-o'-Sound Sonic's background?",a:["Ninja assassin","Retired soldier","Former monk","Ex-police officer"],c:0,cat:"Characters",exp:"Sonic was trained in the Ninja Village and works as a freelance ninja assassin. He declared himself Saitama's rival."},
-  {q:"Which S-Class hero protects Q-City alone?",a:["Watchdog Man","Drive Knight","Metal Knight","Pig God"],c:0,cat:"Characters",exp:"Watchdog Man single-handedly protects Q-City, sitting atop a pile of defeated monsters."},
-  {q:"What is Flashy Flash's fighting background?",a:["Ninja Village","Hero Academy","Military","Self-taught"],c:0,cat:"Characters",exp:"Flashy Flash was trained in the notorious Ninja Village alongside Speed-o'-Sound Sonic, where he became the strongest ninja ever produced."},
-  // Abilities & Powers (12)
-  {q:"What is Saitama's daily training regimen?",a:["100 push-ups, sit-ups, squats + 10km run","200 of each exercise","Weighted training only","Secret martial arts"],c:0,cat:"Abilities",exp:"His routine is 100 push-ups, 100 sit-ups, 100 squats, and a 10km run every single day for 3 years. Other characters note this is absurdly basic."},
-  {q:"What martial art does Bang teach?",a:["Water Stream Rock Smashing Fist","Void Fist","Iron Cutting Fist","Dragon Slaying Fist"],c:0,cat:"Abilities",exp:"Bang created and teaches the Water Stream Rock Smashing Fist style, which redirects an opponent's force against them."},
-  {q:"What makes Garou unique as a fighter?",a:["He copies and evolves mid-fight","He uses magic","He has psychic powers","He absorbs enemies"],c:0,cat:"Abilities",exp:"Garou can learn and adapt fighting techniques during battle, constantly evolving to counter whatever he faces."},
-  {q:"What is Boros' ultimate attack called?",a:["Collapsing Star Roaring Cannon","Planet Buster Fist","Star Breaker Beam","Cosmic Annihilation"],c:0,cat:"Abilities",exp:"Boros' Collapsing Star Roaring Cannon was powerful enough that he claimed it could destroy the entire Earth's surface."},
-  {q:"What type of powers does Tatsumaki have?",a:["Psychic/Esper","Super strength","Speed","Elemental"],c:0,cat:"Abilities",exp:"Tatsumaki is the most powerful esper in the series, capable of lifting massive structures and creating force fields with her psychic abilities."},
-  {q:"What is Metal Bat's special ability?",a:["Fighting Spirit","Bat Control","Metal Manipulation","Super Swing"],c:0,cat:"Abilities",exp:"Metal Bat's Fighting Spirit makes him progressively stronger the more damage he takes and the more fired up he gets."},
-  {q:"How does Drive Knight fight?",a:["Tactical transformation cube","Laser guns","Bare hands","Summoned creatures"],c:0,cat:"Abilities",exp:"Drive Knight uses a tactical transformation cube that lets him shift into different combat forms suited for each situation."},
-  {q:"What is Saitama's finishing move called?",a:["Serious Punch","One Punch","Final Blow","Ultimate Strike"],c:0,cat:"Abilities",exp:"When Saitama actually tries, he uses his 'Serious Series' moves, with 'Serious Punch' being his signature finishing technique."},
-  {q:"What power did God grant Garou?",a:["Cosmic powers","Fire manipulation","Immortality","Time control"],c:0,cat:"Abilities",exp:"The mysterious entity God granted Garou cosmic-level powers, making him exponentially more dangerous than his already formidable self."},
-  {q:"What is Zombieman's key ability?",a:["Extreme regeneration","Controlling zombies","Death touch","Soul stealing"],c:0,cat:"Abilities",exp:"Zombieman can regenerate from virtually any wound, making him practically immortal in battle."},
-  {q:"How does Bofoi (Metal Knight) fight?",a:["Remote-controlled robots","Powered armor suit","Giant mech","Nanobots"],c:0,cat:"Abilities",exp:"Bofoi never fights personally. He sends remote-controlled robots into battle while he stays safe at his base."},
-  {q:"What side effect did Saitama's training have?",a:["He lost all his hair","He lost his voice","He can't sleep","He can't taste food"],c:0,cat:"Abilities",exp:"Saitama's intense training caused him to go completely bald, which is a constant source of insecurity for him."},
-  // World & Lore (25)
-  {q:"What shape is the OPM world's supercontinent?",a:["Shaped like Saitama Prefecture","A perfect circle","Like Australia","Like a fist"],c:0,cat:"World",exp:"The supercontinent in One Punch Man is shaped like Saitama Prefecture in Japan, a nod to the protagonist's name."},
-  {q:"How are cities named in One Punch Man?",a:["Letters A through Z","Numbers 1-26","After heroes","After landmarks"],c:0,cat:"World",exp:"Cities are simply named with letters from A to Z. City Z, where Saitama lives, is known as the most dangerous."},
-  {q:"What organization employs most heroes?",a:["The Hero Association","The Justice League","Hero Corps","The S-Force"],c:0,cat:"World",exp:"The Hero Association is the official organization that registers, ranks, and dispatches heroes to deal with threats."},
-  {q:"What are the hero class ranks from lowest to highest?",a:["C, B, A, S","D, C, B, A","Bronze, Silver, Gold, Platinum","1, 2, 3, 4"],c:0,cat:"World",exp:"Heroes are ranked in four classes: C-Class (lowest), B-Class, A-Class, and S-Class (highest/strongest)."},
-  {q:"What is a 'God-level' disaster?",a:["A threat to all humanity","A threat to one city","A natural disaster","A cosmic event"],c:0,cat:"World",exp:"God-level is the highest disaster classification, representing a threat that could endanger all of humanity."},
-  {q:"Who founded the Hero Association?",a:["Agoni (a rich man whose grandson was saved)","The government","Blast","Saitama"],c:0,cat:"World",exp:"The Hero Association was founded by the millionaire Agoni after a hero saved his grandson from a monster."},
-  {q:"What is the Monster Association?",a:["An organization of monsters opposing heroes","A hero training group","A research lab","A government agency"],c:0,cat:"World",exp:"The Monster Association is a coalition of powerful monsters led by Monster King Orochi (secretly controlled by Psykos) that seeks to destroy the Hero Association."},
-  {q:"What villain group invaded from space?",a:["The Dark Matter Thieves","The Space Pirates","The Galaxy Raiders","The Cosmic Fleet"],c:0,cat:"World",exp:"The Dark Matter Thieves, led by Lord Boros, invaded Earth after traveling across the universe seeking a worthy opponent."},
-  {q:"Where does Saitama live?",a:["City Z","City A","City S","City Q"],c:0,cat:"World",exp:"Saitama lives in an apartment in City Z, which is known as the most dangerous city due to frequent monster appearances."},
-  {q:"What was the House of Evolution?",a:["Dr. Genus' research lab creating artificial beings","A museum","A hero school","A hospital"],c:0,cat:"World",exp:"The House of Evolution was Dr. Genus' laboratory where he created artificial beings like Carnage Kabuto. After Saitama destroyed it, Dr. Genus reformed and opened a food shop."},
-  {q:"What did Madame Shibabawa predict?",a:["A God-level threat within 6 months","Saitama's power","The Monster Association","An alien invasion"],c:0,cat:"World",exp:"The fortune-teller Shibabawa's final prophecy predicted a God-level disaster that would threaten all of humanity within six months."},
-  {q:"What is the Ninja Village?",a:["A secret training facility for assassins","A peaceful village","A tourist trap","A hero academy"],c:0,cat:"World",exp:"The Ninja Village is a notorious facility that trains deadly assassins, where both Flashy Flash and Speed-o'-Sound Sonic were raised."},
-  {q:"What child was kidnapped by the Monster Association?",a:["Waganma","Tareo","Zenko","Agoni's grandson"],c:0,cat:"World",exp:"Waganma, the son of a Hero Association executive, was kidnapped by the Monster Association, triggering the massive rescue raid."},
-  // Books & Meta (25)
-  {q:"Who created the One Punch Man webcomic?",a:["ONE","Yusuke Murata","Eiichiro Oda","Akira Toriyama"],c:0,cat:"Meta",exp:"ONE created One Punch Man as a webcomic in 2009, originally as a way to test new manga-drawing software."},
-  {q:"Who illustrates the manga remake?",a:["Yusuke Murata","ONE","Takeshi Obata","Kentaro Miura"],c:0,cat:"Meta",exp:"Yusuke Murata, famous for Eyeshield 21, illustrates the manga with incredibly detailed and dynamic artwork."},
-  {q:"When did the original webcomic start?",a:["2009","2005","2012","2015"],c:0,cat:"Meta",exp:"ONE began publishing the One Punch Man webcomic in 2009. By 2012 it had over 7.9 million hits."},
-  {q:"Which studio animated Season 1?",a:["Madhouse","J.C. Staff","Bones","MAPPA"],c:0,cat:"Meta",exp:"Madhouse Studios animated the critically acclaimed first season, which is considered one of the best-animated anime of all time."},
-  {q:"Which studio animated Seasons 2 and 3?",a:["J.C. Staff","Madhouse","Toei","Wit Studio"],c:0,cat:"Meta",exp:"J.C. Staff took over animation duties starting with Season 2, which received some criticism for lower animation quality compared to Madhouse's Season 1."},
-  {q:"When did the manga remake begin?",a:["June 2012","2009","2015","2018"],c:0,cat:"Meta",exp:"The manga remake began on Shueisha's Tonari no Young Jump website on June 14, 2012."},
-  {q:"How many anime seasons exist as of 2025?",a:["3","2","4","1"],c:0,cat:"Meta",exp:"Three seasons have aired: Season 1 (2015), Season 2 (2019), and Season 3 Part 1 (October-December 2025)."},
-  {q:"What other series did ONE create?",a:["Mob Psycho 100","Dragon Ball","Naruto","Attack on Titan"],c:0,cat:"Meta",exp:"ONE also created Mob Psycho 100, another hugely popular series about an overpowered psychic middle-schooler."},
-  {q:"Where is the manga serialized?",a:["Tonari no Young Jump","Weekly Shonen Jump","Shonen Magazine","Shonen Sunday"],c:0,cat:"Meta",exp:"The manga remake is serialized on Shueisha's Tonari no Young Jump website."},
-  {q:"How many manga copies are in circulation?",a:["Over 34 million","About 10 million","Over 100 million","About 5 million"],c:0,cat:"Meta",exp:"As of 2025, the manga has over 34 million copies in circulation worldwide."},
-  {q:"When did Season 1 first air?",a:["October 2015","January 2015","April 2016","October 2014"],c:0,cat:"Meta",exp:"Season 1 aired from October 5 to December 21, 2015, on TV Tokyo and other networks."},
-  {q:"When did Season 3 Part 1 air?",a:["October-December 2025","April 2024","January 2025","July 2025"],c:0,cat:"Meta",exp:"Season 3 Part 1 aired from October 12 to December 28, 2025. A second cour is scheduled for 2027."},
-  {q:"What manga was Yusuke Murata known for before OPM?",a:["Eyeshield 21","Naruto","Bleach","One Piece"],c:0,cat:"Meta",exp:"Murata was the acclaimed artist of the football manga Eyeshield 21 before taking on One Punch Man."},
-  {q:"What US programming block aired OPM?",a:["Toonami (Adult Swim)","Cartoon Network","Nickelodeon","Disney XD"],c:0,cat:"Meta",exp:"The anime aired on Adult Swim's Toonami programming block in the United States, starting in July 2016."},
-  {q:"How did the webcomic get so popular?",a:["Great comedy despite simple art","Amazing artwork","Celebrity endorsement","TV advertising"],c:0,cat:"Meta",exp:"The webcomic went viral because ONE's comedic writing was brilliant despite the intentionally simple art style."},
-  // Mixed Advanced (13)
-  {q:"Who is Saitama's landlord problem?",a:["He struggles to afford rent","His landlord is a monster","He broke the building","His apartment is haunted"],c:0,cat:"Mixed",exp:"Despite saving the world regularly, Saitama is broke and constantly worried about rent and grocery bargains."},
-  {q:"What is Garou's childhood trauma?",a:["Being bullied for rooting for monsters","Losing his parents","Being abandoned","Failing at school"],c:0,cat:"Mixed",exp:"Garou was bullied as a child because he always cheered for the monsters in hero shows instead of the heroes."},
-  {q:"Who is Fubuki's older sister?",a:["Tatsumaki","Lily","Psykos","Suiko"],c:0,cat:"Mixed",exp:"Tatsumaki is Fubuki's older sister. Despite looking younger, Tatsumaki is actually 28 and fiercely protective of Fubuki."},
-  {q:"What happened when Boros and Saitama fought?",a:["Saitama won but acknowledged Boros was strong","Saitama won in one punch","It was a draw","Boros escaped"],c:0,cat:"Mixed",exp:"Their epic battle saw Boros use his full power including Meteoric Burst and Collapsing Star Roaring Cannon. Saitama needed his Serious Punch to finish it and acknowledged Boros as a strong opponent."},
-  {q:"What makes the Deep Sea King arc emotional?",a:["Mumen Rider's hopeless stand against him","Saitama crying","Genos sacrificing himself","A hero dying"],c:0,cat:"Mixed",exp:"Mumen Rider's courageous but hopeless stand against the Deep Sea King, knowing he cannot win but refusing to run, is one of the most emotional moments in anime."},
-  {q:"Why did Dr. Genus give up his research?",a:["Saitama destroyed his lab effortlessly","He ran out of funding","Heroes shut him down","He had a change of heart first"],c:0,cat:"Mixed",exp:"After Saitama casually destroyed his life's work and strongest creation, Dr. Genus abandoned his evolution research and opened a takoyaki food shop."},
-  {q:"What is the relationship between Bang and Garou?",a:["Master and former top student","Father and son","Brothers","Rivals from childhood"],c:0,cat:"Mixed",exp:"Garou was Bang's most talented student who mastered his martial art before going rogue. Bang feels responsible for Garou's villainous turn."},
-  {q:"Who remembers Saitama having hair?",a:["King","Genos","Bang","Nobody"],c:0,cat:"Mixed",exp:"King is the only person who remembers Saitama from before he lost his hair, having been present when Saitama saved his life years ago."},
-  {q:"What is the Serious Series?",a:["Saitama's moves when he actually tries","A manga spinoff","A villain group","A training program"],c:0,cat:"Mixed",exp:"The Serious Series is when Saitama puts actual effort into his attacks. It includes Serious Punch, Serious Side Hops, Serious Table Flip, and more."},
-  {q:"How was the Hero Association HQ rebuilt after Boros?",a:["Metal Knight rebuilt it","Tatsumaki repaired it","Volunteers rebuilt it","It was relocated"],c:0,cat:"Mixed",exp:"Bofoi (Metal Knight) rebuilt the Hero Association headquarters after the Dark Matter Thieves destroyed A-City, incorporating hidden features."},
-  {q:"What makes Saitama different from typical anime heroes?",a:["He's already the strongest from the start","He has a tragic backstory","He's chosen by prophecy","He transforms to get stronger"],c:0,cat:"Mixed",exp:"Unlike most anime protagonists who grow stronger over time, Saitama starts at maximum power and the comedy comes from how anticlimactic his victories are."},
-  {q:"What threat does God pose in the series?",a:["Potentially the ultimate God-level threat","Just a myth","A minor nuisance","An ally to heroes"],c:0,cat:"Mixed",exp:"God is a mysterious entity that grants immense power to others and appears to be building toward being the ultimate antagonist of the entire series."},
-  {q:"What does Psykos use as a disguise?",a:["Gyoro Gyoro (a giant floating eye)","A hero costume","A child form","An invisible cloak"],c:0,cat:"Mixed",exp:"Psykos hid her identity behind Gyoro Gyoro, a giant floating eyeball monster, to secretly control the Monster Association."}
-];
 
-// ── RENDER ──
-const floatEmojis = ["\u{1F44A}","\u{1F4A5}","\u{2B50}","\u{1F525}","\u{26A1}","\u{1F9B8}","\u{1F9DF}","\u{1F916}","\u{1F47E}","\u{1F300}"];
-const fb = document.getElementById('floatBg');
-for(let i=0;i<14;i++){
-  const d=document.createElement('div');
-  d.className='float-obj';
-  d.textContent=floatEmojis[i%floatEmojis.length];
-  d.style.setProperty('--x', Math.random()*90+'%');
-  d.style.setProperty('--y', Math.random()*90+'%');
-  d.style.setProperty('--dur', (15+Math.random()*25)+'s');
-  d.style.setProperty('--delay', (-Math.random()*20)+'s');
-  d.style.setProperty('--opa', (0.04+Math.random()*0.06).toFixed(2));
-  d.style.setProperty('--size', (18+Math.random()*28)+'px');
-  fb.appendChild(d);
-}
+// -- RENDER --
+var floatEmojis=["\u{1F44A}","\u{1F4A5}","\u2B50","\u{1F525}","\u26A1","\u{1F9B8}","\u{1F9DF}","\u{1F916}","\u{1F47E}","\u{1F300}"];
+var fbEl=document.getElementById('floatBg');
+for(var fi=0;fi<14;fi++){var dd=document.createElement('div');dd.className='float-obj';dd.textContent=floatEmojis[fi%floatEmojis.length];dd.style.setProperty('--x',Math.random()*90+'%');dd.style.setProperty('--y',Math.random()*90+'%');dd.style.setProperty('--dur',(15+Math.random()*25)+'s');dd.style.setProperty('--delay',(-Math.random()*20)+'s');dd.style.setProperty('--opa',(0.04+Math.random()*0.06).toFixed(2));dd.style.setProperty('--size',(18+Math.random()*28)+'px');fbEl.appendChild(dd)}
 
-function showSection(id){
-  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
-  event.target.classList.add('active');
-  window.scrollTo({top:0,behavior:'smooth'});
-}
+function showSection(id){document.querySelectorAll('.section').forEach(function(s){s.classList.remove('active')});document.getElementById(id).classList.add('active');document.querySelectorAll('nav button').forEach(function(b){b.classList.remove('active')});event.target.classList.add('active');window.scrollTo({top:0,behavior:'smooth'})}
 
 // Timeline
-const tl=document.getElementById('timelineList');
-TIMELINE.forEach((t,i)=>{
-  tl.innerHTML+=`<div class="tl-item" style="animation-delay:${i*0.06}s"><div class="tl-dot"></div><div class="tl-year">${t.year}</div><div class="tl-title">${t.title}</div><div class="tl-desc">${t.desc}</div></div>`;
-});
+var tlEl=document.getElementById('timelineList');
+TIMELINE.forEach(function(t,i){tlEl.innerHTML+='<div class="tl-item" style="animation-delay:'+i*0.06+'s"><div class="tl-dot"></div><div class="tl-year">'+t.year+'</div><div class="tl-title">'+t.title+'</div><div class="tl-desc">'+t.desc+'</div></div>'});
 
 // Characters
-const charCats=[...new Set(CHARACTERS.map(c=>c.cat))];
-const cf=document.getElementById('charFilters');
-cf.innerHTML='<button class="filter-btn active" onclick="filterChars(\'all\',this)">All</button>'+charCats.map(c=>`<button class="filter-btn" onclick="filterChars('${c}',this)">${c}</button>`).join('');
-function renderChars(filter){
-  const g=document.getElementById('charGrid');
-  const chars=filter==='all'?CHARACTERS:CHARACTERS.filter(c=>c.cat===filter);
-  g.innerHTML=chars.map(c=>`<div class="card" onclick="this.classList.toggle('expanded')"><div class="card-emoji">${c.emoji}</div><div class="card-name">${c.name}</div><div class="card-role">${c.role}</div><div class="card-desc">${c.desc}</div>${c.tags.map(t=>`<span class="card-tag">${t}</span>`).join('')}<div class="card-detail">${c.detail}</div></div>`).join('');
-}
-function filterChars(cat,btn){
-  cf.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  renderChars(cat);
-}
+var charCats=[];CHARACTERS.forEach(function(c){if(charCats.indexOf(c.cat)===-1)charCats.push(c.cat)});
+var cfEl=document.getElementById('charFilters');
+var allCBtn=document.createElement('button');allCBtn.className='filter-btn active';allCBtn.textContent='All';allCBtn.onclick=function(){filterChars('all',this)};cfEl.appendChild(allCBtn);
+charCats.forEach(function(c){var b=document.createElement('button');b.className='filter-btn';b.textContent=c;b.onclick=function(){filterChars(c,this)};cfEl.appendChild(b)});
+function renderChars(filter){var g=document.getElementById('charGrid');var chars=filter==='all'?CHARACTERS:CHARACTERS.filter(function(c){return c.cat===filter});g.innerHTML=chars.map(function(c){return '<div class="card" onclick="this.classList.toggle(\'expanded\')"><div class="card-emoji">'+c.emoji+'</div><div class="card-name">'+c.name+'</div><div class="card-role">'+c.role+'</div><div class="card-desc">'+c.desc+'</div>'+c.tags.map(function(t){return '<span class="card-tag">'+t+'</span>'}).join('')+'<div class="card-detail">'+c.detail+'</div></div>'}).join('')}
+function filterChars(cat,btn){cfEl.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active')});btn.classList.add('active');renderChars(cat)}
 renderChars('all');
 
 // Fun Facts
-const fl=document.getElementById('factsList');
-FUNFACTS.forEach(f=>{
-  fl.innerHTML+=`<div class="fact-card"><span class="fact-emoji">${f.emoji}</span><div class="fact-title">${f.title}</div><div class="fact-text">${f.text}</div></div>`;
-});
+var flEl=document.getElementById('factsList');
+FUNFACTS.forEach(function(f){flEl.innerHTML+='<div class="fact-card"><span class="fact-emoji">'+f.emoji+'</span><div class="fact-title">'+f.title+'</div><div class="fact-text">'+f.text+'</div></div>'});
 
-// Trivia
-let triviaQ=[...TRIVIA], triviaIdx=0, triviaScore=0, triviaAnswered=false, triviaFilter='all';
-const triviaCats=[...new Set(TRIVIA.map(t=>t.cat))];
-const tf=document.getElementById('triviaFilters');
-tf.innerHTML='<button class="filter-btn active" onclick="filterTrivia(\'all\',this)">All (100)</button>'+triviaCats.map(c=>{const n=TRIVIA.filter(t=>t.cat===c).length;return`<button class="filter-btn" onclick="filterTrivia('${c}',this)">${c} (${n})</button>`}).join('');
-function filterTrivia(cat,btn){
-  tf.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  triviaFilter=cat;
-  triviaQ=cat==='all'?[...TRIVIA]:TRIVIA.filter(t=>t.cat===cat);
-  triviaQ.sort(()=>Math.random()-0.5);
-  triviaIdx=0; triviaScore=0; triviaAnswered=false;
-  renderTrivia();
-}
-function shuffle(a){const s=[...a];for(let i=s.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[s[i],s[j]]=[s[j],s[i]];}return s;}
-function renderTrivia(){
-  const box=document.getElementById('triviaBox');
-  if(triviaIdx>=triviaQ.length){
-    box.innerHTML=`<div class="trivia-cat">Final Score</div><div class="trivia-score">${triviaScore}/${triviaQ.length}</div><p style="color:var(--text-muted);margin:16px 0">${triviaScore===triviaQ.length?'PERFECT! You are a true One Punch Man master!':triviaScore>=triviaQ.length*0.8?'Amazing! You really know your OPM!':triviaScore>=triviaQ.length*0.5?'Not bad! Keep exploring the universe!':'Keep learning! The One Punch Man universe has so much to discover!'}</p><button class="trivia-next" onclick="triviaIdx=0;triviaScore=0;triviaQ.sort(()=>Math.random()-0.5);renderTrivia();">Play Again</button>`;
-    return;
-  }
-  const q=triviaQ[triviaIdx];
-  const indices=[0,1,2,3];
-  const shuffled=shuffle(indices);
-  const pips=Array.from({length:triviaQ.length},(_,i)=>{
-    let cls='trivia-pip';
-    if(i<triviaIdx) cls+=' '+(i<triviaIdx?'right':'');
-    if(i===triviaIdx) cls+=' current';
-    return `<div class="${cls}"></div>`;
-  }).join('');
-  box.innerHTML=`<div class="trivia-progress">${pips}</div><div class="trivia-cat">${q.cat} &bull; ${triviaIdx+1}/${triviaQ.length}</div><div class="trivia-q">${q.q}</div><div class="trivia-answers">${shuffled.map((si,bi)=>`<button class="trivia-btn" data-idx="${si}" onclick="checkAnswer(${si},this)"><span class="key-hint">${bi+1}</span>${q.a[si]}</button>`).join('')}</div>`;
-  triviaAnswered=false;
-}
-function checkAnswer(idx,btn){
-  if(triviaAnswered) return;
-  triviaAnswered=true;
-  const q=triviaQ[triviaIdx];
-  const correct=idx===q.c;
-  if(correct) triviaScore++;
-  btn.classList.add(correct?'correct':'wrong');
-  if(!correct){
-    document.querySelectorAll('.trivia-btn').forEach(b=>{if(parseInt(b.dataset.idx)===q.c)b.classList.add('correct');});
-  }
-  // Update pip
-  const pips=document.querySelectorAll('.trivia-pip');
-  if(pips[triviaIdx]) pips[triviaIdx].className='trivia-pip '+(correct?'right':'wrong');
-  const box=document.getElementById('triviaBox');
-  box.innerHTML+=`<div class="trivia-explanation">${correct?'&#9989; Correct!':'&#10060; Not quite!'} ${q.exp}</div><button class="trivia-next" onclick="triviaIdx++;renderTrivia();">${triviaIdx<triviaQ.length-1?'Next Question':'See Results'}</button>`;
-}
-triviaQ.sort(()=>Math.random()-0.5);
-renderTrivia();
+// -- TRIVIA --
+const Q=[
+{q:"What is Saitama's hero alias?",a:"Caped Baldy",d:["One Punch Man","Bald Cape","The Bald Hero"],cat:"Characters"},
+{q:"What is Genos' hero classification?",a:"S-Class",d:["A-Class","B-Class","Unregistered"],cat:"Characters"},
+{q:"What rank is Tatsumaki in S-Class?",a:"Rank 2",d:["Rank 1","Rank 3","Rank 5"],cat:"Characters"},
+{q:"Who is Bang's most infamous former student?",a:"Garou",d:["Saitama","Sonic","Suiryu"],cat:"Characters"},
+{q:"What is King's supposed power?",a:"The King Engine",d:["Super strength","Time control","Psychic power"],cat:"Characters"},
+{q:"Which S-Class hero is a 10-year-old genius?",a:"Child Emperor",d:["Metal Bat","Watchdog Man","Zombieman"],cat:"Characters"},
+{q:"What weapon does Metal Bat use?",a:"A metal baseball bat",d:["A sword","His fists","A metal pipe"],cat:"Characters"},
+{q:"Who is the #1 ranked S-Class hero?",a:"Blast",d:["Tatsumaki","King","Saitama"],cat:"Characters"},
+{q:"What type of hero is Zombieman?",a:"Immortal/regenerating",d:["Undead necromancer","Ghost type","Zombie controller"],cat:"Characters"},
+{q:"What is Fubuki's hero class?",a:"B-Class Rank 1",d:["A-Class Rank 1","S-Class Rank 17","C-Class Rank 1"],cat:"Characters"},
+{q:"What is Speed-o'-Sound Sonic's background?",a:"Ninja assassin",d:["Retired soldier","Former monk","Ex-police officer"],cat:"Characters"},
+{q:"Which S-Class hero protects Q-City alone?",a:"Watchdog Man",d:["Drive Knight","Metal Knight","Pig God"],cat:"Characters"},
+{q:"What is Flashy Flash's fighting background?",a:"Ninja Village",d:["Hero Academy","Military","Self-taught"],cat:"Characters"},
+{q:"What is Saitama's daily training regimen?",a:"100 push-ups, sit-ups, squats + 10km run",d:["200 of each exercise","Weighted training only","Secret martial arts"],cat:"Abilities"},
+{q:"What martial art does Bang teach?",a:"Water Stream Rock Smashing Fist",d:["Void Fist","Iron Cutting Fist","Dragon Slaying Fist"],cat:"Abilities"},
+{q:"What makes Garou unique as a fighter?",a:"He copies and evolves mid-fight",d:["He uses magic","He has psychic powers","He absorbs enemies"],cat:"Abilities"},
+{q:"What is Boros' ultimate attack called?",a:"Collapsing Star Roaring Cannon",d:["Planet Buster Fist","Star Breaker Beam","Cosmic Annihilation"],cat:"Abilities"},
+{q:"What type of powers does Tatsumaki have?",a:"Psychic/Esper",d:["Super strength","Speed","Elemental"],cat:"Abilities"},
+{q:"What is Metal Bat's special ability?",a:"Fighting Spirit",d:["Bat Control","Metal Manipulation","Super Swing"],cat:"Abilities"},
+{q:"How does Drive Knight fight?",a:"Tactical transformation cube",d:["Laser guns","Bare hands","Summoned creatures"],cat:"Abilities"},
+{q:"What is Saitama's finishing move called?",a:"Serious Punch",d:["One Punch","Final Blow","Ultimate Strike"],cat:"Abilities"},
+{q:"What power did God grant Garou?",a:"Cosmic powers",d:["Fire manipulation","Immortality","Time control"],cat:"Abilities"},
+{q:"What is Zombieman's key ability?",a:"Extreme regeneration",d:["Controlling zombies","Death touch","Soul stealing"],cat:"Abilities"},
+{q:"How does Bofoi (Metal Knight) fight?",a:"Remote-controlled robots",d:["Powered armor suit","Giant mech","Nanobots"],cat:"Abilities"},
+{q:"What side effect did Saitama's training have?",a:"He lost all his hair",d:["He lost his voice","He can't sleep","He can't taste food"],cat:"Abilities"},
+{q:"What shape is the OPM world's supercontinent?",a:"Shaped like Saitama Prefecture",d:["A perfect circle","Like Australia","Like a fist"],cat:"World"},
+{q:"How are cities named in One Punch Man?",a:"Letters A through Z",d:["Numbers 1-26","After heroes","After landmarks"],cat:"World"},
+{q:"What organization employs most heroes?",a:"The Hero Association",d:["The Justice League","Hero Corps","The S-Force"],cat:"World"},
+{q:"What are the hero class ranks from lowest to highest?",a:"C, B, A, S",d:["D, C, B, A","Bronze, Silver, Gold, Platinum","1, 2, 3, 4"],cat:"World"},
+{q:"What is a 'God-level' disaster?",a:"A threat to all humanity",d:["A threat to one city","A natural disaster","A cosmic event"],cat:"World"},
+{q:"Who founded the Hero Association?",a:"Agoni (a rich man whose grandson was saved)",d:["The government","Blast","Saitama"],cat:"World"},
+{q:"What is the Monster Association?",a:"An organization of monsters opposing heroes",d:["A hero training group","A research lab","A government agency"],cat:"World"},
+{q:"What villain group invaded from space?",a:"The Dark Matter Thieves",d:["The Space Pirates","The Galaxy Raiders","The Cosmic Fleet"],cat:"World"},
+{q:"Where does Saitama live?",a:"City Z",d:["City A","City S","City Q"],cat:"World"},
+{q:"What was the House of Evolution?",a:"Dr. Genus' research lab creating artificial beings",d:["A museum","A hero school","A hospital"],cat:"World"},
+{q:"What did Madame Shibabawa predict?",a:"A God-level threat within 6 months",d:["Saitama's power","The Monster Association","An alien invasion"],cat:"World"},
+{q:"What is the Ninja Village?",a:"A secret training facility for assassins",d:["A peaceful village","A tourist trap","A hero academy"],cat:"World"},
+{q:"What child was kidnapped by the Monster Association?",a:"Waganma",d:["Tareo","Zenko","Agoni's grandson"],cat:"World"},
+{q:"Who created the One Punch Man webcomic?",a:"ONE",d:["Yusuke Murata","Eiichiro Oda","Akira Toriyama"],cat:"Meta"},
+{q:"Who illustrates the manga remake?",a:"Yusuke Murata",d:["ONE","Takeshi Obata","Kentaro Miura"],cat:"Meta"},
+{q:"When did the original webcomic start?",a:"2009",d:["2005","2012","2015"],cat:"Meta"},
+{q:"Which studio animated Season 1?",a:"Madhouse",d:["J.C. Staff","Bones","MAPPA"],cat:"Meta"},
+{q:"Which studio animated Seasons 2 and 3?",a:"J.C. Staff",d:["Madhouse","Toei","Wit Studio"],cat:"Meta"},
+{q:"When did the manga remake begin?",a:"June 2012",d:["2009","2015","2018"],cat:"Meta"},
+{q:"How many anime seasons exist as of 2025?",a:"3",d:["2","4","1"],cat:"Meta"},
+{q:"What other series did ONE create?",a:"Mob Psycho 100",d:["Dragon Ball","Naruto","Attack on Titan"],cat:"Meta"},
+{q:"Where is the manga serialized?",a:"Tonari no Young Jump",d:["Weekly Shonen Jump","Shonen Magazine","Shonen Sunday"],cat:"Meta"},
+{q:"How many manga copies are in circulation?",a:"Over 34 million",d:["About 10 million","Over 100 million","About 5 million"],cat:"Meta"},
+{q:"When did Season 1 first air?",a:"October 2015",d:["January 2015","April 2016","October 2014"],cat:"Meta"},
+{q:"When did Season 3 Part 1 air?",a:"October-December 2025",d:["April 2024","January 2025","July 2025"],cat:"Meta"},
+{q:"What manga was Yusuke Murata known for before OPM?",a:"Eyeshield 21",d:["Naruto","Bleach","One Piece"],cat:"Meta"},
+{q:"What US programming block aired OPM?",a:"Toonami (Adult Swim)",d:["Cartoon Network","Nickelodeon","Disney XD"],cat:"Meta"},
+{q:"How did the webcomic get so popular?",a:"Great comedy despite simple art",d:["Amazing artwork","Celebrity endorsement","TV advertising"],cat:"Meta"},
+{q:"Who is Saitama's landlord problem?",a:"He struggles to afford rent",d:["His landlord is a monster","He broke the building","His apartment is haunted"],cat:"Mixed"},
+{q:"What is Garou's childhood trauma?",a:"Being bullied for rooting for monsters",d:["Losing his parents","Being abandoned","Failing at school"],cat:"Mixed"},
+{q:"Who is Fubuki's older sister?",a:"Tatsumaki",d:["Lily","Psykos","Suiko"],cat:"Mixed"},
+{q:"What happened when Boros and Saitama fought?",a:"Saitama won but acknowledged Boros was strong",d:["Saitama won in one punch","It was a draw","Boros escaped"],cat:"Mixed"},
+{q:"What makes the Deep Sea King arc emotional?",a:"Mumen Rider's hopeless stand against him",d:["Saitama crying","Genos sacrificing himself","A hero dying"],cat:"Mixed"},
+{q:"Why did Dr. Genus give up his research?",a:"Saitama destroyed his lab effortlessly",d:["He ran out of funding","Heroes shut him down","He had a change of heart first"],cat:"Mixed"},
+{q:"What is the relationship between Bang and Garou?",a:"Master and former top student",d:["Father and son","Brothers","Rivals from childhood"],cat:"Mixed"},
+{q:"Who remembers Saitama having hair?",a:"King",d:["Genos","Bang","Nobody"],cat:"Mixed"},
+{q:"What is the Serious Series?",a:"Saitama's moves when he actually tries",d:["A manga spinoff","A villain group","A training program"],cat:"Mixed"},
+{q:"How was the Hero Association HQ rebuilt after Boros?",a:"Metal Knight rebuilt it",d:["Tatsumaki repaired it","Volunteers rebuilt it","It was relocated"],cat:"Mixed"},
+{q:"What makes Saitama different from typical anime heroes?",a:"He's already the strongest from the start",d:["He has a tragic backstory","He's chosen by prophecy","He transforms to get stronger"],cat:"Mixed"},
+{q:"What threat does God pose in the series?",a:"Potentially the ultimate God-level threat",d:["Just a myth","A minor nuisance","An ally to heroes"],cat:"Mixed"},
+{q:"What does Psykos use as a disguise?",a:"Gyoro Gyoro (a giant floating eye)",d:["A hero costume","A child form","An invisible cloak"],cat:"Mixed"}
+];
 
-// Keyboard shortcuts
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b}
+let queue=[],currentQ=null,qn=0,score=0,streak=0,best=0,answered=false;
+const el={ss:document.getElementById('trivia-start'),gm:document.getElementById('trivia-game'),sb:document.getElementById('trivia-start-btn'),qn:document.getElementById('trivia-qnum'),sc:document.getElementById('trivia-score'),st:document.getElementById('trivia-streak'),pr:document.getElementById('trivia-progress'),ct:document.getElementById('trivia-category'),qq:document.getElementById('trivia-question'),op:document.getElementById('trivia-options'),fb:document.getElementById('trivia-feedback'),nx:document.getElementById('trivia-next')};
+function startTrivia(){el.ss.style.display='none';el.gm.style.display='block';queue=shuffle(Q);qn=0;score=0;streak=0;best=0;loadQ()}
+function loadQ(){if(!queue.length)queue=shuffle(Q);currentQ=queue.pop();qn++;answered=false;el.qn.textContent=qn+' / '+Q.length;el.sc.textContent=score;el.st.textContent='\u{1f525} '+streak;el.pr.style.width=(qn/Q.length*100)+'%';el.ct.textContent=currentQ.cat;el.qq.textContent=currentQ.q;
+var opts=shuffle([currentQ.a].concat(currentQ.d)),lt=['A','B','C','D'];el.op.innerHTML='';
+opts.forEach(function(o,i){var b=document.createElement('button');b.className='trivia-option';b.innerHTML='<span class="opt-letter">'+lt[i]+'</span><span>'+o+'</span>';b.addEventListener('click',function(){ansQ(b,o)});el.op.appendChild(b)});
+el.fb.style.display='none';el.nx.style.display='none';document.getElementById('trivia-card').scrollIntoView({behavior:'smooth',block:'nearest'})}
+function ansQ(b,ch){if(answered)return;answered=true;var ok=ch===currentQ.a;el.op.querySelectorAll('.trivia-option').forEach(function(x){x.classList.add('disabled');if(x.querySelector('span:last-child').textContent===currentQ.a)x.classList.add('correct')});
+if(ok){b.classList.add('correct');score++;streak++;if(streak>best)best=streak;el.fb.className='trivia-explanation correct-fb';el.fb.innerHTML='<strong>\u2705 Correct!</strong>'+(streak>1?' \u{1f525} '+streak+' in a row!':'')}
+else{b.classList.add('wrong');b.classList.add('shake');var ps=streak;streak=0;el.fb.className='trivia-explanation wrong-fb';el.fb.innerHTML='<strong>\u274c Not quite.</strong> The answer is <strong>'+currentQ.a+'</strong>.'+(ps>=3?' Streak of '+ps+' ended.':'')}
+el.sc.textContent=score;el.st.textContent='\u{1f525} '+streak;el.fb.style.display='block';el.nx.style.display='block';el.nx.focus()}
+el.sb.addEventListener('click',startTrivia);el.nx.addEventListener('click',loadQ);
 document.addEventListener('keydown',e=>{
-  if(!document.getElementById('trivia').classList.contains('active')) return;
-  if(!triviaAnswered && e.key>='1' && e.key<='4'){
-    const btns=document.querySelectorAll('.trivia-btn');
-    if(btns[parseInt(e.key)-1]) btns[parseInt(e.key)-1].click();
-  }
-  if(triviaAnswered && (e.key==='Enter'||e.key===' ')){
-    e.preventDefault();
-    triviaIdx++;renderTrivia();
-  }
+  var ts=document.getElementById('trivia');if(!ts||!ts.classList.contains('active'))return;
+  if(!answered&&e.key>='1'&&e.key<='4'){var bs=el.op.querySelectorAll('.trivia-option');if(bs[parseInt(e.key)-1])bs[parseInt(e.key)-1].click()}else if(answered&&(e.key==='Enter'||e.key===' ')){e.preventDefault();el.nx.click()}
 });
 </script>
 </body>
