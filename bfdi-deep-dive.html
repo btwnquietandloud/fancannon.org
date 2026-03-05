@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>BFDI Deep Dive — Eliminations, Teams, Episodes & More</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Chewy&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a12;--card:#12121f;--card2:#1a1a2e;--accent:#ff6b35;--accent2:#ffd166;--accent3:#06d6a0;--accent4:#118ab2;--text:#e8e8f0;--muted:#8888a8;--dim:#55557a;--border:#2a2a3e}
+*{box-sizing:border-box;margin:0;padding:0}
+body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;overflow-x:hidden}
+.fc-brand-bar{position:sticky;top:0;z-index:100;background:rgba(10,9,12,0.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.06);padding:8px 16px;display:flex;align-items:center;gap:10px}
+.fc-brand-bar a{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit}
+.fc-brand-bar img{width:32px;height:32px;border-radius:50%}
+.fc-brand-bar span{font-family:sans-serif;font-size:14px;font-weight:600;color:#c9a44a;letter-spacing:0.5px}
+.fc-brand-bar .fc-sep{color:rgba(255,255,255,0.15);font-size:18px;font-weight:300}
+.fc-brand-bar .fc-page-name{font-size:13px;font-weight:500;color:rgba(255,255,255,0.4)}
+.container{max-width:960px;margin:0 auto;padding:24px 16px 64px}
+nav{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-bottom:28px;position:sticky;top:49px;z-index:10;background:var(--bg);padding:12px 0;border-bottom:1px solid var(--border)}
+nav button{background:var(--card);color:var(--muted);border:1px solid var(--border);padding:8px 16px;border-radius:99px;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;transition:all .25s}
+nav button:hover{border-color:var(--accent);color:var(--text)}
+nav button.active{background:var(--accent);color:#0a0a12;border-color:var(--accent)}
+.back-link{display:inline-block;color:var(--accent);text-decoration:none;font-size:14px;font-weight:700;margin-bottom:16px;padding:6px 14px;border:1px solid var(--border);border-radius:99px;transition:all .2s}
+.back-link:hover{border-color:var(--accent);background:rgba(255,107,53,0.05)}
+.section{display:none;animation:fadeUp .4s ease}.section.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+h2.sec-title{font-family:'Chewy',cursive;font-size:clamp(24px,4vw,36px);margin-bottom:8px}
+.sec-sub{color:var(--muted);font-size:15px;margin-bottom:24px;line-height:1.6}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:28px;margin-bottom:20px}
+.panel h3{font-family:'Chewy',cursive;font-size:20px;margin-bottom:12px;color:var(--accent2)}
+.panel p{font-size:15px;color:var(--muted);line-height:1.7}
+
+/* Elimination tracker */
+.elim-season{margin-bottom:32px}
+.elim-season h3{font-family:'Chewy',cursive;font-size:22px;margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.elim-row{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:12px;margin-bottom:6px;background:var(--card);border:1px solid var(--border);transition:all .2s;cursor:default}
+.elim-row:hover{border-color:var(--accent);background:var(--card2)}
+.elim-place{font-family:'Chewy',cursive;font-size:18px;min-width:36px;text-align:center}
+.elim-emoji{font-size:22px;min-width:30px;text-align:center}
+.elim-info{flex:1}
+.elim-name{font-weight:800;font-size:15px}
+.elim-detail{font-size:12px;color:var(--dim);margin-top:2px}
+.elim-votes{font-size:12px;font-weight:700;color:var(--accent2);background:rgba(255,209,102,0.1);padding:3px 10px;border-radius:8px;white-space:nowrap}
+.elim-winner .elim-place{color:var(--accent2);font-size:24px}
+.elim-winner{border-color:rgba(255,209,102,0.3);background:rgba(255,209,102,0.05)}
+
+/* Teams */
+.team-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:24px;margin-bottom:16px;transition:all .3s}
+.team-card:hover{border-color:var(--accent)}
+.team-header{display:flex;align-items:center;gap:12px;margin-bottom:12px;cursor:pointer}
+.team-dot{width:16px;height:16px;border-radius:50%;flex-shrink:0}
+.team-name{font-family:'Chewy',cursive;font-size:20px;flex:1}
+.team-season-tag{font-size:11px;font-weight:700;padding:3px 10px;border-radius:6px;background:rgba(255,255,255,0.05);color:var(--muted)}
+.team-record{font-size:12px;font-weight:700;color:var(--accent3)}
+.team-members{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.team-member{font-size:13px;padding:5px 12px;border-radius:8px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);color:var(--text)}
+.team-desc{font-size:14px;color:var(--muted);line-height:1.7;margin-top:12px}
+
+/* Episodes */
+.ep-filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.ep-filter{background:var(--card);color:var(--muted);border:1px solid var(--border);padding:6px 14px;border-radius:99px;cursor:pointer;font-size:12px;font-weight:700;font-family:'Nunito',sans-serif;transition:all .2s}
+.ep-filter:hover{border-color:var(--accent)}.ep-filter.active{background:var(--accent);color:#0a0a12;border-color:var(--accent)}
+.ep-search{width:100%;padding:12px 18px;border-radius:12px;border:1px solid var(--border);background:var(--card);color:var(--text);font-family:'Nunito',sans-serif;font-size:14px;margin-bottom:16px}
+.ep-search::placeholder{color:var(--dim)}
+.ep-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px 20px;margin-bottom:8px;transition:all .2s;cursor:pointer}
+.ep-card:hover{border-color:var(--accent);background:var(--card2)}
+.ep-card.expanded .ep-full{display:block}
+.ep-num{font-family:'Chewy',cursive;font-size:14px;color:var(--accent);margin-right:8px}
+.ep-title{font-weight:800;font-size:15px}
+.ep-date{font-size:12px;color:var(--dim);margin-left:auto;white-space:nowrap}
+.ep-top{display:flex;align-items:center;gap:4px}
+.ep-brief{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.6}
+.ep-full{display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);font-size:13px;color:var(--muted);line-height:1.7}
+.ep-tag{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:5px;background:rgba(255,107,53,0.1);color:var(--accent);margin-top:6px;margin-right:4px}
+
+/* Relationships */
+.rel-group{margin-bottom:28px}
+.rel-group h3{font-family:'Chewy',cursive;font-size:20px;margin-bottom:12px}
+.rel-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px 20px;margin-bottom:8px;transition:all .2s}
+.rel-card:hover{border-color:var(--accent3)}
+.rel-pair{font-weight:800;font-size:15px;color:var(--accent3);margin-bottom:4px}
+.rel-type{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.rel-desc{font-size:14px;color:var(--muted);line-height:1.7}
+
+/* Object Show Tree */
+.tree-item{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:10px;position:relative;margin-left:24px;transition:all .2s}
+.tree-item:hover{border-color:var(--accent4)}
+.tree-item::before{content:'';position:absolute;left:-18px;top:0;bottom:0;width:2px;background:var(--border)}
+.tree-item::after{content:'';position:absolute;left:-18px;top:24px;width:14px;height:2px;background:var(--border)}
+.tree-year{font-family:'Chewy',cursive;font-size:14px;color:var(--accent4)}
+.tree-name{font-family:'Chewy',cursive;font-size:18px;margin:2px 0}
+.tree-desc{font-size:13px;color:var(--muted);line-height:1.6}
+
+/* Rankings */
+.rank-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:8px}
+.rank-slot{background:var(--card);border:2px solid var(--border);border-radius:12px;padding:10px 6px;text-align:center;cursor:grab;transition:all .2s;user-select:none}
+.rank-slot:hover{border-color:var(--accent);transform:translateY(-2px)}
+.rank-slot .r-emoji{font-size:24px;display:block;margin-bottom:4px}
+.rank-slot .r-name{font-size:11px;font-weight:700;color:var(--text)}
+.tier-row{display:flex;align-items:stretch;gap:8px;margin-bottom:8px;min-height:70px}
+.tier-label{width:60px;display:flex;align-items:center;justify-content:center;font-family:'Chewy',cursive;font-size:22px;border-radius:10px;color:#fff;flex-shrink:0}
+.tier-zone{flex:1;background:var(--card);border:2px dashed var(--border);border-radius:12px;padding:8px;display:flex;flex-wrap:wrap;gap:6px;align-content:flex-start;min-height:60px}
+.tier-zone .rank-slot{border:1px solid rgba(255,255,255,0.1);padding:6px 4px;cursor:grab}
+
+@media(max-width:600px){nav button{padding:6px 10px;font-size:11px}.elim-row{flex-wrap:wrap;gap:8px}.ep-date{margin-left:0;margin-top:4px}}
+</style>
+</head>
+<body>
+<div class="fc-brand-bar"><a href="index.html"><img src="fancannonlogo.png" alt="Fan Cannon"><span>Fan Cannon</span></a><span class="fc-sep">|</span><span class="fc-page-name">BFDI Deep Dive</span></div>
+<div class="container">
+<a href="bfdi-universe.html" class="back-link">← Back to BFDI Universe</a>
+<nav>
+  <button class="active" onclick="showSec('elim',this)">Eliminations</button>
+  <button onclick="showSec('teams',this)">Teams</button>
+  <button onclick="showSec('episodes',this)">Episodes</button>
+  <button onclick="showSec('rels',this)">Relationships</button>
+  <button onclick="showSec('tree',this)">Object Show Tree</button>
+  <button onclick="showSec('rank',this)">Fan Rankings</button>
+</nav>
+
+<!-- ELIMINATIONS -->
+<div id="sec-elim" class="section active">
+<h2 class="sec-title" style="color:var(--accent)">🏆 Elimination Order</h2>
+<p class="sec-sub">Every elimination across all seasons of BFDI, with vote counts where available.</p>
+<div id="elim-list"></div>
+</div>
+
+<!-- TEAMS -->
+<div id="sec-teams" class="section">
+<h2 class="sec-title" style="color:var(--accent2)">👥 Teams</h2>
+<p class="sec-sub">Every team across BFDI, BFDIA, BFB, and TPOT with members, records, and notes.</p>
+<div id="team-list"></div>
+</div>
+
+<!-- EPISODES -->
+<div id="sec-episodes" class="section">
+<h2 class="sec-title" style="color:var(--accent3)">📺 Episode Guide</h2>
+<p class="sec-sub">All 100+ episodes across every season. Click any episode for details.</p>
+<input type="text" class="ep-search" id="epSearch" placeholder="Search episodes..." oninput="filterEps()">
+<div class="ep-filters" id="epFilters"></div>
+<div id="ep-list"></div>
+</div>
+
+<!-- RELATIONSHIPS -->
+<div id="sec-rels" class="section">
+<h2 class="sec-title" style="color:var(--accent3)">💞 Relationships</h2>
+<p class="sec-sub">Key alliances, rivalries, and friendships that shaped the series.</p>
+<div id="rel-list"></div>
+</div>
+
+<!-- OBJECT SHOW TREE -->
+<div id="sec-tree" class="section">
+<h2 class="sec-title" style="color:var(--accent4)">🌳 Object Show Family Tree</h2>
+<p class="sec-sub">How BFDI sparked an entire genre of animated web series.</p>
+<div id="tree-list"></div>
+</div>
+
+<!-- FAN RANKINGS -->
+<div id="sec-rank" class="section">
+<h2 class="sec-title" style="color:var(--accent)">⭐ Fan Rankings</h2>
+<p class="sec-sub">Drag characters into tiers to create your personal ranking!</p>
+<div id="tier-area"></div>
+<h3 style="font-family:'Chewy',cursive;font-size:18px;margin:20px 0 12px;color:var(--muted)">Available Characters</h3>
+<div class="rank-grid" id="rank-pool"></div>
+</div>
+
+</div>
+<script>
+function showSec(id,btn){document.querySelectorAll('.section').forEach(function(s){s.classList.remove('active')});document.getElementById('sec-'+id).classList.add('active');document.querySelectorAll('nav button').forEach(function(b){b.classList.remove('active')});btn.classList.add('active');window.scrollTo({top:0,behavior:'smooth'})}
+
+// ══════ ELIMINATION DATA ══════
+var ELIMS=[
+{season:"BFDI (Season 1)",data:[
+{place:21,name:"Flower",emoji:"🌸",ep:"Ep 2",votes:"4 votes",note:"First ever elimination in BFDI history"},
+{place:20,name:"Spongy",emoji:"🟨",ep:"Ep 3",votes:"4 votes",note:"Eliminated for being too heavy to help the team"},
+{place:19,name:"Woody",emoji:"🪵",ep:"Ep 4",votes:"3 votes",note:"Too scared to compete effectively"},
+{place:18,name:"Pin",emoji:"📌",ep:"Ep 6",votes:"5 votes",note:"Team captain of the Squishy Cherries"},
+{place:17,name:"Needle",emoji:"🪡",ep:"Ep 7",votes:"5 votes",note:"Don't call her Needy!"},
+{place:16,name:"Teardrop",emoji:"💧",ep:"Ep 8",votes:"5 votes",note:"Never spoke a single word in the series"},
+{place:15,name:"David",emoji:"😮",ep:"Ep 17",votes:"Debuted then eliminated",note:"Debuted by viewer vote, immediately eliminated"},
+{place:14,name:"Coiny",emoji:"🪙",ep:"Ep 10",votes:"5 votes (contestant vote)",note:"Rivals with Firey"},
+{place:13,name:"Snowball",emoji:"⚪",ep:"Ep 11",votes:"7 votes",note:"Aggressive competitor"},
+{place:12,name:"Golf Ball",emoji:"⛳",ep:"Ep 12",votes:"3 votes (reduced by Win Token from 6)",note:"The bossy strategist"},
+{place:11,name:"Eraser",emoji:"🩹",ep:"Ep 13",votes:"6 votes",note:"Friends with Pen and Blocky"},
+{place:10,name:"Match",emoji:"🔥",ep:"Ep 15",votes:"5 votes",note:"Part of the Pencil Alliance"},
+{place:9,name:"Blocky",emoji:"🟥",ep:"Ep 15",votes:"Rejoined then eliminated",note:"Known for pranks"},
+{place:8,name:"Rocky",emoji:"🪨",ep:"Ep 16",votes:"7 votes",note:"Only says 'Bulleh!'"},
+{place:7,name:"Pencil",emoji:"✏️",ep:"Ep 18",votes:"3 votes (contestant vote)",note:"Leader of the Pencil Alliance"},
+{place:6,name:"Pen",emoji:"🖊️",ep:"Ep 19",votes:"4 votes (contestant vote)",note:"The cool guy"},
+{place:5,name:"Ice Cube",emoji:"🧊",ep:"Ep 20",votes:"4 votes (contestant vote)",note:"Revenge for being bossed around"},
+{place:4,name:"Tennis Ball",emoji:"🎾",ep:"Ep 21",votes:"2 votes (contestant vote)",note:"The nicest contestant, lowest elimination votes"},
+{place:3,name:"Bubble",emoji:"🫧",ep:"Ep 25",votes:"Runner-up",note:"The gentle bubble, 2nd runner-up"},
+{place:2,name:"Leafy",emoji:"🍃",ep:"Ep 25",votes:"Runner-up",note:"Bought Dream Island, stirring controversy"},
+{place:1,name:"Firey",emoji:"🔥",ep:"Ep 25",votes:"406 votes to win",note:"WINNER! First ever object show winner"}
+]},
+{season:"BFB / Battle for BFB (Season 4, Post-Split)",data:[
+{place:14,name:"Spongy",emoji:"🟨",ep:"BFB 18",votes:"8,797 votes",note:"Eliminated for sabotaging the team"},
+{place:13,name:"Loser",emoji:"⭐",ep:"BFB 19",votes:"6,564 votes",note:"Ironic elimination of the fan favorite"},
+{place:12,name:"Taco",emoji:"🌮",ep:"BFB 20",votes:"9,099 votes",note:"Controversial elimination"},
+{place:11,name:"Blocky",emoji:"🟥",ep:"BFB 22",votes:"9,626 votes",note:"The prankster meets his end"},
+{place:10,name:"Woody",emoji:"🪵",ep:"BFB 23",votes:"11,049 votes",note:"Overcame his fears before being eliminated"},
+{place:9,name:"Lollipop",emoji:"🍭",ep:"BFB 24",votes:"13,234 votes",note:"The witty, sarcastic competitor"},
+{place:8,name:"Teardrop",emoji:"💧",ep:"BFB 25",votes:"28,906 votes to save",note:"Most votes to save ever, still eliminated"},
+{place:7,name:"Gelatin",emoji:"🍮",ep:"BFB 26",votes:"14,019 votes",note:"The fun-loving jokester"},
+{place:6,name:"Ruby",emoji:"💎",ep:"BFB 26",votes:"Quit",note:"Voluntarily quit the game"},
+{place:5,name:"Firey",emoji:"🔥",ep:"BFB 27",votes:"21,685 votes",note:"Previous season winner eliminated"},
+{place:4,name:"Leafy",emoji:"🍃",ep:"BFB 28",votes:"24,222 votes",note:"Dream Island drama continues"},
+{place:3,name:"Bubble",emoji:"🫧",ep:"BFB 29",votes:"Runner-up again",note:"Runner-up in two different seasons!"},
+{place:2,name:"Gelatin",emoji:"🍮",ep:"BFB 30",votes:"Runner-up",note:"Returned after Ruby quit"},
+{place:1,name:"Flower",emoji:"🌸",ep:"BFB 30",votes:"Winner!",note:"WINNER! From first eliminated in S1 to winner of S4!"}
+]}
+];
+
+// ══════ TEAMS DATA ══════
+var TEAMS=[
+{name:"Squishy Cherries",color:"#ff4444",season:"BFDI",members:["Pin (captain)","Bubble","Pencil","Match","Pen","Firey","Eraser","Blocky","Spongy","Woody"],record:"3W-6L",desc:"Pin's team and the first team ever formed in BFDI. Started with a rough losing streak but sent 7 of 10 members to the merge. Home of the Pencil Alliance."},
+{name:"Squashy Grapes",color:"#44cc44",season:"BFDI",members:["Leafy (captain)","Ice Cube","Teardrop","Snowball","Coiny","Golf Ball","Tennis Ball","Needle","Rocky","David"],record:"7W-2L",desc:"Leafy's team dominated early with a 4-win streak. Split into two teams after growing too large. Won the most challenges of any BFDI Season 1 team."},
+{name:"Another Name",color:"#4488ff",season:"BFDI",members:["Golf Ball","Tennis Ball","Rocky","Firey","Blocky"],record:"0W-2L",desc:"Formed when Squashy Grapes split. Named by Golf Ball who insisted it shouldn't be 'Another Name' but that stuck anyway. Never won a single challenge."},
+{name:"Team No-Name",color:"#ff8800",season:"BFDIA",members:["Golf Ball","Tennis Ball","Rocky","Fries","Gelatin","Firey","Bomby","Puffball","Yellow Face","Book","Needle","Spongy","Nickel","Coiny","Donut","Dora","Teardrop","Pin","Bomby"],record:"4W-7L",desc:"The massive 19-member team in BFDIA. Despite the huge roster, they had a losing record."},
+{name:"W.O.A.H. Bunch",color:"#cc44cc",season:"BFDIA",members:["Leafy","Ice Cube","Pencil","Match","Bubble","Ruby","Eraser","Pen","Snowball","Woody","David","Flower"],record:"5W-6L",desc:"The opposing team in BFDIA. A diverse group with several fan-favorite characters."},
+{name:"FreeSmart",color:"#ff44aa",season:"BFDIA",members:["Pencil","Match","Bubble","Ruby","Book","Ice Cube"],record:"4W-4L",desc:"Formed by Pencil as an exclusive alliance-turned-team. Known for Pencil's strict hierarchy (members can be 'demoted' to bember status)."},
+{name:"Death P.A.C.T.",color:"#333333",season:"BFB",members:["Pen","Black Hole","Pillow","Remote","Pie","Liy","Tree","Bottle"],record:"11W-1L",desc:"'Death Prevention And Creating Trust.' One of the most dominant teams ever, driven by their mission to prevent death. Incredible 11-1 record."},
+{name:"A Better Name Than That",color:"#2288ff",season:"BFB",members:["Golf Ball","Tennis Ball","Robot Flower","Grassy","TV","Blocky","8-Ball","Basketball"],record:"11W-1L",desc:"Golf Ball's team, a reference to her naming history. Tied with Death P.A.C.T. for best BFB pre-split record."},
+{name:"Team Ice Cube!",color:"#aaddff",season:"BFB",members:["Ice Cube","Gelatin","Spongy","Barf Bag","Donut","Firey Jr.","Bomby","Naily","Bracelety"],record:"9W-3L",desc:"Named after Ice Cube. Had both the largest (Spongy) and smallest (Firey Jr.) contestants at once."},
+{name:"Free Food",color:"#ff6600",season:"BFB",members:["Fries","Eraser","Puffball","Yellow Face","Stapy","Marker","Foldy","Bell"],record:"11W-1L",desc:"Named for their love of food. One of three teams to achieve an 11-1 record in BFB."},
+{name:"The Losers!",color:"#ffdd00",season:"BFB",members:["Loser","Pin","Coiny","Needle","Firey","Leafy","Cake","Clock","Eggy"],record:"11W-1L",desc:"Named after Loser, the beloved character everyone wanted on their team. Achieved the same dominant 11-1 record."},
+{name:"iance",color:"#ff8888",season:"BFB",members:["Pencil","Match","Bubble","Lightning","Fanny","Ruby","Flower","Snowball"],record:"8W-4L",desc:"An alliance-turned-team. Notable for having both the lowest-ranked (Pencil, 65th) and highest-ranked (Flower, 1st) BFB contestants."},
+{name:"Beep",color:"#88ff88",season:"BFB",members:["Leafy","Ice Cube","Roboty","Woody","David","Balloony","Rocky","Nickel"],record:"9W-3L",desc:"A quieter team with several non-speaking or minimally speaking members."},
+{name:"Bleh",color:"#dd88ff",season:"BFB",members:["Book","Lollipop","Taco","Saw","Teardrop","Gaty","Ice Cube","Dora"],record:"11W-1L",desc:"Known for internal drama and strong personalities clashing. Still managed an impressive record."},
+{name:"Are You Okay",color:"#44cccc",season:"TPOT",members:["Golf Ball","Tennis Ball","Grassy","TV","Remote","Robot Flower","Basketball"],record:"8W-2L",desc:"Golf Ball's TPOT team. Continued the tradition of Golf Ball-led teams being competitive."},
+{name:"Death P.A.C.T. Again",color:"#555555",season:"TPOT",members:["Pen","Black Hole","Tree","Pillow","Marker","Fanny","Lightning"],record:"7W-3L",desc:"The successor to the original Death P.A.C.T., continuing the mission of preventing death."},
+{name:"The Strongest Team on Earth",color:"#ff3333",season:"TPOT",members:["Snowball","Eraser","Yellow Face","Foldy","Bell"],record:"Varied",desc:"Snowball's boldly-named team. Whether they live up to the name is debatable."},
+{name:"Just Not",color:"#8888ff",season:"TPOT",members:["Naily","Bomby","Cake","Book","Nickel","Price Tag"],record:"Varied",desc:"A team of characters who just want to play the game without drama. Mixed results."},
+{name:"Team8s",color:"#cc8844",season:"TPOT",members:["Gaty","Saw","Barf Bag","Needle","Donut","Winner"],record:"Varied",desc:"A TPOT team featuring several fan-favorite characters from previous seasons."}
+];
+
+// ══════ EPISODES DATA ══════
+var EPISODES=[
+{num:1,title:"Take the Plunge: Part 1",season:"BFDI",date:"Jan 1, 2010",desc:"The very first BFDI episode! The Announcer introduces Dream Island and 20 contestants compete for the prize. An obstacle course determines who gets to pick teams.",tags:["Premiere","Dream Island"]},
+{num:2,title:"Take the Plunge: Part 2",season:"BFDI",date:"Jan 2, 2010",desc:"Teams are formed — Squishy Cherries (Pin's team) and Squashy Grapes (Leafy's team). The first team challenge takes place. Flower becomes the first contestant eliminated.",tags:["Teams Formed","First Elimination"]},
+{num:3,title:"Barriers and Pitfalls",season:"BFDI",date:"Feb 1, 2010",desc:"The teams face an obstacle course with barriers and pitfalls. Spongy is eliminated. The Squishy Cherries continue their losing streak.",tags:["Obstacle Course"]},
+{num:4,title:"Are You Smarter Than a Snowball?",season:"BFDI",date:"Mar 1, 2010",desc:"A test-based challenge. Woody is eliminated. Pencil and Match set their tests on fire rather than answer questions.",tags:["Quiz Challenge"]},
+{num:5,title:"Sweet Tooth",season:"BFDI",date:"Apr 1, 2010",desc:"A cake-baking contest. Blocky is eliminated from the Squishy Cherries.",tags:["Cooking"]},
+{num:6,title:"Bridge Crossing",season:"BFDI",date:"May 1, 2010",desc:"Teams must cross a dangerous bridge. Pin is eliminated despite being team captain.",tags:["Bridge"]},
+{num:7,title:"Power of Three",season:"BFDI",date:"Jun 1, 2010",desc:"Teams of three compete. Needle is eliminated. The Cherries finally win a challenge!",tags:["First Cherries Win"]},
+{num:8,title:"Puzzling Mysteries",season:"BFDI",date:"Jul 1, 2010",desc:"A puzzle-solving challenge. Teardrop is eliminated despite never speaking. Firey switches to the Squashy Grapes.",tags:["Team Switch"]},
+{num:9,title:"Cycle of Life",season:"BFDI",date:"Aug 1, 2010",desc:"A cycling race challenge. The team dynamics shift as the competition heats up.",tags:["Racing"]},
+{num:10,title:"Insectophobe's Nightmare",season:"BFDI",date:"Sep 1, 2010",desc:"Bug-themed challenge. Blocky rejoins. The Squashy Grapes split into two teams, creating Another Name. Coiny eliminated by contestant vote.",tags:["Team Split","Another Name"]},
+{num:11,title:"Crybaby!",season:"BFDI",date:"Oct 1, 2010",desc:"Who can cry the most? Snowball is eliminated. Teams continue to shift.",tags:["Crying Challenge"]},
+{num:12,title:"Lofty",season:"BFDI",date:"Nov 1, 2010",desc:"A height-based challenge. Golf Ball eliminated using her Win Token (reduced votes from 6 to 3). Teams officially merge.",tags:["Merge","Win Token"]},
+{num:13,title:"A Leg Up in the Race",season:"BFDI",date:"Dec 1, 2010",desc:"Post-merge individual competition begins. Eraser is eliminated.",tags:["Post-Merge"]},
+{num:14,title:"Don't Lose Your Marbles",season:"BFDI",date:"Jan 1, 2011",desc:"A marble-finding challenge in the post-merge era.",tags:["Marbles"]},
+{num:15,title:"Half a Loaf Is Better Than None",season:"BFDI",date:"Feb 1, 2011",desc:"Bread-themed challenge. Match is eliminated. Blocky also eliminated after rejoining.",tags:["Double Elimination"]},
+{num:16,title:"Vomitaco",season:"BFDI",date:"Mar 1, 2011",desc:"Taco-themed challenge. Rocky eliminated. One of the most memorable episode names.",tags:["Rocky"]},
+{num:17,title:"Bowling, Now with Explosions!",season:"BFDI",date:"Apr 1, 2011",desc:"Explosive bowling! David debuts by viewer vote, then is immediately eliminated. 30 recommended characters compete to join.",tags:["Debut","David"]},
+{num:18,title:"The Reveal",season:"BFDI",date:"May 1, 2011",desc:"A revealing challenge. Pencil is eliminated by contestant vote with just 3 votes. Tennis Ball narrowly survives.",tags:["Contestant Vote"]},
+{num:19,title:"Reveal Novum",season:"BFDI",date:"Jun 1, 2011",desc:"The competition continues post-merge. Pen is eliminated.",tags:["Post-Merge"]},
+{num:20,title:"Rescission",season:"BFDI",date:"Jul 1, 2011",desc:"Ice Cube is eliminated. The final contestants draw closer to Dream Island.",tags:["Final Five"]},
+{num:21,title:"Gardening Hero",season:"BFDI",date:"Aug 1, 2011",desc:"A gardening challenge. Tennis Ball eliminated with just 2 contestant votes — the lowest ever.",tags:["Lowest Votes Ever"]},
+{num:22,title:"The Glistening",season:"BFDI",date:"Sep 1, 2011",desc:"A trip to the sun! Flower rejoins but is immediately re-eliminated. Guest hosts appear.",tags:["Rejoin","Space"]},
+{num:23,title:"Don't Pierce My Flesh",season:"BFDI",date:"Oct 1, 2011",desc:"Volcano-themed challenge near Dream Island. The stakes get higher.",tags:["Volcano"]},
+{num:24,title:"Hurtful!",season:"BFDI",date:"Jan 1, 2012",desc:"Penultimate episode! The final three — Firey, Leafy, and Bubble — compete.",tags:["Final Three"]},
+{num:25,title:"Return of the Hang Glider",season:"BFDI",date:"Jan 1, 2012",desc:"THE FINALE! Firey wins with 406 votes! But he doesn't let Leafy into Dream Island, so she buys it and takes it away. One of the most iconic endings in web animation.",tags:["Finale","Firey Wins"]},
+{num:"1",title:"Yeah, Who? I Wanna Know",season:"BFDIA",date:"Jun 29, 2012",desc:"BFDIA premiere! 20 new characters join the original 21 for 41 total contestants. Teams are formed — the massive Team No-Name (19 members) and W.O.A.H. Bunch.",tags:["Premiere","41 Contestants"]},
+{num:"2",title:"Get Digging",season:"BFDIA",date:"Aug 4, 2012",desc:"A digging challenge. The first BFDIA elimination takes place with viewer voting via YouTube likes/dislikes.",tags:["YouTube Voting"]},
+{num:"3",title:"Insectophobe's Nightmare 3",season:"BFDIA",date:"Sep 1, 2012",desc:"Bugs return! A callback to the original Insectophobe's Nightmare. Team dynamics shift.",tags:["Callback"]},
+{num:"4",title:"Zeeky Boogy Doog",season:"BFDIA",date:"Nov 3, 2012",desc:"Bomby explodes, destroying everything. The contestants must rebuild. FreeSmart forms as an official team.",tags:["Explosion","FreeSmart"]},
+{num:"5a",title:"Get in the Van",season:"BFDIA",date:"Jan 11, 2013",desc:"A van-based challenge. The competition becomes more complex as alliances shift.",tags:["Van"]},
+{num:"1",title:"Getting Teardrop to Talk",season:"BFB",date:"Nov 3, 2017",desc:"BFB PREMIERE! 64 contestants! Four and X become the new hosts. 8 teams of 8 are formed. The largest cast in BFDI history begins.",tags:["Premiere","64 Contestants","Four & X"]},
+{num:"2",title:"Lick Your Way to Freedom",season:"BFB",date:"Dec 1, 2017",desc:"Contestants must lick jawbreakers to free trapped characters. Pencil is eliminated first with only 4,595 votes — the lowest in BFB.",tags:["Lowest BFB Votes"]},
+{num:"3",title:"Why Would You Do This on a Swingset",season:"BFB",date:"Jan 5, 2018",desc:"A swingset challenge. Match is eliminated. The iance team continues to lose members.",tags:["Swingset"]},
+{num:"14",title:"Don't Dig Straight Down",season:"BFB",date:"Mar 9, 2019",desc:"A digging challenge with lava dangers. One of the most popular BFB episodes.",tags:["Digging","Lava"]},
+{num:"16",title:"Chapter Complete",season:"BFB",date:"Apr 17, 2020",desc:"THE SPLIT! 40 contestants leave BFB to join TPOT. The remaining 14 continue as Battle for BFB. A watershed moment in BFDI history.",tags:["The Split","TPOT","Watershed"]},
+{num:"30",title:"SOS (Save Our Show)",season:"BFB",date:"Apr 9, 2021",desc:"THE BFB FINALE! Flower wins, completing an incredible journey from first eliminated in S1 to champion. One of the most emotional finales in object show history.",tags:["Finale","Flower Wins"]},
+{num:"1",title:"You Know Those Buttons Don't Do Anything, Right?",season:"TPOT",date:"Jan 10, 2021",desc:"TPOT PREMIERE! Two hosts the show. 40 contestants form new teams. A fresh start with a huge cast.",tags:["Premiere","Two Hosts"]}
+];
+
+// ══════ RELATIONSHIPS DATA ══════
+var RELS=[
+{type:"rivalry",color:"#ff4444",pairs:[
+{names:"Firey & Coiny",desc:"The original rivalry. They slap each other constantly because fire and coins don't mix. Their conflict is one of the longest-running gags in the series."},
+{names:"Firey & Leafy",desc:"Best friends turned bitter enemies. Firey won S1 but didn't let Leafy into Dream Island, so she BOUGHT it and took it away. Their relationship arc spans the entire series and is arguably the emotional core of BFDI."},
+{names:"Flower & Everyone",desc:"Flower was universally disliked in S1 (first eliminated!) but her BFB redemption arc where she grew as a person and WON changed everything."},
+{names:"Snowball & Golf Ball",desc:"Snowball's aggressive nature constantly clashes with Golf Ball's bossy leadership style. They represent brawn vs brains."},
+{names:"Pencil & Bubble (sometimes)",desc:"Despite being in the same alliance, Pencil often bullies Bubble and threatens to demote her to 'bember' status. A complicated toxic friendship."}
+]},
+{type:"alliance",color:"#06d6a0",pairs:[
+{names:"Pencil Alliance (Pencil, Match, Bubble, Ruby)",desc:"The most iconic alliance in BFDI. Pencil, Match, and Bubble formed it in S1, with Ruby joining later. Pencil rules with an iron fist, enforcing ranks from 'member' to 'bember.' Despite the hierarchy, they're fiercely loyal to each other."},
+{names:"FreeSmart (Pencil, Match, Bubble, Ruby, Book, Ice Cube)",desc:"The Pencil Alliance evolved into an official team. They even had a van (FreeSmart Supervan) and operated as a tight-knit unit."},
+{names:"Death P.A.C.T. (Pen, Black Hole, Tree, Pillow, Remote, Pie, Liy, Bottle)",desc:"'Death Prevention And Creating Trust.' United by their mission to prevent anyone from dying. One of the most successful and wholesome team alliances in the series."},
+{names:"Golf Ball & Tennis Ball",desc:"The ultimate platonic partnership. GB bosses TB around but genuinely values him. TB goes along with GB's plans out of genuine friendship. They've been on the same team in every single season."}
+]},
+{type:"friendship",color:"#ffd166",pairs:[
+{names:"Firey & Leafy (pre-betrayal)",desc:"Best friends who did everything together. Their friendship was the heart of S1 until the Dream Island incident shattered it. Their reconciliation in BFB is one of the most emotional arcs."},
+{names:"Pen & Eraser",desc:"Bros who always have each other's backs. They're the laid-back duo who just enjoy hanging out. Often paired with Blocky in pranking schemes."},
+{names:"Bubble & Ruby",desc:"A sweet friendship where they genuinely care about each other. Ruby joined the Pencil Alliance partly because of her bond with Bubble."},
+{names:"Woody & Blocky",desc:"An unlikely friendship that developed over the series. Blocky used to bully Woody, but they eventually formed a genuine bond in BFB."},
+{names:"Match & Pencil",desc:"Best friends and co-founders of the alliance. They're inseparable and often finish each other's sentences (like, totally)."},
+{names:"Loser & Everyone",desc:"Loser is beloved by almost every contestant. His elimination in BFB was devastating because he was genuinely kind to everyone."},
+{names:"Rocky & Anyone Near Him",desc:"Rocky can't talk (he just says 'Bulleh!') but everyone seems to like having him around despite his constant vomiting. A true enigma of friendship."}
+]}
+];
+
+// ══════ OBJECT SHOW TREE ══════
+var TREE=[
+{year:"2010",name:"Battle for Dream Island (BFDI)",desc:"The very first object show. Created by Cary and Michael Huang using Adobe Flash. 25 episodes across 2 years. Invented the entire genre and inspired hundreds of creators.",color:"#ff6b35"},
+{year:"2012",name:"Inanimate Insanity (II)",desc:"The second-ever object show, created by Adam Katz. Directly inspired by BFDI with similar format but distinct characters and tone. Became the second pillar of the community alongside BFDI. Currently on Season 3 (Invitational).",color:"#44bbff"},
+{year:"2012",name:"BFDIA (Battle for Dream Island Again)",desc:"BFDI Season 2. Introduced 20 new characters (41 total) and YouTube like/dislike voting. Went on a long hiatus after episode 5a in 2013, then returned years later.",color:"#ff6b35"},
+{year:"2013",name:"Object Overload",desc:"An early object show that gained popularity. Created by XanyLeaves. Helped establish that the genre could support multiple creators.",color:"#88cc44"},
+{year:"2013",name:"Brawl of the Objects (BOTO)",desc:"Another early object show inspired by BFDI. Featured a larger cast and different challenge formats.",color:"#cc44ff"},
+{year:"2014",name:"Object Mayhem",desc:"Gained a dedicated following with its unique characters. Part of the growing wave of BFDI-inspired shows.",color:"#ffaa22"},
+{year:"2015",name:"Object Show Community Explodes",desc:"Hundreds of object shows appear on YouTube. The genre becomes one of the most active animation communities on the platform. Fan-made wikis, forums, and Discord servers form.",color:"#ffd166"},
+{year:"2017",name:"BFB (Battle for BFDI)",desc:"BFDI Season 4. 64 contestants (the most ever). New hosts Four and X replace the Announcer. Introduced the iconic team format with 8 teams of 8. Ran until 2021.",color:"#ff6b35"},
+{year:"2017",name:"ONE (Object Nonstop Episode)",desc:"A newer-generation object show that showed the genre could evolve in style and storytelling while keeping the core format.",color:"#ff8888"},
+{year:"2020",name:"The BFB Split",desc:"In BFB 16, 40 contestants left BFB to join TPOT. This split the show into two concurrent series — a first in the genre. It showed how large and ambitious object shows could become.",color:"#ff6b35"},
+{year:"2021",name:"TPOT (The Power of Two)",desc:"BFDI Season 5. Hosted by Two. 40 contestants from the BFB split. Episodes are longer and more complex. Currently ongoing with a massive fanbase.",color:"#ff6b35"},
+{year:"2023",name:"Object Show Community Today",desc:"The genre has produced 1,000+ shows. Major ones like II, BFDI, and newer entries continue to innovate. The community spans YouTube, DeviantArt, Reddit, and Discord with millions of combined fans.",color:"#06d6a0"}
+];
+
+// ══════ RANKING DATA ══════
+var RANK_CHARS=[
+{name:"Firey",emoji:"🔥"},{name:"Leafy",emoji:"🍃"},{name:"Bubble",emoji:"🫧"},{name:"Flower",emoji:"🌸"},
+{name:"Pencil",emoji:"✏️"},{name:"Match",emoji:"🔥"},{name:"Coiny",emoji:"🪙"},{name:"Woody",emoji:"🪵"},
+{name:"Ice Cube",emoji:"🧊"},{name:"Teardrop",emoji:"💧"},{name:"Rocky",emoji:"🪨"},{name:"Pen",emoji:"🖊️"},
+{name:"Eraser",emoji:"🩹"},{name:"Blocky",emoji:"🟥"},{name:"Snowball",emoji:"⚪"},{name:"Golf Ball",emoji:"⛳"},
+{name:"Tennis Ball",emoji:"🎾"},{name:"Needle",emoji:"🪡"},{name:"Pin",emoji:"📌"},{name:"Spongy",emoji:"🟨"},
+{name:"Ruby",emoji:"💎"},{name:"Gelatin",emoji:"🍮"},{name:"Puffball",emoji:"💗"},{name:"Lollipop",emoji:"🍭"},
+{name:"Taco",emoji:"🌮"},{name:"Book",emoji:"📖"},{name:"Loser",emoji:"⭐"},{name:"Cake",emoji:"🎂"},
+{name:"David",emoji:"😮"},{name:"Four",emoji:"4️⃣"},{name:"X",emoji:"✖️"},{name:"Two",emoji:"2️⃣"},
+{name:"Fanny",emoji:"💨"},{name:"Pillow",emoji:"🛏️"},{name:"Lightning",emoji:"⚡"},{name:"Black Hole",emoji:"⚫"},
+{name:"Winner",emoji:"🏆"},{name:"Price Tag",emoji:"🏷️"},{name:"Clock",emoji:"🕐"},{name:"Donut",emoji:"🍩"}
+];
+var TIERS=[
+{label:"S",color:"#ff4444"},{label:"A",color:"#ff8844"},{label:"B",color:"#ffcc44"},
+{label:"C",color:"#44cc44"},{label:"D",color:"#4488ff"},{label:"F",color:"#888888"}
+];
+var tierData={};TIERS.forEach(function(t){tierData[t.label]=[]});
+
+// ══════ RENDERERS ══════
+
+// Eliminations
+(function(){
+var el=document.getElementById('elim-list');
+ELIMS.forEach(function(s){
+  var html='<div class="elim-season"><h3 style="color:var(--accent)">'+s.season+'</h3>';
+  s.data.forEach(function(e){
+    var isWinner=e.place===1;
+    html+='<div class="elim-row'+(isWinner?' elim-winner':'')+'"><div class="elim-place">'+(isWinner?'👑':'#'+e.place)+'</div><div class="elim-emoji">'+e.emoji+'</div><div class="elim-info"><div class="elim-name">'+e.name+'</div><div class="elim-detail">'+e.ep+' · '+e.note+'</div></div><div class="elim-votes">'+e.votes+'</div></div>';
+  });
+  html+='</div>';
+  el.innerHTML+=html;
+});
+})();
+
+// Teams
+(function(){
+var el=document.getElementById('team-list');
+TEAMS.forEach(function(t){
+  var members=t.members.map(function(m){return '<span class="team-member">'+m+'</span>'}).join('');
+  el.innerHTML+='<div class="team-card"><div class="team-header"><div class="team-dot" style="background:'+t.color+'"></div><div class="team-name" style="color:'+t.color+'">'+t.name+'</div><span class="team-season-tag">'+t.season+'</span><span class="team-record">'+t.record+'</span></div><div class="team-members">'+members+'</div><div class="team-desc">'+t.desc+'</div></div>';
+});
+})();
+
+// Episodes
+var epFilter='All';
+function renderEps(){
+  var el=document.getElementById('ep-list');
+  var search=document.getElementById('epSearch').value.toLowerCase();
+  var filtered=EPISODES.filter(function(e){
+    var matchSeason=epFilter==='All'||e.season===epFilter;
+    var matchSearch=!search||e.title.toLowerCase().indexOf(search)>=0||e.desc.toLowerCase().indexOf(search)>=0||(e.tags&&e.tags.join(' ').toLowerCase().indexOf(search)>=0);
+    return matchSeason&&matchSearch;
+  });
+  el.innerHTML=filtered.map(function(e){
+    var tags=e.tags?e.tags.map(function(t){return '<span class="ep-tag">'+t+'</span>'}).join(''):'';
+    return '<div class="ep-card" onclick="this.classList.toggle(\'expanded\')"><div class="ep-top"><span class="ep-num">'+e.season+' '+e.num+'</span><span class="ep-title">'+e.title+'</span><span class="ep-date">'+e.date+'</span></div><div class="ep-brief">'+e.desc.substring(0,80)+'...</div><div class="ep-full">'+e.desc+tags+'</div></div>';
+  }).join('');
+}
+function filterEps(){renderEps()}
+(function(){
+  var seasons=['All'];EPISODES.forEach(function(e){if(seasons.indexOf(e.season)<0)seasons.push(e.season)});
+  var fl=document.getElementById('epFilters');
+  seasons.forEach(function(s){
+    var b=document.createElement('button');b.className='ep-filter'+(s==='All'?' active':'');b.textContent=s;
+    b.onclick=function(){fl.querySelectorAll('.ep-filter').forEach(function(x){x.classList.remove('active')});b.classList.add('active');epFilter=s;renderEps()};
+    fl.appendChild(b);
+  });
+  renderEps();
+})();
+
+// Relationships
+(function(){
+var el=document.getElementById('rel-list');
+RELS.forEach(function(g){
+  var typeLabel=g.type==='rivalry'?'⚔️ Rivalries':g.type==='alliance'?'🤝 Alliances':'💛 Friendships';
+  var html='<div class="rel-group"><h3 style="color:'+g.color+'">'+typeLabel+'</h3>';
+  g.pairs.forEach(function(p){
+    html+='<div class="rel-card"><div class="rel-pair">'+p.names+'</div><div class="rel-desc">'+p.desc+'</div></div>';
+  });
+  html+='</div>';
+  el.innerHTML+=html;
+});
+})();
+
+// Object Show Tree
+(function(){
+var el=document.getElementById('tree-list');
+TREE.forEach(function(t){
+  el.innerHTML+='<div class="tree-item"><div class="tree-year" style="color:'+t.color+'">'+t.year+'</div><div class="tree-name" style="color:'+t.color+'">'+t.name+'</div><div class="tree-desc">'+t.desc+'</div></div>';
+});
+})();
+
+// Fan Rankings (drag and drop tier list)
+(function(){
+var ta=document.getElementById('tier-area');
+var pool=document.getElementById('rank-pool');
+TIERS.forEach(function(t){
+  ta.innerHTML+='<div class="tier-row"><div class="tier-label" style="background:'+t.color+'">'+t.label+'</div><div class="tier-zone" id="tier-'+t.label+'" ondragover="event.preventDefault()" ondrop="dropChar(event,\''+t.label+'\')"></div></div>';
+});
+RANK_CHARS.forEach(function(c){
+  var s=document.createElement('div');s.className='rank-slot';s.draggable=true;s.dataset.name=c.name;
+  s.innerHTML='<span class="r-emoji">'+c.emoji+'</span><span class="r-name">'+c.name+'</span>';
+  s.ondragstart=function(e){e.dataTransfer.setData('text/plain',c.name)};
+  s.onclick=function(){
+    // Click to cycle through tiers
+    var labels=TIERS.map(function(t){return t.label}).concat(['pool']);
+    var current='pool';
+    TIERS.forEach(function(t){if(document.getElementById('tier-'+t.label).contains(s))current=t.label});
+    var idx=labels.indexOf(current);
+    var next=labels[(idx+1)%labels.length];
+    if(next==='pool'){pool.appendChild(s)}else{document.getElementById('tier-'+next).appendChild(s)}
+  };
+  pool.appendChild(s);
+});
+})();
+function dropChar(e,tier){
+  e.preventDefault();
+  var name=e.dataTransfer.getData('text/plain');
+  var slot=document.querySelector('.rank-slot[data-name="'+name+'"]');
+  if(slot)document.getElementById('tier-'+tier).appendChild(slot);
+}
+</script>
+</body>
+</html>
