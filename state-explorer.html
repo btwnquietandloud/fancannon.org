@@ -583,6 +583,7 @@ const govFacts = {
   "55": ["Tony Evers spent his entire career in public education, working as a teacher, principal, superintendent, and state superintendent before becoming governor.", "He is known for his low-key demeanor and dad jokes — he once declared November 21 as 'Friendsgiving Day' by official proclamation."],
   "56": ["Mark Gordon is a lifelong rancher who manages a large cattle and sheep operation near the Bighorn Mountains.", "He served as State Treasurer before becoming governor and is known for his bipartisan, consensus-driven approach."],
 };
+let currentFilter = 'governor';
 let selectedFips = null;
 const tooltip = document.getElementById('tooltip');
 const isTouchDevice = 'ontouchstart' in window;
@@ -718,7 +719,18 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closePanel()
 // ============ D3 MAP RENDERING ============
 async function loadMap() {
   try {
-    const res = await fetch('https://cdn.jsdelivr.net/npm/us-atlas@3/states-albers-10m.json');
+    let res;
+    try {
+      res = await fetch('https://cdn.jsdelivr.net/npm/us-atlas@3/states-albers-10m.json');
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+    } catch(e1) {
+      try {
+        res = await fetch('https://unpkg.com/us-atlas@3.0.1/states-albers-10m.json');
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+      } catch(e2) {
+        throw new Error('Could not load map data: ' + (e1.message || 'network error'));
+      }
+    }
     const us = await res.json();
     const container = document.getElementById('map-container');
     container.innerHTML = '';
@@ -772,7 +784,7 @@ async function loadMap() {
 
   } catch (err) {
     document.getElementById('map-container').innerHTML =
-      '<div class="loading" style="color:var(--governor-r)">Failed to load map. Please check your connection and refresh.</div>';
+      '<div class="loading" style="color:var(--governor-r)">Failed to load map: ' + err.message + '<br><br><button onclick="loadMap()" style="padding:8px 24px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;font-family:inherit;font-size:14px">Retry</button></div>';
   }
 }
 
