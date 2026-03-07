@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>A Court of Thorns and Roses — The Universe Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Chewy&family=Cinzel:wght@400;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0812;--bg-card:#14101f;--bg-card-hover:#1e1830;--accent:#c06080;--accent2:#d4a050;--accent3:#7090d0;--accent4:#60b090;--text:#e8e4f0;--text-muted:#9088a8;--text-dim:#60587a;--border:#2a2040}
+*{box-sizing:border-box;margin:0;padding:0}
+body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;overflow-x:hidden}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.fade-in{animation:fadeUp .5s ease both}
+.fc-brand-bar{position:sticky;top:0;z-index:100;background:rgba(10,8,18,0.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.06);padding:8px 16px;display:flex;align-items:center;gap:10px}
+.fc-brand-bar a{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit}
+.fc-brand-bar img{width:32px;height:32px;border-radius:50%}
+.fc-brand-bar span{font-family:sans-serif;font-size:14px;font-weight:600;color:#c9a44a;letter-spacing:0.5px}
+.fc-brand-bar .fc-sep{color:rgba(255,255,255,0.15);font-size:18px;font-weight:300}
+.fc-brand-bar .fc-page-name{font-size:13px;font-weight:500;color:rgba(255,255,255,0.4)}
+.container{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:24px 16px 64px}
+nav{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;position:sticky;top:49px;z-index:10;background:var(--bg);padding:12px 0;border-bottom:1px solid var(--border)}
+nav button{background:var(--bg-card);color:var(--text-muted);border:1px solid var(--border);padding:8px 18px;border-radius:99px;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;transition:all .25s}
+nav button:hover{border-color:var(--accent);color:var(--text)}
+nav button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.section{display:none}.section.active{display:block;animation:fadeUp .4s ease both}
+
+/* Hero */
+.hero{text-align:center;padding:40px 0 24px}
+.hero-emoji{font-size:64px;margin-bottom:12px}
+.hero h1{font-family:'Cinzel',serif;font-size:clamp(24px,5vw,42px);font-weight:700;background:linear-gradient(135deg,#d4a050,#c06080,#7090d0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.2}
+.hero .sub{font-size:17px;color:var(--text-muted);margin-top:10px;line-height:1.7;max-width:650px;margin-left:auto;margin-right:auto}
+.about{background:var(--bg-card);border:1px solid var(--border);border-radius:20px;padding:28px;margin:24px 0;font-size:17px;line-height:1.85;color:var(--text-muted)}
+.about strong{color:var(--accent2)}
+.court-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin:24px 0}
+.court-card{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:18px;text-align:center;transition:all .25s}
+.court-card:hover{border-color:var(--accent);transform:translateY(-3px)}
+.court-card .court-emoji{font-size:32px}
+.court-card h3{font-family:'Cinzel',serif;font-size:16px;margin:6px 0 4px}
+.court-card p{font-size:13px;color:var(--text-dim)}
+
+/* Timeline */
+.tl-item{display:flex;gap:16px;margin-bottom:20px;position:relative}
+.tl-dot{width:14px;height:14px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:4px;border:2px solid var(--bg)}
+.tl-line{position:absolute;left:6px;top:18px;bottom:-20px;width:2px;background:var(--border)}
+.tl-content{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:16px 20px;flex:1}
+.tl-content h3{font-family:'Cinzel',serif;font-size:16px;color:var(--accent2);margin-bottom:4px}
+.tl-content p{font-size:14px;color:var(--text-muted);line-height:1.7}
+.tl-tag{font-size:11px;font-weight:700;color:var(--accent);margin-top:6px;display:inline-block}
+
+/* Characters */
+.char-filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
+.char-filter{background:var(--bg-card);color:var(--text-muted);border:1px solid var(--border);padding:6px 14px;border-radius:99px;cursor:pointer;font-size:12px;font-weight:700;font-family:'Nunito',sans-serif;transition:all .2s}
+.char-filter:hover{border-color:var(--accent)}.char-filter.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.char-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.char-card{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:18px 20px;transition:all .25s}
+.char-card:hover{border-color:var(--accent);transform:translateY(-3px)}
+.char-name{font-family:'Cinzel',serif;font-size:17px;color:var(--text);margin-bottom:2px}
+.char-role{font-size:12px;font-weight:700;color:var(--accent);margin-bottom:8px}
+.char-desc{font-size:14px;color:var(--text-muted);line-height:1.7}
+.char-tag{display:inline-block;font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;background:rgba(192,96,128,0.1);color:var(--accent);margin-top:8px;margin-right:4px}
+
+/* Facts */
+.fact-card{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px;transition:all .2s}
+.fact-card:hover{border-color:var(--accent2)}
+.fact-card p{font-size:15px;color:var(--text-muted);line-height:1.7}
+.fact-emoji{font-size:20px;margin-right:8px}
+
+/* Trivia */
+.trivia-start{text-align:center;padding:40px 20px}
+.trivia-start h3{font-family:'Cinzel',serif;font-size:24px;margin-bottom:12px}
+.trivia-start p{color:var(--text-muted);margin-bottom:28px}
+.trivia-btn{font-family:'Nunito',sans-serif;font-size:16px;font-weight:800;padding:14px 40px;border-radius:14px;border:none;background:var(--accent);color:#fff;cursor:pointer;transition:all .25s}
+.trivia-btn:hover{filter:brightness(1.15);transform:translateY(-2px)}
+.trivia-hud{display:flex;justify-content:center;gap:24px;padding:12px 0;flex-wrap:wrap}
+.trivia-hud-item{text-align:center}
+.trivia-hud-label{font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim)}
+.trivia-hud-val{font-family:'Cinzel',serif;font-size:22px}
+.trivia-progress{height:4px;background:var(--bg-card);border-radius:2px;margin:0 0 16px;overflow:hidden}
+.trivia-progress-bar{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:2px;transition:width .4s}
+.trivia-card{background:var(--bg-card);border:1px solid var(--border);border-radius:18px;padding:28px;max-width:700px;margin:0 auto 16px;text-align:center}
+.trivia-q{font-family:'Cinzel',serif;font-size:clamp(16px,2.5vw,20px);line-height:1.5;margin-bottom:20px}
+.trivia-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.trivia-opt{background:var(--bg-card-hover);border:2px solid var(--border);border-radius:12px;padding:14px;cursor:pointer;font-size:14px;font-weight:600;color:var(--text);transition:all .2s;text-align:left}
+.trivia-opt:hover{border-color:var(--accent);background:rgba(192,96,128,0.08)}
+.trivia-opt.correct{border-color:var(--accent4)!important;background:rgba(96,176,144,0.15)!important;color:var(--accent4)!important}
+.trivia-opt.wrong{border-color:#e05050!important;background:rgba(224,80,80,0.1)!important;color:#e05050!important}
+.trivia-opt .opt-letter{font-family:'Cinzel',serif;font-weight:700;margin-right:8px;color:var(--accent)}
+.trivia-next{font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;padding:10px 28px;border-radius:10px;border:1px solid var(--border);background:var(--bg-card);color:var(--text);cursor:pointer;margin-top:14px;transition:all .2s;display:none}
+.trivia-next:hover{border-color:var(--accent);background:var(--bg-card-hover)}
+@media(max-width:600px){.trivia-opts{grid-template-columns:1fr}.char-grid{grid-template-columns:1fr}.court-grid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="fc-brand-bar"><a href="index.html"><img src="fancannonlogo.png" alt="Fan Cannon"><span>Fan Cannon</span></a><span class="fc-sep">|</span><span class="fc-page-name">ACOTAR Universe</span></div>
+<div class="container">
+<nav>
+<button class="active" onclick="showSec('home',this)">Home</button>
+<button onclick="showSec('timeline',this)">Timeline</button>
+<button onclick="showSec('characters',this)">Characters</button>
+<button onclick="showSec('facts',this)">Fun Facts</button>
+<button onclick="showSec('trivia',this)">Trivia</button>
+</nav>
+
+<!-- HOME -->
+<div id="sec-home" class="section active">
+<div class="hero">
+<div class="hero-emoji">🌹</div>
+<h1>A Court of Thorns and Roses</h1>
+<p class="sub">Sarah J. Maas's epic fantasy romance set in the magical land of Prythian — where faerie courts, ancient powers, and fierce love collide.</p>
+</div>
+<div class="about">
+<strong>A Court of Thorns and Roses (ACOTAR)</strong> follows <strong>Feyre Archeron</strong>, a mortal huntress who kills a faerie wolf and is dragged into the magical realm of <strong>Prythian</strong> as punishment. What begins as a Beauty and the Beast retelling evolves into a sweeping saga of war, politics, trauma, healing, and love across seven powerful faerie courts. The series has sold over <strong>13 million copies</strong> worldwide and has been optioned by <strong>Hulu</strong> for a TV adaptation. With 5 books published and 3 more on the way, the ACOTAR universe continues to expand.
+</div>
+<h3 style="font-family:'Cinzel',serif;font-size:20px;margin-bottom:12px;color:var(--accent2)">The Seven Courts of Prythian</h3>
+<div class="court-grid">
+<div class="court-card"><div class="court-emoji">🌿</div><h3>Spring Court</h3><p>Lush gardens, eternal spring. Ruled by Tamlin.</p></div>
+<div class="court-card"><div class="court-emoji">🌙</div><h3>Night Court</h3><p>Starlit skies, Velaris. Ruled by Rhysand.</p></div>
+<div class="court-card"><div class="court-emoji">☀️</div><h3>Day Court</h3><p>Blinding light, knowledge. Ruled by Helion.</p></div>
+<div class="court-card"><div class="court-emoji">🍂</div><h3>Autumn Court</h3><p>Fiery forests, cruelty. Ruled by Beron.</p></div>
+<div class="court-card"><div class="court-emoji">🌊</div><h3>Summer Court</h3><p>Crystal seas, coral palaces. Ruled by Tarquin.</p></div>
+<div class="court-card"><div class="court-emoji">❄️</div><h3>Winter Court</h3><p>Frozen peaks, resilience. Ruled by Kallias.</p></div>
+<div class="court-card"><div class="court-emoji">🌸</div><h3>Dawn Court</h3><p>First light, hope. Ruled by Thesan.</p></div>
+</div>
+</div>
+
+<!-- TIMELINE -->
+<div id="sec-timeline" class="section">
+<h2 style="font-family:'Cinzel',serif;font-size:28px;margin:20px 0 24px;color:var(--accent2)">📜 Timeline of Events</h2>
+<div id="timeline-list"></div>
+</div>
+
+<!-- CHARACTERS -->
+<div id="sec-characters" class="section">
+<h2 style="font-family:'Cinzel',serif;font-size:28px;margin:20px 0 16px;color:var(--accent2)">👥 Characters</h2>
+<div class="char-filters" id="charFilters"></div>
+<div class="char-grid" id="charGrid"></div>
+</div>
+
+<!-- FUN FACTS -->
+<div id="sec-facts" class="section">
+<h2 style="font-family:'Cinzel',serif;font-size:28px;margin:20px 0 20px;color:var(--accent2)">✨ Fun Facts</h2>
+<div id="facts-list"></div>
+</div>
+
+<!-- TRIVIA -->
+<div id="sec-trivia" class="section">
+<div class="trivia-start" id="trivia-start">
+<div style="font-size:64px;margin-bottom:16px">🌹</div>
+<h3>ACOTAR Trivia</h3>
+<p>Test your knowledge of Prythian with 75 questions!</p>
+<button class="trivia-btn" onclick="startTrivia()">🔥 Start Quiz</button>
+</div>
+<div id="trivia-game" style="display:none">
+<div class="trivia-hud">
+<div class="trivia-hud-item"><div class="trivia-hud-label">Question</div><div class="trivia-hud-val" id="t-q">1</div></div>
+<div class="trivia-hud-item"><div class="trivia-hud-label">Score</div><div class="trivia-hud-val" id="t-score" style="color:var(--accent4)">0</div></div>
+<div class="trivia-hud-item"><div class="trivia-hud-label">Streak</div><div class="trivia-hud-val" id="t-streak" style="color:var(--accent2)">0🔥</div></div>
+</div>
+<div class="trivia-progress"><div class="trivia-progress-bar" id="t-prog" style="width:0%"></div></div>
+<div class="trivia-card" id="t-card"></div>
+<div style="text-align:center"><button class="trivia-next" id="t-next" onclick="loadQ()">Next →</button></div>
+</div>
+</div>
+
+</div>
+
+<script>
+function showSec(id,btn){document.querySelectorAll('.section').forEach(function(s){s.classList.remove('active')});document.getElementById('sec-'+id).classList.add('active');document.querySelectorAll('nav button').forEach(function(b){b.classList.remove('active')});btn.classList.add('active');window.scrollTo({top:0,behavior:'smooth'})}
+
+// ══════ TIMELINE ══════
+var TIMELINE=[
+{title:"The War with Hybern (500 years ago)",desc:"The mortal-faerie war ends with the creation of the Wall separating the human lands from Prythian. A Treaty is forged between the races.",tag:"Ancient History"},
+{title:"Amarantha's Coup (49 years before ACOTAR)",desc:"Amarantha, a commander from Hybern, tricks the seven High Lords and steals their power. She enslaves all of Prythian Under the Mountain for 49 years.",tag:"Under the Mountain"},
+{title:"Feyre Kills the Wolf",desc:"Feyre Archeron kills a faerie wolf in the woods. Tamlin, High Lord of the Spring Court, comes to claim the debt — a life for a life.",tag:"ACOTAR"},
+{title:"Feyre Goes Under the Mountain",desc:"Feyre travels Under the Mountain to save Tamlin. She faces Amarantha's three deadly trials, strikes a bargain with Rhysand, and ultimately breaks the curse — but dies and is remade as High Fae.",tag:"ACOTAR"},
+{title:"Feyre Returns to Spring Court",desc:"Feyre struggles with trauma and isolation at the Spring Court. Tamlin becomes overprotective and controlling, locking her in the manor.",tag:"ACOMAF"},
+{title:"Feyre Joins the Night Court",desc:"Rhysand rescues Feyre and brings her to Velaris, the hidden City of Starlight. She trains her new powers, meets the Inner Circle, and discovers the Night Court's true nature.",tag:"ACOMAF"},
+{title:"The Mating Bond Snaps",desc:"Feyre and Rhysand's mating bond is revealed. She accepts it, becoming High Lady of the Night Court — the first in Prythian's history.",tag:"ACOMAF"},
+{title:"Feyre Infiltrates the Spring Court",desc:"Feyre goes undercover at the Spring Court to spy on Tamlin's alliance with the King of Hybern, dismantling it from within.",tag:"ACOMAF / ACOWAR"},
+{title:"The War Against Hybern",desc:"All seven courts unite (reluctantly) to fight the King of Hybern, who seeks to destroy the Wall and enslave humanity. Nesta and Elain are Made into High Fae against their will.",tag:"ACOWAR"},
+{title:"The Final Battle",desc:"The armies of Prythian face Hybern in a massive battle. Rhysand dies wielding the Cauldron to repair the Wall, but is resurrected by the combined power of the High Lords. The King of Hybern falls. Nesta kills him.",tag:"ACOWAR"},
+{title:"A Season of Peace",desc:"The courts recover. Feyre and Rhysand host a Winter Solstice celebration at their townhouse in Velaris. Relationships deepen.",tag:"ACOFAS"},
+{title:"Nesta's Descent and Rise",desc:"Nesta Archeron spirals into self-destruction after the war. She trains with the Valkyries, bonds with Cassian, and discovers the power she stole from the Cauldron — the power of Death itself.",tag:"ACOSF"},
+{title:"The Dread Trove Revealed",desc:"Three ancient objects of immeasurable power — the Harp, the Crown, and the Mask — are hunted by multiple factions. Nesta's connection to the Cauldron makes her the key to finding them.",tag:"ACOSF"},
+{title:"Books 6, 7, 8 (Upcoming)",desc:"Sarah J. Maas has confirmed a new trilogy within the ACOTAR world. Book 6 releases October 2026, Book 7 in January 2027. The story continues!",tag:"Future"}
+];
+(function(){var el=document.getElementById('timeline-list');TIMELINE.forEach(function(t,i){el.innerHTML+='<div class="tl-item fade-in" style="animation-delay:'+(i*0.06)+'s"><div class="tl-dot"></div>'+(i<TIMELINE.length-1?'<div class="tl-line"></div>':'')+'<div class="tl-content"><h3>'+t.title+'</h3><p>'+t.desc+'</p><span class="tl-tag">'+t.tag+'</span></div></div>'})})();
+
+// ══════ CHARACTERS ══════
+var CHARS=[
+{name:"Feyre Archeron",role:"High Lady of the Night Court",court:"Night",desc:"A mortal huntress turned High Fae. Feyre has powers from all seven courts, making her the most versatile fae in Prythian. She's a painter, a fighter, and the first-ever High Lady.",tags:["Protagonist","Daemati","Shapeshifter"]},
+{name:"Rhysand",role:"High Lord of the Night Court",court:"Night",desc:"The most powerful High Lord in Prythian's history. Behind his arrogant mask lies a deeply caring leader who built Velaris as a sanctuary. Feyre's mate.",tags:["High Lord","Daemati","Illyrian"]},
+{name:"Cassian",role:"General Commander",court:"Night",desc:"An Illyrian warrior, Rhysand's general, and Nesta's mate. Born a bastard but became the most feared fighter in Prythian. Heart of gold, fists of fury.",tags:["Illyrian","Warrior","Inner Circle"]},
+{name:"Azriel",role:"Shadowsinger & Spymaster",court:"Night",desc:"The quiet, deadly spymaster of the Night Court. His shadows whisper secrets to him. Scarred hands from childhood torture, but gentle beneath the darkness.",tags:["Shadowsinger","Illyrian","Inner Circle"]},
+{name:"Nesta Archeron",role:"Valkyrie",court:"Night",desc:"Feyre's eldest sister, Made into High Fae by the Cauldron. Cold and fierce, she carries the power of Death itself. Trains as a Valkyrie and finds redemption.",tags:["Valkyrie","Cauldron-Made","Protagonist"]},
+{name:"Elain Archeron",role:"Seer",court:"Night",desc:"The middle Archeron sister, also Made by the Cauldron. She gained the gift of Sight — visions of the future. Gentle, kind, and a gifted gardener.",tags:["Seer","Cauldron-Made","Archeron"]},
+{name:"Morrigan (Mor)",role:"Third-in-Command",court:"Night",desc:"Rhysand's cousin and the Night Court's emissary. Fierce, glamorous, and manages the Court of Nightmares. Carries deep scars from her family's cruelty.",tags:["Inner Circle","Truth Teller"]},
+{name:"Amren",role:"Second-in-Command",court:"Night",desc:"An ancient, terrifying creature imprisoned in a fae body thousands of years ago. Small, sharp-tongued, and dangerously powerful. Loves jewelry and Verian.",tags:["Inner Circle","Ancient Being"]},
+{name:"Tamlin",role:"High Lord of the Spring Court",court:"Spring",desc:"Once Feyre's love interest, he became controlling and abusive after Under the Mountain. His court crumbles as his flaws consume him. A tragic, complex figure.",tags:["High Lord","Shapeshifter","Antagonist"]},
+{name:"Lucien Vanserra",role:"Emissary",court:"Spring",desc:"Tamlin's former right-hand, now allied with the Night Court. Son of High Lord Beron of Autumn. Elain's mate, though their bond is complicated.",tags:["Emissary","Autumn-born","Mate"]},
+{name:"Amarantha",role:"Queen Under the Mountain",court:"Hybern",desc:"The cruel commander who enslaved Prythian for 49 years. She stole the High Lords' powers and ruled from Under the Mountain until Feyre broke her curse.",tags:["Villain","Hybern"]},
+{name:"King of Hybern",role:"King of Hybern",court:"Hybern",desc:"The ancient king who sought to destroy the Wall and enslave humanity. He wielded the Cauldron to unmake and remake fae. Killed by Nesta in the final battle.",tags:["Villain","Hybern"]},
+{name:"Tarquin",role:"High Lord of the Summer Court",court:"Summer",desc:"The youngest High Lord, kind and progressive. His court of crystal seas and coral palaces values honor. Allied with the Night Court despite tensions.",tags:["High Lord","Summer"]},
+{name:"Helion",role:"High Lord of the Day Court",court:"Day",desc:"Charming, flirtatious, and brilliant. Master of light and spellwork. Secretly Lucien's biological father — the biggest open secret in Prythian.",tags:["High Lord","Day"]},
+{name:"Beron",role:"High Lord of the Autumn Court",court:"Autumn",desc:"Cruel, scheming, and power-hungry. Rules through fear and manipulation. Father to Lucien and Eris. One of the most dangerous political players in Prythian.",tags:["High Lord","Autumn","Antagonist"]},
+{name:"Eris Vanserra",role:"Heir to Autumn Court",court:"Autumn",desc:"Beron's eldest son. Appears villainous but plays a long, secret game. His true loyalties are complex and slowly revealed across the series.",tags:["Autumn","Heir","Complex"]},
+{name:"Ianthe",role:"High Priestess",court:"Spring",desc:"A manipulative priestess who betrayed Feyre and the Spring Court for power. Allied with Hybern for personal gain. One of the most hated characters in the series.",tags:["Villain","Priestess"]},
+{name:"Jurian",role:"Resurrected Human General",court:"Human",desc:"An ancient human warrior resurrected by the King of Hybern. Everyone expects him to serve Hybern, but Jurian has his own agenda rooted in revenge and justice.",tags:["Human","Warrior","Spy"]},
+{name:"Vassa",role:"Human Queen (Cursed)",court:"Human",desc:"A human queen cursed to live as a firebird by day. Fierce and determined to break her curse. Ally to Prythian in the war against Hybern.",tags:["Human","Queen","Cursed"]},
+{name:"Gwyn Berdara",role:"Priestess & Valkyrie",court:"Night",desc:"A priestess at the Night Court's library who overcomes her trauma to become a Valkyrie warrior alongside Nesta and Emerie. Sings with incredible power.",tags:["Valkyrie","Priestess","ACOSF"]},
+{name:"Emerie",role:"Illyrian & Valkyrie",court:"Night",desc:"An Illyrian shopkeeper whose wings were clipped by her father. Becomes a Valkyrie with Nesta and Gwyn, proving strength isn't only about wings.",tags:["Valkyrie","Illyrian","ACOSF"]},
+{name:"Kallias",role:"High Lord of the Winter Court",court:"Winter",desc:"Rules the frozen Winter Court with his mate Viviane. Known for quiet strength and resilience after surviving Amarantha's reign.",tags:["High Lord","Winter"]},
+{name:"Thesan",role:"High Lord of the Dawn Court",court:"Dawn",desc:"The healer-lord who rules the Dawn Court. His court specializes in healing magic and represents new beginnings and hope.",tags:["High Lord","Dawn","Healer"]},
+{name:"The Suriel",role:"Ancient Creature",court:"None",desc:"A skeletal, all-knowing creature that will answer any question if captured. Feyre catches it twice. It develops a soft spot for her — rare for a being of pure knowledge.",tags:["Ancient","Knowledge"]},
+{name:"The Bone Carver",role:"Ancient Being",court:"None",desc:"A terrifying ancient creature imprisoned beneath the Night Court. He appears as whatever you fear most. Trades information for bones — and stories.",tags:["Ancient","Prison"]}
+];
+var charFilter='All';
+function renderChars(){
+  var grid=document.getElementById('charGrid');
+  var html='';
+  CHARS.forEach(function(c){
+    if(charFilter!=='All'&&c.court!==charFilter)return;
+    var tags=c.tags.map(function(t){return '<span class="char-tag">'+t+'</span>'}).join('');
+    html+='<div class="char-card"><div class="char-name">'+c.name+'</div><div class="char-role">'+c.role+'</div><div class="char-desc">'+c.desc+'</div><div>'+tags+'</div></div>';
+  });
+  grid.innerHTML=html;
+}
+(function(){
+  var courts=['All','Night','Spring','Autumn','Summer','Day','Winter','Dawn','Hybern','Human','None'];
+  var fl=document.getElementById('charFilters');
+  courts.forEach(function(c){
+    var b=document.createElement('button');b.className='char-filter'+(c==='All'?' active':'');b.textContent=c;
+    b.onclick=function(){fl.querySelectorAll('.char-filter').forEach(function(x){x.classList.remove('active')});b.classList.add('active');charFilter=c;renderChars()};
+    fl.appendChild(b);
+  });
+  renderChars();
+})();
+
+// ══════ FUN FACTS ══════
+var FACTS=[
+"🌹 ACOTAR started as a Beauty and the Beast retelling but evolved into something far more complex across the series.",
+"📖 Sarah J. Maas wrote the first draft of ACOTAR in just five weeks back in 2009.",
+"🌙 A Court of Mist and Fury went through SIX different title changes before the final one stuck, including 'A Court of Stars and Frost.'",
+"👸 Feyre is the first High Lady in Prythian's entire history — no female had ever held the title before her.",
+"🦇 The Illyrians are based on the real ancient Illyrians, a group of tribes in the western Balkans.",
+"📚 The series has sold over 13 million copies worldwide as of 2024.",
+"🎬 Hulu has optioned the series for a TV adaptation, developed by Ronald D. Moore (Battlestar Galactica, Outlander).",
+"🗺️ Prythian is inspired by the map of the United Kingdom and Ireland flipped upside-down.",
+"💀 Amarantha ruled Under the Mountain for exactly 49 years — one year short of the 50-year curse deadline.",
+"🌊 The Summer Court is described as having buildings made of mother-of-pearl and streets of crushed shells.",
+"🔮 Rhysand can winnow (teleport) farther and faster than any other fae in the series.",
+"⚔️ Cassian once fought in the Blood Rite with no weapons, no magic, and no siphons — and still won.",
+"🦴 The Bone Carver appears as whatever you fear most. To Feyre, he appeared as a beautiful boy.",
+"✨ Nesta's power comes from the Cauldron itself — she carries the essence of Death, one of the most terrifying abilities in the series.",
+"💍 The mating bond in ACOTAR isn't automatic love — it's a soul-deep connection that both parties must choose to accept.",
+"📛 'Rhysand' is pronounced 'REE-sand,' not 'RY-sand,' according to Sarah J. Maas.",
+"🗡️ Azriel's shadows are sentient and can act independently, gathering intelligence across Prythian.",
+"🌺 Elain's Seer abilities come from the Cauldron. She can see threads of the future and past.",
+"🏛️ Velaris, the City of Starlight, was hidden from the rest of Prythian for 5,000 years.",
+"❤️ The Archeron sisters' names all have significant meanings: Feyre means 'fair,' Nesta means 'pure,' and Elain means 'fawn.'"
+];
+(function(){var el=document.getElementById('facts-list');FACTS.forEach(function(f){el.innerHTML+='<div class="fact-card"><p>'+f+'</p></div>'})})();
+
+// ══════ TRIVIA ══════
+var TQ=[
+{q:"What is Feyre's primary artistic talent?",a:"Painting",d:["Sculpting","Singing","Writing"]},
+{q:"Who is the High Lord of the Spring Court?",a:"Tamlin",d:["Rhysand","Helion","Tarquin"]},
+{q:"How many courts exist in Prythian?",a:"Seven",d:["Five","Nine","Twelve"]},
+{q:"What is the hidden city of the Night Court called?",a:"Velaris",d:["Hewn City","Adriata","Cesere"]},
+{q:"Who enslaved Prythian Under the Mountain?",a:"Amarantha",d:["The King of Hybern","Beron","Ianthe"]},
+{q:"What is winnowing?",a:"Teleportation",d:["A type of magic shield","A healing technique","A court ceremony"]},
+{q:"Who is Rhysand's spymaster?",a:"Azriel",d:["Cassian","Lucien","Jurian"]},
+{q:"What ancient object did the King of Hybern use to unmake and remake fae?",a:"The Cauldron",d:["The Harp","The Crown","The Mask"]},
+{q:"Which Archeron sister has the gift of Sight?",a:"Elain",d:["Nesta","Feyre","Mor"]},
+{q:"Who killed the King of Hybern?",a:"Nesta",d:["Feyre","Rhysand","Cassian"]},
+{q:"What race are Cassian, Azriel, and Rhysand?",a:"Illyrian",d:["High Fae","Peregryn","Seraphim"]},
+{q:"What title does Feyre hold that no one has held before?",a:"High Lady",d:["Court Emissary","Shadow Queen","First Warrior"]},
+{q:"Who is Lucien's biological father?",a:"Helion",d:["Beron","Tamlin","Rhysand"]},
+{q:"What creature will answer any question if captured?",a:"The Suriel",d:["The Bone Carver","The Weaver","A Naga"]},
+{q:"How long did Amarantha rule Under the Mountain?",a:"49 years",d:["100 years","25 years","500 years"]},
+{q:"What is a Daemati?",a:"A fae who can enter and manipulate minds",d:["A fae healer","A shape-shifting ability","A type of weapon"]},
+{q:"Which court is described as having buildings of mother-of-pearl?",a:"Summer Court",d:["Dawn Court","Day Court","Spring Court"]},
+{q:"What bargain does Feyre make with Rhysand Under the Mountain?",a:"One week per month in the Night Court",d:["Her firstborn child","Her painting abilities","Her memories"]},
+{q:"Who are the Valkyries in ACOSF?",a:"Nesta, Gwyn, and Emerie",d:["Mor, Amren, and Feyre","The human queens","The priestesses of Hybern"]},
+{q:"What is Nesta's unique power from the Cauldron?",a:"Death",d:["Fire","Time","Healing"]},
+{q:"What are the three objects of the Dread Trove?",a:"The Harp, the Crown, and the Mask",d:["The Cauldron, the Book, and the Wall","The Sword, the Shield, and the Spear","The Star, the Moon, and the Sun"]},
+{q:"What is Azriel's special ability called?",a:"Shadowsinger",d:["Daemati","Windwalker","Night Singer"]},
+{q:"Who was Feyre's love interest in the first book?",a:"Tamlin",d:["Rhysand","Lucien","Isaac"]},
+{q:"What happened to Nesta and Elain at the King of Hybern's castle?",a:"They were Made into High Fae against their will",d:["They were imprisoned","They gained Cauldron powers willingly","They were sent to the human lands"]},
+{q:"What is the name of Rhysand and Feyre's son?",a:"Nyx",d:["Orion","Stellan","Castiel"]},
+{q:"Which Court does Lucien originally come from?",a:"Autumn Court",d:["Spring Court","Day Court","Summer Court"]},
+{q:"What is the Blood Rite?",a:"An Illyrian warrior trial with no weapons or magic",d:["A mating ceremony","A High Lord succession ritual","A punishment for traitors"]},
+{q:"Who is Amren?",a:"An ancient being trapped in a fae body",d:["Rhysand's mother","A High Priestess","A human queen"]},
+{q:"What is the Court of Nightmares?",a:"The Hewn City under Rhysand's rule",d:["Amarantha's palace","The prison at the bottom of the sea","Beron's castle"]},
+{q:"How is the mating bond described?",a:"A bridge of gold light between souls",d:["A physical chain","A verbal oath","A blood ritual"]},
+{q:"What was Feyre's promise to her dying mother?",a:"To take care of her family",d:["To never cross the Wall","To avenge her death","To become a painter"]},
+{q:"Who is the Weaver?",a:"An ancient, blind immortal who weaves with enchanted thread",d:["Elain's mentor","A Night Court spy","Amarantha's sister"]},
+{q:"What triggers Feyre's departure from the Spring Court in ACOMAF?",a:"Tamlin locks her in the manor to 'protect' her",d:["She discovers Tamlin's alliance with Hybern","Rhysand kidnaps her","The Spring Court falls to Hybern"]},
+{q:"What color are Rhysand's eyes?",a:"Violet",d:["Blue","Black","Gold"]},
+{q:"How many Archeron sisters are there?",a:"Three",d:["Two","Four","Five"]},
+{q:"What do Illyrian siphons do?",a:"Channel and control their raw power",d:["Allow them to fly","Translate languages","Detect lies"]},
+{q:"Who is Eris Vanserra?",a:"Beron's eldest son and heir to the Autumn Court",d:["Lucien's twin brother","The Day Court general","A human spy"]},
+{q:"What fairy tale inspired the first ACOTAR book?",a:"Beauty and the Beast",d:["Cinderella","Snow White","Sleeping Beauty"]},
+{q:"What myth inspired Feyre and Rhysand's story?",a:"Hades and Persephone",d:["Orpheus and Eurydice","Romeo and Juliet","Tristan and Isolde"]},
+{q:"What is the Wall in ACOTAR?",a:"A magical barrier separating humans from faerie lands",d:["A physical stone wall","A river boundary","A military border"]},
+{q:"How was Feyre remade as High Fae?",a:"The seven High Lords each gave a drop of their power",d:["The Cauldron transformed her","Rhysand shared his magic","She drank from the Starlight well"]},
+{q:"What does the Bone Carver want in exchange for information?",a:"Bones and stories",d:["Gold and jewels","Blood sacrifices","Magical artifacts"]},
+{q:"Who is Vassa?",a:"A human queen cursed to be a firebird by day",d:["An Illyrian warrior","Lucien's mother","A priestess of the Dawn Court"]},
+{q:"What is Cassian's role in the Night Court?",a:"General Commander of the armies",d:["Spymaster","Court emissary","Royal advisor"]},
+{q:"Where was Rhysand held captive for 49 years?",a:"Under the Mountain",d:["In the Hewn City","In Hybern","In the Autumn Court"]},
+{q:"What is special about Velaris?",a:"It was hidden from the rest of Prythian for 5,000 years",d:["It floats in the sky","It's underground","It only appears at night"]},
+{q:"Who clipped Emerie's wings?",a:"Her father",d:["Amarantha","Beron","An enemy warrior"]},
+{q:"What book focuses primarily on Nesta?",a:"A Court of Silver Flames",d:["A Court of Wings and Ruin","A Court of Frost and Starlight","A Court of Mist and Fury"]},
+{q:"How many siphons does Cassian have?",a:"Seven",d:["Two","Five","Three"]},
+{q:"What is Mor's full name?",a:"Morrigan",d:["Morana","Morgause","Morwenna"]},
+{q:"Which court has a tradition of clipping female Illyrian wings?",a:"The Night Court's Illyrian camps",d:["The Spring Court","The Autumn Court","The Winter Court"]},
+{q:"What is Amarantha's riddle to Feyre?",a:"A riddle about love",d:["A riddle about death","A riddle about power","A riddle about time"]},
+{q:"Who designed the Prythian map to look like an inverted Britain?",a:"Sarah J. Maas",d:["The publisher","A fan artist","The illustrator"]},
+{q:"What power does Helion specialize in?",a:"Light and spell-breaking",d:["Fire and destruction","Water and healing","Shadow and darkness"]},
+{q:"What is the Rite of Valkyries called?",a:"The Blood Rite",d:["The Starfall","The Winnowing","The Severing"]},
+{q:"How many books are currently published in the ACOTAR series?",a:"Five",d:["Three","Four","Seven"]},
+{q:"What is Gwyn's special talent?",a:"Singing with supernatural power",d:["Healing through touch","Shapeshifting","Mind reading"]},
+{q:"Who is Feyre's mate?",a:"Rhysand",d:["Tamlin","Lucien","Azriel"]},
+{q:"What celebration is described in A Court of Frost and Starlight?",a:"Winter Solstice",d:["Summer Festival","Starfall","The Tithe"]},
+{q:"What are Azriel's shadows capable of?",a:"Acting independently and gathering intelligence",d:["Killing enemies","Healing wounds","Opening portals"]},
+{q:"Who is the youngest High Lord?",a:"Tarquin",d:["Rhysand","Tamlin","Thesan"]},
+{q:"What is the name for faerie teleportation?",a:"Winnowing",d:["Blinking","Phasing","Shifting"]},
+{q:"What does Nesta find at the bottom of the stairs in the House of Wind?",a:"Her own power and self-acceptance",d:["A hidden weapon","The Cauldron","Cassian's siphon"]},
+{q:"How is the pronunciation of 'Feyre' described?",a:"Like 'Fay-ruh'",d:["Like 'Fear'","Like 'Fire'","Like 'Ferry'"]},
+{q:"What is the Starfall?",a:"An annual event where spirits cross the sky like shooting stars",d:["A battle ceremony","A type of winnowing","A Winter Court celebration"]},
+{q:"Which court does the Hewn City belong to?",a:"Night Court",d:["Autumn Court","Day Court","Winter Court"]},
+{q:"What creature was Andras before Feyre killed him?",a:"A faerie in wolf form",d:["A regular wolf","A demon","A shapeshifted human"]},
+{q:"What is Feyre's tattoo from?",a:"Her bargain with Rhysand",d:["A Spring Court marking","War paint","A Cauldron brand"]},
+{q:"Who are the Band of Exiles?",a:"Jurian, Lucien, and Vassa",d:["Tamlin's warriors","The Illyrian rebels","The human queens' guards"]},
+{q:"What year was the first ACOTAR book published?",a:"2015",d:["2012","2017","2019"]},
+{q:"What is unique about High Fae compared to lesser faeries?",a:"They appear mostly human-like with pointed ears",d:["They can't use magic","They live underwater","They can't cross the Wall"]}
+];
+var quizQueue=[],qIdx=0,tScore=0,tStreak=0,tAnswered=false;
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+function startTrivia(){quizQueue=shuffle(TQ.slice());qIdx=0;tScore=0;tStreak=0;document.getElementById('trivia-start').style.display='none';document.getElementById('trivia-game').style.display='block';loadQ()}
+function loadQ(){
+  if(qIdx>=quizQueue.length){
+    document.getElementById('t-card').innerHTML='<div style="font-size:48px;margin-bottom:12px">🏆</div><h3 style="font-family:Cinzel,serif;font-size:24px;margin-bottom:8px">Quiz Complete!</h3><p style="color:var(--text-muted)">You scored <strong>'+tScore+'</strong> out of <strong>'+quizQueue.length+'</strong>!</p><button class="trivia-btn" onclick="startTrivia()" style="margin-top:16px">Play Again</button>';
+    document.getElementById('t-next').style.display='none';return;
+  }
+  tAnswered=false;
+  var q=quizQueue[qIdx];
+  var opts=shuffle([q.a].concat(q.d));
+  var letters=['A','B','C','D'];
+  var html='<div class="trivia-q">'+q.q+'</div><div class="trivia-opts">';
+  opts.forEach(function(o,i){
+    html+='<div class="trivia-opt" onclick="ansQ(this,\''+o.replace(/'/g,"\\'")+'\')" data-ans="'+o+'"><span class="opt-letter">'+letters[i]+'.</span>'+o+'</div>';
+  });
+  html+='</div>';
+  document.getElementById('t-card').innerHTML=html;
+  document.getElementById('t-q').textContent=(qIdx+1)+'/'+quizQueue.length;
+  document.getElementById('t-prog').style.width=(qIdx/quizQueue.length*100)+'%';
+  document.getElementById('t-next').style.display='none';
+}
+function ansQ(el,choice){
+  if(tAnswered)return;tAnswered=true;
+  var q=quizQueue[qIdx];
+  var correct=choice===q.a;
+  if(correct){tScore++;tStreak++}else{tStreak=0}
+  document.getElementById('t-score').textContent=tScore;
+  document.getElementById('t-streak').textContent=tStreak+'🔥';
+  document.querySelectorAll('.trivia-opt').forEach(function(o){
+    if(o.dataset.ans===q.a)o.classList.add('correct');
+    if(o===el&&!correct)o.classList.add('wrong');
+    o.style.pointerEvents='none';
+  });
+  qIdx++;
+  document.getElementById('t-next').style.display='inline-block';
+}
+document.addEventListener('keydown',function(e){
+  if(!tAnswered){var k={'1':0,'2':1,'3':2,'4':3}[e.key];if(k!==undefined){var opts=document.querySelectorAll('.trivia-opt');if(opts[k])opts[k].click()}}
+  if(tAnswered&&(e.key==='Enter'||e.key===' ')){e.preventDefault();loadQ()}
+});
+</script>
+</body>
+</html>

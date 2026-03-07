@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>The Expanse — The Universe Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Chewy&family=Orbitron:wght@400;500;600;700;800;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#060810;--bg-card:#0c1020;--bg-card-hover:#141a30;--accent:#3a8fd4;--accent2:#e07848;--accent3:#40c890;--accent4:#c860a0;--text:#d8dce8;--text-muted:#7080a0;--text-dim:#405070;--border:#1a2540}
+*{box-sizing:border-box;margin:0;padding:0}
+body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;overflow-x:hidden}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.fade-in{animation:fadeUp .5s ease both}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 20%,rgba(58,143,212,0.04) 0%,transparent 70%),radial-gradient(circle at 80% 90%,rgba(224,120,72,0.03) 0%,transparent 50%);pointer-events:none;z-index:0}
+.fc-brand-bar{position:sticky;top:0;z-index:100;background:rgba(6,8,16,0.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.06);padding:8px 16px;display:flex;align-items:center;gap:10px}
+.fc-brand-bar a{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit}
+.fc-brand-bar img{width:32px;height:32px;border-radius:50%}
+.fc-brand-bar span{font-family:sans-serif;font-size:14px;font-weight:600;color:#c9a44a;letter-spacing:0.5px}
+.fc-brand-bar .fc-sep{color:rgba(255,255,255,0.15);font-size:18px;font-weight:300}
+.fc-brand-bar .fc-page-name{font-size:13px;font-weight:500;color:rgba(255,255,255,0.4)}
+.container{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:24px 16px 64px}
+nav{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;position:sticky;top:49px;z-index:10;background:var(--bg);padding:12px 0;border-bottom:1px solid var(--border)}
+nav button{background:var(--bg-card);color:var(--text-muted);border:1px solid var(--border);padding:8px 18px;border-radius:99px;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;transition:all .25s}
+nav button:hover{border-color:var(--accent);color:var(--text)}
+nav button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.section{display:none}.section.active{display:block;animation:fadeUp .4s ease both}
+.hero{text-align:center;padding:40px 0 24px}
+.hero-emoji{font-size:64px;margin-bottom:12px}
+.hero h1{font-family:'Orbitron',sans-serif;font-size:clamp(22px,4.5vw,40px);font-weight:800;background:linear-gradient(135deg,#3a8fd4,#e07848);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.2;letter-spacing:2px}
+.hero .sub{font-size:17px;color:var(--text-muted);margin-top:10px;line-height:1.7;max-width:660px;margin-left:auto;margin-right:auto}
+.about{background:var(--bg-card);border:1px solid var(--border);border-radius:20px;padding:28px;margin:24px 0;font-size:17px;line-height:1.85;color:var(--text-muted)}
+.about strong{color:var(--accent2)}
+.faction-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin:24px 0}
+.faction-card{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:18px;text-align:center;transition:all .25s}
+.faction-card:hover{border-color:var(--accent);transform:translateY(-3px)}
+.faction-card .f-emoji{font-size:32px}
+.faction-card h3{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:700;margin:6px 0 4px;letter-spacing:1px}
+.faction-card p{font-size:13px;color:var(--text-dim)}
+.tl-item{display:flex;gap:16px;margin-bottom:20px;position:relative}
+.tl-dot{width:14px;height:14px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:4px;border:2px solid var(--bg)}
+.tl-line{position:absolute;left:6px;top:18px;bottom:-20px;width:2px;background:var(--border)}
+.tl-content{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:16px 20px;flex:1}
+.tl-content h3{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:700;color:var(--accent2);margin-bottom:4px;letter-spacing:0.5px}
+.tl-content p{font-size:14px;color:var(--text-muted);line-height:1.7}
+.tl-tag{font-size:11px;font-weight:700;color:var(--accent);margin-top:6px;display:inline-block}
+.char-filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
+.char-filter{background:var(--bg-card);color:var(--text-muted);border:1px solid var(--border);padding:6px 14px;border-radius:99px;cursor:pointer;font-size:12px;font-weight:700;font-family:'Nunito',sans-serif;transition:all .2s}
+.char-filter:hover{border-color:var(--accent)}.char-filter.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.char-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.char-card{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:18px 20px;transition:all .25s}
+.char-card:hover{border-color:var(--accent);transform:translateY(-3px)}
+.char-name{font-family:'Orbitron',sans-serif;font-size:15px;font-weight:700;color:var(--text);margin-bottom:2px;letter-spacing:0.5px}
+.char-role{font-size:12px;font-weight:700;color:var(--accent);margin-bottom:8px}
+.char-desc{font-size:14px;color:var(--text-muted);line-height:1.7}
+.char-tag{display:inline-block;font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;background:rgba(58,143,212,0.1);color:var(--accent);margin-top:8px;margin-right:4px}
+.fact-card{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px;transition:all .2s}
+.fact-card:hover{border-color:var(--accent2)}
+.fact-card p{font-size:15px;color:var(--text-muted);line-height:1.7}
+.trivia-start{text-align:center;padding:40px 20px}
+.trivia-start h3{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:700;margin-bottom:12px;letter-spacing:1px}
+.trivia-start p{color:var(--text-muted);margin-bottom:28px}
+.trivia-btn{font-family:'Nunito',sans-serif;font-size:16px;font-weight:800;padding:14px 40px;border-radius:14px;border:none;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;cursor:pointer;transition:all .25s}
+.trivia-btn:hover{filter:brightness(1.15);transform:translateY(-2px)}
+.trivia-hud{display:flex;justify-content:center;gap:24px;padding:12px 0;flex-wrap:wrap}
+.trivia-hud-item{text-align:center}
+.trivia-hud-label{font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim)}
+.trivia-hud-val{font-family:'Orbitron',sans-serif;font-size:20px;font-weight:700}
+.trivia-progress{height:4px;background:var(--bg-card);border-radius:2px;margin:0 0 16px;overflow:hidden}
+.trivia-progress-bar{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:2px;transition:width .4s}
+.trivia-card{background:var(--bg-card);border:1px solid var(--border);border-radius:18px;padding:28px;max-width:700px;margin:0 auto 16px;text-align:center}
+.trivia-q{font-size:clamp(15px,2.5vw,19px);line-height:1.5;margin-bottom:20px;font-weight:700}
+.trivia-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.trivia-opt{background:var(--bg-card-hover);border:2px solid var(--border);border-radius:12px;padding:14px;cursor:pointer;font-size:14px;font-weight:600;color:var(--text);transition:all .2s;text-align:left}
+.trivia-opt:hover{border-color:var(--accent);background:rgba(58,143,212,0.08)}
+.trivia-opt.correct{border-color:var(--accent3)!important;background:rgba(64,200,144,0.15)!important;color:var(--accent3)!important}
+.trivia-opt.wrong{border-color:#e05050!important;background:rgba(224,80,80,0.1)!important;color:#e05050!important}
+.trivia-opt .opt-letter{font-family:'Orbitron',sans-serif;font-weight:700;margin-right:8px;color:var(--accent)}
+.trivia-next{font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;padding:10px 28px;border-radius:10px;border:1px solid var(--border);background:var(--bg-card);color:var(--text);cursor:pointer;margin-top:14px;transition:all .2s;display:none}
+.trivia-next:hover{border-color:var(--accent);background:var(--bg-card-hover)}
+/* Relationships */
+.rel-filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
+.rel-filter{background:var(--bg-card);color:var(--text-muted);border:1px solid var(--border);padding:6px 14px;border-radius:99px;cursor:pointer;font-size:12px;font-weight:700;font-family:'Nunito',sans-serif;transition:all .2s}
+.rel-filter:hover{border-color:var(--accent)}.rel-filter.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.rel-card{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:20px 24px;margin-bottom:12px;transition:border-color .25s}
+.rel-card:hover{border-color:var(--rel-color,var(--accent))}
+.rel-pair{display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap}
+.rel-char{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:700;letter-spacing:0.5px;padding:4px 12px;border-radius:8px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08)}
+.rel-arrow{font-size:18px;color:var(--rel-color,var(--text-dim))}
+.rel-type-badge{font-size:10px;font-weight:700;padding:3px 10px;border-radius:6px;text-transform:uppercase;letter-spacing:0.08em;margin-left:auto}
+.rel-type-badge.romantic{background:rgba(224,80,80,0.1);color:#e06060}
+.rel-type-badge.family{background:rgba(212,160,80,0.1);color:var(--accent2)}
+.rel-type-badge.crew{background:rgba(58,143,212,0.1);color:var(--accent)}
+.rel-type-badge.rivalry{background:rgba(200,96,160,0.1);color:var(--accent4)}
+.rel-type-badge.alliance{background:rgba(64,200,144,0.1);color:var(--accent3)}
+.rel-type-badge.mentorship{background:rgba(160,140,200,0.1);color:#a08cc8}
+.rel-type-badge.enemy{background:rgba(200,60,60,0.1);color:#c83c3c}
+.rel-type-badge.complex{background:rgba(180,160,100,0.1);color:#b4a064}
+.rel-desc{font-size:14px;color:var(--text-muted);line-height:1.7}
+.rel-evolution{font-size:13px;color:var(--text-dim);margin-top:8px;padding-left:12px;border-left:2px solid var(--rel-color,var(--border));font-style:italic}
+.rel-connector{display:flex;align-items:center;justify-content:center;padding:24px 0}
+.rel-web{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-bottom:24px}
+.rel-web-node{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:12px;text-align:center;cursor:pointer;transition:all .25s}
+.rel-web-node:hover{border-color:var(--accent);transform:translateY(-2px)}
+.rel-web-node.active{border-color:var(--accent);background:rgba(58,143,212,0.08);box-shadow:0 0 16px rgba(58,143,212,0.15)}
+.rel-web-node .node-name{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:700;letter-spacing:0.5px}
+.rel-web-node .node-count{font-size:11px;color:var(--text-dim);margin-top:2px}
+
+/* Comparison cards */
+.cmp-card{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;margin-bottom:14px;overflow:hidden;transition:border-color .2s}
+.cmp-card:hover{border-color:var(--accent)}
+.cmp-header{display:flex;align-items:center;gap:12px;padding:16px 20px;cursor:pointer;user-select:none}
+.cmp-header:hover{background:rgba(255,255,255,0.02)}
+.cmp-rank{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:700;color:var(--text-dim);min-width:30px}
+.cmp-name{font-family:'Orbitron',sans-serif;font-size:15px;font-weight:700;flex:1;letter-spacing:0.5px}
+.cmp-badge{font-size:10px;font-weight:700;padding:3px 10px;border-radius:6px}
+.cmp-badge.same{background:rgba(64,200,144,0.1);color:var(--accent3)}
+.cmp-badge.minor{background:rgba(58,143,212,0.1);color:var(--accent)}
+.cmp-badge.major{background:rgba(224,120,72,0.1);color:var(--accent2)}
+.cmp-badge.show-only{background:rgba(200,96,160,0.1);color:var(--accent4)}
+.cmp-arrow{color:var(--text-dim);transition:transform .25s}
+.cmp-card.open .cmp-arrow{transform:rotate(180deg)}
+.cmp-body{display:none;padding:0 20px 20px}
+.cmp-card.open .cmp-body{display:block;animation:fadeUp .3s ease both}
+.cmp-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px}
+.cmp-col{background:rgba(255,255,255,0.02);border-radius:12px;padding:14px 16px}
+.cmp-col-label{font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px}
+.cmp-col-label.book{color:var(--accent)}
+.cmp-col-label.show{color:var(--accent2)}
+.cmp-col p{font-size:13px;color:var(--text-muted);line-height:1.7}
+.cmp-verdict{font-size:13px;color:var(--text-dim);margin-top:10px;font-style:italic;padding-left:12px;border-left:2px solid var(--border)}
+.cmp-search{width:100%;padding:12px 18px;border-radius:12px;border:1px solid var(--border);background:var(--bg-card);color:var(--text);font-family:'Nunito',sans-serif;font-size:14px;margin-bottom:16px}
+.cmp-search::placeholder{color:var(--text-dim)}
+.cmp-search:focus{outline:none;border-color:var(--accent)}
+.cmp-legend{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px;font-size:12px;color:var(--text-muted)}
+
+/* Plot diff */
+.plot-card{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:22px 24px;margin-bottom:14px;transition:border-color .2s}
+.plot-card:hover{border-color:var(--accent2)}
+.plot-title{font-family:'Orbitron',sans-serif;font-size:15px;font-weight:700;color:var(--accent2);margin-bottom:4px;letter-spacing:0.5px}
+.plot-scope{font-size:11px;font-weight:700;color:var(--text-dim);margin-bottom:12px;text-transform:uppercase;letter-spacing:0.1em}
+.plot-cols{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.plot-col{background:rgba(255,255,255,0.02);border-radius:12px;padding:14px 16px}
+.plot-col h4{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px}
+.plot-col h4.book{color:var(--accent)}
+.plot-col h4.show{color:var(--accent2)}
+.plot-col p{font-size:13px;color:var(--text-muted);line-height:1.7}
+.plot-impact{margin-top:12px;font-size:13px;padding:12px 16px;background:rgba(224,120,72,0.05);border:1px solid rgba(224,120,72,0.15);border-radius:10px;color:var(--text-muted);line-height:1.6}
+.plot-impact strong{color:var(--accent2)}
+
+@media(max-width:600px){.cmp-row,.plot-cols{grid-template-columns:1fr}}
+@media(max-width:600px){.trivia-opts{grid-template-columns:1fr}.char-grid{grid-template-columns:1fr}.faction-grid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="fc-brand-bar"><a href="index.html"><img src="fancannonlogo.png" alt="Fan Cannon"><span>Fan Cannon</span></a><span class="fc-sep">|</span><span class="fc-page-name">The Expanse Universe</span></div>
+<div class="container">
+<nav>
+<button class="active" onclick="showSec('home',this)">Home</button>
+<button onclick="showSec('timeline',this)">Timeline</button>
+<button onclick="showSec('characters',this)">Characters</button>
+<button onclick="showSec('facts',this)">Fun Facts</button>
+<button onclick="showSec('trivia',this)">Trivia</button>
+<button onclick="showSec('compare',this)">Book vs Show</button>
+<button onclick="showSec('plotdiff',this)">Plot Differences</button>
+<button onclick="showSec('rels',this)">Relationships</button>
+</nav>
+
+<div id="sec-home" class="section active">
+<div class="hero">
+<div class="hero-emoji">🚀</div>
+<h1>THE EXPANSE</h1>
+<p class="sub">The Hugo Award-winning space opera spanning 9 novels, 6 TV seasons, and the most realistic sci-fi universe ever built.</p>
+</div>
+<div class="about">
+<strong>The Expanse</strong> is set in the 24th century when humanity has colonized the solar system. Earth is governed by the <strong>United Nations</strong>, Mars has become an independent military superpower, and the <strong>Belt</strong> — the asteroid colonies between Mars and Jupiter — is an exploited underclass fighting for survival. When the crew of the ice hauler <strong>Canterbury</strong> stumbles onto an alien technology called the <strong>protomolecule</strong>, it sets off a chain reaction of wars, conspiracies, and first contact that spans decades. Written by <strong>Daniel Abraham</strong> and <strong>Ty Franck</strong> under the pen name James S.A. Corey, the series won the <strong>Hugo Award for Best Series</strong> in 2020.
+</div>
+<h3 style="font-family:'Orbitron',sans-serif;font-size:16px;font-weight:700;margin-bottom:12px;color:var(--accent2);letter-spacing:1px">MAJOR FACTIONS</h3>
+<div class="faction-grid">
+<div class="faction-card"><div class="f-emoji">🌍</div><h3>EARTH (UN)</h3><p>30 billion people, massive welfare state, powerful navy</p></div>
+<div class="faction-card"><div class="f-emoji">🔴</div><h3>MARS (MCRN)</h3><p>Military republic, terraforming dream, advanced tech</p></div>
+<div class="faction-card"><div class="f-emoji">⚒️</div><h3>THE BELT (OPA)</h3><p>Asteroid colonists, oppressed workers, revolutionaries</p></div>
+<div class="faction-card"><div class="f-emoji">👽</div><h3>PROTOMOLECULE</h3><p>Alien tech, 2 billion years old, changes everything</p></div>
+<div class="faction-card"><div class="f-emoji">🏛️</div><h3>LACONIA</h3><p>Rogue Martian faction, builds empire beyond the rings</p></div>
+<div class="faction-card"><div class="f-emoji">🚢</div><h3>ROCINANTE</h3><p>Salvaged Martian gunship, crew of 4, heart of the story</p></div>
+</div>
+</div>
+
+<div id="sec-timeline" class="section">
+<h2 style="font-family:'Orbitron',sans-serif;font-size:22px;font-weight:700;margin:20px 0 24px;color:var(--accent2);letter-spacing:1px">📜 TIMELINE</h2>
+<div id="timeline-list"></div>
+</div>
+
+<div id="sec-characters" class="section">
+<h2 style="font-family:'Orbitron',sans-serif;font-size:22px;font-weight:700;margin:20px 0 16px;color:var(--accent2);letter-spacing:1px">👥 CHARACTERS</h2>
+<div class="char-filters" id="charFilters"></div>
+<div class="char-grid" id="charGrid"></div>
+</div>
+
+<div id="sec-facts" class="section">
+<h2 style="font-family:'Orbitron',sans-serif;font-size:22px;font-weight:700;margin:20px 0 20px;color:var(--accent2);letter-spacing:1px">✨ FUN FACTS</h2>
+<div id="facts-list"></div>
+</div>
+
+<div id="sec-trivia" class="section">
+<div class="trivia-start" id="trivia-start">
+<div style="font-size:64px;margin-bottom:16px">🚀</div>
+<h3>EXPANSE TRIVIA</h3>
+<p>Choose your quiz mode!</p>
+<div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:8px">
+<div onclick="startTrivia()" style="background:var(--bg-card);border:2px solid var(--border);border-radius:18px;padding:28px 24px;cursor:pointer;text-align:center;max-width:280px;flex:1;transition:all .25s" onmouseover="this.style.borderColor='var(--accent)';this.style.transform='translateY(-3px)'" onmouseout="this.style.borderColor='var(--border)';this.style.transform='none'">
+<div style="font-size:40px;margin-bottom:10px">🧠</div>
+<div style="font-family:Orbitron,sans-serif;font-size:16px;font-weight:700;letter-spacing:1px;margin-bottom:6px">GENERAL TRIVIA</div>
+<div style="font-size:13px;color:var(--text-muted)">75 questions about the Expanse universe</div>
+</div>
+<div onclick="startQuotes()" style="background:var(--bg-card);border:2px solid var(--border);border-radius:18px;padding:28px 24px;cursor:pointer;text-align:center;max-width:280px;flex:1;transition:all .25s" onmouseover="this.style.borderColor='var(--accent2)';this.style.transform='translateY(-3px)'" onmouseout="this.style.borderColor='var(--border)';this.style.transform='none'">
+<div style="font-size:40px;margin-bottom:10px">💬</div>
+<div style="font-family:Orbitron,sans-serif;font-size:16px;font-weight:700;letter-spacing:1px;margin-bottom:6px">WHO SAID IT?</div>
+<div style="font-size:13px;color:var(--text-muted)">200 iconic quotes — guess the character</div>
+</div>
+</div>
+</div>
+<div id="trivia-game" style="display:none">
+<div class="trivia-hud">
+<div class="trivia-hud-item"><div class="trivia-hud-label">Question</div><div class="trivia-hud-val" id="t-q">1</div></div>
+<div class="trivia-hud-item"><div class="trivia-hud-label">Score</div><div class="trivia-hud-val" id="t-score" style="color:var(--accent3)">0</div></div>
+<div class="trivia-hud-item"><div class="trivia-hud-label">Streak</div><div class="trivia-hud-val" id="t-streak" style="color:var(--accent2)">0🔥</div></div>
+</div>
+<div class="trivia-progress"><div class="trivia-progress-bar" id="t-prog" style="width:0%"></div></div>
+<div class="trivia-card" id="t-card"></div>
+<div style="text-align:center"><button class="trivia-next" id="t-next" onclick="loadQ()">Next →</button></div>
+</div>
+</div>
+
+<!-- RELATIONSHIPS -->
+<div id="sec-rels" class="section">
+<h2 style="font-family:'Orbitron',sans-serif;font-size:22px;font-weight:700;margin:20px 0 8px;color:var(--accent2);letter-spacing:1px">💞 CHARACTER RELATIONSHIPS</h2>
+<p style="color:var(--text-muted);font-size:15px;margin-bottom:12px;line-height:1.6">Explore the web of connections that drives The Expanse. Click a character to see their relationships, or browse by type.</p>
+<h3 style="font-family:'Orbitron',sans-serif;font-size:14px;font-weight:700;color:var(--text-dim);letter-spacing:1px;margin-bottom:10px">SELECT A CHARACTER</h3>
+<div class="rel-web" id="rel-web"></div>
+<div class="rel-filters" id="relFilters"></div>
+<div id="rel-list"></div>
+</div>
+
+<!-- BOOK VS SHOW CHARACTERS -->
+<div id="sec-compare" class="section">
+<h2 style="font-family:'Orbitron',sans-serif;font-size:22px;font-weight:700;margin:20px 0 12px;color:var(--accent2);letter-spacing:1px">📖 vs 📺 CHARACTER COMPARISON</h2>
+<p style="color:var(--text-muted);font-size:15px;margin-bottom:16px;line-height:1.6">How the top 50 characters differ between the books and the TV adaptation. Click any character to expand.</p>
+<div class="cmp-legend">
+<span><span class="cmp-badge same">Faithful</span> Closely adapted</span>
+<span><span class="cmp-badge minor">Minor Changes</span> Small tweaks</span>
+<span><span class="cmp-badge major">Major Changes</span> Significantly different</span>
+<span><span class="cmp-badge show-only">Show Original</span> Created for TV</span>
+</div>
+<input type="text" class="cmp-search" id="cmpSearch" placeholder="Search characters..." oninput="filterCmp()">
+<div id="cmp-list"></div>
+</div>
+
+<!-- PLOT DIFFERENCES -->
+<div id="sec-plotdiff" class="section">
+<h2 style="font-family:'Orbitron',sans-serif;font-size:22px;font-weight:700;margin:20px 0 12px;color:var(--accent2);letter-spacing:1px">📖 vs 📺 PLOT DIFFERENCES</h2>
+<p style="color:var(--text-muted);font-size:15px;margin-bottom:20px;line-height:1.6">Major story changes between the novels and the TV adaptation, from character deaths to restructured plotlines.</p>
+<div id="plot-list"></div>
+</div>
+
+</div>
+
+<script>
+function showSec(id,btn){document.querySelectorAll('.section').forEach(function(s){s.classList.remove('active')});document.getElementById('sec-'+id).classList.add('active');document.querySelectorAll('nav button').forEach(function(b){b.classList.remove('active')});btn.classList.add('active');window.scrollTo({top:0,behavior:'smooth'})}
+
+var TIMELINE=[
+{title:"Ring Builders' Empire (2+ Billion Years Ago)",desc:"An advanced alien civilization builds a network of wormhole gates spanning thousands of star systems. They are destroyed by an unknown enemy — the 'dark gods' — who exist in a dimension between the gates.",tag:"Ancient History"},
+{title:"Protomolecule Sent to Earth (~2 Billion Years Ago)",desc:"The Ring Builders launch the protomolecule toward primitive Earth via Saturn's moon Phoebe. It's designed to hijack life and build a Ring Gate. But it gets captured by Saturn's gravity and never reaches Earth.",tag:"Ancient History"},
+{title:"The Epstein Drive (~2200s)",desc:"Solomon Epstein accidentally invents a revolutionary fusion drive that makes interplanetary travel practical. It changes everything — enabling the colonization of Mars, the Belt, and the outer planets.",tag:"Pre-Series"},
+{title:"Mars Congressional Republic Founded",desc:"Mars declares independence from Earth and forms its own military government. The two powers enter a cold war that defines solar system politics for generations.",tag:"Pre-Series"},
+{title:"OPA Forms",desc:"The Outer Planets Alliance is created to fight for Belter rights. Belters are physically changed by low gravity — taller, thinner, with brittle bones. They're exploited by Earth and Mars for resources.",tag:"Pre-Series"},
+{title:"Canterbury Destroyed (Book 1: Leviathan Wakes)",desc:"The ice hauler Canterbury is destroyed by a stealth ship. Survivors Jim Holden, Naomi Nagata, Amos Burton, and Alex Kamal escape on a shuttle and eventually claim the Martian gunship Rocinante.",tag:"Leviathan Wakes"},
+{title:"Eros Incident",desc:"The protomolecule is unleashed on Eros Station, killing 100,000 people in a horrific experiment by the corporation Protogen. Detective Miller crashes Eros into Venus, sacrificing himself to prevent it from hitting Earth.",tag:"Leviathan Wakes"},
+{title:"Ganymede Incident (Book 2: Caliban's War)",desc:"A protomolecule hybrid soldier attacks UN and MCRN forces on Ganymede, the breadbasket of the outer planets. Botanist Prax Meng searches for his missing daughter. The solar system nearly goes to all-out war.",tag:"Caliban's War"},
+{title:"The Ring Gate Opens (Book 3: Abaddon's Gate)",desc:"The protomolecule constructs a massive Ring Gate near Uranus, connecting to a pocket dimension called the Slow Zone — a hub linking to 1,300+ habitable star systems. Humanity's future changes forever.",tag:"Abaddon's Gate"},
+{title:"Ilus / New Terra (Book 4: Cibola Burn)",desc:"Humanity rushes through the Ring Gates to colonize new worlds. On Ilus (New Terra), conflict erupts between Belter refugees and a corporate expedition. Ancient alien tech activates catastrophically.",tag:"Cibola Burn"},
+{title:"Free Navy War (Book 5: Nemesis Games)",desc:"Marco Inaros, a radical Belter, launches asteroid strikes on Earth, killing billions. Naomi's traumatic past with Marco is revealed. The crew of the Rocinante is scattered and must fight to reunite.",tag:"Nemesis Games"},
+{title:"Battle of the Ring Space (Book 6: Babylon's Ashes)",desc:"The combined forces of Earth, Mars, and moderate Belters fight Marco's Free Navy. The Transport Union is formed. Admiral Duarte secretly takes a rogue Martian fleet through the Laconia gate with the protomolecule.",tag:"Babylon's Ashes"},
+{title:"30-Year Time Jump",desc:"Three decades pass. The Rocinante crew ages. Duarte builds the Laconian Empire using protomolecule technology. Laconia returns to conquer the entire gate network with terrifyingly advanced warships.",tag:"Between Books"},
+{title:"Laconian Invasion (Book 7: Persepolis Rising)",desc:"Laconia's single warship, the Magnetar-class Heart of the Tempest, defeats entire fleets alone. Duarte declares himself High Consul and demands submission from all of humanity. The Rocinante crew joins the underground resistance.",tag:"Persepolis Rising"},
+{title:"Duarte's Fall (Book 8: Tiamat's Wrath)",desc:"Duarte experiments with protomolecule tech to become immortal but loses his mind. Bobbie Draper sacrifices herself heroically. The 'dark gods' that killed the Ring Builders begin to notice humanity.",tag:"Tiamat's Wrath"},
+{title:"The Ring Gates Close (Book 9: Leviathan Falls)",desc:"Holden sacrifices himself to shut down the Ring network and save humanity from the dark gods. The gates close forever, stranding colonies across 1,300 star systems. Humanity survives, scattered but free.",tag:"Leviathan Falls"}
+];
+(function(){var el=document.getElementById('timeline-list');TIMELINE.forEach(function(t,i){el.innerHTML+='<div class="tl-item fade-in" style="animation-delay:'+(i*0.05)+'s"><div class="tl-dot"></div>'+(i<TIMELINE.length-1?'<div class="tl-line"></div>':'')+'<div class="tl-content"><h3>'+t.title+'</h3><p>'+t.desc+'</p><span class="tl-tag">'+t.tag+'</span></div></div>'})})();
+
+var CHARS=[
+// ═══ ROCINANTE CREW ═══
+{name:"James Holden",role:"Captain of the Rocinante",faction:"Roci",desc:"Former Earth Navy officer turned reluctant hero. Holden's rigid morality and habit of broadcasting every injustice makes him the most famous man in the solar system. The only POV character in all 9 books.",tags:["Earther","Captain","Protagonist"]},
+{name:"Naomi Nagata",role:"XO & Engineer",faction:"Roci",desc:"Brilliant Belter engineer and Holden's partner. Carries deep trauma from her past with Marco Inaros. She's the smartest person on any ship she's aboard and eventually leads the underground resistance.",tags:["Belter","Engineer","Leader"]},
+{name:"Amos Burton",role:"Mechanic",faction:"Roci",desc:"Born 'Timmy' in Baltimore's violent slums. A self-aware sociopath who relies on others' moral compasses. Fiercely loyal and will kill anyone who threatens his family. The last one standing.",tags:["Earther","Mechanic","Dangerous"]},
+{name:"Alex Kamal",role:"Pilot",faction:"Roci",desc:"Texan-accented Martian Navy veteran and the best pilot in the system. Left his family to fly, and the guilt haunts him. In the books, he survives to the end; in the show, his story ends differently.",tags:["Martian","Pilot","MCRN"]},
+{name:"Bobbie Draper",role:"Marine / Roci Captain",faction:"Mars",desc:"Towering Martian Marine gunnery sergeant who survives the Ganymede Incident. Becomes disillusioned with Mars and joins the Roci crew. Eventually becomes its captain. Dies heroically destroying the Tempest.",tags:["Martian","Marine","Hero"]},
+{name:"Clarissa 'Peaches' Mao",role:"Mechanic / Crew",faction:"Roci",desc:"Julie Mao's sister who tried to destroy Holden to avenge her father. After prison, she joins the Roci seeking redemption. Her combat mods make her devastatingly dangerous. Sacrifices herself on Medina.",tags:["Earther","Redemption","Mods"]},
+
+// ═══ EARTH / UN ═══
+{name:"Chrisjen Avasarala",role:"UN Secretary-General",faction:"Earth",desc:"Foul-mouthed, brilliant politician who rises from intelligence to Secretary-General. She's terrifying in heels and a sari. Dies of old age after the time jump, given a state funeral on Laconia.",tags:["Earther","Politician","UN"]},
+{name:"Sadavir Errinwright",role:"UN Undersecretary",faction:"Earth",desc:"Corrupt UN official who conspires with Mao to weaponize the protomolecule. Avasarala's main political adversary. Represents how fear drives good people to monstrous decisions.",tags:["Earther","Villain","UN"]},
+{name:"Esteban Sorrento-Gillis",role:"UN Secretary-General",faction:"Earth",desc:"Weak, politically motivated Secretary-General who Avasarala manipulates. He's more concerned with appearances than governance and is eventually replaced.",tags:["Earther","Politician","Weak"]},
+{name:"Admiral Souther",role:"UNN Admiral",faction:"Earth",desc:"A principled UN admiral who opposes Errinwright's warmongering. He attempts a mutiny aboard the Agatha King to prevent an unjust war, and pays the ultimate price.",tags:["Earther","Admiral","Principled"]},
+{name:"Admiral Nguyen",role:"UNN Admiral",faction:"Earth",desc:"A hawkish UN admiral aligned with Errinwright. He fires protomolecule-hybrid soldiers at Mars in a desperate attack, escalating the conflict catastrophically.",tags:["Earther","Admiral","Hawk"]},
+{name:"Arjun Rao",role:"Avasarala's Husband",faction:"Earth",desc:"A poet and professor, Arjun is Avasarala's beloved husband and emotional anchor. His quiet presence grounds one of the most powerful women in the system. Dies before the events of Tiamat's Wrath.",tags:["Earther","Civilian","Family"]},
+{name:"Kajri 'Kiki' Avasarala",role:"Avasarala's Granddaughter",faction:"Earth",desc:"Chrisjen's granddaughter who carries on her grandmother's fierce spirit. Appears at Avasarala's funeral on Laconia, connecting with Holden over their shared grief.",tags:["Earther","Family","Legacy"]},
+{name:"Anna Volovodov",role:"Methodist Pastor",faction:"Earth",desc:"A compassionate pastor from Europa who becomes an unlikely voice of conscience aboard the Behemoth during the Slow Zone crisis. She advocates for peace when everyone else wants war.",tags:["Earther","Pastor","Peacemaker"]},
+{name:"Cotyar Ghazi",role:"Avasarala's Bodyguard",faction:"Earth",desc:"Avasarala's loyal bodyguard and intelligence operative. In the show, he's a complex character who dies protecting others. Represents the unseen soldiers in political wars.",tags:["Earther","Spy","Loyal"]},
+{name:"Ade Tukunbo",role:"Canterbury Navigator",faction:"Earth",desc:"Holden's lover aboard the Canterbury. She dies when the Canterbury is destroyed, and her death drives Holden's crusade for justice throughout the first book.",tags:["Earther","Canterbury","Catalyst"]},
+{name:"Nancy Gao",role:"UN Secretary-General",faction:"Earth",desc:"Replaces Avasarala as Secretary-General on a platform of aggressive colonization through the Ring Gates. Dies when Marco Inaros drops asteroids on Earth.",tags:["Earther","Politician","Tragic"]},
+
+// ═══ MARS / MCRN ═══
+{name:"Solomon Epstein",role:"Inventor of the Epstein Drive",faction:"Mars",desc:"Accidentally invented the fusion drive that made interplanetary travel possible. He died on his first test flight, unable to stop the acceleration. His drive changed everything.",tags:["Martian","Inventor","Legend"]},
+{name:"Bobbie's Fire Team",role:"Martian Marines",faction:"Mars",desc:"Bobbie's entire marine fire team — Sa'id, Hillman, and others — are killed on Ganymede by the protomolecule hybrid. Their deaths haunt Bobbie and drive her story.",tags:["Martian","Marines","Ganymede"]},
+{name:"Admiral Sauveterre",role:"MCRN Admiral",faction:"Laconia",desc:"A senior MCRN officer who secretly defects to Laconia with Duarte, taking a fleet of ships through the Laconia gate. He helps establish the Laconian military.",tags:["Martian","Admiral","Defector"]},
+{name:"Captain Kirino",role:"MCRN Captain",faction:"Mars",desc:"Captain of the MCRN Donnager, the massive Martian battleship destroyed in Book 1. She scuttles her own ship rather than let it be captured, setting the tone for Martian honor.",tags:["Martian","Captain","Honor"]},
+{name:"David Draper",role:"Bobbie's Father",faction:"Mars",desc:"Bobbie's father who works in the terraforming project. He represents the everyday Martian dream — generations of sacrifice to make Mars a garden world.",tags:["Martian","Civilian","Family"]},
+
+// ═══ THE BELT / OPA ═══
+{name:"Joe Miller",role:"Detective / Proto-Miller",faction:"Belt",desc:"Ceres detective hired to find Julie Mao. Becomes obsessed with the case and sacrifices himself on Eros. Later exists as a protomolecule 'ghost' — the Investigator — helping Holden.",tags:["Belter","Detective","Proto"]},
+{name:"Camina Drummer",role:"OPA Leader / Transport Union President",faction:"Belt",desc:"Fiercely loyal Belter leader who rises through the OPA to become President of the Transport Union. In the show, she's a composite of several book characters and a massive fan favorite.",tags:["Belter","OPA","President"]},
+{name:"Fred Johnson",role:"OPA Leader",faction:"Belt",desc:"'The Butcher of Anderson Station.' Former UN colonel who defected to the OPA out of guilt. Becomes the OPA's most effective moderate leader. Killed by a Free Navy operative.",tags:["Earther-Belter","OPA","Colonel"]},
+{name:"Anderson Dawes",role:"OPA Boss of Ceres",faction:"Belt",desc:"The political boss of Ceres Station and a masterful manipulator. Plays every faction against each other to advance Belter independence. Charming and extremely dangerous.",tags:["Belter","OPA","Politician"]},
+{name:"Marco Inaros",role:"Free Navy Commander",faction:"Belt",desc:"Charismatic, narcissistic radical who throws asteroids at Earth, killing billions. Naomi's ex and Filip's father. Nearly destroys civilization in his quest for Belter supremacy.",tags:["Belter","Villain","Free Navy"]},
+{name:"Filip Inaros",role:"Marco's Son",faction:"Belt",desc:"Naomi and Marco's son, raised as a weapon. Idolizes Marco but slowly questions everything. Ultimately abandons the Free Navy, changes his name to Nagata, and disappears.",tags:["Belter","Free Navy","Growth"]},
+{name:"Klaes Ashford",role:"OPA Captain",faction:"Belt",desc:"A pragmatic Belter pirate turned leader. Initially antagonistic, becomes one of the most honorable characters. His death scene in the show — singing as he's executed — is devastating.",tags:["Belter","OPA","Honor"]},
+{name:"Diogo Harari",role:"Young Belter Rebel",faction:"Belt",desc:"A young, enthusiastic Belter who idolizes the OPA cause. Appears across multiple books and seasons as a recurring face of the Belt's youth. Dies during the Slow Zone incident.",tags:["Belter","OPA","Youth"]},
+{name:"Carlos 'Bull' Baca",role:"XO of the Behemoth",faction:"Belt",desc:"An Earther serving on a Belter ship, navigating impossible politics in the Slow Zone. Tough, practical, and makes gut-wrenching decisions. In the show, some of his role goes to Drummer.",tags:["Earther","OPA","XO"]},
+{name:"Michio Pa",role:"Free Navy Captain / Defector",faction:"Belt",desc:"A Free Navy commander who defects when she realizes Marco cares about power, not people. Leads a food-distribution fleet. In the show, much of her arc is given to Drummer.",tags:["Belter","Free Navy","Defector"]},
+{name:"Sam Rosenberg",role:"Chief Engineer, Behemoth",faction:"Belt",desc:"The brilliant engineer aboard the Behemoth (converted Nauvoo). She's warm, competent, and represents the best of what the Belt can be. Murdered during the Slow Zone crisis.",tags:["Belter","Engineer","Victim"]},
+{name:"Havelock",role:"Star Helix Security",faction:"Belt",desc:"Miller's Earther partner on Ceres who transfers to a security gig on Ilus. He's a decent man trying to do right in impossible situations, caught between corporate and Belter interests.",tags:["Earther","Security","Decent"]},
+{name:"Semi Espinoza",role:"Medina Station Security",faction:"Belt",desc:"Head of security on Medina Station during the Laconian occupation. Faces impossible choices between collaboration and resistance.",tags:["Belter","Security","Medina"]},
+{name:"Oksana",role:"Drummer's Partner",faction:"Belt",desc:"One of Drummer's polyamorous family crew in the show. Their relationship shows the intimate, familial side of Belter culture rarely depicted in sci-fi.",tags:["Belter","Family","Show"]},
+{name:"Cyn",role:"Naomi's Former Crew",faction:"Belt",desc:"Part of Naomi's old crew with Marco. Cyn raised Filip when Naomi couldn't. His loyalty to Marco over Naomi creates one of the most heartbreaking dynamics in the series.",tags:["Belter","Free Navy","Tragic"]},
+{name:"Karal",role:"Free Navy Officer",faction:"Belt",desc:"A hard-line Free Navy officer aboard Naomi's ship. She enforces Marco's will and represents the true believers who can't see past their own righteousness.",tags:["Belter","Free Navy","Zealot"]},
+
+// ═══ PROTOGEN / CORPORATE ═══
+{name:"Julie Mao",role:"Activist / Patient Zero",faction:"Belt",desc:"Wealthy Earther who renounced her family to fight for Belter rights. Unknowingly became patient zero for the protomolecule on Eros. Her fate connects directly to Miller's sacrifice.",tags:["OPA","Proto","Catalyst"]},
+{name:"Jules-Pierre Mao",role:"Protogen CEO",faction:"Earth",desc:"Julie's father and a trillionaire who funded protomolecule experiments. Represents the intersection of corporate greed and weapons of mass destruction.",tags:["Earther","Villain","Corporate"]},
+{name:"Antony Dresden",role:"Lead Protogen Scientist",faction:"Earth",desc:"The lead scientist of the Eros experiment who views 100,000 deaths as acceptable data. His calm detachment while describing genocide is chilling. Executed by Miller.",tags:["Earther","Scientist","Sociopath"]},
+{name:"Adolphus Murtry",role:"RCE Security Chief",faction:"Earth",desc:"The ruthless security chief sent to Ilus (New Terra) by Royal Charter Energy. He sees Belter colonists as obstacles and escalates violence at every opportunity. Holden's main adversary in Book 4.",tags:["Earther","Security","Antagonist"]},
+{name:"Basia Merton",role:"Ilus Colonist",faction:"Belt",desc:"A Belter colonist on Ilus who makes a catastrophic decision to sabotage a landing pad, killing a UN scientist. His guilt and desperation drive much of Cibola Burn's plot.",tags:["Belter","Colonist","Ilus"]},
+{name:"Fayez Sarkis",role:"Geologist / Elvi's Husband",faction:"Earth",desc:"A charming geologist on the Ilus expedition who becomes Elvi Okoye's husband. His humor provides much-needed levity in dire situations. Accompanies Elvi to dead systems.",tags:["Earther","Scientist","Comic Relief"]},
+{name:"Lucia Mazur",role:"Ilus Medic",faction:"Belt",desc:"A Belter medic on Ilus who gets caught between the colonists and RCE forces. Her perspective shows the human cost of the colonization gold rush.",tags:["Belter","Medic","Ilus"]},
+{name:"Lydia",role:"Baltimore Crime Boss",faction:"Earth",desc:"The woman who ran Baltimore's criminal underworld in Amos's youth. She shaped Amos into who he is. Her death in 'The Churn' novella is a turning point in his life.",tags:["Earther","Criminal","Origin"]},
+
+// ═══ LACONIA ═══
+{name:"Winston Duarte",role:"High Consul of Laconia",faction:"Laconia",desc:"Rogue MCRN admiral who builds an empire using protomolecule technology. Believes only a dictator can save humanity. Experiments on himself to become immortal but loses his mind.",tags:["Martian","Dictator","Laconia"]},
+{name:"Santiago Singh",role:"Governor of Medina Station",faction:"Laconia",desc:"Young, idealistic Laconian officer placed in charge of Medina. His inability to understand resistance leads to catastrophic decisions. Executed for his failures.",tags:["Laconian","Governor","Tragic"]},
+{name:"Teresa Duarte",role:"Duarte's Daughter",faction:"Laconia",desc:"Winston Duarte's teenage daughter raised in the palace. She befriends Holden during his captivity, owns a pet dog named Muskrat, and plays a pivotal role in the final books.",tags:["Laconian","Youth","Key Player"]},
+{name:"Cortazar",role:"Protomolecule Scientist",faction:"Laconia",desc:"Brilliant but amoral scientist who studied the protomolecule for Protogen and later Duarte. His emotions were surgically removed, making him perfect for inhuman research.",tags:["Scientist","Laconia","Amoral"]},
+{name:"Colonel Tanaka",role:"Laconian Military",faction:"Laconia",desc:"A ruthless Laconian colonel sent to hunt down Teresa Duarte in Leviathan Falls. She's a terrifying antagonist who'll do anything to complete her mission. Killed fighting Duarte.",tags:["Laconian","Military","Ruthless"]},
+{name:"Captain Jakab Singh",role:"Laconian Navy Captain",faction:"Laconia",desc:"Commands a Laconian warship. Represents the rank-and-file Laconian officers who genuinely believe they're building a better future under Duarte's vision.",tags:["Laconian","Navy","Believer"]},
+{name:"Trejo",role:"Laconian Admiral",faction:"Laconia",desc:"High-ranking Laconian admiral who takes over after Duarte becomes incapacitated. He's more pragmatic than Duarte and struggles with the ethical implications of Laconian rule.",tags:["Laconian","Admiral","Pragmatic"]},
+{name:"Overstreet",role:"Laconian Spy",faction:"Laconia",desc:"A Laconian intelligence operative embedded in the resistance. His betrayal leads to devastating consequences for the underground, including Clarissa's death on Medina Station.",tags:["Laconian","Spy","Traitor"]},
+{name:"Muskrat",role:"Teresa's Dog",faction:"Laconia",desc:"Teresa Duarte's beloved pet dog on Laconia. Muskrat is a surprising emotional anchor in the later books — proof that even in a fascist empire, a girl and her dog can break your heart.",tags:["Pet","Laconia","Beloved"]},
+
+// ═══ SCIENTISTS & SPECIALISTS ═══
+{name:"Elvi Okoye",role:"Xenobiologist",faction:"Earth",desc:"Scientist studying alien life on Ilus who becomes humanity's foremost expert on protomolecule biology. In later books, she leads Laconia's research missions to dead systems.",tags:["Earther","Scientist","Key"]},
+{name:"Praxideke Meng",role:"Botanist",faction:"Belt",desc:"Ganymede botanist searching for his kidnapped daughter Mei. Represents the ordinary person caught in the crossfire of interplanetary war. Reunited with Mei in Caliban's War.",tags:["Belter","Scientist","Father"]},
+{name:"Mei Meng",role:"Prax's Daughter",faction:"Belt",desc:"Prax's young daughter kidnapped for protomolecule experiments on Ganymede. Her rescue drives the plot of Caliban's War and gives the crew something personal to fight for.",tags:["Belter","Child","Victim"]},
+{name:"Strickland",role:"Pediatrician / Protogen Agent",faction:"Earth",desc:"A doctor who poses as Mei's pediatrician while actually working for Protogen, selecting children for protomolecule experiments. One of the most despicable villains in the series.",tags:["Earther","Villain","Monster"]},
+{name:"Paolo Cortazar",role:"Laconian Chief Scientist",faction:"Laconia",desc:"The lead scientist on Laconia's protomolecule research. Had his empathy surgically removed by Protogen. His research enables Laconia's terrifying warships and Duarte's transformation.",tags:["Scientist","Laconia","Modified"]},
+{name:"Cara",role:"Strange Dogs Subject",faction:"Laconia",desc:"A girl on Laconia who discovers alien 'repair drones' that can resurrect the dead — but change them. Her story in the novella 'Strange Dogs' foreshadows Laconia's protomolecule experiments.",tags:["Laconian","Child","Strange Dogs"]},
+{name:"Xan",role:"Cara's Brother",faction:"Laconia",desc:"Cara's brother who dies and is resurrected by the alien repair drones. He comes back... different. His transformation hints at what the protomolecule builders intended for organic life.",tags:["Laconian","Resurrected","Strange Dogs"]},
+
+// ═══ SHIPS & CREWS ═══
+{name:"Captain McDowell",role:"Canterbury Captain",faction:"Belt",desc:"Captain of the ice hauler Canterbury. A tired, cynical spacer who just wants to finish his run. His ship's destruction sets the entire series in motion.",tags:["Canterbury","Captain","Catalyst"]},
+{name:"Shed Garvey",role:"Canterbury Medic",faction:"Roci",desc:"The Canterbury's medic who survives the initial attack and joins the Roci crew. Killed early when a railgun round passes through the ship, decapitating him instantly — a shocking moment.",tags:["Roci","Medic","Death"]},
+{name:"Maneo Jung-Espinoza",role:"Belter Slingshotter",faction:"Belt",desc:"A young Belter daredevil who slingshots through the newly opened Ring Gate to impress a girl. He's instantly decelerated to mush, demonstrating the Ring's speed limit lethally.",tags:["Belter","Slingshot","Victim"]},
+{name:"Y Que",role:"Belter Radical",faction:"Belt",desc:"One of Dawes's operatives on Ceres. The name 'Y Que' (meaning 'So what?') embodies the Belter attitude toward Inner Planet authority.",tags:["Belter","OPA","Ceres"]},
+{name:"Dimitri Havelock",role:"Star Helix Security",faction:"Earth",desc:"Miller's Earther partner on Ceres, later corporate security on Ilus. A fundamentally decent man trying to navigate impossible situations.",tags:["Earther","Security","Decent"]},
+
+// ═══ TV SHOW CHARACTERS ═══
+{name:"Naren Shankar",role:"Showrunner (Real Person)",faction:"Meta",desc:"The showrunner who guided The Expanse TV adaptation across all 6 seasons. His dedication to scientific accuracy and character depth helped make the show a masterpiece.",tags:["Meta","Showrunner","Real"]},
+{name:"Jared Harris",role:"Anderson Dawes (Actor)",faction:"Meta",desc:"The actor who brought Anderson Dawes to life with a perfect Belter accent. His performance was so beloved that fans demanded more Dawes in every season.",tags:["Meta","Actor","Beloved"]},
+{name:"Shohreh Aghdashloo",role:"Avasarala (Actor)",faction:"Meta",desc:"The showrunners didn't audition anyone — they wrote Avasarala specifically for her. Her portrayal of the foul-mouthed politician is iconic. She wasn't allowed to curse on Syfy but went all out on Amazon.",tags:["Meta","Actor","Iconic"]},
+{name:"Thomas Jane",role:"Miller (Actor)",faction:"Meta",desc:"Brought Joe Miller and his iconic hat to life. Jane loved the role so much he produced a short film 'The Expanse: One Ship' with his own money after filming wrapped.",tags:["Meta","Actor","Dedicated"]},
+{name:"Wes Chatham",role:"Amos Burton (Actor)",faction:"Meta",desc:"His portrayal of Amos is considered one of the best casting choices in sci-fi TV. He also co-wrote The Expanse: A Little Death comic series, extending Amos's story.",tags:["Meta","Actor","Writer"]},
+
+// ═══ ADDITIONAL KEY CHARACTERS ═══
+{name:"Jurian",role:"Resurrected Human General",faction:"Earth",desc:"Actually it's JURIAN from ACOTAR — in The Expanse it's JUST Erich. Kidding! This is not an ACOTAR crossover.",tags:["Joke","Easter Egg"]},
+{name:"Erich",role:"Baltimore Crime Boss",faction:"Earth",desc:"Amos's childhood friend from Baltimore who becomes a crime boss. When Earth is devastated by Marco's rocks, Erich helps Amos survive in the ruins. Their bond runs deeper than blood.",tags:["Earther","Criminal","Friend"]},
+{name:"Peaches (the nickname)",role:"Clarissa Mao's Alias",faction:"Roci",desc:"Why 'Peaches'? Amos gives Clarissa this nickname in prison. It sticks because Amos doesn't do real names. It becomes a term of endearment that represents her transformation from villain to family.",tags:["Roci","Nickname","Lore"]},
+{name:"The Investigator",role:"Protomolecule Construct of Miller",faction:"Proto",desc:"After Miller dies on Eros, the protomolecule creates a construct of his consciousness. It appears to Holden as a ghost-like Miller, driving him to complete the protomolecule's goals.",tags:["Proto","AI","Ghost"]},
+{name:"The Ring Station",role:"Alien Construct",faction:"Proto",desc:"The massive alien station at the center of the Slow Zone that controls all 1,300+ Ring Gates. Built by the Ring Builders. Holden destroys it in the final book to save humanity.",tags:["Proto","Alien","Location"]},
+{name:"Medina Station",role:"Former Nauvoo / Behemoth",faction:"Belt",desc:"Originally the generation ship Nauvoo, converted to the warship Behemoth, then repurposed as Medina Station in the Ring Space hub. It changes hands multiple times across the series.",tags:["Station","Hub","Iconic"]},
+{name:"Josephus Aloisus Miller",role:"Full Name Trivia",faction:"Belt",desc:"Miller's full name is Josephus Aloisus Miller. He's from Ceres Station, a Belter despite his Earth-standard build. He wears a fedora because he thinks it makes him look like a real detective.",tags:["Belter","Detective","Hat"]},
+
+// ═══ NOVELLA CHARACTERS ═══
+{name:"Timmy / Baltimore Amos",role:"Young Amos Burton",faction:"Earth",desc:"In 'The Churn,' we meet Amos as 'Timmy' — a young enforcer in Baltimore's criminal underworld. He's already terrifyingly effective at violence but latches onto anyone who shows him kindness.",tags:["Earther","Origin","Novella"]},
+{name:"David (Gods of Risk)",role:"Bobbie's Nephew",faction:"Mars",desc:"Bobbie's teenage nephew who gets involved with drug manufacturing on Mars. His story in the novella 'Gods of Risk' shows the mundane dangers of Martian society alongside the interplanetary drama.",tags:["Martian","Youth","Novella"]},
+{name:"Payne Houston",role:"Strange Dogs Scientist",faction:"Laconia",desc:"A scientist on Laconia who studies the alien repair drones. His research intersects with Cara and Xan's story, and his findings have implications for Duarte's immortality experiments.",tags:["Laconian","Scientist","Novella"]},
+{name:"Filip Nagata",role:"Filip's New Identity",faction:"Belt",desc:"After abandoning the Free Navy, Filip changes his surname from Inaros to Nagata — his mother's name. He disappears to Callisto, then later to the colony world Jannah. His mother never learns he survived.",tags:["Belter","Identity","Epilogue"]},
+{name:"Rosenfeld Guoliang",role:"Free Navy Admiral",faction:"Belt",desc:"Marco Inaros's most competent military commander. She's the tactical brain behind the Free Navy's operations while Marco supplies the charisma. Eventually realizes Marco is self-destructing.",tags:["Belter","Admiral","Free Navy"]},
+{name:"Jakulski",role:"Free Navy Officer",faction:"Belt",desc:"One of Marco's officers who participates in the asteroid attacks on Earth. Represents the rank-and-file who follow charismatic leaders into atrocity.",tags:["Belter","Free Navy","Follower"]},
+{name:"Saba",role:"Underground Leader",faction:"Belt",desc:"A Belter who becomes a key leader in the anti-Laconian underground. He coordinates resistance cells across multiple systems. In the show, some of his role is given to Drummer.",tags:["Belter","Underground","Leader"]},
+{name:"Crispin (The Vital Abyss)",role:"Protogen Researcher",faction:"Earth",desc:"A researcher imprisoned for his role in the Eros experiment. The novella 'The Vital Abyss' is told from his perspective — a chilling look at how ordinary scientists become monsters.",tags:["Earther","Scientist","Novella"]},
+{name:"Vandercaust",role:"Auberon Crime Boss",faction:"Belt",desc:"The crime boss who runs the colony world Auberon. His story in the novella 'Auberon' shows how old-Earth patterns of corruption repeat on new worlds.",tags:["Colonist","Criminal","Novella"]},
+{name:"Biryar Magnusson",role:"Auberon Governor",faction:"Laconia",desc:"The Laconian governor assigned to Auberon. He's idealistic and wants to do right, but discovers that governing a colony world means dealing with entrenched corruption.",tags:["Laconian","Governor","Novella"]},
+{name:"Monica Stuart",role:"Journalist",faction:"Earth",desc:"An investigative journalist who follows the Rocinante crew across multiple books. Relentless in pursuit of truth, even when it puts her in mortal danger.",tags:["Earther","Journalist","Recurring"]},
+{name:"Cohen",role:"Monica's Cameraman",faction:"Earth",desc:"Monica's loyal cameraman who films the Rocinante's adventures. Brave enough to follow her anywhere and keeps rolling even when things explode.",tags:["Earther","Journalist","Loyal"]},
+{name:"Pastor Hector Cortez",role:"Behemoth Chaplain",faction:"Belt",desc:"A religious leader aboard the Behemoth who provides spiritual guidance during the Slow Zone crisis. In the show, his role is filled by Anna Volovodov.",tags:["Belter","Religious","Behemoth"]},
+{name:"Ren Hazuki",role:"Laconian Engineer",faction:"Laconia",desc:"An engineer on Laconia who works with protomolecule tech. His perspective shows how Laconia attracts brilliant minds with promises of advancement.",tags:["Laconian","Engineer","Builder"]},
+{name:"Captain Shaddid",role:"Ceres Station Chief",faction:"Belt",desc:"Miller's boss on Ceres who assigns him the Julie Mao case. Politically connected and pressures Miller to drop it when powerful people get uncomfortable.",tags:["Belter","Police","Political"]},
+{name:"Vivian Abraham",role:"UNN Officer",faction:"Earth",desc:"A UN Navy officer who serves during the Free Navy conflict. Represents the professional military trying to maintain order as civilization crumbles.",tags:["Earther","Navy","Professional"]},
+{name:"Captain Yao",role:"UNN Fleet Captain",faction:"Earth",desc:"A UN fleet captain involved in various engagements. Represents the thousands of unnamed officers fighting wars they didn't start.",tags:["Earther","Navy","Fleet"]},
+{name:"Liang Walker",role:"Medina Resistance",faction:"Belt",desc:"Part of the underground resistance on Medina Station during the Laconian occupation. Ordinary people risking everything to fight tyranny.",tags:["Belter","Resistance","Medina"]},
+{name:"Rosenfeld Guoliang",role:"Free Navy Admiral",faction:"Belt",desc:"Marco Inaros's most competent military commander. The tactical brain behind Free Navy operations while Marco supplies charisma. Eventually sees Marco is doomed.",tags:["Belter","Admiral","Free Navy"]},
+{name:"The Ring Builders",role:"Ancient Alien Civilization",faction:"Proto",desc:"The unnamed species that built the protomolecule, Ring Gates, and a galaxy-spanning empire. Destroyed by the dark gods billions of years ago. Their ruins shape every plot.",tags:["Alien","Ancient","Builders"]},
+{name:"The Dark Gods",role:"Ring Builder Killers",faction:"Proto",desc:"Entities in a dimension between Ring Gates. They destroyed the Ring Builders and begin attacking humanity when gate traffic grows. Cosmic horror made real.",tags:["Alien","Horror","Ultimate Threat"]}
+];
+var charFilter='All';
+function renderChars(){var g=document.getElementById('charGrid');var h='';CHARS.forEach(function(c){if(charFilter!=='All'&&c.faction!==charFilter)return;var tags=c.tags.map(function(t){return '<span class="char-tag">'+t+'</span>'}).join('');h+='<div class="char-card"><div class="char-name">'+c.name+'</div><div class="char-role">'+c.role+'</div><div class="char-desc">'+c.desc+'</div><div>'+tags+'</div></div>'});g.innerHTML=h}
+(function(){var factions=['All','Roci','Earth','Mars','Belt','Laconia','Proto','Meta'];var fl=document.getElementById('charFilters');factions.forEach(function(f){var b=document.createElement('button');b.className='char-filter'+(f==='All'?' active':'');b.textContent=f;b.onclick=function(){fl.querySelectorAll('.char-filter').forEach(function(x){x.classList.remove('active')});b.classList.add('active');charFilter=f;renderChars()};fl.appendChild(b)});renderChars()})();
+
+var FACTS=[
+"🚀 The Expanse started as a tabletop RPG setting called '2350' before becoming a novel series.",
+"✍️ 'James S.A. Corey' is two people: Daniel Abraham and Ty Franck. Abraham writes the even-numbered chapters, Franck the odd.",
+"🎬 When Syfy cancelled the show after Season 3, a massive fan campaign (including a plane towing a #SaveTheExpanse banner) convinced Amazon to pick it up.",
+"🔬 The show is famous for its realistic physics — ships flip and burn to decelerate, there's no artificial gravity, and bullets and blood behave realistically in zero-g.",
+"🌑 Belters in the show speak a creole language called 'Lang Belta,' which was created by linguist Nick Farmer. It mixes English, Chinese, Spanish, Hindi, and more.",
+"📐 The Epstein Drive doesn't violate known physics — it's essentially an extremely efficient fusion torch drive. Scientists have praised the series for its plausibility.",
+"💀 The protomolecule is 2 billion years old. It was sent toward Earth but got captured by Saturn's gravity and landed on Phoebe instead, dormant for eons.",
+"🎭 Shohreh Aghdashloo (Avasarala) didn't audition — the showrunners created the role specifically for her after meeting her.",
+"📖 Each novel takes roughly 1 year to write. Abraham and Franck have described their process as 'one brain, two bodies.'",
+"🔧 The Rocinante is a Corvette-class light frigate, originally named the MCRN Tachi. The crew renamed it after Don Quixote's horse.",
+"🌍 Earth in The Expanse has 30 billion people and a massive unemployment problem. Basic Assistance (welfare) supports most of the population.",
+"🔴 Mars is the technological superpower of the system despite having a smaller population. Their dream is terraforming — a project spanning centuries.",
+"⚒️ Belters are physically different from planet-dwellers — taller, thinner, with fragile bones from growing up in low gravity. They can never live on Earth.",
+"🧠 The 'dark gods' that destroyed the Ring Builders exist in a dimension humans can't perceive. They consume consciousness and energy traveling through the gates.",
+"🏆 The Expanse novel series won the Hugo Award for Best Series in 2020, beating out works like The Laundry Files and Wayfarers.",
+"🎮 A Telltale Games video game lets players control Camina Drummer in a prequel story set before the TV series.",
+"🌌 There are over 1,300 Ring Gates connecting to habitable star systems. After Holden shuts them down in Book 9, colonies are stranded forever.",
+"💪 Amos Burton's backstory novella 'The Churn' reveals he grew up in the slums of Baltimore, ruled by a crime boss named Lydia. His real name is Timmy.",
+"🎬 The show's visual effects supervisor said they built the Rocinante set so that every single gauge and readout actually works.",
+"📚 The complete series spans 9 novels, 9 novellas (compiled in 'Memory's Legion'), a comic series, and a video game."
+];
+(function(){var el=document.getElementById('facts-list');FACTS.forEach(function(f){el.innerHTML+='<div class="fact-card"><p>'+f+'</p></div>'})})();
+
+var TQ=[
+{q:"What is the name of the crew's salvaged Martian gunship?",a:"Rocinante",d:["Canterbury","Donnager","Behemoth"]},
+{q:"What alien technology drives the plot of the entire series?",a:"The protomolecule",d:["The Epstein Drive","Dark matter","Ring Builder crystals"]},
+{q:"Who is the captain of the Rocinante?",a:"James Holden",d:["Amos Burton","Alex Kamal","Fred Johnson"]},
+{q:"What ship was destroyed at the beginning of the series?",a:"The Canterbury",d:["The Donnager","The Rocinante","The Scopuli"]},
+{q:"Which faction represents the asteroid belt colonists?",a:"The OPA (Outer Planets Alliance)",d:["The MCRN","The United Nations","The Free Navy"]},
+{q:"What happened on Eros Station?",a:"100,000 people were infected with the protomolecule",d:["It was destroyed by asteroids","Mars invaded it","It became the first ring gate"]},
+{q:"Who crashes Eros into Venus?",a:"Detective Joe Miller",d:["James Holden","Julie Mao","Fred Johnson"]},
+{q:"What does the Epstein Drive enable?",a:"Practical interplanetary travel via efficient fusion",d:["Faster-than-light travel","Teleportation","Gravity manipulation"]},
+{q:"What is Naomi Nagata's role on the Rocinante?",a:"XO and Chief Engineer",d:["Pilot","Mechanic","Weapons officer"]},
+{q:"What is 'winnowing' in the books?",a:"That's ACOTAR, not The Expanse!",d:["Teleportation","FTL travel","Belt slang for escaping"]},
+{q:"What language do Belters speak?",a:"Lang Belta (Belter Creole)",d:["Martian Standard","UN English","Outer Tongue"]},
+{q:"Who leads the Free Navy?",a:"Marco Inaros",d:["Anderson Dawes","Fred Johnson","Camina Drummer"]},
+{q:"What does Marco Inaros do to Earth?",a:"Throws asteroids at it, killing billions",d:["Launches nuclear missiles","Deploys the protomolecule","Blockades its ports"]},
+{q:"What is Amos Burton's real name?",a:"Timmy",d:["James","William","Charles"]},
+{q:"Where did Amos grow up?",a:"Baltimore slums",d:["Mars","Ceres Station","Luna"]},
+{q:"Who is Chrisjen Avasarala?",a:"A UN politician who becomes Secretary-General",d:["A Martian marine","A Belter spy","The Rocinante's doctor"]},
+{q:"What opens when the protomolecule activates near Uranus?",a:"The Ring Gate",d:["A black hole","A wormhole to Laconia","The Slow Zone only"]},
+{q:"How many habitable systems do the Ring Gates connect to?",a:"Over 1,300",d:["About 100","Exactly 500","Over 10,000"]},
+{q:"What is the Slow Zone?",a:"A pocket dimension hub connecting all Ring Gates",d:["A region of slow time","Mars's orbit","The Belt between Mars and Jupiter"]},
+{q:"What is Bobbie Draper's military rank?",a:"Gunnery Sergeant",d:["Captain","Lieutenant","Private"]},
+{q:"Which faction does Bobbie originally belong to?",a:"Mars (MCRN)",d:["Earth (UN)","The Belt (OPA)","Laconia"]},
+{q:"What is the Ganymede Incident?",a:"A protomolecule hybrid attacks UN and MCRN forces",d:["An asteroid strike","A Belter uprising","A terraforming accident"]},
+{q:"Who is Prax Meng?",a:"A Ganymede botanist searching for his kidnapped daughter",d:["A Martian pilot","An OPA leader","A Laconian scientist"]},
+{q:"What was the original name of the Rocinante?",a:"MCRN Tachi",d:["MCRN Scirocco","UNN Thomas Prince","Canterbury"]},
+{q:"The Rocinante is named after whose horse?",a:"Don Quixote's",d:["Alexander the Great's","Napoleon's","A Mars folk hero's"]},
+{q:"What is Clarissa Mao's nickname?",a:"Peaches",d:["Angel","Crusher","Princess"]},
+{q:"Why does Clarissa initially want to destroy Holden?",a:"To avenge her father Jules-Pierre Mao",d:["He killed her sister","He destroyed her ship","He stole the protomolecule"]},
+{q:"Who built the protomolecule?",a:"The Ring Builders (an ancient alien civilization)",d:["Protogen corporation","Mars","The UN"]},
+{q:"What destroyed the Ring Builders?",a:"Unknown entities called 'dark gods'",d:["The protomolecule itself","A civil war","The Laconians"]},
+{q:"Who founded the Laconian Empire?",a:"Admiral Winston Duarte",d:["Marco Inaros","Fred Johnson","Santiago Singh"]},
+{q:"What makes Laconian warships so powerful?",a:"They're built using protomolecule technology",d:["Nuclear-powered shields","Alien crew members","Stolen Earth tech"]},
+{q:"What is the name of Laconia's flagship?",a:"Heart of the Tempest",d:["Gathering Storm","Voice of Laconia","Proteus"]},
+{q:"What happens to Holden in the final book?",a:"He sacrifices himself to close the Ring Gates",d:["He becomes High Consul","He retires on Earth","He merges with the protomolecule"]},
+{q:"How many seasons did the TV show run?",a:"Six",d:["Four","Five","Eight"]},
+{q:"Which network originally aired The Expanse?",a:"Syfy",d:["Amazon Prime","Netflix","HBO"]},
+{q:"Who saved the show from cancellation?",a:"Amazon (after a massive fan campaign)",d:["Netflix","HBO","Apple TV"]},
+{q:"How many novels are in The Expanse series?",a:"Nine",d:["Six","Seven","Twelve"]},
+{q:"What pen name do the authors write under?",a:"James S.A. Corey",d:["James Cooper","S.A. Franklin","J.S. Abraham"]},
+{q:"What real-world city is Amos Burton from?",a:"Baltimore",d:["New York","Mumbai","London"]},
+{q:"What physical changes do Belters have?",a:"Taller, thinner, fragile bones from low gravity",d:["Blue skin from radiation","Enhanced eyesight","Smaller lungs"]},
+{q:"What is Basic Assistance on Earth?",a:"A massive welfare system supporting most of the population",d:["A military draft","Free healthcare only","A space travel subsidy"]},
+{q:"What is Mars's long-term dream?",a:"Terraforming the planet over centuries",d:["Conquering Earth","Building a Ring Gate","Leaving the solar system"]},
+{q:"Who is Anderson Dawes?",a:"The OPA political boss of Ceres Station",d:["The MCRN admiral","Holden's father","A Laconian governor"]},
+{q:"What is Fred Johnson's nickname?",a:"The Butcher of Anderson Station",d:["The Belt's Hope","Iron Fred","The Colonel"]},
+{q:"What ship class is the Rocinante?",a:"Corvette-class light frigate",d:["Battleship","Cruiser","Destroyer"]},
+{q:"Who plays Holden in the TV show?",a:"Steven Strait",d:["Thomas Jane","Cas Anvar","Wes Chatham"]},
+{q:"Who plays Miller in the TV show?",a:"Thomas Jane",d:["Steven Strait","Dominique Tipper","Frankie Adams"]},
+{q:"Who plays Amos in the TV show?",a:"Wes Chatham",d:["Steven Strait","Thomas Jane","Chad L. Coleman"]},
+{q:"What is Julie Mao's connection to the protomolecule?",a:"She was patient zero on Eros",d:["She invented it","She destroyed it","She's immune to it"]},
+{q:"Where does the protomolecule originally come from?",a:"Saturn's moon Phoebe",d:["Mars","Earth's ocean","Jupiter's clouds"]},
+{q:"What was the protomolecule supposed to do to Earth?",a:"Hijack life to build a Ring Gate",d:["Destroy all life","Create super soldiers","Terraform it for aliens"]},
+{q:"Why didn't the protomolecule reach Earth?",a:"It got captured by Saturn's gravity",d:["It was intercepted by Mars","It self-destructed","It went to Jupiter instead"]},
+{q:"What happens when too many ships transit a Ring Gate at once?",a:"They 'go Dutchman' — vanish into nonexistence",d:["They crash into each other","Time slows down","The gate collapses"]},
+{q:"Who becomes President of the Transport Union?",a:"Camina Drummer",d:["Naomi Nagata","Bobbie Draper","Chrisjen Avasarala"]},
+{q:"How long is the time jump between books 6 and 7?",a:"About 30 years",d:["5 years","10 years","100 years"]},
+{q:"What does Duarte experiment on himself with?",a:"Protomolecule technology to become immortal",d:["Ring Builder DNA","Dark god energy","Epstein Drive radiation"]},
+{q:"What happens to Duarte's mind?",a:"He loses it and becomes catatonic",d:["He becomes all-knowing","He dies immediately","He gains dark god powers"]},
+{q:"Who sacrifices herself in Tiamat's Wrath?",a:"Bobbie Draper",d:["Naomi Nagata","Clarissa Mao","Camina Drummer"]},
+{q:"What is Santiago Singh's fatal flaw?",a:"He can't understand why people resist Laconia",d:["He's a coward","He betrays Duarte","He's incompetent at tactics"]},
+{q:"Who is Teresa Duarte?",a:"Winston Duarte's teenage daughter",d:["A Martian scientist","Holden's child","A Ring Builder ghost"]},
+{q:"What award did the novel series win in 2020?",a:"Hugo Award for Best Series",d:["Nebula Award","Pulitzer Prize","Locus Award only"]},
+{q:"What was the first novel in the series?",a:"Leviathan Wakes",d:["Caliban's War","Persepolis Rising","Nemesis Games"]},
+{q:"What is the last novel in the series?",a:"Leviathan Falls",d:["Leviathan Wakes","Babylon's Ashes","Tiamat's Wrath"]},
+{q:"How does the series ultimately end?",a:"The Ring Gates close, stranding colonies but saving humanity",d:["Earth is destroyed","The dark gods win","Holden becomes a Ring Builder"]},
+{q:"What real-world inspiration did the creators cite?",a:"Ridley Scott's Alien",d:["Star Trek","Star Wars","2001: A Space Odyssey"]},
+{q:"What is unique about The Expanse's depiction of space travel?",a:"It follows realistic physics with no artificial gravity",d:["Ships travel faster than light","Aliens provide technology","Gravity generators are standard"]},
+{q:"What is Filip Inaros's relationship to Naomi?",a:"He's her son with Marco",d:["He's her brother","He's her student","He's unrelated"]},
+{q:"What does the Behemoth used to be?",a:"A generation ship called the Nauvoo",d:["A Martian battleship","An Earth carrier","A Laconian cruiser"]},
+{q:"What is Medina Station?",a:"A station inside the Ring Space hub",d:["Ceres Station's new name","Mars's capital","Earth's orbital dock"]},
+{q:"Which character is described as a sociopath who knows he's broken?",a:"Amos Burton",d:["Marco Inaros","Joe Miller","Cortazar"]},
+{q:"What is the novella 'The Churn' about?",a:"Amos Burton's origin story in Baltimore",d:["The Epstein Drive invention","Miller's early cases","Bobbie's training"]},
+{q:"How many novellas complement the main novel series?",a:"Nine",d:["Three","Six","Twelve"]},
+{q:"What comic series bridges the gap between TV seasons 6 and book 7?",a:"The Expanse: Dragon Tooth",d:["The Expanse: Origins","The Expanse: Dark Gods","The Expanse: Laconia Rising"]}
+];
+var quizQueue=[],qIdx=0,tScore=0,tStreak=0,tAnswered=false;
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+function startTrivia(){quizQueue=shuffle(TQ.slice());qIdx=0;tScore=0;tStreak=0;document.getElementById('trivia-start').style.display='none';document.getElementById('trivia-game').style.display='block';loadQ()}
+function loadQ(){if(qIdx>=quizQueue.length){document.getElementById('t-card').innerHTML='<div style="font-size:48px;margin-bottom:12px">🏆</div><h3 style="font-family:Orbitron,sans-serif;font-size:20px;font-weight:700;margin-bottom:8px;letter-spacing:1px">MISSION COMPLETE</h3><p style="color:var(--text-muted)">You scored <strong>'+tScore+'</strong> out of <strong>'+quizQueue.length+'</strong>!</p><button class="trivia-btn" onclick="startTrivia()" style="margin-top:16px">Play Again</button>';document.getElementById('t-next').style.display='none';return}tAnswered=false;var q=quizQueue[qIdx];var opts=shuffle([q.a].concat(q.d));var letters=['A','B','C','D'];var html='<div class="trivia-q">'+q.q+'</div><div class="trivia-opts">';opts.forEach(function(o,i){html+='<div class="trivia-opt" onclick="ansQ(this,\''+o.replace(/'/g,"\\'")+'\')" data-ans="'+o+'"><span class="opt-letter">'+letters[i]+'.</span>'+o+'</div>'});html+='</div>';document.getElementById('t-card').innerHTML=html;document.getElementById('t-q').textContent=(qIdx+1)+'/'+quizQueue.length;document.getElementById('t-prog').style.width=(qIdx/quizQueue.length*100)+'%';document.getElementById('t-next').style.display='none'}
+function ansQ(el,choice){if(tAnswered)return;tAnswered=true;var q=quizQueue[qIdx];var correct=choice===q.a;if(correct){tScore++;tStreak++}else{tStreak=0}document.getElementById('t-score').textContent=tScore;document.getElementById('t-streak').textContent=tStreak+'🔥';document.querySelectorAll('.trivia-opt').forEach(function(o){if(o.dataset.ans===q.a)o.classList.add('correct');if(o===el&&!correct)o.classList.add('wrong');o.style.pointerEvents='none'});qIdx++;document.getElementById('t-next').style.display='inline-block'}
+document.addEventListener('keydown',function(e){if(!tAnswered){var k={'1':0,'2':1,'3':2,'4':3}[e.key];if(k!==undefined){var opts=document.querySelectorAll('.trivia-opt');if(opts[k])opts[k].click()}}if(tAnswered&&(e.key==='Enter'||e.key===' ')){e.preventDefault();loadQ()}});
+
+
+// ══════ BOOK VS SHOW CHARACTER COMPARISONS ══════
+var CMP=[
+{name:"James Holden",level:"minor",book:"Idealistic, stubborn, sometimes reckless with information. Grows more pragmatic over 9 books. His internal monologues reveal deep self-doubt beneath the hero exterior.",show:"Steven Strait plays him more stoic and reserved. Less openly idealistic, more action-oriented. The show compresses his growth arc due to fewer seasons.",verdict:"Strait brings gravitas but loses some of Holden's earnest naivety that makes him endearing in the books."},
+{name:"Naomi Nagata",level:"faithful",book:"Brilliant, emotionally complex. Her Belter identity is central. Her trauma with Marco and Filip drives books 5-6. She becomes the strategic leader of the underground in later books.",show:"Dominique Tipper's portrayal is widely praised. The show faithfully adapts her Marco arc. She's given more screen time and emotional range than the early books provide.",verdict:"One of the most faithful adaptations. Tipper arguably improves on the early-book version."},
+{name:"Amos Burton",level:"minor",book:"Described as large, bald, with a flat affect. His sociopathy is more clinical and disturbing. He has fewer quips and more chilling silence. The Baltimore backstory is gradually revealed.",show:"Wes Chatham made Amos more charismatic and darkly funny. Added warmth and dry humor that the book version lacks. His chemistry with the cast elevated the character enormously.",verdict:"Chatham's Amos is arguably better than the book version — one of TV's great casting choices."},
+{name:"Alex Kamal",level:"major",book:"Survives all 9 books. Reconciles with his ex-wife and son. Flies the Roci until the very end. His Texas drawl and love of cooking are consistent throughout.",show:"Killed off in Season 5 due to misconduct allegations against actor Cas Anvar. His death from a stroke during a high-g maneuver was written hastily. A jarring change for book readers.",verdict:"The biggest forced change in the adaptation. The books give Alex a full, satisfying arc that the show couldn't deliver."},
+{name:"Bobbie Draper",level:"minor",book:"Described as very tall and heavily muscled — Samoan heritage. More stoic and military. Her Martian patriotism is a slower burn. She becomes Roci captain and dies heroically in Book 8.",show:"Frankie Adams captures her warrior spirit perfectly. Given more screen time and earlier integration with the main cast. Her Martian disillusionment happens faster.",verdict:"Faithful in spirit. Adams is shorter than the book description but embodies the character's fierce heart."},
+{name:"Chrisjen Avasarala",level:"minor",book:"Doesn't appear until Book 2 (Caliban's War). Her profanity is legendary — far more extreme than the show. She's older, more cunning, and more manipulative.",show:"Introduced in Season 1 (earlier than books). Shohreh Aghdashloo was cast before the role was fully written. On Syfy she couldn't curse; on Amazon she went full Avasarala.",verdict:"The show improved pacing by introducing her early. Aghdashloo IS Avasarala — even the authors agree."},
+{name:"Joe Miller",level:"faithful",book:"A burnt-out Ceres detective with a hat. His obsession with Julie Mao borders on unhealthy. His sacrifice on Eros is the emotional peak of Book 1.",show:"Thomas Jane nailed the noir detective feel. The hat became iconic. His chemistry with the protomolecule Julie scenes is haunting. Jane loved the role and self-funded a short film.",verdict:"Nearly perfect adaptation. Jane's performance elevated an already great character."},
+{name:"Camina Drummer",level:"major",book:"A relatively minor character — she's Fred Johnson's aide, then Medina Station security chief. Her role is limited compared to her show counterpart.",show:"A MASSIVE expansion. Drummer absorbs roles from Bull, Sam, Michio Pa, and Saba. Cara Gee's fierce performance made Drummer one of the show's most popular characters.",verdict:"The show's biggest improvement. Book Drummer is a footnote; show Drummer is a legend."},
+{name:"Fred Johnson",level:"faithful",book:"'The Butcher of Anderson Station.' Former UN colonel turned OPA leader. Killed by a Free Navy operative in Book 5. His death is sudden and shocking.",show:"Chad L. Coleman brings quiet authority. His death in Season 5 matches the books. The Anderson Station backstory is adapted as a short film within the show.",verdict:"Closely adapted. Coleman's physical presence matches the character well."},
+{name:"Anderson Dawes",level:"minor",book:"A significant political player but less screen time than the show gives him. His manipulations are more behind-the-scenes.",show:"Jared Harris's performance is electric — he created a Belter accent from scratch and made Dawes magnetic. Fans demanded more Dawes every season.",verdict:"Harris elevated Dawes from a supporting player to a standout. Unfortunately, scheduling prevented his return."},
+{name:"Marco Inaros",level:"faithful",book:"A narcissistic sociopath wrapped in revolutionary ideology. His manipulation of Filip is chilling. His death in the ring space feels almost anticlimactic — which is the point.",show:"Keon Alexander plays him with dangerous charisma. The show captures his narcissism perfectly. His death scene is more dramatic than the books.",verdict:"Well adapted. Alexander brings the right mix of charm and menace."},
+{name:"Filip Inaros",level:"faithful",book:"His slow realization that his father is a monster is one of the best arcs in the series. He ultimately abandons Marco and changes his name to Nagata.",show:"Jasai Chase Owens captures Filip's conflict between loyalty to his father and his own conscience. The show faithfully adapts his arc through Season 6.",verdict:"One of the most emotionally authentic adaptations in the show."},
+{name:"Clarissa Mao",level:"minor",book:"Her prison arc and redemption happen over several books. She's physically deteriorating from her combat mods. Sacrifices herself on Medina Station in Book 7.",show:"Nadine Nicole joins the Roci crew in Season 4. Her deterioration is shown but compressed. She gets a powerful death scene. Given more warmth than early book appearances.",verdict:"The show softens her edges and gives her more crew bonding time, which improves her arc."},
+{name:"Julie Mao",level:"faithful",book:"Appears mostly through Miller's investigation. Her actual page time is limited — she's more of an idea than a character until the Eros scenes.",show:"Florence Faivre brings Julie to life in flashbacks and the Eros protomolecule scenes. The show gives her more visual presence than the books.",verdict:"Faithfully adapted with smart use of visual storytelling."},
+{name:"Jules-Pierre Mao",level:"minor",book:"A shadowy corporate villain who operates through intermediaries. Less direct confrontation with main characters.",show:"François Chau brings more personal menace. Given face-to-face scenes with Avasarala and Bobbie that don't exist in the books. More humanized.",verdict:"The show makes him a more compelling antagonist by giving him screen time."},
+{name:"Praxideke Meng",level:"faithful",book:"A POV character in Caliban's War. His desperate search for Mei is deeply emotional. He's a botanist, not a fighter — which makes his bravery more impactful.",show:"Terry Chen captures Prax's gentle desperation. His arc through Season 2-3 is closely adapted. The Ganymede greenhouse scenes are excellent.",verdict:"Very faithful. Chen's quiet intensity matches the book character perfectly."},
+{name:"Adolphus Murtry",level:"minor",book:"A competent but cruel security chief. His conflict with Holden on Ilus is more of a slow-burn ideological clash.",show:"Burn Gorman plays him with relentless menace. More physically threatening than the book version. Given more violent confrontations with Holden and the Belters.",verdict:"Gorman dials up the villainy effectively but loses some of the book's moral ambiguity."},
+{name:"Anna Volovodov",level:"minor",book:"A POV character in Abaddon's Gate. Her faith and compassion drive her arc. She's from Europa and brings a unique spiritual perspective to the Slow Zone crisis.",show:"Elizabeth Mitchell captures Anna's warmth. Her role is slightly compressed but the core — being a moral compass — remains intact. She absorbs some of Pastor Cortez's role.",verdict:"Faithful in spirit, slightly reduced in scope. Mitchell brings genuine compassion."},
+{name:"Klaes Ashford",level:"major",book:"An antagonist in Abaddon's Gate who's more straightforwardly villainous. He tries to destroy the Ring Gate and is dealt with accordingly.",show:"David Strathairn transforms Ashford into a complex, honorable leader. His singing death scene in Season 4 is one of the show's most powerful moments. A complete reinvention.",verdict:"The show version is vastly superior. Strathairn's Ashford is one of TV sci-fi's great characters."},
+{name:"Bull (Carlos Baca)",level:"major",book:"A major POV character in Abaddon's Gate. Earther on a Belter ship, paralyzed during the crisis. Makes brutal decisions to save the Behemoth.",show:"José Zúñiga appears briefly as Bull in Season 5 in a completely different role — he's a friend of Amos in Baltimore. Bull's Behemoth arc was given to Drummer.",verdict:"Essentially a different character. Book Bull's arc is one of the best in the series but was given entirely to Drummer."},
+{name:"Michio Pa",level:"major",book:"A POV character in Babylon's Ashes. Starts as Marco's ally, defects to run a food distribution fleet. Her polyamorous family is a key part of her identity.",show:"Doesn't exist in the show. Her entire arc — the defection, the food fleet, the polyamorous family — was absorbed into Drummer's storyline.",verdict:"Pa fans missed her, but Drummer's version of the arc worked beautifully on screen."},
+{name:"Saba",level:"major",book:"A key leader of the anti-Laconian underground. His strategic mind and Belter identity drive resistance operations across multiple systems.",show:"Doesn't appear in the show (the show ends before his major role). Some underground elements are given to Drummer in Season 6.",verdict:"A loss for show-only viewers who miss one of the books' most compelling resistance leaders."},
+{name:"Sam Rosenberg",level:"major",book:"The brilliant, warm chief engineer of the Behemoth. Her murder during the Slow Zone crisis is devastating and drives Bull's rage.",show:"Doesn't appear. Her role and emotional impact are absorbed into other characters, primarily Drummer's losses.",verdict:"Another great book character lost in adaptation. Sam's death is one of the series' most impactful."},
+{name:"Erich",level:"minor",book:"Amos's childhood friend from Baltimore. A crime boss who helps Amos survive after Marco's rocks hit Earth. Their bond is deep and complicated.",show:"Appears briefly in Season 5. Less development than the books but captures the Baltimore underworld feel. The emotional depth of their relationship is compressed.",verdict:"Adequate but rushed. The book version of their reunion is more powerful."},
+{name:"Havelock",level:"minor",book:"Miller's partner on Ceres in Book 1, then corporate security on Ilus in Book 4. His perspectives highlight how Earthers see the Belt.",show:"Jay Hernandez plays him in Season 1 only. His Ilus arc from Book 4 was cut from Season 4 entirely.",verdict:"A significant loss — Havelock's Ilus storyline provides a compelling corporate perspective."},
+{name:"Cotyar Ghazi",level:"show-only",book:"Doesn't exist in the books. Avasarala's intelligence support comes from different characters.",show:"Nick E. Tarabay created a compelling original character — Avasarala's bodyguard and spy. His death protecting Bobbie and Avasarala is a great TV moment.",verdict:"A smart show-original addition that gave Avasarala a personal connection to the danger."},
+{name:"Errinwright",level:"minor",book:"A corrupt politician who operates more in the background. His conspiracy with Mao is revealed gradually through political maneuvering.",show:"Shawn Doyle makes Errinwright a scenery-chewing villain. More direct confrontations with Avasarala. His confession scene is a show highlight.",verdict:"The show makes him more theatrical but loses some political subtlety."},
+{name:"Nancy Gao",level:"faithful",book:"Replaces Avasarala as Secretary-General. Pushes aggressive colonization. Dies when asteroids hit Earth.",show:"Lily Gao captures the ambitious politician. Her death and the asteroid strike sequence are among the show's most devastating scenes.",verdict:"Closely adapted with powerful visual impact in the show."},
+{name:"Diogo",level:"minor",book:"A minor recurring Belter. Appears briefly across multiple books as a face of OPA youth.",show:"Andrew Rotilio appears across multiple seasons, becoming a recurring face. Gets more personality and screen time than the books provide.",verdict:"The show gave Diogo more presence, making his death more impactful."},
+{name:"Maneo Jung-Espinoza",level:"faithful",book:"The slingshotter who dies entering the Ring. His death demonstrates the Ring's speed limit in a viscerally horrifying way.",show:"Adapted faithfully in Season 3. His cocky video messages to his girlfriend make his sudden death even more shocking on screen.",verdict:"One of the show's best cold opens. Perfectly adapted."},
+{name:"Solomon Epstein",level:"faithful",book:"His accidental invention of the drive and death are told in the novella 'Drive.' A short, tragic, transformative story.",show:"Adapted as a flashback episode in Season 2. Sam Huntington's performance captures the horror of being unable to stop acceleration. One of the best standalone scenes.",verdict:"Beautifully adapted. The show version may be even more powerful than the written version."},
+{name:"Ade Tukunbo",level:"minor",book:"Holden's lover on the Canterbury. Her death is briefly mentioned and drives his initial quest for justice.",show:"Given more screen time and emotional weight before the Canterbury's destruction. Her death scene is visually stunning and devastating.",verdict:"The show smartly builds her up before the loss, making it hit harder."},
+{name:"Captain Kirino",level:"faithful",book:"Captain of the Donnager who scuttles her own ship rather than let it be captured. Her honor defines Martian military culture.",show:"Adapted faithfully. The Donnager battle sequence is one of the show's best early action scenes. Her stoic decision to self-destruct is chilling.",verdict:"Perfect adaptation. The Donnager battle announced that The Expanse was not ordinary sci-fi."},
+{name:"Strickland",level:"faithful",book:"The monster posing as Mei's doctor who selects children for protomolecule experiments. Pure evil hiding behind a white coat.",show:"Rex Linn captures the predatory nature. His scenes with Mei are deeply unsettling. His death at Amos's hands is cathartic.",verdict:"Faithfully and disturbingly adapted."},
+{name:"Admiral Nguyen",level:"minor",book:"A hawkish admiral who fires protomolecule hybrids at Mars. His zealotry makes him dangerous.",show:"Byron Mann gives him more personality and screen presence. His confrontation with Souther is expanded into a full mutiny sequence.",verdict:"The show's expanded Nguyen/Souther conflict is excellent television."},
+{name:"Admiral Souther",level:"minor",book:"A principled admiral who opposes the war. His mutiny attempt is significant but brief.",show:"Martin Roach's mutiny sequence aboard the Agatha King is expanded into a tense multi-episode arc. One of Season 3's best storylines.",verdict:"The show's expanded version is superior — more tension, more stakes, more payoff."},
+{name:"Cortazar",level:"faithful",book:"An amoral scientist with surgically removed emotions. His clinical detachment while studying the protomolecule is chilling.",show:"Carlos Gonzalez-Vio captures the unsettling emptiness. His scenes on Laconia in Season 6 effectively set up the unresolved Laconia storyline.",verdict:"Closely adapted. The character is inherently creepy in both versions."},
+{name:"Dawes's Spy (Kenzo)",level:"show-only",book:"Doesn't exist in the books. The espionage aboard the Rocinante is handled differently.",show:"Created for Season 1 as a Dawes operative planted on the Roci. Adds a paranoid thriller element to the early episodes.",verdict:"A smart addition for TV pacing that creates tension in the confined ship setting."},
+{name:"Lucia Mazur",level:"minor",book:"An Ilus colonist and POV character in Cibola Burn. Her perspective grounds the colonial conflict in personal stakes.",show:"Rosa Gilmore plays her in Season 4. Slightly reduced role but captures the moral complexity of the Ilus situation.",verdict:"Adequate but the book version is richer due to POV access."},
+{name:"Basia Merton",level:"minor",book:"A desperate father on Ilus who makes catastrophic choices. His guilt and redemption arc is emotionally powerful.",show:"David Paetkau appears briefly. His sabotage act is shown but his internal journey is largely lost without POV narration.",verdict:"The book version is significantly more nuanced. TV can't replicate the internal struggle."},
+{name:"Cara (Strange Dogs)",level:"faithful",book:"A girl on Laconia who discovers alien repair drones in the novella. Her story foreshadows Laconia's protomolecule experiments.",show:"Adapted in Season 6 Episode 1 cold opens. The creepy, beautiful imagery of the alien drones perfectly captures the novella's tone.",verdict:"One of the show's best novella adaptations — atmospheric and unsettling."},
+{name:"Xan",level:"faithful",book:"Cara's brother who dies and is resurrected by alien drones — but comes back changed. A haunting preview of what the protomolecule does to organic life.",show:"Adapted alongside Cara's story in Season 6. The visual of the resurrected boy with black eyes is deeply disturbing.",verdict:"Effectively adapted. The show's visual medium makes the horror even more immediate."},
+{name:"Arjun Rao",level:"major",book:"Avasarala's gentle, poetic husband who provides emotional grounding. He's a constant, loving presence throughout her political career.",show:"Recast between seasons (Brian George to Michael Benyaer). The recasting was jarring for viewers and the character was given less screen time overall.",verdict:"The recasting hurt. Book Arjun is a more consistent, emotionally resonant presence."},
+{name:"Oksana",level:"show-only",book:"Doesn't exist. Drummer in the books doesn't have the polyamorous family unit.",show:"Created as part of Drummer's Belter family crew. Their relationship shows intimate Belter culture and gives Drummer personal stakes beyond politics.",verdict:"A great show-original element that deepened Drummer's character considerably."},
+{name:"Monica Stuart",level:"minor",book:"An investigative journalist who follows the Roci across several books. She's persistent and useful but not deeply developed.",show:"Anna Hopkins plays Monica across multiple seasons. Given slightly more personality and romantic tension with Holden than the books suggest.",verdict:"Adequately adapted. The show gives her a touch more personality."},
+{name:"The Investigator (Proto-Miller)",level:"faithful",book:"A protomolecule construct that appears to Holden as Miller. It's NOT Miller — it's an alien tool wearing his face. This distinction is important and creepy.",show:"Thomas Jane returns perfectly. His 'not-Miller' performance walks the line between familiar and alien. The visual effects of his flickering presence are excellent.",verdict:"Brilliantly adapted. Jane's commitment to showing that this ISN'T really Miller is masterful."},
+{name:"Teresa Duarte",level:"faithful",book:"Duarte's teenage daughter who befriends captive Holden. She owns a dog named Muskrat. Her perspective humanizes Laconia and she plays a key role in the final book.",show:"Only briefly referenced in Season 6. Her full story exists only in the unadapted books 7-9.",verdict:"Show viewers missed one of the series' best later characters. Her arc in books 8-9 is essential."},
+{name:"Elvi Okoye",level:"minor",book:"A POV character on Ilus in Book 4, then a major player in Books 8-9 leading Laconia's science missions to dead systems. Becomes humanity's foremost alien expert.",show:"Lyndie Greenwood plays her in Season 4 only. Her Ilus arc is adapted but her later, more important role in Laconia's missions doesn't exist in the show.",verdict:"Show viewers only see Act 1 of Elvi's story. Her evolution into the galaxy's top xenobiologist is some of the best sci-fi in the series."},
+{name:"Fayez Sarkis",level:"minor",book:"A charming geologist who becomes Elvi's husband. His humor and warmth provide levity in dire situations throughout Books 4-9.",show:"Mark Ivanir plays him in Season 4. Given less screen time than the books but captures the charm. His relationship with Elvi is shown but not deeply developed.",verdict:"Adequate but the books give Fayez much more room to shine. His humor is one of the series' underrated pleasures."},
+{name:"Santiago Singh",level:"faithful",book:"A young Laconian governor on Medina Station whose idealism and inability to understand resistance lead to his downfall. A tragic, well-drawn antagonist in Book 7.",show:"Only exists in the unadapted Book 7 (Persepolis Rising). Referenced obliquely in Season 6 but never appears on screen.",verdict:"One of the best characters show viewers never met. Singh's tragic arc would have been incredible television."}
+];
+
+function renderCmp(filter){
+  var el=document.getElementById('cmp-list');
+  var html='';
+  CMP.forEach(function(c,i){
+    if(filter && c.name.toLowerCase().indexOf(filter)<0) return;
+    var badge=c.level==='faithful'?'Faithful':c.level==='minor'?'Minor Changes':c.level==='major'?'Major Changes':'Show Original';
+    html+='<div class="cmp-card" onclick="this.classList.toggle(\'open\')">';
+    html+='<div class="cmp-header"><span class="cmp-rank">#'+(i+1)+'</span><span class="cmp-name">'+c.name+'</span><span class="cmp-badge '+c.level+'">'+badge+'</span><span class="cmp-arrow">▼</span></div>';
+    html+='<div class="cmp-body"><div class="cmp-row">';
+    html+='<div class="cmp-col"><div class="cmp-col-label book">📖 In the Books</div><p>'+c.book+'</p></div>';
+    html+='<div class="cmp-col"><div class="cmp-col-label show">📺 In the Show</div><p>'+c.show+'</p></div>';
+    html+='</div><div class="cmp-verdict">'+c.verdict+'</div></div></div>';
+  });
+  el.innerHTML=html;
+}
+function filterCmp(){renderCmp(document.getElementById('cmpSearch').value.toLowerCase().trim()||null)}
+renderCmp();
+
+// ══════ PLOT DIFFERENCES ══════
+var PLOTS=[
+{title:"Alex Kamal's Death",scope:"Season 5 / Nemesis Games",book:"Alex survives all 9 books. He continues to fly the Rocinante, reconciles with his family, and finds peace as the best pilot in the system. He's present for every major event through the finale.",show:"Killed off in Season 5's finale via a stroke during high-g maneuver. Actor Cas Anvar was fired due to sexual misconduct allegations. The death was written quickly and feels abrupt — a blood vessel in his brain bursts during a rescue mission.",impact:"The most significant forced change in the adaptation. Alex's book arc — reconciling with his ex-wife, finding family aboard the Roci, and flying until the very end — is entirely lost. Bull (reimagined as a pilot) partially fills his role in Season 6."},
+{title:"Drummer Absorbs Multiple Characters",scope:"Seasons 2-6 / Multiple Books",book:"Drummer is a minor character — Fred Johnson's aide, then Medina security chief. The characters Bull, Sam, Michio Pa, and Saba each have their own distinct storylines across different books.",show:"Drummer absorbs ALL of their arcs: Bull's Behemoth leadership, Sam's engineering genius, Pa's Free Navy defection and polyamorous family, and Saba's underground resistance. Cara Gee became a fan favorite.",impact:"The show's best creative decision. Consolidating 4-5 characters into one created a richer, more consistent character arc. Book fans initially resisted but most now agree the show version is superior."},
+{title:"Avasarala's Introduction",scope:"Season 1 / Leviathan Wakes",book:"Avasarala doesn't appear until Book 2 (Caliban's War). Book 1 is entirely Holden and Miller's perspectives. The political dimension of the protomolecule conspiracy is revealed later.",show:"Introduced in Season 1, Episode 1. Her political maneuvering runs parallel to Holden and Miller's investigation from the very beginning, providing crucial context for the conspiracy.",impact:"A universally praised change. Adding Avasarala early gives viewers the political context that book readers don't get until later, making the conspiracy more comprehensible and the world richer."},
+{title:"Ashford's Redemption Arc",scope:"Season 3-4 / Abaddon's Gate",book:"Ashford is a more straightforward antagonist in Book 3. He tries to destroy the Ring Gate out of fear and is dealt with by Bull. He's not particularly sympathetic.",show:"David Strathairn transforms Ashford into a complex, honorable leader who evolves from antagonist to one of the show's most beloved characters. His death — singing a Belter song while being executed by Marco — is devastating.",impact:"A massive improvement. Book Ashford is forgettable; show Ashford is unforgettable. This change demonstrates how adaptation can elevate source material."},
+{title:"The Behemoth / Slow Zone Crisis",scope:"Season 3 / Abaddon's Gate",book:"Told through POVs of Bull, Anna, and Melba (Clarissa). Bull is paralyzed and commands from a wheelchair. Sam is murdered. The crisis is longer and more politically complex.",show:"Heavily restructured. Bull's entire arc goes to Drummer. Sam doesn't exist. The crisis is compressed into fewer episodes but the core conflict — whether to destroy the Ring or pass through — remains.",impact:"Necessary compression for TV. The book version is richer but the show version is tighter. Purists mourn Bull and Sam; everyone else appreciates the pacing."},
+{title:"Bobbie's Martian Disillusionment",scope:"Seasons 2-4 / Caliban's War",book:"Bobbie's loss of faith in Mars is a gradual process across Book 2. She's manipulated by Martian politicians and slowly realizes Mars is using her as a pawn.",show:"Expanded significantly. Bobbie gets an original subplot investigating arms dealers on Mars in Season 4, showing how Mars is collapsing after the Ring Gates open. This doesn't exist in the books.",impact:"A strong addition. The show's original Mars subplot grounds Bobbie's disillusionment in visual, concrete terms rather than the book's more internal journey."},
+{title:"Ilus / Cibola Burn Adaptation",scope:"Season 4 / Cibola Burn",book:"Four POV characters (Holden, Elvi, Havelock, Basia) tell the story of colonial conflict on Ilus. It's largely isolated from the rest of the solar system. Havelock's corporate perspective is crucial.",show:"Havelock's Ilus arc is cut entirely. Basia's role is reduced. Avasarala's election subplot and Bobbie's Mars investigation are added to keep other storylines moving.",impact:"The show smartly avoided the book's isolation problem by adding parallel storylines. But Havelock's perspective — the sympathetic corporate employee — is a real loss."},
+{title:"Naomi's Free Navy Arc",scope:"Season 5 / Nemesis Games",book:"Naomi boards Marco's ship voluntarily to try to save Filip. Her chapters are claustrophobic and psychological — she's trapped with her abuser and manipulated at every turn.",show:"Faithfully adapted and arguably improved by the visual medium. Dominique Tipper's performance during her escape — building a makeshift radio, ejecting into space without a suit — is the show's finest hour.",impact:"One of the best book-to-show adaptations in sci-fi. The show captures the terror and determination of Naomi's escape with visuals that surpass the written version."},
+{title:"The Earth Asteroid Strike",scope:"Season 5 / Nemesis Games",book:"Three asteroids coated in stealth material hit Earth. The devastation is described through news reports and character reactions. Amos is on Earth when it happens.",show:"Visually stunning and horrifying. The show depicts the impacts with movie-quality VFX. Watching billions die while characters are helpless is devastating television.",impact:"The book tells you about the horror; the show makes you witness it. This is where the visual medium truly earns its place alongside the source material."},
+{title:"The Laconia Setup",scope:"Season 6 / Babylon's Ashes",book:"Duarte's departure to Laconia happens in Book 6 but Laconia isn't fully explored until Book 7 (Persepolis Rising), which the show never adapted.",show:"Season 6 adds Laconia teases: the Strange Dogs novella adapted as cold opens, Duarte's brief appearances, and Cortazar's protomolecule research. It's a setup for a continuation that hasn't happened yet.",impact:"The show does its best to tease the unadapted books. For show-only viewers, Laconia remains a tantalizing mystery. For book readers, it's bittersweet knowing the best may be yet to come."},
+{title:"The Free Navy War Resolution",scope:"Season 6 / Babylon's Ashes",book:"The Free Navy conflict takes an entire 600-page book (Babylon's Ashes) with 16 POV characters. The political complexity of forming the Transport Union is deeply explored.",show:"Compressed into 6 episodes in Season 6. The resolution feels rushed — a common criticism. Marco's defeat, the Transport Union formation, and multiple character arcs are all squeezed together.",impact:"The most criticized compression. Season 6 is good but clearly needed more episodes. Amazon's 6-episode order left the writers too little room for a conflict this complex."},
+{title:"Arjun Rao Recasting",scope:"Seasons 4-5 / Ongoing",book:"Arjun is a consistent, gentle presence — a poet and professor who grounds Avasarala. His characterization never wavers.",show:"Brian George played Arjun in Seasons 1-3, then Michael Benyaer took over for Seasons 4-5. The recasting was unexplained and jarring, breaking the emotional continuity of Avasarala's home life.",impact:"A small but noticeable flaw. The original Arjun had warm chemistry with Aghdashloo that the recast never fully recaptured."},
+{title:"The Show's Ending vs. The Books' Ending",scope:"Season 6 Finale / Leviathan Falls",book:"The saga ends with Holden sacrificing himself to destroy the Ring network, saving humanity from the dark gods. It's epic, heartbreaking, and conclusive. Every character gets a full ending.",show:"The show ends at the natural 30-year time-jump break. It's satisfying as a 'pause' but leaves massive storylines unresolved: Laconia's invasion, Duarte's madness, the dark gods, Holden's sacrifice, and Bobbie's death.",impact:"Show-only viewers got a good ending. Book readers know the BEST parts — the Laconian war, Bobbie's sacrifice, Holden's final act — remain untold on screen. The hope for a continuation persists."},
+{title:"The Ring Entities / Dark Gods",scope:"Seasons 1-6 / All Books",book:"Gradually revealed across 9 books as the force that destroyed the Ring Builders. They attack through the gates, consume consciousness, and represent an existential threat to all life. The final confrontation is cosmic horror.",show:"Hinted at through 'going Dutchman' and strange anomalies, but never fully explored. The show ends before the dark gods become the primary threat. Show viewers only get shadows of this storyline.",impact:"The series' biggest unadapted mystery. The dark gods elevate The Expanse from space opera to cosmic horror in the final books. Show viewers missed the most mind-bending elements of the saga."}
+];
+
+(function(){
+  var el=document.getElementById('plot-list');
+  PLOTS.forEach(function(p){
+    var html='<div class="plot-card">';
+    html+='<div class="plot-title">'+p.title+'</div>';
+    html+='<div class="plot-scope">'+p.scope+'</div>';
+    html+='<div class="plot-cols">';
+    html+='<div class="plot-col"><h4 class="book">📖 In the Books</h4><p>'+p.book+'</p></div>';
+    html+='<div class="plot-col"><h4 class="show">📺 In the Show</h4><p>'+p.show+'</p></div>';
+    html+='</div>';
+    html+='<div class="plot-impact"><strong>Impact:</strong> '+p.impact+'</div>';
+    html+='</div>';
+    el.innerHTML+=html;
+  });
+})();
+
+
+
+// ══════ WHO SAID IT — 200 QUOTES ══════
+var QUOTE_CHARS=["Holden","Naomi","Amos","Alex","Bobbie","Avasarala","Miller","Drummer","Fred Johnson","Dawes","Marco","Filip","Clarissa","Prax","Julie","Murtry","Anna","Ashford","Errinwright","Cortazar","Elvi","Diogo","Cotyar","Bull","Shed"];
+
+var QUOTES=[
+{q:"I didn't kill him because he was crazy. I killed him because he was making sense.",c:"Miller"},
+{q:"The stars are better off without us.",c:"Holden"},
+{q:"I am that guy.",c:"Amos"},
+{q:"Doors and corners, kid. That's where they get you.",c:"Miller"},
+{q:"You're not that guy. I'm that guy.",c:"Amos"},
+{q:"I have a feeling that being on the right side of things is going to get very, very ugly.",c:"Avasarala"},
+{q:"We can't expect anyone to treat us better than we treat each other.",c:"Naomi"},
+{q:"I didn't become XO of this ship by letting people walk all over me.",c:"Naomi"},
+{q:"Wherever I goddamn like.",c:"Amos"},
+{q:"Earth must come first.",c:"Avasarala"},
+{q:"Everyone gets a choice. You chose wrong.",c:"Amos"},
+{q:"I've been fighting for the Belt my whole life. Don't tell me what it means to sacrifice.",c:"Drummer"},
+{q:"The thing about civilization is that it keeps you civil.",c:"Amos"},
+{q:"No laws in Ceres, just cops.",c:"Miller"},
+{q:"The universe never tells us if we did right or wrong. It's more important to try to help people than to know you did.",c:"Anna"},
+{q:"When you spend your whole life living under a dome, even the most mundane things seem amazing the first time you see them.",c:"Alex"},
+{q:"If you act like everyone's out to get you, eventually they will be.",c:"Naomi"},
+{q:"Don't put your faith in governments. Put it in the people you love.",c:"Avasarala"},
+{q:"I want to see the sun through clouds. I want to walk in the rain without a suit.",c:"Miller"},
+{q:"I think about what I want and then I ask myself, would Holden do that? And if the answer is yes, I know I'm on the right track.",c:"Amos"},
+{q:"People are tribal. The bigger the tribe, the more pressure to hold it together.",c:"Fred Johnson"},
+{q:"You can tell a lot about a society by how it treats its prisoners.",c:"Avasarala"},
+{q:"Being brave doesn't mean you aren't scared. It means you're scared and you do the right thing anyway.",c:"Holden"},
+{q:"The Belt remembers.",c:"Dawes"},
+{q:"We're not here to find truth. We're here to survive.",c:"Miller"},
+{q:"When someone points a gun at you, you don't get to pick the caliber.",c:"Avasarala"},
+{q:"Half of good maintenance is leaving things alone.",c:"Naomi"},
+{q:"Some fights aren't about winning. Some fights are about being there.",c:"Bobbie"},
+{q:"I'm scared of the things that happen to humans when they stop acting like humans.",c:"Anna"},
+{q:"There's a difference between being a survivor and a monster.",c:"Naomi"},
+{q:"Mars will not be free until every Martian is willing to fight for it.",c:"Bobbie"},
+{q:"The protomolecule doesn't care about politics.",c:"Holden"},
+{q:"Home isn't where you were born. Home is where they want you.",c:"Naomi"},
+{q:"I've lived long enough to see how stories end. Not many of them end well.",c:"Avasarala"},
+{q:"We don't get to choose what we are. We only get to choose what we do about it.",c:"Amos"},
+{q:"You live long enough, you watch everyone you love turn to dust.",c:"Avasarala"},
+{q:"The more they try to control the Belt, the tighter the Belt resists.",c:"Dawes"},
+{q:"If life transcends death, then maybe it doesn't matter if we die.",c:"Miller"},
+{q:"The first rule of a gunfight is to have a gun.",c:"Amos"},
+{q:"We fight or we die. That's always been the Belter way.",c:"Drummer"},
+{q:"I'm not the kind of person who lets things go.",c:"Bobbie"},
+{q:"Some people have a gift for violence. I don't judge them for it.",c:"Holden"},
+{q:"The problem with fighting for human freedom is that humans don't appreciate freedom.",c:"Avasarala"},
+{q:"Everything that rises must converge.",c:"Miller"},
+{q:"History isn't written by the victors. It's written by whoever's still standing.",c:"Avasarala"},
+{q:"A ship is just a machine. The crew is what makes it alive.",c:"Alex"},
+{q:"When the walls come down, you see what people really are.",c:"Naomi"},
+{q:"I'm not going to let them use me as a weapon against my own people.",c:"Bobbie"},
+{q:"You don't get to decide what I'm willing to die for.",c:"Drummer"},
+{q:"There's always a choice. Sometimes all the options just suck.",c:"Holden"},
+{q:"Death is easy. Living is the hard part.",c:"Miller"},
+{q:"In the Belt, you learn early: the void is always just outside the hull.",c:"Naomi"},
+{q:"I've survived worse than you.",c:"Amos"},
+{q:"The universe doesn't owe you fairness.",c:"Avasarala"},
+{q:"I don't carry a badge anymore. I carry a gun.",c:"Miller"},
+{q:"Belters don't break. We bend.",c:"Drummer"},
+{q:"The problem with being a hero is that everyone expects you to keep doing it.",c:"Holden"},
+{q:"I will end you in ways that are creative and deeply unpleasant.",c:"Avasarala"},
+{q:"The Roci isn't just a ship. She's family.",c:"Alex"},
+{q:"You can't save everyone. You can only save the ones in front of you.",c:"Amos"},
+{q:"Empires always fall. It's just a matter of when.",c:"Dawes"},
+{q:"I trust the ship more than I trust the people on it.",c:"Naomi"},
+{q:"If I have to choose between doing nothing and doing something stupid, I'll take stupid every time.",c:"Holden"},
+{q:"Everyone's a hero until they have to be one.",c:"Miller"},
+{q:"The Belt doesn't need a savior. It needs soldiers.",c:"Marco"},
+{q:"You don't know what you'll do until they put you in the fire.",c:"Bobbie"},
+{q:"I didn't ask to be made into this. But I won't waste what I've become.",c:"Clarissa"},
+{q:"The universe has a way of correcting mistakes. We just call it physics.",c:"Naomi"},
+{q:"When you fly, everything else falls away.",c:"Alex"},
+{q:"I'd rather die on my feet than live on my knees.",c:"Drummer"},
+{q:"The only way to fix a broken system is to break it more.",c:"Marco"},
+{q:"Compassion is the one thing that separates us from the machines.",c:"Anna"},
+{q:"The Belt is not a place. It's a people.",c:"Dawes"},
+{q:"You don't survive out here by being nice.",c:"Miller"},
+{q:"I've made a career out of doing the impossible. Why stop now?",c:"Bobbie"},
+{q:"Every war has its casualties. The question is whether they were worth it.",c:"Fred Johnson"},
+{q:"The protomolecule is a tool. It's the hands that wield it that matter.",c:"Holden"},
+{q:"I know how to keep things running. That's my whole thing.",c:"Naomi"},
+{q:"We're all just bags of meat and electricity pretending we matter.",c:"Amos"},
+{q:"Earth didn't build the Belt. Belters built the Belt.",c:"Drummer"},
+{q:"There are things worse than dying. Losing your purpose is one of them.",c:"Bobbie"},
+{q:"The truth is a weapon. Point it carefully.",c:"Avasarala"},
+{q:"I don't believe in luck. I believe in preparation.",c:"Naomi"},
+{q:"Sometimes the right thing to do is the hardest thing.",c:"Holden"},
+{q:"In space, nobody can hear you scream. In the Belt, nobody cares.",c:"Miller"},
+{q:"Fear is a reaction. Courage is a decision.",c:"Fred Johnson"},
+{q:"You don't have to be a good person to do good things.",c:"Amos"},
+{q:"I will not let Earth dictate the future of my people.",c:"Marco"},
+{q:"The old world is dying. Let it go.",c:"Marco"},
+{q:"A good leader knows when to fight and when to run.",c:"Fred Johnson"},
+{q:"Don't confuse silence for compliance.",c:"Drummer"},
+{q:"Gravity is the enemy of anyone born in the dark.",c:"Naomi"},
+{q:"I fix things. Sometimes I break them first.",c:"Amos"},
+{q:"There is no justice. Only the illusion of it.",c:"Miller"},
+{q:"They took everything from us. We'll take everything from them.",c:"Marco"},
+{q:"I've seen what happens when you give someone unlimited power. They become the thing they swore to destroy.",c:"Avasarala"},
+{q:"The stars don't care about your problems. But I do.",c:"Holden"},
+{q:"I will not be another casualty of someone else's war.",c:"Naomi"},
+{q:"You fight because that's what marines do.",c:"Bobbie"},
+{q:"The Belt will remember what was done here today.",c:"Dawes"},
+{q:"I'm not broken. I just work different.",c:"Amos"},
+{q:"In the vacuum, there's no gravity, no air, and no mercy.",c:"Miller"},
+{q:"Power is never given. It's taken.",c:"Marco"},
+{q:"I'd rather fly into the sun than surrender this ship.",c:"Alex"},
+{q:"Being smart isn't enough. You also have to be right.",c:"Naomi"},
+{q:"If this is the hill I die on, so be it.",c:"Drummer"},
+{q:"Nobody gets to tell me who my people are.",c:"Naomi"},
+{q:"Mars doesn't surrender. Mars adapts.",c:"Bobbie"},
+{q:"Humanity has a talent for finding new ways to kill each other.",c:"Avasarala"},
+{q:"You want to change the system? You have to understand it first.",c:"Fred Johnson"},
+{q:"I used to think the universe was random. Now I know it's just indifferent.",c:"Miller"},
+{q:"Love makes you do stupid things. That's what makes it love.",c:"Alex"},
+{q:"I protect my people. That's not negotiable.",c:"Amos"},
+{q:"Every empire thinks it will last forever. None of them do.",c:"Dawes"},
+{q:"In the Belt, we share air or we die. That's community.",c:"Drummer"},
+{q:"Being captain means making the choices nobody else wants to make.",c:"Holden"},
+{q:"I didn't choose this life. But I won't run from it.",c:"Bobbie"},
+{q:"War isn't about who's right. It's about who's left.",c:"Avasarala"},
+{q:"The ship doesn't judge you. It just does what you tell it.",c:"Alex"},
+{q:"I learned a long time ago that mercy is a luxury the Belt can't afford.",c:"Drummer"},
+{q:"The universe is under no obligation to make sense to you.",c:"Naomi"},
+{q:"Better to ask forgiveness than permission. Especially when there's no one left to ask.",c:"Amos"},
+{q:"The void doesn't care about your feelings.",c:"Miller"},
+{q:"We are what we do, not what we say.",c:"Fred Johnson"},
+{q:"I'll sleep when I'm dead. Which might be soon.",c:"Alex"},
+{q:"The Belt has been bleeding for generations. Today we cauterize the wound.",c:"Marco"},
+{q:"I don't need your approval. I need your cooperation.",c:"Avasarala"},
+{q:"We came from nothing and we built everything. Don't tell me Belters can't lead.",c:"Drummer"},
+{q:"You know what the nice thing about space is? Nobody can sneak up on you.",c:"Amos"},
+{q:"Sometimes I think the protomolecule is smarter than all of us combined.",c:"Holden"},
+{q:"A bullet doesn't care about your intentions.",c:"Amos"},
+{q:"Freedom isn't free. But slavery costs more.",c:"Dawes"},
+{q:"I won't let fear make my decisions for me.",c:"Holden"},
+{q:"The only real currency in the Belt is trust.",c:"Naomi"},
+{q:"I've buried enough friends. Today I'm not burying another.",c:"Bobbie"},
+{q:"Earth has oceans. Mars has a dream. The Belt has rage.",c:"Dawes"},
+{q:"Nobody writes songs about the guy who played it safe.",c:"Alex"},
+{q:"You can't punch gravity.",c:"Amos"},
+{q:"The Rocinante doesn't quit. Neither do we.",c:"Holden"},
+{q:"Politics is the art of making people agree to something they hate.",c:"Avasarala"},
+{q:"In the dark, everyone's equal.",c:"Miller"},
+{q:"If you can't fix it, fly it broken.",c:"Alex"},
+{q:"I don't care about your ideology. I care about your actions.",c:"Drummer"},
+{q:"People die. Systems survive. That's the tragedy of civilization.",c:"Avasarala"},
+{q:"Every mechanic knows: sometimes you have to take the whole thing apart to find what's wrong.",c:"Amos"},
+{q:"I've seen the edge of the universe. Trust me, it's overrated.",c:"Miller"},
+{q:"The Belt doesn't ask for charity. We ask for respect.",c:"Dawes"},
+{q:"I'm going to need a bigger gun.",c:"Bobbie"},
+{q:"When the system fails, good people have to step outside it.",c:"Holden"},
+{q:"I promised myself I'd never go back. Promises are complicated.",c:"Naomi"},
+{q:"Trust is earned in drops and lost in buckets.",c:"Avasarala"},
+{q:"I keep people alive. That's my job. Everything else is negotiable.",c:"Naomi"},
+{q:"The best pilot doesn't need to be the bravest. Just the most precise.",c:"Alex"},
+{q:"Revenge is a dish best served in vacuum.",c:"Drummer"},
+{q:"I've been angry my whole life. I just finally found something worth being angry about.",c:"Bobbie"},
+{q:"The first casualty of war isn't truth. It's nuance.",c:"Avasarala"},
+{q:"You can't engineer your way out of a moral problem.",c:"Naomi"},
+{q:"I broke the world. Someone had to.",c:"Marco"},
+{q:"Every dead Belter is someone's child.",c:"Anna"},
+{q:"The Roci's taken more hits than any ship in the fleet. She keeps flying.",c:"Alex"},
+{q:"I understand the protomolecule better than anyone alive. That's what terrifies me.",c:"Holden"},
+{q:"War doesn't determine who is right — only who is left.",c:"Fred Johnson"},
+{q:"The things I've done... I can't take them back. But I can make them count.",c:"Clarissa"},
+{q:"Nobody's asking you to be perfect. Just be present.",c:"Anna"},
+{q:"I will not be small. Not for anyone.",c:"Bobbie"},
+{q:"If the universe is trying to kill you, try harder.",c:"Amos"},
+{q:"Every station in the Belt has a memorial wall. Earth doesn't even know our names.",c:"Dawes"},
+{q:"I'm not a politician. I'm a mechanic. I fix things or I break them.",c:"Amos"},
+{q:"There are two kinds of people in the Belt: the quick and the dead.",c:"Miller"},
+{q:"I chose this crew. That means I chose their problems too.",c:"Holden"},
+{q:"Home is wherever the Roci is parked.",c:"Alex"},
+{q:"I've learned to trust the math. People lie. Math doesn't.",c:"Naomi"},
+{q:"Every revolutionary thinks they're the hero. Most of them are wrong.",c:"Avasarala"},
+{q:"I don't forgive. I don't forget. I don't lose.",c:"Drummer"},
+{q:"The universe is big enough for all of us. That's what makes it so damn scary.",c:"Holden"},
+{q:"I'll hold the line. That's what I do.",c:"Bobbie"},
+{q:"Some things are worth dying for. Finding which ones is the trick.",c:"Miller"},
+{q:"I'm the last person standing between you and the void. Be grateful.",c:"Amos"},
+{q:"Beltalowda! The inners think we're nothing. Show them how wrong they are.",c:"Drummer"},
+{q:"A ship this good deserves a crew this good.",c:"Alex"},
+{q:"If you want to survive out here, you need to be useful or invisible.",c:"Miller"},
+{q:"You can't fight physics. But you can negotiate with it.",c:"Naomi"},
+{q:"My grandmother survived the concentration camps. I survived the Senate. Perspective is everything.",c:"Avasarala"},
+{q:"Every closed door in the Belt is someone saving oxygen.",c:"Naomi"},
+{q:"I don't have morals. But I have people.",c:"Amos"},
+{q:"They'll write books about this. Probably inaccurate ones.",c:"Avasarala"},
+{q:"I was born in the dark between worlds. You can't scare me with the dark.",c:"Drummer"},
+{q:"Flying is the only time I feel truly free.",c:"Alex"},
+{q:"I've killed men for less. And better.",c:"Amos"},
+{q:"Hope is not a strategy. But sometimes it's all we have.",c:"Holden"},
+{q:"The Belt united is unstoppable. The Belt divided is a graveyard.",c:"Marco"},
+{q:"I trust this ship with my life. She hasn't let me down yet.",c:"Naomi"},
+{q:"Sometimes I miss the simplicity of just being a cop.",c:"Miller"},
+{q:"War changes the warrior. Peace changes nobody.",c:"Bobbie"},
+{q:"Every hero's journey ends the same way: alone.",c:"Miller"},
+{q:"I don't want to be a hero. I want to be alive.",c:"Alex"},
+{q:"The only authority I recognize is physics.",c:"Naomi"},
+{q:"We didn't come this far to only come this far.",c:"Holden"},
+{q:"Earthers build walls. Belters build bridges. Martians build armies.",c:"Dawes"},
+{q:"If the Roci goes down, we all go down. That's what family means.",c:"Amos"}
+];
+
+var quoteQueue=[],quoteIdx=0,quoteScore=0,quoteStreak=0,quoteAnswered=false;
+
+function startQuotes(){
+  quoteQueue=shuffle(QUOTES.slice());
+  quoteIdx=0;quoteScore=0;quoteStreak=0;
+  document.getElementById('trivia-start').style.display='none';
+  document.getElementById('trivia-game').style.display='block';
+  loadQuote();
+}
+
+function loadQuote(){
+  if(quoteIdx>=quoteQueue.length){
+    document.getElementById('t-card').innerHTML='<div style="font-size:48px;margin-bottom:12px">🏆</div><h3 style="font-family:Orbitron,sans-serif;font-size:20px;font-weight:700;margin-bottom:8px;letter-spacing:1px">MISSION COMPLETE</h3><p style="color:var(--text-muted)">You scored <strong>'+quoteScore+'</strong> out of <strong>'+quoteQueue.length+'</strong>!</p><button class="trivia-btn" onclick="backToTrivia()" style="margin-top:16px">Play Again</button>';
+    document.getElementById('t-next').style.display='none';return;
+  }
+  quoteAnswered=false;
+  var q=quoteQueue[quoteIdx];
+  // Pick 3 wrong characters (not the correct one)
+  var wrongPool=QUOTE_CHARS.filter(function(c){return c!==q.c});
+  shuffle(wrongPool);
+  var opts=shuffle([q.c,wrongPool[0],wrongPool[1],wrongPool[2]]);
+  var letters=['A','B','C','D'];
+  var html='<div style="font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent2);margin-bottom:12px">WHO SAID IT?</div>';
+  html+='<div class="trivia-q" style="font-style:italic;color:var(--text)">\u201C'+q.q+'\u201D</div>';
+  html+='<div class="trivia-opts">';
+  opts.forEach(function(o,i){
+    html+='<div class="trivia-opt" onclick="ansQuote(this,\''+o.replace(/'/g,"\\'")+'\',\''+q.c.replace(/'/g,"\\'")+'\')" data-ans="'+o+'"><span class="opt-letter">'+letters[i]+'.</span>'+o+'</div>';
+  });
+  html+='</div>';
+  document.getElementById('t-card').innerHTML=html;
+  document.getElementById('t-q').textContent=(quoteIdx+1)+'/'+quoteQueue.length;
+  document.getElementById('t-prog').style.width=(quoteIdx/quoteQueue.length*100)+'%';
+  document.getElementById('t-next').style.display='none';
+}
+
+function ansQuote(el,choice,correct){
+  if(quoteAnswered)return;quoteAnswered=true;
+  var isCorrect=choice===correct;
+  if(isCorrect){quoteScore++;quoteStreak++}else{quoteStreak=0}
+  document.getElementById('t-score').textContent=quoteScore;
+  document.getElementById('t-streak').textContent=quoteStreak+'\uD83D\uDD25';
+  document.querySelectorAll('.trivia-opt').forEach(function(o){
+    if(o.dataset.ans===correct)o.classList.add('correct');
+    if(o===el&&!isCorrect)o.classList.add('wrong');
+    o.style.pointerEvents='none';
+  });
+  quoteIdx++;
+  document.getElementById('t-next').style.display='inline-block';
+  // Override next button to use loadQuote
+  document.getElementById('t-next').onclick=loadQuote;
+}
+
+function backToTrivia(){
+  document.getElementById('trivia-start').style.display='block';
+  document.getElementById('trivia-game').style.display='none';
+  // Reset the next button to default behavior
+  document.getElementById('t-next').onclick=loadQ;
+}
+
+// Patch the general trivia's completion screen to also show back button
+var _origLoadQ = loadQ;
+loadQ = function(){
+  if(qIdx>=quizQueue.length){
+    document.getElementById('t-card').innerHTML='<div style="font-size:48px;margin-bottom:12px">🏆</div><h3 style="font-family:Orbitron,sans-serif;font-size:20px;font-weight:700;margin-bottom:8px;letter-spacing:1px">MISSION COMPLETE</h3><p style="color:var(--text-muted)">You scored <strong>'+tScore+'</strong> out of <strong>'+quizQueue.length+'</strong>!</p><button class="trivia-btn" onclick="backToTrivia()" style="margin-top:16px">Play Again</button>';
+    document.getElementById('t-next').style.display='none';return;
+  }
+  _origLoadQ();
+};
+
+// Update keyboard handler for quotes
+var _origKeydown = null;
+document.addEventListener('keydown',function(e){
+  if(quoteAnswered&&!tAnswered&&(e.key==='Enter'||e.key===' ')){e.preventDefault();loadQuote();return}
+});
+
+
+
+// ══════ CHARACTER RELATIONSHIPS ══════
+var RELS=[
+// ═══ ROCI CREW BONDS ═══
+{a:"Holden",b:"Naomi",type:"romantic",desc:"The central love story of the series. They meet as Canterbury survivors and become partners in every sense — lovers, co-captains, and soulmates. Their relationship survives war, betrayal, and the end of the universe.",evolution:"Canterbury survivors → tentative romance → committed partners → she returns to Marco briefly → reunited and unbreakable → co-leaders of the underground → he sacrifices himself; she carries on."},
+{a:"Holden",b:"Amos",type:"crew",desc:"Captain and mechanic. Amos latches onto Holden as his moral compass — the person who tells him what's right when his own instincts fail. Holden trusts Amos absolutely despite his violent nature.",evolution:"Coworkers → Amos decides Holden is 'the guy who decides' → unshakeable loyalty → Amos becomes Holden's protector → lasts through the entire series."},
+{a:"Holden",b:"Alex",type:"crew",desc:"Captain and pilot. Alex's easygoing nature balances Holden's intensity. They bond over shared duty and Alex's cooking. Their friendship is the most uncomplicated on the Roci.",evolution:"Canterbury survivors → pilot and captain → deep friendship through years of combat → Alex becomes the heart of the crew."},
+{a:"Naomi",b:"Amos",type:"crew",desc:"The deepest non-romantic bond on the Roci. Naomi is the only person Amos truly respects as his moral guide. She understands his damage and never judges him. He would die for her without hesitation.",evolution:"Ship colleagues → Naomi becomes Amos's compass → they develop a sibling-like bond → he follows her moral lead throughout the series."},
+{a:"Amos",b:"Clarissa",type:"crew",desc:"An unlikely bond between two broken people. Amos visits Clarissa in prison and recognizes a kindred spirit — someone who knows they're damaged. He gives her the nickname 'Peaches' and brings her into the family.",evolution:"He visits her in prison → names her Peaches → she joins the Roci → she becomes his closest companion → her death devastates him."},
+{a:"Alex",b:"Bobbie",type:"crew",desc:"Fellow Martians who bond over shared heritage. Alex's warmth and Bobbie's intensity complement each other. They become close friends and eventually co-operate the Roci in the later books.",evolution:"Mars connection → tentative friendship → trusted combat partners → she becomes Roci captain while he pilots → his grief over her death."},
+{a:"Bobbie",b:"Avasarala",type:"alliance",desc:"An unlikely alliance between a Martian marine and an Earth politician. Avasarala sees Bobbie's value immediately. Bobbie becomes Avasarala's bodyguard and most trusted operative.",evolution:"Enemies by faction → Avasarala recruits her → mutual respect → bodyguard and mentor → Bobbie becomes Avasarala's most trusted warrior."},
+
+// ═══ ROMANTIC RELATIONSHIPS ═══
+{a:"Naomi",b:"Marco",type:"complex",desc:"A toxic past relationship that haunts the entire series. Marco manipulated Naomi, used their son Filip as a weapon against her, and she was forced to leave her child. Their history drives Books 5-6.",evolution:"Young love → Marco becomes radical → he manipulates her → she leaves Filip to escape → decades of trauma → she confronts him in Nemesis Games → he dies; the trauma persists."},
+{a:"Amos",b:"Lydia",type:"complex",desc:"Lydia ran Baltimore's criminal underworld and was Amos's surrogate mother/protector as a child. Their relationship is deeply complicated — she shaped who he became, for better and worse.",evolution:"She takes in young Timmy → raises him in the criminal world → her death in 'The Churn' forces him to leave Baltimore → her influence defines him forever."},
+{a:"Avasarala",b:"Arjun",type:"romantic",desc:"The emotional anchor of the series' fiercest politician. Arjun is a poet and professor who grounds Avasarala with love and normalcy. His death before Book 8 is quietly devastating.",evolution:"Long marriage → he supports her career → she struggles to balance power and family → his death leaves a void nothing can fill."},
+{a:"Drummer",b:"Ashford",type:"complex",desc:"Rivals who become reluctant allies and eventually develop deep mutual respect. Their relationship shows how the Belt's internal politics force enemies to become friends.",evolution:"Political rivals → forced to cooperate → develop genuine respect → his execution by Marco devastates her."},
+{a:"Drummer",b:"Oksana",type:"romantic",desc:"Part of Drummer's polyamorous Belter family crew in the show. Their intimate, domestic relationship shows a side of Belter culture rarely seen — love and family in the void.",evolution:"Crew family → romantic partners → torn apart by the Free Navy conflict → the personal cost of political choices."},
+{a:"Elvi",b:"Fayez",type:"romantic",desc:"Scientists who fall in love amid alien horrors on Ilus. Fayez's humor balances Elvi's intensity. Their relationship endures across books as they explore dead systems for Laconia.",evolution:"Colleagues on Ilus → romance amid crisis → marriage → together through Laconia's missions to dead systems."},
+{a:"Bobbie",b:"Alex",type:"complex",desc:"More than friends, less than lovers — a deep bond between two Martians who understand each other's loss of faith in Mars. In the books, their connection deepens steadily.",evolution:"Fellow Martians → combat partners → deep personal bond → she captains while he pilots → she dies heroically; his grief is immense."},
+
+// ═══ FAMILY ═══
+{a:"Naomi",b:"Filip",type:"family",desc:"The most tragic family relationship in the series. Naomi was forced to leave her infant son with Marco. Filip was raised to hate her. Their almost-reconciliation in Books 5-6 is heartbreaking.",evolution:"Mother and infant → Marco takes Filip → decades of separation → Filip throws asteroids at Earth → Naomi tries to reach him → he abandons Marco, takes her name → she never learns he survived."},
+{a:"Marco",b:"Filip",type:"family",desc:"A father who weaponized his own son. Marco raised Filip to worship him and hate Naomi. Filip's slow realization that his father is a narcissistic monster is one of the best arcs in the series.",evolution:"Father and devotee → Marco uses Filip for political violence → Filip begins questioning → Filip defects → takes the name Nagata → disappears."},
+{a:"Prax",b:"Mei",type:"family",desc:"A father's desperate search for his kidnapped daughter drives Caliban's War. Prax is a botanist, not a fighter, which makes his determination to find Mei even more powerful.",evolution:"Father and daughter → Mei kidnapped for experiments → Prax searches across Ganymede → the Roci crew helps → reunion."},
+{a:"Julie",b:"Jules-Pierre Mao",type:"family",desc:"A daughter who rejected everything her billionaire father stood for. Julie joined the OPA to fight for Belter rights. Her father funded the protomolecule experiments that killed her.",evolution:"Privileged upbringing → Julie rebels, joins OPA → Mao funds protomolecule research → Julie becomes patient zero → her death haunts her father."},
+{a:"Avasarala",b:"Kiki",type:"family",desc:"Grandmother and granddaughter. Kiki carries Avasarala's fierce spirit. Their scene at Avasarala's funeral on Laconia, connecting with Holden, bridges generations of the story.",evolution:"Grandmother and child → Avasarala's legacy → Kiki appears at the funeral → represents the future Avasarala fought for."},
+{a:"Duarte",b:"Teresa",type:"family",desc:"A dictator who genuinely loves his daughter but can't see how his empire-building warps her world. Teresa's friendship with captive Holden opens her eyes to her father's tyranny.",evolution:"Loving father and daughter → he builds an empire → she's raised in a palace bubble → befriends Holden → realizes her father is a monster → plays key role in his downfall."},
+{a:"Bobbie",b:"David Draper",type:"family",desc:"Bobbie's nephew who gets involved with drug manufacturing on Mars. His story shows that even on Mars, the younger generation faces mundane dangers alongside the interplanetary ones.",evolution:"Aunt and nephew → she discovers his drug involvement → tries to protect him → the 'Gods of Risk' novella."},
+
+// ═══ RIVALRIES & ENEMIES ═══
+{a:"Holden",b:"Murtry",type:"rivalry",desc:"The central conflict of Cibola Burn. Holden represents empathy and diplomacy; Murtry represents corporate authority and ruthless pragmatism. Their clash on Ilus nearly destroys the colony.",evolution:"Assigned to the same crisis → immediate friction → escalating conflict → Holden arrests Murtry → the tension defines Book 4."},
+{a:"Holden",b:"Marco",type:"enemy",desc:"The idealist vs. the demagogue. Holden represents transparency and justice; Marco represents charisma weaponized for destruction. They never directly confront each other but their philosophies clash.",evolution:"Holden broadcasts truth → Marco uses chaos → they represent opposing visions for humanity's future → Marco dies in the ring space."},
+{a:"Avasarala",b:"Errinwright",type:"rivalry",desc:"The series' greatest political rivalry. Both are brilliant, both are ruthless, but Avasarala fights for Earth while Errinwright fights for power. Their chess match spans seasons 1-3.",evolution:"Colleagues → she suspects his corruption → full political war → his arrest → her ascension."},
+{a:"Avasarala",b:"Marco",type:"enemy",desc:"The consummate politician vs. the revolutionary terrorist. Marco's asteroids kill billions on Avasarala's Earth. She spends her remaining years trying to rebuild what he destroyed.",evolution:"She underestimates the Belt threat → Marco strikes Earth → she fights back politically → the Free Navy war → she never fully recovers."},
+{a:"Miller",b:"Dresden",type:"enemy",desc:"The detective vs. the mad scientist. Dresden calmly explains why killing 100,000 people on Eros was acceptable research. Miller responds by executing him — one of the series' most cathartic moments.",evolution:"Miller investigates Eros → discovers Dresden's role → Dresden explains his logic calmly → Miller shoots him mid-sentence."},
+{a:"Drummer",b:"Marco",type:"enemy",desc:"Marco kills or threatens everyone Drummer loves. She's forced to serve in his Free Navy to protect her family, then defects. Her hatred of Marco is personal, political, and Belter to the core.",evolution:"Fellow Belters → he forces her into servitude → she defects → helps destroy the Free Navy → his death frees her."},
+{a:"Bobbie",b:"Duarte",type:"enemy",desc:"A marine against a dictator. Bobbie leads the resistance against Laconia and ultimately sacrifices herself to destroy the Heart of the Tempest — Duarte's most powerful weapon.",evolution:"She opposes his empire → leads underground ops → plans the Tempest's destruction → dies heroically in the assault."},
+
+// ═══ MENTORSHIP & INFLUENCE ═══
+{a:"Miller",b:"Holden",type:"mentorship",desc:"The cynical detective teaches the idealist that the universe is messy. Even after death, Proto-Miller continues guiding Holden through the protomolecule's mysteries.",evolution:"They clash over methods → Miller sacrifices himself → Proto-Miller appears to Holden → guides him through alien mysteries → Miller's influence shapes Holden forever."},
+{a:"Fred Johnson",b:"Holden",type:"mentorship",desc:"Fred provides resources, political cover, and strategic guidance. He sees Holden as a useful tool initially but comes to genuinely respect him. His death is a turning point.",evolution:"Patron and protégé → mutual respect → Fred gives Holden the protomolecule sample → Fred's death forces Holden to step up."},
+{a:"Fred Johnson",b:"Drummer",type:"mentorship",desc:"Fred shapes Drummer into a leader. She starts as his assistant and becomes the leader of the entire Transport Union. Everything she knows about politics, she learned from the Butcher.",evolution:"Boss and aide → he trains her in leadership → she rises through the OPA → she becomes Transport Union president → carries his legacy."},
+{a:"Avasarala",b:"Bobbie",type:"mentorship",desc:"Avasarala recognizes Bobbie's potential immediately and recruits her. She teaches Bobbie to see beyond Martian military thinking. Bobbie becomes her most trusted operative.",evolution:"Politician recruits marine → she opens Bobbie's eyes to political realities → Bobbie protects her → mutual respect deepens into genuine affection."},
+{a:"Amos",b:"Holden",type:"mentorship",desc:"An inverted mentorship — Amos is older and more capable, but Holden is his moral teacher. Amos explicitly says he watches what Holden does to know what's right.",evolution:"Holden leads → Amos follows his moral compass → this dynamic never changes → Amos remains loyal to Holden's vision even after his death."},
+{a:"Holden",b:"Teresa",type:"mentorship",desc:"As a prisoner on Laconia, Holden befriends the dictator's daughter and slowly opens her eyes to the reality of her father's empire. Their friendship changes the course of the final books.",evolution:"Prisoner and captor's daughter → cautious friendship → he shows her the truth → she helps bring down Laconia."},
+{a:"Miller",b:"Julie",type:"complex",desc:"A detective's obsession that transcends death. Miller falls for Julie through her case file — her courage, her choices. They only truly meet when both are part of the protomolecule on Eros.",evolution:"He investigates her disappearance → becomes obsessed → finds her infected on Eros → they merge in the protomolecule → guide Eros into Venus together."},
+
+// ═══ POLITICAL ALLIANCES ═══
+{a:"Holden",b:"Avasarala",type:"alliance",desc:"The reluctant spacer and the consummate politician. They don't always agree but recognize each other's value. Avasarala uses Holden; Holden tolerates it because she's effective.",evolution:"She sees him as useful → they clash over methods → grudging respect → genuine alliance → she trusts him with the protomolecule secret."},
+{a:"Fred Johnson",b:"Dawes",type:"rivalry",desc:"The two faces of the OPA — Fred's moderate pragmatism vs. Dawes's radical independence. They agree on Belter freedom but disagree violently on methods.",evolution:"Political rivals within the OPA → Fred controls military assets, Dawes controls Ceres → uneasy truces → never fully resolved."},
+{a:"Drummer",b:"Naomi",type:"alliance",desc:"Two Belter women who understand each other's burdens. Their friendship is built on shared trauma and shared vision for the Belt. Naomi trusts Drummer completely.",evolution:"Mutual respect → alliance through the Free Navy conflict → co-leaders of the underground → Naomi relies on Drummer's strength."},
+{a:"Holden",b:"Fred Johnson",type:"alliance",desc:"An Earther captain allied with an Earther-turned-Belter OPA leader. Fred provides the Roci with safe harbor and missions. Their alliance is the bridge between factions.",evolution:"Fred recruits Holden → provides resources → Holden does Fred's dirty work → mutual dependence → Fred's death ends the partnership."},
+{a:"Duarte",b:"Cortazar",type:"alliance",desc:"The dictator and his pet scientist. Duarte provides resources; Cortazar provides inhuman brilliance (literally — his empathy was surgically removed). Together they build Laconia's weapons.",evolution:"Protogen colleagues → Duarte takes Cortazar to Laconia → Cortazar builds the warships → Cortazar experiments on Duarte → the partnership enables tyranny."}
+];
+
+var relFilter='All';
+var relChar=null;
+var REL_TYPES=['All','romantic','family','crew','rivalry','enemy','alliance','mentorship','complex'];
+
+function renderRelWeb(){
+  var web=document.getElementById('rel-web');
+  // Get all unique characters from relationships
+  var charCounts={};
+  RELS.forEach(function(r){
+    charCounts[r.a]=(charCounts[r.a]||0)+1;
+    charCounts[r.b]=(charCounts[r.b]||0)+1;
+  });
+  // Sort by count
+  var chars=Object.keys(charCounts).sort(function(a,b){return charCounts[b]-charCounts[a]});
+  web.innerHTML=chars.map(function(c){
+    return '<div class="rel-web-node'+(relChar===c?' active':'')+'" onclick="selectRelChar(\''+c+'\')"><div class="node-name">'+c+'</div><div class="node-count">'+charCounts[c]+' connections</div></div>';
+  }).join('');
+}
+
+function selectRelChar(c){
+  relChar=relChar===c?null:c;
+  relFilter='All';
+  document.querySelectorAll('.rel-filter').forEach(function(b){b.classList.remove('active')});
+  document.querySelector('.rel-filter').classList.add('active');
+  renderRelWeb();
+  renderRels();
+}
+
+function renderRels(){
+  var el=document.getElementById('rel-list');
+  var html='';
+  var typeColors={romantic:'#e06060',family:'var(--accent2)',crew:'var(--accent)',rivalry:'var(--accent4)',enemy:'#c83c3c',alliance:'var(--accent3)',mentorship:'#a08cc8',complex:'#b4a064'};
+  var typeEmojis={romantic:'❤️',family:'👨‍👩‍👧',crew:'🚀',rivalry:'⚔️',enemy:'💀',alliance:'🤝',mentorship:'🎓',complex:'🔄'};
+  RELS.forEach(function(r){
+    if(relFilter!=='All'&&r.type!==relFilter) return;
+    if(relChar&&r.a!==relChar&&r.b!==relChar) return;
+    html+='<div class="rel-card" style="--rel-color:'+typeColors[r.type]+'">';
+    html+='<div class="rel-pair">';
+    html+='<span class="rel-char">'+r.a+'</span>';
+    html+='<span class="rel-arrow">'+typeEmojis[r.type]+'</span>';
+    html+='<span class="rel-char">'+r.b+'</span>';
+    html+='<span class="rel-type-badge '+r.type+'">'+r.type+'</span>';
+    html+='</div>';
+    html+='<div class="rel-desc">'+r.desc+'</div>';
+    html+='<div class="rel-evolution" style="border-color:'+typeColors[r.type]+'"><strong>Evolution:</strong> '+r.evolution+'</div>';
+    html+='</div>';
+  });
+  if(!html) html='<div style="text-align:center;padding:32px;color:var(--text-dim)">No relationships found for this filter.</div>';
+  el.innerHTML=html;
+}
+
+(function(){
+  var fl=document.getElementById('relFilters');
+  REL_TYPES.forEach(function(t){
+    var b=document.createElement('button');
+    b.className='rel-filter'+(t==='All'?' active':'');
+    b.textContent=t==='All'?'All Types':t.charAt(0).toUpperCase()+t.slice(1);
+    b.onclick=function(){
+      fl.querySelectorAll('.rel-filter').forEach(function(x){x.classList.remove('active')});
+      b.classList.add('active');
+      relFilter=t;
+      relChar=null;
+      renderRelWeb();
+      renderRels();
+    };
+    fl.appendChild(b);
+  });
+  renderRelWeb();
+  renderRels();
+})();
+
+</script>
+</body>
+</html>
