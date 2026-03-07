@@ -861,7 +861,6 @@ function startQuiz(){
   document.getElementById('game-screen').style.display='block';
   document.getElementById('results-screen').style.display='none';
   loadMap();
-  showQuestion();
 }
 
 function showQuestion(){
@@ -878,9 +877,9 @@ function showQuestion(){
   document.getElementById('hud-best').textContent=bestStreak;
   document.getElementById('progress').style.width=(qIdx/totalQs*100)+'%';
   document.getElementById('feedback').innerHTML='';
-  showChoices();
-  // Reset map colors
+  // Reset map colors first, then highlight choices
   d3.selectAll('.state-path').classed('correct wrong reveal disabled choice-glow',false).style('fill',null).style('opacity',null);
+  showChoices();
 }
 
 function handleStateClick(fips){
@@ -990,6 +989,7 @@ async function loadMap(){
       .attr('x',function(d){var c=path.centroid(d);var o=offsets[d.id];return c[0]+(o?o[0]:0)})
       .attr('y',function(d){var c=path.centroid(d);var o=offsets[d.id];return c[1]+(o?o[1]:0)})
       .text(function(d){return stateData[d.id].abbr});
+    showQuestion();
   }catch(err){
     document.getElementById('map-container').innerHTML='<div class="loading" style="color:var(--red)">Failed to load map: '+err.message+'<br><br><button onclick="loadMap()" style="padding:8px 20px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;font-family:inherit">Retry</button></div>';
   }
