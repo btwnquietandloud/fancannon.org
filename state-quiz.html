@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="favicon.png">
+<title>U.S. State Quiz — Click the Map!</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+<style>
+:root{--bg:#0b0d14;--surface:#141722;--surface2:#1c2030;--surface3:#252a3e;--border:#2a3050;--border2:#3d4670;--text:#e4e2f0;--dim:#7a7e99;--faint:#4e5270;--accent:#5b7cf7;--accent2:#7e9bff;--gold:#f0c948;--green:#4ade80;--red:#ef6b6b;--orange:#f09856}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 60% 50% at 25% 20%,rgba(91,124,247,0.06) 0%,transparent 70%),radial-gradient(ellipse 50% 40% at 75% 80%,rgba(147,91,247,0.04) 0%,transparent 70%);pointer-events:none;z-index:0}
+.fc-brand-bar{position:sticky;top:0;z-index:100;background:rgba(10,9,12,0.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.06);padding:8px 16px;display:flex;align-items:center;gap:10px}
+.fc-brand-bar a{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit}
+.fc-brand-bar img{width:32px;height:32px;border-radius:50%}
+.fc-brand-bar span{font-family:sans-serif;font-size:14px;font-weight:600;color:#c9a44a;letter-spacing:0.5px}
+.fc-brand-bar .fc-sep{color:rgba(255,255,255,0.15);font-size:18px;font-weight:300}
+.fc-brand-bar .fc-page-name{font-size:13px;font-weight:500;color:rgba(255,255,255,0.4)}
+.app{position:relative;z-index:1;max-width:1000px;margin:0 auto;padding:0 12px}
+
+/* Start screen */
+.start-screen{text-align:center;padding:3rem 1rem}
+.start-screen h1{font-family:'DM Serif Display',serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:400;background:linear-gradient(135deg,#e4e2f0 10%,#7e9bff 55%,#c49bff 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.start-screen p{color:var(--dim);font-size:0.95rem;margin:0.5rem 0 2rem;line-height:1.6}
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;max-width:700px;margin:0 auto 2rem}
+.cat-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px 12px;cursor:pointer;transition:all .25s;text-align:center}
+.cat-card:hover{border-color:var(--accent);background:var(--surface2);transform:translateY(-2px)}
+.cat-card.selected{border-color:var(--accent);background:rgba(91,124,247,0.1);box-shadow:0 0 20px rgba(91,124,247,0.15)}
+.cat-emoji{font-size:28px;display:block;margin-bottom:6px}
+.cat-name{font-size:13px;font-weight:600;color:var(--text)}
+.cat-count{font-size:11px;color:var(--faint);margin-top:2px}
+.start-btn{font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;padding:14px 40px;border-radius:14px;border:none;background:linear-gradient(135deg,#5b7cf7,#7e5bf7);color:#fff;cursor:pointer;transition:all .25s;box-shadow:0 4px 20px rgba(91,124,247,0.3)}
+.start-btn:hover{transform:translateY(-2px);box-shadow:0 6px 28px rgba(91,124,247,0.4)}
+.start-btn:disabled{opacity:0.4;cursor:not-allowed;transform:none}
+.back-link{display:inline-block;color:var(--accent2);text-decoration:none;font-size:13px;font-weight:600;padding:6px 14px;border:1px solid var(--border);border-radius:99px;transition:all .2s;margin-top:1.5rem}
+.back-link:hover{border-color:var(--accent)}
+
+/* HUD */
+.hud{display:flex;justify-content:center;gap:24px;padding:12px 0;flex-wrap:wrap}
+.hud-item{text-align:center}
+.hud-label{font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--faint)}
+.hud-val{font-family:'DM Serif Display',serif;font-size:22px}
+
+/* Progress */
+.progress-wrap{height:4px;background:var(--surface2);border-radius:2px;margin:0 0 8px;overflow:hidden}
+.progress-bar{height:100%;background:linear-gradient(90deg,var(--accent),#c49bff);border-radius:2px;transition:width .4s ease}
+
+/* Question card */
+.q-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:24px 28px;margin:0 auto 12px;max-width:700px;text-align:center}
+.q-cat{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent2);margin-bottom:8px}
+.q-text{font-family:'DM Serif Display',serif;font-size:clamp(1.1rem,2.5vw,1.5rem);line-height:1.5;color:var(--text)}
+.q-hint{font-size:13px;color:var(--faint);margin-top:12px}
+
+/* Map */
+#map-container{width:100%}
+#map-container svg{width:100%;height:auto;display:block}
+.state-path{fill:var(--surface2);stroke:var(--border);stroke-width:0.5;cursor:pointer;transition:fill .15s,stroke .15s}
+.state-path:hover{filter:brightness(1.3);stroke:var(--accent2);stroke-width:1.2}
+.state-path.correct{fill:#166534 !important;stroke:var(--green) !important;stroke-width:2 !important;filter:drop-shadow(0 0 8px rgba(74,222,128,0.4)) !important}
+.state-path.wrong{fill:#7f1d1d !important;stroke:var(--red) !important;stroke-width:2 !important;animation:shake .4s !important}
+.state-path.reveal{fill:#92400e !important;stroke:var(--gold) !important;stroke-width:2.5 !important;filter:drop-shadow(0 0 12px rgba(240,200,72,0.5)) !important}
+.state-path.disabled{pointer-events:none;opacity:0.7}
+.state-label{font-family:'Outfit',sans-serif;font-size:9px;font-weight:500;fill:var(--faint);pointer-events:none;text-anchor:middle;dominant-baseline:central}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-4px)}40%,80%{transform:translateX(4px)}}
+
+/* Feedback */
+.feedback{text-align:center;padding:10px 0 6px;min-height:48px}
+.fb-text{font-size:15px;font-weight:600;line-height:1.5}
+.fb-correct{color:var(--green)}
+.fb-wrong{color:var(--red)}
+.next-btn{font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;padding:10px 28px;border-radius:10px;border:1px solid var(--border);background:var(--surface2);color:var(--text);cursor:pointer;margin-top:8px;transition:all .2s}
+.next-btn:hover{border-color:var(--accent);background:var(--surface3)}
+
+/* Results */
+.results{text-align:center;padding:2rem 1rem}
+.results h2{font-family:'DM Serif Display',serif;font-size:2rem;margin-bottom:0.5rem}
+.results .big-score{font-family:'DM Serif Display',serif;font-size:4rem;background:linear-gradient(135deg,var(--green),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.results p{color:var(--dim);font-size:15px;margin:0.5rem 0}
+.results .stat-row{display:flex;justify-content:center;gap:32px;margin:1.5rem 0}
+.results .stat-box{text-align:center}
+.results .stat-num{font-family:'DM Serif Display',serif;font-size:28px;color:var(--accent2)}
+.results .stat-label{font-size:11px;font-weight:600;color:var(--faint);letter-spacing:0.08em;text-transform:uppercase}
+
+.loading{text-align:center;padding:3rem 1rem;color:var(--dim)}
+.spinner{display:inline-block;width:24px;height:24px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;margin-bottom:0.75rem}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media(max-width:600px){.cat-grid{grid-template-columns:repeat(2,1fr)}.state-label{font-size:6px}.hud{gap:16px}}
+</style>
+</head>
+<body>
+<div class="fc-brand-bar"><a href="index.html"><img src="fancannonlogo.png" alt="Fan Cannon"><span>Fan Cannon</span></a><span class="fc-sep">|</span><span class="fc-page-name">State Map Quiz</span></div>
+<div class="app">
+
+<!-- START SCREEN -->
+<div id="start-screen" class="start-screen">
+<h1>🗺️ State Map Quiz</h1>
+<p>Pick a category, read the clue, then click the correct state on the map!</p>
+<div class="cat-grid" id="cat-grid"></div>
+<button class="start-btn" id="startBtn" disabled onclick="startQuiz()">Start Quiz</button>
+<br>
+<a href="state-explorer.html" class="back-link">← Back to State Explorer</a>
+</div>
+
+<!-- GAME SCREEN -->
+<div id="game-screen" style="display:none">
+<div style="text-align:center;padding:8px 0 0"><button onclick="confirmQuit()" style="font-family:Outfit,sans-serif;font-size:12px;font-weight:600;padding:5px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--dim);cursor:pointer;transition:all .2s">← Back to Menu</button></div>
+<div class="hud">
+  <div class="hud-item"><div class="hud-label">Question</div><div class="hud-val" id="hud-q">1/20</div></div>
+  <div class="hud-item"><div class="hud-label">Score</div><div class="hud-val" id="hud-score" style="color:var(--green)">0</div></div>
+  <div class="hud-item"><div class="hud-label">Streak</div><div class="hud-val" id="hud-streak" style="color:var(--gold)">0🔥</div></div>
+  <div class="hud-item"><div class="hud-label">Best Streak</div><div class="hud-val" id="hud-best" style="color:var(--orange)">0</div></div>
+</div>
+<div class="progress-wrap"><div class="progress-bar" id="progress" style="width:0%"></div></div>
+<div class="q-card">
+  <div class="q-cat" id="q-cat">CATEGORY</div>
+  <div class="q-text" id="q-text">Question goes here</div>
+  <div class="q-hint" id="q-hint">Click a state on the map below</div>
+</div>
+<div id="map-container"><div class="loading"><div class="spinner"></div><div>Loading map…</div></div></div>
+<div class="feedback" id="feedback"></div>
+</div>
+
+<!-- RESULTS SCREEN -->
+<div id="results-screen" class="results" style="display:none">
+<h2>Quiz Complete!</h2>
+<div class="big-score" id="final-score">0%</div>
+<p id="final-msg">Great job!</p>
+<div class="stat-row">
+  <div class="stat-box"><div class="stat-num" id="r-correct">0</div><div class="stat-label">Correct</div></div>
+  <div class="stat-box"><div class="stat-num" id="r-total">0</div><div class="stat-label">Questions</div></div>
+  <div class="stat-box"><div class="stat-num" id="r-streak">0</div><div class="stat-label">Best Streak</div></div>
+</div>
+<button class="start-btn" onclick="backToStart()" style="margin-top:1rem">Play Again</button>
+<br><a href="state-explorer.html" class="back-link">← Back to State Explorer</a>
+</div>
+
+</div>
+<script>
+const stateData = {
+  "01": { abbr:"AL", name:"Alabama", governor:"Kay Ivey", party:"R", female:true, motto:"Audemus jura nostra defendere", mottoEn:"We dare defend our rights", nickname:"The Yellowhammer State", bird:"Yellowhammer (Northern Flicker)" },
+  "02": { abbr:"AK", name:"Alaska", governor:"Mike Dunleavy", party:"R", female:false, motto:"North to the Future", mottoEn:null, nickname:"The Last Frontier", bird:"Willow Ptarmigan" },
+  "04": { abbr:"AZ", name:"Arizona", governor:"Katie Hobbs", party:"D", female:true, motto:"Ditat Deus", mottoEn:"God enriches", nickname:"The Grand Canyon State", bird:"Cactus Wren" },
+  "05": { abbr:"AR", name:"Arkansas", governor:"Sarah Huckabee Sanders", party:"R", female:true, motto:"Regnat populus", mottoEn:"The people rule", nickname:"The Natural State", bird:"Northern Mockingbird" },
+  "06": { abbr:"CA", name:"California", governor:"Gavin Newsom", party:"D", female:false, motto:"Eureka", mottoEn:"I have found it", nickname:"The Golden State", bird:"California Quail" },
+  "08": { abbr:"CO", name:"Colorado", governor:"Jared Polis", party:"D", female:false, motto:"Nil sine numine", mottoEn:"Nothing without providence", nickname:"The Centennial State", bird:"Lark Bunting" },
+  "09": { abbr:"CT", name:"Connecticut", governor:"Ned Lamont", party:"D", female:false, motto:"Qui transtulit sustinet", mottoEn:"He who transplanted sustains", nickname:"The Constitution State", bird:"American Robin" },
+  "10": { abbr:"DE", name:"Delaware", governor:"Matt Meyer", party:"D", female:false, motto:"Liberty and Independence", mottoEn:null, nickname:"The First State", bird:"Delaware Blue Hen" },
+  "12": { abbr:"FL", name:"Florida", governor:"Ron DeSantis", party:"R", female:false, motto:"In God We Trust", mottoEn:null, nickname:"The Sunshine State", bird:"Northern Mockingbird" },
+  "13": { abbr:"GA", name:"Georgia", governor:"Brian Kemp", party:"R", female:false, motto:"Wisdom, Justice, and Moderation", mottoEn:null, nickname:"The Peach State", bird:"Brown Thrasher" },
+  "15": { abbr:"HI", name:"Hawaii", governor:"Josh Green", party:"D", female:false, motto:"Ua Mau ke Ea o ka Āina i ka Pono", mottoEn:"The life of the land is perpetuated in righteousness", nickname:"The Aloha State", bird:"Nēnē (Hawaiian Goose)" },
+  "16": { abbr:"ID", name:"Idaho", governor:"Brad Little", party:"R", female:false, motto:"Esto perpetua", mottoEn:"Let it be perpetual", nickname:"The Gem State", bird:"Mountain Bluebird" },
+  "17": { abbr:"IL", name:"Illinois", governor:"JB Pritzker", party:"D", female:false, motto:"State Sovereignty, National Union", mottoEn:null, nickname:"The Prairie State", bird:"Northern Cardinal" },
+  "18": { abbr:"IN", name:"Indiana", governor:"Mike Braun", party:"R", female:false, motto:"The Crossroads of America", mottoEn:null, nickname:"The Hoosier State", bird:"Northern Cardinal" },
+  "19": { abbr:"IA", name:"Iowa", governor:"Kim Reynolds", party:"R", female:true, motto:"Our Liberties We Prize and Our Rights We Will Maintain", mottoEn:null, nickname:"The Hawkeye State", bird:"Eastern Goldfinch" },
+  "20": { abbr:"KS", name:"Kansas", governor:"Laura Kelly", party:"D", female:true, motto:"Ad astra per aspera", mottoEn:"To the stars through difficulties", nickname:"The Sunflower State", bird:"Western Meadowlark" },
+  "21": { abbr:"KY", name:"Kentucky", governor:"Andy Beshear", party:"D", female:false, motto:"United We Stand, Divided We Fall", mottoEn:null, nickname:"The Bluegrass State", bird:"Northern Cardinal" },
+  "22": { abbr:"LA", name:"Louisiana", governor:"Jeff Landry", party:"R", female:false, motto:"Union, Justice, Confidence", mottoEn:null, nickname:"The Pelican State", bird:"Brown Pelican" },
+  "23": { abbr:"ME", name:"Maine", governor:"Janet Mills", party:"D", female:true, motto:"Dirigo", mottoEn:"I lead", nickname:"The Pine Tree State", bird:"Black-capped Chickadee" },
+  "24": { abbr:"MD", name:"Maryland", governor:"Wes Moore", party:"D", female:false, motto:"Fatti maschii, parole femine", mottoEn:"Strong deeds, gentle words", nickname:"The Old Line State", bird:"Baltimore Oriole" },
+  "25": { abbr:"MA", name:"Massachusetts", governor:"Maura Healey", party:"D", female:true, motto:"Ense petit placidam sub libertate quietem", mottoEn:"By the sword we seek peace, but peace only under liberty", nickname:"The Bay State", bird:"Black-capped Chickadee" },
+  "26": { abbr:"MI", name:"Michigan", governor:"Gretchen Whitmer", party:"D", female:true, motto:"Si quaeris peninsulam amoenam circumspice", mottoEn:"If you seek a pleasant peninsula, look about you", nickname:"The Great Lakes State", bird:"American Robin" },
+  "27": { abbr:"MN", name:"Minnesota", governor:"Tim Walz", party:"D", female:false, motto:"L'Étoile du Nord", mottoEn:"The Star of the North", nickname:"The North Star State", bird:"Common Loon" },
+  "28": { abbr:"MS", name:"Mississippi", governor:"Tate Reeves", party:"R", female:false, motto:"Virtute et armis", mottoEn:"By valor and arms", nickname:"The Magnolia State", bird:"Northern Mockingbird" },
+  "29": { abbr:"MO", name:"Missouri", governor:"Mike Kehoe", party:"R", female:false, motto:"Salus populi suprema lex esto", mottoEn:"The welfare of the people shall be the supreme law", nickname:"The Show-Me State", bird:"Eastern Bluebird" },
+  "30": { abbr:"MT", name:"Montana", governor:"Greg Gianforte", party:"R", female:false, motto:"Oro y Plata", mottoEn:"Gold and Silver", nickname:"The Treasure State", bird:"Western Meadowlark" },
+  "31": { abbr:"NE", name:"Nebraska", governor:"Jim Pillen", party:"R", female:false, motto:"Equality Before the Law", mottoEn:null, nickname:"The Cornhusker State", bird:"Western Meadowlark" },
+  "32": { abbr:"NV", name:"Nevada", governor:"Joe Lombardo", party:"R", female:false, motto:"All for Our Country", mottoEn:null, nickname:"The Silver State", bird:"Mountain Bluebird" },
+  "33": { abbr:"NH", name:"New Hampshire", governor:"Kelly Ayotte", party:"R", female:true, motto:"Live Free or Die", mottoEn:null, nickname:"The Granite State", bird:"Purple Finch" },
+  "34": { abbr:"NJ", name:"New Jersey", governor:"Mikie Sherrill", party:"D", female:true, motto:"Liberty and Prosperity", mottoEn:null, nickname:"The Garden State", bird:"Eastern Goldfinch" },
+  "35": { abbr:"NM", name:"New Mexico", governor:"Michelle Lujan Grisham", party:"D", female:true, motto:"Crescit eundo", mottoEn:"It grows as it goes", nickname:"The Land of Enchantment", bird:"Greater Roadrunner" },
+  "36": { abbr:"NY", name:"New York", governor:"Kathy Hochul", party:"D", female:true, motto:"Excelsior", mottoEn:"Ever upward", nickname:"The Empire State", bird:"Eastern Bluebird" },
+  "37": { abbr:"NC", name:"North Carolina", governor:"Josh Stein", party:"D", female:false, motto:"Esse quam videri", mottoEn:"To be, rather than to seem", nickname:"The Tar Heel State", bird:"Northern Cardinal" },
+  "38": { abbr:"ND", name:"North Dakota", governor:"Kelly Armstrong", party:"R", female:false, motto:"Liberty and Union, Now and Forever, One and Inseparable", mottoEn:null, nickname:"The Peace Garden State", bird:"Western Meadowlark" },
+  "39": { abbr:"OH", name:"Ohio", governor:"Mike DeWine", party:"R", female:false, motto:"With God, All Things Are Possible", mottoEn:null, nickname:"The Buckeye State", bird:"Northern Cardinal" },
+  "40": { abbr:"OK", name:"Oklahoma", governor:"Kevin Stitt", party:"R", female:false, motto:"Labor omnia vincit", mottoEn:"Labor conquers all things", nickname:"The Sooner State", bird:"Scissor-tailed Flycatcher" },
+  "41": { abbr:"OR", name:"Oregon", governor:"Tina Kotek", party:"D", female:true, motto:"Alis volat propriis", mottoEn:"She flies with her own wings", nickname:"The Beaver State", bird:"Western Meadowlark" },
+  "42": { abbr:"PA", name:"Pennsylvania", governor:"Josh Shapiro", party:"D", female:false, motto:"Virtue, Liberty and Independence", mottoEn:null, nickname:"The Keystone State", bird:"Ruffed Grouse" },
+  "44": { abbr:"RI", name:"Rhode Island", governor:"Dan McKee", party:"D", female:false, motto:"Hope", mottoEn:null, nickname:"The Ocean State", bird:"Rhode Island Red" },
+  "45": { abbr:"SC", name:"South Carolina", governor:"Henry McMaster", party:"R", female:false, motto:"Dum spiro spero", mottoEn:"While I breathe, I hope", nickname:"The Palmetto State", bird:"Carolina Wren" },
+  "46": { abbr:"SD", name:"South Dakota", governor:"Larry Rhoden", party:"R", female:false, motto:"Under God the People Rule", mottoEn:null, nickname:"The Mount Rushmore State", bird:"Ring-necked Pheasant" },
+  "47": { abbr:"TN", name:"Tennessee", governor:"Bill Lee", party:"R", female:false, motto:"Agriculture and Commerce", mottoEn:null, nickname:"The Volunteer State", bird:"Northern Mockingbird" },
+  "48": { abbr:"TX", name:"Texas", governor:"Greg Abbott", party:"R", female:false, motto:"Friendship", mottoEn:null, nickname:"The Lone Star State", bird:"Northern Mockingbird" },
+  "49": { abbr:"UT", name:"Utah", governor:"Spencer Cox", party:"R", female:false, motto:"Industry", mottoEn:null, nickname:"The Beehive State", bird:"California Gull" },
+  "50": { abbr:"VT", name:"Vermont", governor:"Phil Scott", party:"R", female:false, motto:"Freedom and Unity", mottoEn:null, nickname:"The Green Mountain State", bird:"Hermit Thrush" },
+  "51": { abbr:"VA", name:"Virginia", governor:"Abigail Spanberger", party:"D", female:true, motto:"Sic semper tyrannis", mottoEn:"Thus always to tyrants", nickname:"The Old Dominion", bird:"Northern Cardinal" },
+  "53": { abbr:"WA", name:"Washington", governor:"Bob Ferguson", party:"D", female:false, motto:"Al-ki", mottoEn:"By and by", nickname:"The Evergreen State", bird:"Willow Goldfinch" },
+  "54": { abbr:"WV", name:"West Virginia", governor:"Patrick Morrisey", party:"R", female:false, motto:"Montani semper liberi", mottoEn:"Mountaineers are always free", nickname:"The Mountain State", bird:"Northern Cardinal" },
+  "55": { abbr:"WI", name:"Wisconsin", governor:"Tony Evers", party:"D", female:false, motto:"Forward", mottoEn:null, nickname:"The Badger State", bird:"American Robin" },
+  "56": { abbr:"WY", name:"Wyoming", governor:"Mark Gordon", party:"R", female:false, motto:"Equal Rights", mottoEn:null, nickname:"The Cowboy State", bird:"Western Meadowlark" },
+};
+
+// State sport data — many states have no official state sport, noted accordingly
+const sportData = {
+  "01": { sport:"None designated", desc:"Alabama has not officially designated a state sport.", origin:"While football culture dominates the state through its intense college rivalries, no sport has been formally adopted by the legislature." },
+  "02": { sport:"Dog Mushing", desc:"A winter sport in which a musher is pulled by a team of sled dogs across snow and ice.", origin:"Designated in 1972, reflecting Alaska's deep ties to sled dog culture and the legendary Iditarod Trail Sled Dog Race, which commemorates a 1925 life-saving serum run to Nome." },
+  "04": { sport:"None designated", desc:"Arizona has not officially designated a state sport.", origin:"Despite a strong culture around golf, rodeo, and spring training baseball, no sport has been formally adopted by the state legislature." },
+  "05": { sport:"None designated", desc:"Arkansas has not officially designated a state sport.", origin:"The state has deep ties to hunting, fishing, and college football, but has not formally named an official state sport." },
+  "06": { sport:"Surfing", desc:"A water sport in which a person rides ocean waves while standing on a surfboard.", origin:"Designated in 2018 after a campaign led by surfers and state legislators who argued the sport is deeply woven into California's coastal identity, economy, and global image." },
+  "08": { sport:"Pack Burro Racing", desc:"A foot race where runners lead a burro (donkey) loaded with mining gear over mountain terrain.", origin:"Designated in 2012, honoring Colorado's mining heritage. The quirky sport dates to the 1800s when miners raced their burros between towns in the Rocky Mountains." },
+  "09": { sport:"None designated", desc:"Connecticut has not officially designated a state sport.", origin:"While the state has strong ties to sailing, rowing, and basketball, no official designation has been made." },
+  "10": { sport:"Bicycling", desc:"A sport and mode of transportation using a human-powered two-wheeled vehicle.", origin:"Designated in 2014 after advocacy from cycling organizations highlighting Delaware's flat terrain, extensive trail network, and commitment to bicycle-friendly infrastructure." },
+  "12": { sport:"None designated", desc:"Florida has not officially designated a state sport.", origin:"Despite being home to major professional teams and year-round outdoor sports, Florida has not formally adopted a state sport." },
+  "13": { sport:"None designated", desc:"Georgia has not officially designated a state sport.", origin:"Georgia has a passionate sports culture around football and baseball but has not officially designated a state sport." },
+  "15": { sport:"Surfing", desc:"A water sport in which a person rides ocean waves while standing on a surfboard.", origin:"Designated in 1998, recognizing Hawaii as the birthplace of modern surfing. The sport has deep roots in Native Hawaiian culture, practiced by royalty for centuries." },
+  "16": { sport:"None designated", desc:"Idaho has not officially designated a state sport.", origin:"Outdoor recreation like skiing, fishing, and mountain biking are deeply embedded in Idaho culture, but no official state sport has been named." },
+  "17": { sport:"None designated", desc:"Illinois has not officially designated a state sport.", origin:"Home to iconic teams like the Bulls, Bears, and Cubs, Illinois has not formally adopted a state sport." },
+  "18": { sport:"None designated", desc:"Indiana has not officially designated a state sport.", origin:"Despite basketball being synonymous with Indiana through 'Hoosier Hysteria' and the Indianapolis 500's racing heritage, no official state sport has been designated." },
+  "19": { sport:"Wrestling", desc:"A combat sport involving grappling techniques to pin or control an opponent.", origin:"Designated in 2022 after decades of advocacy. Iowa is widely regarded as the amateur wrestling capital of the U.S., with dominant university programs and a passionate grassroots culture." },
+  "20": { sport:"None designated", desc:"Kansas has not officially designated a state sport.", origin:"Basketball has deep roots here — James Naismith brought the sport to the University of Kansas — but no formal designation has been made." },
+  "21": { sport:"None designated", desc:"Kentucky has not officially designated a state sport.", origin:"Horse racing and basketball are cultural pillars of the Bluegrass State, but neither has been formally adopted as the official state sport." },
+  "22": { sport:"None designated", desc:"Louisiana has not officially designated a state sport.", origin:"While football (especially LSU) and fishing are cultural touchstones, no official state sport designation exists." },
+  "23": { sport:"None designated", desc:"Maine has not officially designated a state sport.", origin:"Outdoor pursuits like skiing, snowmobiling, and lobster boat racing are popular, but Maine has not formally named a state sport." },
+  "24": { sport:"Jousting", desc:"An equestrian sport where mounted riders aim lances at small rings suspended from posts while galloping at full speed.", origin:"Designated in 1962, making it the oldest official state sport in the U.S. Ring jousting tournaments have been held in Maryland since the colonial era, reflecting the state's equestrian heritage." },
+  "25": { sport:"Basketball", desc:"A team sport in which two teams of five players score by shooting a ball through a raised hoop.", origin:"Designated in 2022. Basketball was invented in nearby Springfield, Massachusetts by James Naismith in 1891, and the state has a storied tradition through the Celtics and college programs." },
+  "26": { sport:"None designated", desc:"Michigan has not officially designated a state sport.", origin:"Michigan has a passionate sports culture around football, hockey, and auto racing, but no formal state sport designation has been made." },
+  "27": { sport:"Ice Hockey", desc:"A team sport played on ice in which skaters use sticks to shoot a puck into the opposing team's net.", origin:"Designated in 2009 after a campaign by schoolchildren. Minnesota's frozen lakes, strong youth hockey pipeline, and 'Hockey Day in Minnesota' made it a natural choice." },
+  "28": { sport:"None designated", desc:"Mississippi has not officially designated a state sport.", origin:"Football and bass fishing are deeply popular in Mississippi, but no official state sport has been named." },
+  "29": { sport:"None designated", desc:"Missouri has not officially designated a state sport.", origin:"Despite strong traditions in baseball, football, and bass fishing, Missouri has not formally designated a state sport." },
+  "30": { sport:"Rodeo", desc:"A competitive sport from cattle herding traditions, featuring bronc riding, bull riding, and roping.", origin:"Designated in 2019. Rodeo reflects Montana's deep ranching heritage and cowboy culture, with events held in communities across the state throughout the summer." },
+  "31": { sport:"None designated", desc:"Nebraska has not officially designated a state sport.", origin:"College football — particularly Husker football — is practically a religion in Nebraska, but no formal state sport has been adopted." },
+  "32": { sport:"None designated", desc:"Nevada has not officially designated a state sport.", origin:"Though Las Vegas has become a major professional sports hub, Nevada has not formally designated a state sport." },
+  "33": { sport:"Skiing", desc:"A winter sport using skis to glide over snow, encompassing alpine and Nordic disciplines.", origin:"Designated in 1998, reflecting the state's rugged White Mountains terrain and long tradition of winter sports that are a backbone of its tourism economy." },
+  "34": { sport:"None designated", desc:"New Jersey has not officially designated a state sport.", origin:"Despite a rich sports culture and proximity to major league teams, New Jersey has not formally designated a state sport." },
+  "35": { sport:"None designated", desc:"New Mexico has not officially designated a state sport.", origin:"Hot air ballooning, rodeo, and outdoor sports are culturally significant, but no official state sport has been named." },
+  "36": { sport:"Baseball", desc:"A bat-and-ball team sport in which two teams of nine take turns batting and fielding.", origin:"Designated in 2021 tied to the sport's deep New York history, from the legendary Yankees and Mets to Cooperstown's Baseball Hall of Fame in upstate New York." },
+  "37": { sport:"Stock Car Racing", desc:"A form of auto racing using modified production cars on oval tracks.", origin:"Designated in 2011. North Carolina is the heartland of NASCAR — most major racing teams are based near Charlotte, and the sport's roots trace to Piedmont moonshine runners." },
+  "38": { sport:"Rodeo", desc:"A competitive sport from cattle herding traditions, featuring bronc riding, bull riding, and roping.", origin:"Designated in 2011, honoring the state's western ranching heritage and the cowboy traditions that remain central to North Dakota's cultural identity." },
+  "39": { sport:"None designated", desc:"Ohio has not officially designated a state sport.", origin:"Ohio has a storied sports history — birthplace of professional football and home to passionate fan bases — but has not formally named a state sport." },
+  "40": { sport:"None designated", desc:"Oklahoma has not officially designated a state sport.", origin:"Wrestling has an incredibly strong tradition in Oklahoma, producing numerous Olympic and NCAA champions, but no official designation has been made." },
+  "41": { sport:"None designated", desc:"Oregon has not officially designated a state sport.", origin:"Oregon has strong traditions in track and field (Nike's origins), cycling, and outdoor sports, but no formal state sport has been adopted." },
+  "42": { sport:"None designated", desc:"Pennsylvania has not officially designated a state sport.", origin:"Despite being home to historic franchises like the Steelers, Eagles, and Phillies, Pennsylvania has not formally designated a state sport." },
+  "44": { sport:"Sailing", desc:"A sport that uses wind to propel a craft over water via sails.", origin:"Designated in 2012 at the urging of Rhode Island's maritime community. Narragansett Bay is a world-class sailing destination, and Newport hosted the America's Cup for decades." },
+  "45": { sport:"None designated", desc:"South Carolina has not officially designated a state sport.", origin:"Golf and college football are hugely popular in South Carolina, but no official state sport has been named." },
+  "46": { sport:"Rodeo", desc:"A competitive sport from cattle herding traditions, featuring bronc riding, bull riding, and roping.", origin:"South Dakota has strong ranching roots and rodeo traditions. The legislature designated rodeo to honor the state's western heritage." },
+  "47": { sport:"None designated", desc:"Tennessee has not officially designated a state sport.", origin:"Tennessee has a vibrant sports scene from NASCAR to SEC football, but no official state sport has been designated." },
+  "48": { sport:"Rodeo", desc:"A competitive sport from cattle herding traditions, featuring bronc riding, bull riding, and roping.", origin:"Designated in 1997. Texas has the deepest rodeo tradition in the country, anchored by the Houston Livestock Show and Rodeo, the world's largest." },
+  "49": { sport:"Skiing", desc:"A winter sport using skis to glide over snow, encompassing alpine and Nordic disciplines.", origin:"Designated in 2013. Utah's 'Greatest Snow on Earth' and world-class resorts like Park City, host of the 2002 Winter Olympics, made skiing a natural choice." },
+  "50": { sport:"Skiing", desc:"A winter sport using skis to glide over snow, encompassing alpine and Nordic disciplines.", origin:"Designated in 2012. Vermont's Green Mountains provide ideal terrain, and the state has a long skiing tradition central to its winter economy and culture." },
+  "51": { sport:"None designated", desc:"Virginia has not officially designated a state sport.", origin:"Virginia has strong traditions in equestrian sports, lacrosse, and college athletics, but no official state sport has been named." },
+  "53": { sport:"Pickleball", desc:"A paddle sport combining elements of tennis, badminton, and table tennis, played on a smaller court with a perforated plastic ball.", origin:"Designated in 2022. Pickleball was invented on Bainbridge Island, Washington in 1965, giving the state a strong claim to the fast-growing sport." },
+  "54": { sport:"None designated", desc:"West Virginia has not officially designated a state sport.", origin:"Hunting, fishing, and whitewater rafting are deeply popular, but no formal state sport designation has been made." },
+  "55": { sport:"None designated", desc:"Wisconsin has not officially designated a state sport.", origin:"Despite passionate fan cultures around the Packers, Brewers, and Bucks, Wisconsin has not formally designated a state sport." },
+  "56": { sport:"Rodeo", desc:"A competitive sport from cattle herding traditions, featuring bronc riding, bull riding, and roping.", origin:"Designated in 2003. Wyoming's nickname 'The Cowboy State' says it all — rodeo is celebrated annually at Cheyenne Frontier Days, one of the world's largest outdoor rodeos." },
+};
+
+
+// Motto origins
+const mottoOrigin = {
+"01":"Adopted in 1923. Latin phrase reflecting Alabama's fierce defense of states' rights throughout its history, from the Civil War to the civil rights era.",
+"02":"Adopted in 1967 during a centennial celebration. Coined by journalist Richard Peter to capture Alaska's frontier spirit and forward-looking optimism.",
+"04":"Adopted in 1863. Latin for 'God enriches' — a reference to the mineral wealth and natural resources that drew settlers to the Arizona Territory.",
+"05":"Adopted in 1907. Latin for 'The people rule' — emphasizing that Arkansas's government derives its power from its citizens, not a king or ruling class.",
+"06":"Adopted in 1849 during the Gold Rush. The Greek word means 'I have found it!' — supposedly shouted by gold miners striking it rich in the Sierra Nevada.",
+"08":"Adopted in 1861. Latin for 'Nothing without providence' — reflecting early settlers' belief that divine guidance led them to Colorado's mountains and riches.",
+"09":"Adopted in 1662 — one of the oldest state mottos. Latin for 'He who transplanted sustains' — referring to God sustaining the Puritan colonists who transplanted from England.",
+"10":"Adopted in 1847. Delaware was the first state to ratify the Constitution, and its motto celebrates the liberty and independence that act represented.",
+"12":"Adopted in 1868. Florida shares this motto with the United States itself. It replaced a previous Confederate-era motto after the Civil War.",
+"13":"Adopted in 1799. These three virtues appear on the state seal and reflect the ideals Georgia's founders believed essential to good government.",
+"15":"Adopted in 1959. Hawaiian phrase dating to King Kamehameha III in 1843 when British forces briefly seized Hawaii, then restored sovereignty.",
+"16":"Adopted in 1867. Latin for 'Let it be perpetual' — a phrase attributed to Venetian statesman Cardinal Pietro Bembo, expressing hope that Idaho would endure forever.",
+"17":"Adopted in 1819. Reflects the balance between state sovereignty and national unity that was a central debate in early American politics.",
+"18":"Adopted in 1937. Indiana's central location made it a vital transportation hub — roads, railways, and rivers all crossed through the state.",
+"19":"Adopted in 1847. One of the longest state mottos, it reflects Iowa settlers' fierce commitment to personal freedom and civil rights.",
+"20":"Adopted in 1861. Latin for 'To the stars through difficulties' — capturing the pioneer spirit of Kansas settlers who endured brutal conditions to build a new state.",
+"21":"Adopted in 1942. Originally from a patriotic toast by John Rowan, it reflects Kentucky's role as a border state that valued unity during the Civil War.",
+"22":"Adopted in 1902. These three words represent the core values Louisiana's founders wanted to define the state's character and governance.",
+"23":"Adopted in 1820. Latin for 'I lead' — reflecting Maine's position as the easternmost state, first to see the sunrise, and a leader among New England states.",
+"24":"Adopted in 1874. Italian for 'Strong deeds, gentle words' — the motto of the Calvert family, who founded the Maryland colony as a haven of religious tolerance.",
+"25":"Adopted in 1775. Latin for 'By the sword we seek peace, but peace only under liberty' — written by Algernon Sidney, a hero to American revolutionaries.",
+"26":"Adopted in 1835. Latin for 'If you seek a pleasant peninsula, look about you' — a fitting description of Michigan, surrounded by four of the five Great Lakes.",
+"27":"Adopted in 1861. French for 'The Star of the North' — Minnesota was one of the northernmost states when it joined the Union, a guiding star on the frontier.",
+"28":"Adopted in 1894. Latin for 'By valor and arms' — reflecting Mississippi's military tradition and the courage of its citizens from the Revolution through the Civil War.",
+"29":"Adopted in 1822. Latin for 'The welfare of the people shall be the supreme law' — from Cicero, emphasizing that government exists to serve its people.",
+"30":"Adopted in 1865. Spanish for 'Gold and Silver' — a direct reference to Montana's rich mining heritage that drove its early settlement and economy.",
+"31":"Adopted in 1867. Reflects Nebraska's commitment to equal justice — a principle that shaped the state from its founding during the era of westward expansion.",
+"32":"Adopted in 1866. A patriotic declaration emphasizing that Nevada's citizens dedicate themselves entirely to the nation — adopted during the Civil War.",
+"33":"Adopted in 1945. Written by General John Stark, a Revolutionary War hero from NH. He was too ill to attend a reunion but sent this toast instead.",
+"34":"Adopted in 1928. Reflects the twin values that New Jersey's founders — and its diverse economy — have always pursued: freedom and economic opportunity.",
+"35":"Adopted in 1887. Latin for 'It grows as it goes' — describing how New Mexico's strength and influence grew as it developed from territory to statehood.",
+"36":"Adopted in 1778. Latin for 'Ever upward' — expressing New York's endless ambition and drive for progress. NY also added 'E Pluribus Unum' in 2020.",
+"37":"Adopted in 1893. Latin for 'To be, rather than to seem' — from Cicero, emphasizing authenticity and substance over appearances. A favorite of NC educators.",
+"38":"Adopted in 1889. Borrowed from Daniel Webster's famous speech defending the Union — reflecting ND's commitment to national unity upon statehood.",
+"39":"Adopted in 1959. A biblical quote (Matthew 19:26) that replaced an earlier unofficial motto. Ohio is one of few states with a religious state motto.",
+"40":"Adopted in 1893. Latin for 'Labor conquers all things' — from Virgil, celebrating the hard work of Oklahoma's settlers who transformed the frontier.",
+"41":"Adopted in 1987. Latin for 'She flies with her own wings' — originally adopted in 1854, lost, then restored. Reflects Oregon's independent pioneer spirit.",
+"42":"Adopted in 1875. These three words capture Pennsylvania's founding vision — William Penn created the colony as a haven for religious virtue and personal liberty.",
+"44":"Adopted in 1664. The single word 'Hope' is one of the shortest and most powerful state mottos, reflecting Rhode Island founder Roger Williams' optimism.",
+"45":"Adopted in 1776. Latin for 'While I breathe, I hope' — one of two SC mottos. The other is 'Prepared in mind and resources.' Both reflect Revolutionary-era defiance.",
+"46":"Adopted in 1885. Similar to Arkansas's motto, it emphasizes that government authority comes from the people, guided by faith.",
+"47":"Adopted in 1802. Reflects Tennessee's two economic pillars throughout its history — farming in the rural areas and trade in its river cities.",
+"48":"Adopted in 1930. The simple word 'Friendship' comes from the Caddo word 'tejas' (meaning friends), which also gave Texas its name.",
+"49":"Adopted in 1959. The single word reflects the beehive symbol on Utah's seal — representing the industrious, hardworking nature of its settlers.",
+"50":"Adopted in 1788. These two words capture Vermont's dual commitment — personal freedom combined with community cooperation. Both were essential on the frontier.",
+"51":"Adopted in 1776. Latin for 'Thus always to tyrants' — famously (and controversially) the words John Wilkes Booth shouted after assassinating Lincoln.",
+"53":"Adopted in 1853. Chinook Jargon for 'By and by' or 'Hope for the future' — reflecting the optimism of settlers arriving in the Pacific Northwest.",
+"54":"Adopted in 1863. Latin for 'Mountaineers are always free' — adopted when WV split from Virginia during the Civil War, declaring independence from the Confederacy.",
+"55":"Adopted in 1851. The single word captures Wisconsin's progressive tradition — the state was often first to adopt new ideas in education, labor, and government.",
+"56":"Adopted in 1893. Wyoming was the first territory to grant women the right to vote (1869), earning the nickname 'The Equality State.'"
+};
+
+// Nickname origins
+const nicknameOrigin = {
+"01":"The yellowhammer is a woodpecker with yellow wing patches. Confederate soldiers from Alabama wore yellowhammer feathers in their hats during the Civil War.",
+"02":"Refers to Alaska's vast, untamed wilderness. With only 1.3 people per square mile, Alaska truly is America's last great frontier.",
+"04":"The Grand Canyon is 277 miles long, 18 miles wide, and over 1 mile deep. It took the Colorado River 5-6 million years to carve it.",
+"05":"Adopted in 1995 to promote tourism. Arkansas has 600,000 acres of lakes, 9,700 miles of streams, and some of the most diverse ecosystems in the South.",
+"06":"Named during the Gold Rush of 1849 when thousands flooded California seeking golden fortunes. The state's hills also turn golden in summer.",
+"08":"Colorado celebrated its centennial (100th anniversary) of American independence in 1876 — the same year it became a state.",
+"09":"Connecticut's 1639 Fundamental Orders is considered the first written constitution in history, predating the U.S. Constitution by 150 years.",
+"10":"Delaware was the first state to ratify the U.S. Constitution on December 7, 1787 — beating Pennsylvania by just 5 days.",
+"12":"Florida averages 237 sunny days per year. Spanish explorer Juan Ponce de Leon named it 'La Florida' (Land of Flowers) in 1513.",
+"13":"Georgia produces about 130 million pounds of peaches annually, though South Carolina actually produces more. The nickname stuck anyway!",
+"15":"'Aloha' means love, compassion, and peace in Hawaiian. It reflects the islands' welcoming culture and spirit of generosity.",
+"16":"Idaho was once a major source of gems including star garnets, opals, and jasper. The star garnet is found in only two places on Earth — Idaho and India.",
+"17":"Illinois was once covered by vast tallgrass prairies stretching to the horizon. Less than 0.01% of the original prairie remains today.",
+"18":"'Hoosier' has been used since the 1840s but nobody agrees on its origin! Theories include 'Who's here?' shouted at frontier doors and a contractor named Hoosier.",
+"19":"Named after the fictional hero in James Fenimore Cooper's novel 'The Last of the Mohicans.' Iowa's nickname comes from the 'Hawkeye' character.",
+"20":"Wild sunflowers blanket Kansas prairies and can grow over 10 feet tall. The sunflower was adopted as the state flower in 1903.",
+"21":"Kentucky's limestone-filtered water and rich soil produce a distinctive blue-green grass that appears blue in spring when it blooms.",
+"22":"The brown pelican appears on Louisiana's flag and seal. It nearly went extinct from DDT pesticide in the 1960s but has since recovered.",
+"23":"Eastern white pines once covered Maine and were so valuable for ship masts that the British Crown reserved the tallest trees, angering colonists.",
+"24":"Maryland troops in the Revolutionary War earned George Washington's praise for standing firm in battle, fighting 'like an old line of regulars.'",
+"25":"Massachusetts Bay was the body of water that defined the colony. The Pilgrims landed at Plymouth (outside the bay) but the name stuck for the whole state.",
+"26":"Michigan is bordered by four of the five Great Lakes — Superior, Michigan, Huron, and Erie. No point in Michigan is more than 85 miles from a Great Lake.",
+"27":"L'Etoile du Nord (French for 'Star of the North') inspired the nickname. Minnesota was one of the northernmost states at admission in 1858.",
+"28":"Magnolia trees with their large, fragrant white flowers grow throughout Mississippi and are iconic symbols of the Deep South.",
+"29":"The 'Show-Me' attitude means Missourians are skeptical and want proof. Congressman Willard Vandiver said in 1899: 'I'm from Missouri. You've got to show me.'",
+"30":"Montana's nickname comes from its mineral wealth — gold and silver mining drove early settlement. Montana's state motto is literally 'Gold and Silver.'",
+"31":"Nebraska's Cornhusker nickname came from the University of Nebraska football team. Before machines, corn was husked by hand — backbreaking frontier work.",
+"32":"Nevada's massive silver deposits, particularly the Comstock Lode discovered in 1859, produced over $400 million in silver and gold.",
+"33":"New Hampshire's abundant granite was used in buildings nationwide, including the Library of Congress. The 'Old Man of the Mountain' granite formation was the state symbol until it collapsed in 2003.",
+"34":"New Jersey's fertile soil and mild climate made it a premier farming state in the colonial era, supplying produce to New York and Philadelphia.",
+"35":"Named by Spanish conquistadors who believed the region held magical powers. New Mexico's stunning landscapes and rich culture keep the enchantment alive.",
+"36":"New York's nickname reflects its dominant role in finance, culture, media, and politics — an empire within a nation.",
+"37":"During the Civil War, North Carolina soldiers left tarry footprints from pine tar on their boots. Rival soldiers said they 'stuck like tar heels' in battle.",
+"38":"The International Peace Garden sits on the ND-Manitoba border. ND's nickname reflects its commitment to peace and its beautiful gardens.",
+"39":"Ohio buckeye trees produce nuts that look like the eye of a male deer (buck). Early settlers carried buckeyes as good luck charms.",
+"40":"During the 1889 Land Run, some settlers snuck into Oklahoma Territory 'sooner' than allowed, claiming the best land before the official start.",
+"41":"Oregon's lush forests of Douglas fir, western red cedar, and Sitka spruce stay green year-round thanks to abundant Pacific Northwest rainfall.",
+"42":"Pennsylvania is the 'keystone' — the central, wedge-shaped stone that holds an arch together. PA was the middle colony, holding the 13 colonies together.",
+"43":"skip",
+"44":"Rhode Island has 400 miles of coastline despite being the smallest state. Its economy and culture have always revolved around the sea.",
+"45":"Palmetto trees (a type of palm) grow throughout coastal SC. During the Revolution, a palmetto log fort on Sullivan's Island absorbed British cannonballs without breaking.",
+"46":"Mount Rushmore features the 60-foot carved faces of Washington, Jefferson, Roosevelt, and Lincoln. It took 14 years to complete (1927-1941).",
+"47":"During the War of 1812 and Mexican-American War, Tennessee sent so many volunteer soldiers that the nickname became permanent.",
+"48":"The single star on Texas's flag represents independence and self-reliance. Texas was an independent republic for 9 years before joining the U.S. in 1845.",
+"49":"The beehive symbolizes industry and hard work. Mormon settlers chose it to represent their cooperative, industrious community values.",
+"50":"Vermont's Green Mountains (Les Verts Monts in French) gave the state its name. The mountains are among the oldest in the world at 400 million years.",
+"51":"Virginia was one of the original 13 colonies, established in 1607 at Jamestown — the first permanent English settlement in North America.",
+"53":"Washington's forests of Douglas fir, western hemlock, and Sitka spruce stay green all year due to the mild, wet Pacific Northwest climate.",
+"54":"When West Virginia split from Virginia during the Civil War in 1863, its mountainous terrain and independent people earned this fitting nickname.",
+"55":"Early lead miners in Wisconsin dug into hillsides and lived in their mines like badgers. The nickname stuck even after mining declined.",
+"56":"Wyoming's cowboy culture is legendary — Cheyenne Frontier Days is one of the world's largest rodeos, held annually since 1897."
+};
+
+// Bird origins
+const birdOrigin = {
+"01":"Adopted in 1927. The yellowhammer (Northern Flicker) became associated with Alabama during the Civil War when soldiers wore its feathers. It's a type of woodpecker that drums on trees and metal surfaces.",
+"02":"Adopted in 1955. The willow ptarmigan turns completely white in winter for camouflage in snow — one of few birds that changes color with the seasons. Alaska's state bird can survive -40°F winters.",
+"04":"Adopted in 1931. The cactus wren builds its nest inside thorny cacti for protection from predators. It's the largest wren in North America and thrives in Arizona's harsh desert.",
+"05":"Adopted in 1929. The mockingbird can mimic over 200 different sounds including car alarms, dog barks, and other birds. Four states chose it as their state bird!",
+"06":"Adopted in 1931. California quail have a distinctive teardrop-shaped plume on their heads. They travel in groups called 'coveys' of 10-200 birds.",
+"08":"Adopted in 1931. The lark bunting is the only state bird that's entirely black and white. Males turn jet black with white wing patches during breeding season.",
+"09":"Adopted in 1943. The American robin is one of the first birds to sing at dawn. Its red breast was once thought to have been stained by fire in a Native American legend.",
+"10":"Adopted in 1939. The blue hen chicken isn't a natural species — it's a fighting gamecock breed. Delaware soldiers in the Revolution were called 'Blue Hen's Chickens' for their bravery.",
+"12":"Adopted in 1927. Florida shares the mockingbird with 4 other states. Mockingbirds are fiercely territorial and will dive-bomb cats, dogs, and even people who approach their nests.",
+"13":"Adopted in 1935. The brown thrasher can sing over 1,100 different song types — more than any other North American bird. It was chosen because it's found only in the eastern U.S.",
+"15":"Adopted in 1957. The nene (Hawaiian goose) nearly went extinct with only 30 birds left in 1952. Conservation brought them back to over 3,000 today. They evolved from Canadian geese.",
+"16":"Adopted in 1931. Mountain bluebirds hover in mid-air to catch insects — a technique called 'hover-gleaning.' Their brilliant blue color comes from light refraction, not pigment.",
+"17":"Adopted in 1929. The cardinal doesn't migrate and stays vibrant red all winter, making it easy to spot against snow. Seven states chose it — more than any other bird.",
+"18":"Adopted in 1933. Indiana shares the cardinal with 6 other states. Male cardinals are bright red to attract mates; females are tan-brown for camouflage while nesting.",
+"19":"Adopted in 1933. The Eastern goldfinch (American goldfinch) molts twice a year — bright yellow in summer, dull olive in winter. It eats almost exclusively seeds.",
+"20":"Adopted in 1937. The Western meadowlark's beautiful flute-like song carries across the prairie for half a mile. Six states chose it — second most popular state bird.",
+"21":"Adopted in 1926. Kentucky shares the cardinal with 6 other states. Cardinals mate for life and the male feeds the female beak-to-beak during courtship.",
+"22":"Adopted in 1966. The brown pelican dives from 60 feet high to catch fish, hitting the water at 40 mph. It nearly went extinct from DDT but recovered after the pesticide was banned.",
+"23":"Adopted in 1927. The black-capped chickadee can remember thousands of hiding spots where it stashed seeds. Its brain actually grows new neurons each autumn to boost memory!",
+"24":"Adopted in 1947. Named for Lord Baltimore, whose family colors (orange and black) match the bird's plumage. The Baltimore Orioles baseball team is also named after it.",
+"25":"Adopted in 1941. Massachusetts shares the chickadee with Maine. Chickadees lower their body temperature at night to conserve energy — a mini-hibernation called torpor.",
+"26":"Adopted in 1931. Michigan shares the American robin with Connecticut and Wisconsin. Robins can eat up to 14 feet of earthworms in a single day!",
+"27":"Adopted in 1961. The common loon's haunting call echoes across Minnesota's 10,000 lakes. Loons can dive 200 feet deep and hold their breath for 5 minutes.",
+"28":"Adopted in 1944. Mississippi is one of 5 states with the mockingbird. A mockingbird can learn a new song in as little as 30 seconds by hearing it once.",
+"29":"Adopted in 1927. The Eastern bluebird was nearly wiped out by European starlings stealing its nesting spots. Birdhouse programs helped bring populations back.",
+"30":"Adopted in 1931. Montana shares the Western meadowlark with 5 other states. Lewis and Clark first described the bird during their expedition through Montana in 1805.",
+"31":"Adopted in 1929. Nebraska shares the meadowlark with 5 other prairie states. The meadowlark isn't actually a lark — it's a member of the blackbird family!",
+"32":"Adopted in 1967. Nevada shares the mountain bluebird with Idaho. Bluebirds are cavity nesters — they live in holes in trees or birdhouses, never building their own nests.",
+"33":"Adopted in 1957. The purple finch isn't actually purple — it's more raspberry red. Roger Tory Peterson described it as 'a sparrow dipped in raspberry juice.'",
+"34":"Adopted in 1935. New Jersey shares the Eastern goldfinch with Iowa and Washington. Goldfinches are one of the strictest vegetarians in the bird world.",
+"35":"Adopted in 1949. The greater roadrunner can run 20 mph and actually prefers running to flying. It eats rattlesnakes by grabbing them behind the head!",
+"36":"Adopted in 1970. The Eastern bluebird symbolized happiness to early settlers. New York shares it with Missouri — both states helped with bluebird conservation.",
+"37":"Adopted in 1943. North Carolina is one of 7 states with the cardinal. The cardinal's crest rises when it's alarmed and flattens when it's calm.",
+"38":"Adopted in 1947. North Dakota shares the meadowlark with 5 other states. Meadowlarks build domed nests on the ground, hidden in prairie grass.",
+"39":"Adopted in 1933. Ohio is one of 7 states with the cardinal. Cardinals are named after Catholic cardinals because of their red robes.",
+"40":"Adopted in 1951. The scissor-tailed flycatcher has tail feathers longer than its body! It performs acrobatic aerial displays during courtship.",
+"41":"Adopted in 1927. Oregon shares the Western meadowlark with 5 other states. It was chosen over the Oregon junco in a statewide vote by schoolchildren.",
+"42":"Adopted in 1931. The ruffed grouse creates a drumming sound by beating its wings rapidly against the air — not against a log as many people think.",
+"43":"skip",
+"44":"Adopted in 1954. The Rhode Island Red is a chicken breed, not a wild bird! It was developed in Rhode Island in the 1880s and is famous for egg production.",
+"45":"Adopted in 1948. The Carolina wren is one of the loudest songbirds for its size. Its call — 'teakettle, teakettle, teakettle' — can be heard from 300 feet away.",
+"46":"Adopted in 1943. The ring-necked pheasant isn't native to the U.S. — it was imported from China in 1881. South Dakota now produces more pheasants than any other state.",
+"47":"Adopted in 1933. Tennessee shares the mockingbird with 4 other states. Mockingbirds sing at night, especially during a full moon, and unpaired males sing the most.",
+"48":"Adopted in 1927. Texas shares the mockingbird with 4 other states. The Texas mockingbird is known for being especially aggressive — it will attack hawks and eagles!",
+"49":"Adopted in 1955. The California gull is famous for saving early Utah settlers by eating a plague of crickets that threatened to destroy their crops in 1848.",
+"50":"Adopted in 1941. The hermit thrush has one of the most beautiful songs of any North American bird — a cascading, flute-like melody that echoes through Vermont's forests.",
+"51":"Adopted in 1950. Virginia is one of 7 states with the cardinal. Virginia's cardinals are year-round residents, brightening winter landscapes with their red plumage.",
+"53":"Adopted in 1951. The willow goldfinch (American goldfinch) was chosen by Washington schoolchildren. It's sometimes called the 'wild canary' for its bright yellow color.",
+"54":"Adopted in 1949. West Virginia is one of 7 cardinal states. The cardinal's loud, clear whistle — 'birdy birdy birdy' — is one of the most recognized bird calls in America.",
+"55":"Adopted in 1949. Wisconsin shares the American robin with Connecticut and Michigan. The robin's 'cheerily, cheer up' song is one of the first signs of spring.",
+"56":"Adopted in 1927. Wyoming shares the meadowlark with 5 other states. The meadowlark's song inspired composer Anton Dvořák during his visit to the American prairie."
+};
+
+// State flower data
+const flowerData = {
+"01":{flower:"Camellia",facts:["Replaced goldenrod in 1959 after a campaign by garden clubs","Alabama is one of few states where camellias bloom outdoors year-round","The flower symbolizes the state's mild Southern climate"]},
+"02":{flower:"Forget-Me-Not",facts:["Adopted in 1949 while Alaska was still a territory","The tiny blue flower grows wild across Alaska's meadows","Symbolizes remembrance and the spirit of the frontier"]},
+"04":{flower:"Saguaro Cactus Blossom",facts:["The waxy white bloom opens only at night during late spring","Adopted in 1931 to represent Arizona's iconic desert landscape","Saguaro cacti can live over 200 years and only bloom after age 35"]},
+"05":{flower:"Apple Blossom",facts:["Adopted in 1901 when Arkansas was a leading apple producer","The delicate pink-white blossoms appear each spring","Represents the once-thriving apple orchards of the Ozarks"]},
+"06":{flower:"California Poppy",facts:["Adopted in 1903; April 6 is California Poppy Day","The golden-orange flowers blanket hillsides each spring","Native Americans used the plant as both food and medicine"]},
+"08":{flower:"Rocky Mountain Columbine",facts:["Adopted in 1899; it's illegal to uproot them on public land","The blue and white colors match Colorado's clear skies and snowy peaks","Nearly harvested to extinction before legal protections were enacted"]},
+"09":{flower:"Mountain Laurel",facts:["Adopted in 1907 for its abundance in Connecticut forests","The clusters of pink-white flowers bloom in June","Leaves are toxic to livestock, earning it the nickname 'lambkill'"]},
+"10":{flower:"Peach Blossom",facts:["Adopted in 1895 when Delaware had thriving peach orchards","A disease wiped out most orchards by the 1890s but the flower remained","The delicate pink blooms symbolize Delaware's agricultural heritage"]},
+"12":{flower:"Orange Blossom",facts:["Adopted in 1909 during Florida's citrus boom era","The intensely fragrant white flowers are used in perfumes worldwide","Florida once produced 70% of America's oranges"]},
+"13":{flower:"Cherokee Rose",facts:["Adopted in 1916; it's actually native to China, not Georgia","Legend says the flower grew along the Trail of Tears","Its thorny vines were used as natural fencing by early settlers"]},
+"15":{flower:"Yellow Hibiscus (Pua Aloalo)",facts:["Adopted in 1988; the native species is critically endangered","Only about 200 plants exist in the wild on Oahu and Maui","Hawaiians traditionally used hibiscus bark to make cordage"]},
+"16":{flower:"Syringa (Mock Orange)",facts:["Adopted in 1931; the fragrant white flowers bloom in spring","Found growing wild along Idaho's rivers and mountain streams","Lewis and Clark noted the plant during their 1805 expedition"]},
+"17":{flower:"Violet",facts:["Adopted in 1908 after a vote by schoolchildren across the state","Violets grow wild in woodlands and gardens throughout Illinois","The leaves are edible and high in vitamins A and C"]},
+"18":{flower:"Peony",facts:["Adopted in 1957, replacing the zinnia which held the title since 1931","Peonies can live and bloom for over 100 years","Indiana is one of few states where peonies thrive in every county"]},
+"19":{flower:"Wild Prairie Rose",facts:["Adopted in 1897 to represent Iowa's prairie heritage","The pink flowers bloom along roadsides and meadows statewide","Iowa's prairies once covered 85% of the state before farming"]},
+"20":{flower:"Sunflower",facts:["Adopted in 1903; Kansas is literally 'The Sunflower State'","Sunflowers can grow 10+ feet tall in Kansas fields","The flowers track the sun across the sky, a behavior called heliotropism"]},
+"21":{flower:"Goldenrod",facts:["Adopted in 1926; it blooms bright yellow across Kentucky each fall","Despite popular belief, goldenrod rarely causes allergies","Native Americans used it to make dyes and medicinal teas"]},
+"22":{flower:"Magnolia",facts:["Adopted in 1900 to represent Louisiana's Southern heritage","Magnolia trees are among the oldest flowering plants, dating back 100 million years","The large fragrant blooms can be up to 12 inches across"]},
+"23":{flower:"White Pine Cone and Tassel",facts:["Adopted in 1895; Maine is 'The Pine Tree State'","It's technically not a flower but a cone — unique among state emblems","Eastern white pines in Maine can grow over 150 feet tall"]},
+"24":{flower:"Black-Eyed Susan",facts:["Adopted in 1918; it blooms across Maryland fields in summer","The Preakness Stakes winner receives a blanket of Black-Eyed Susans","The flower's colors match Maryland's state flag (gold and black)"]},
+"25":{flower:"Mayflower (Trailing Arbutus)",facts:["Adopted in 1918; one of the earliest spring wildflowers","Named for the Pilgrims' ship and the month it typically blooms","Now rare due to habitat loss; it's protected in several states"]},
+"26":{flower:"Apple Blossom",facts:["Adopted in 1897 during Michigan's apple industry boom","Michigan remains a top-5 apple-producing state","The fragrant pink-white blossoms appear in May across orchards"]},
+"27":{flower:"Pink and White Lady's Slipper",facts:["Adopted in 1902; it takes 10-15 years to bloom from seed","It's illegal to pick them in Minnesota — they're protected","This rare orchid depends on a specific fungus to germinate"]},
+"28":{flower:"Magnolia",facts:["Adopted in 1952; Mississippi is 'The Magnolia State'","Magnolia grandiflora is an evergreen with year-round glossy leaves","The flowers produce a sweet lemony fragrance detectable from far away"]},
+"29":{flower:"White Hawthorn Blossom",facts:["Adopted in 1923; hawthorn trees line Missouri's rural roads","The thorny trees provided natural fencing for early settlers","Hawthorn berries were used in folk medicine for heart health"]},
+"30":{flower:"Bitterroot",facts:["Adopted in 1895; the Bitterroot Mountains are named after it","Lewis and Clark collected specimens during their expedition","Native Americans relied on bitterroot as a food source for centuries"]},
+"31":{flower:"Goldenrod",facts:["Adopted in 1895; it blankets Nebraska's prairies each autumn","There are over 100 species of goldenrod in North America","The plant is pollinated by insects, not wind, despite allergy myths"]},
+"32":{flower:"Sagebrush",facts:["Adopted in 1959 (technically the state flower is sagebrush)","The silvery-green plant defines Nevada's high desert landscape","Its distinctive aroma intensifies after desert rainstorms"]},
+"33":{flower:"Purple Lilac",facts:["Adopted in 1919; it represents the hardy character of NH residents","Lilacs were first planted in NH by Governor Benning Wentworth in 1750","Rochester, NH hosts an annual Lilac Festival each May"]},
+"34":{flower:"Common Blue Violet",facts:["Adopted in 1913 after a vote by the state's women's organizations","Violets carpet New Jersey's woodlands each spring","The flowers are edible and commonly used to decorate cakes"]},
+"35":{flower:"Yucca Flower",facts:["Adopted in 1927; the yucca thrives in New Mexico's arid climate","Native Americans used yucca fibers for rope, sandals, and baskets","The plant depends on a specific moth species for pollination"]},
+"36":{flower:"Rose",facts:["Adopted in 1955; New York is home to many historic rose gardens","The rose was also chosen as the U.S. national flower in 1986","Over 30,000 rose varieties exist worldwide"]},
+"37":{flower:"Dogwood",facts:["Adopted in 1941; dogwood trees bloom spectacularly each spring","The 'flowers' are actually modified leaves called bracts","Dogwood wood is extremely hard and was used for weaving shuttles"]},
+"38":{flower:"Wild Prairie Rose",facts:["Adopted in 1907; the same flower as neighboring Iowa and South Dakota","The pink blooms thrive in North Dakota's harsh continental climate","Hardy enough to survive temperatures well below zero"]},
+"39":{flower:"Red Carnation",facts:["Adopted in 1904 in honor of President William McKinley of Ohio","McKinley wore a red carnation as his good luck charm","Ohio grows millions of carnations commercially each year"]},
+"40":{flower:"Oklahoma Rose",facts:["Adopted in 2004, replacing mistletoe which held the title since 1893","The hybrid tea rose was developed specifically for Oklahoma's climate","Oklahoma is the only state with a rose bred exclusively for it"]},
+"41":{flower:"Oregon Grape",facts:["Adopted in 1899; it's not actually a grape but a barberry","The tart blue berries were used by Native Americans for food and dye","The plant's holly-like leaves stay green year-round"]},
+"42":{flower:"Mountain Laurel",facts:["Adopted in 1933; it grows wild across Pennsylvania's mountains","The Poconos region is famous for spectacular mountain laurel displays","Pennsylvania shares this flower with neighboring Connecticut"]},
+"44":{flower:"Violet",facts:["Adopted in 1968 after a vote by Rhode Island schoolchildren","The modest little flower represents the small but mighty state","Rhode Island and Illinois share the violet as their state flower"]},
+"45":{flower:"Yellow Jessamine",facts:["Adopted in 1924; it climbs fences and trees across South Carolina","The trumpet-shaped flowers are among the first to bloom in spring","All parts of the plant are toxic — settlers learned this the hard way"]},
+"46":{flower:"Pasque Flower",facts:["Adopted in 1903; it blooms while snow still covers the ground","One of the earliest spring flowers, appearing in March","Its name comes from the Hebrew word for Passover (Pesach)"]},
+"47":{flower:"Iris",facts:["Adopted in 1933; Tennessee chose the purple iris specifically","The iris represents faith, wisdom, and valor","Tennessee's iris gardens attract visitors from across the South"]},
+"48":{flower:"Bluebonnet",facts:["Adopted in 1901; fields of bluebonnets are a Texas icon","Taking photos in bluebonnet fields is a beloved Texas spring tradition","It's a myth that picking them is illegal — but it is frowned upon"]},
+"49":{flower:"Sego Lily",facts:["Adopted in 1911; it saved early Mormon settlers from starvation","The bulbs are edible and were a critical food source in 1848","The flower symbolizes Utah's resilience and pioneer heritage"]},
+"50":{flower:"Red Clover",facts:["Adopted in 1894; red clover grows wild across Vermont's pastures","It enriches soil by fixing nitrogen — farmers love it","Vermont shares this humble flower with its dairy farming heritage"]},
+"51":{flower:"American Dogwood",facts:["Adopted in 1918; Virginia's dogwoods bloom spectacularly in April","Jamestown colonists sent dogwood specimens back to England in 1607","Virginia and North Carolina both chose dogwood as their state flower"]},
+"53":{flower:"Coast Rhododendron",facts:["Adopted in 1892 by women's vote before Washington was even a state","The pink blooms cover the Pacific Northwest's forests in spring","Rhododendrons can grow 20+ feet tall in Washington's wet climate"]},
+"54":{flower:"Rhododendron",facts:["Adopted in 1903; it thrives in West Virginia's mountain forests","The Appalachian woodlands provide perfect acidic soil for them","The name means 'rose tree' in Greek"]},
+"55":{flower:"Wood Violet",facts:["Adopted in 1909 after a vote by Wisconsin schoolchildren","The modest purple flower represents Wisconsin's natural beauty","Wisconsin, Illinois, and Rhode Island all chose violets"]},
+"56":{flower:"Indian Paintbrush",facts:["Adopted in 1917; the bright red-orange flowers color Wyoming's meadows","The plant is partially parasitic, tapping into other plants' roots","Legend says a young artist's discarded paintbrushes became the flowers"]}
+};
+
+// Homicide rate data (per 100,000, 2023 CDC/FBI data)
+const crimeData = {
+"01":12.4,"02":7.8,"04":7.4,"05":11.2,"06":5.4,"08":5.2,"09":2.8,"10":6.1,
+"12":5.6,"13":8.9,"15":3.1,"16":2.5,"16":2.5,"17":7.2,"18":6.8,"19":2.9,"20":5.1,
+"21":7.5,"22":15.8,"23":1.6,"24":8.3,"25":2.7,"26":6.9,"27":3.4,"28":19.4,
+"29":10.8,"30":4.5,"31":3.2,"32":8.0,"33":1.4,"34":3.5,"35":12.5,"36":3.9,
+"37":8.1,"38":3.0,"39":5.8,"40":8.4,"41":3.6,"42":6.6,"44":2.6,"45":10.1,
+"46":3.7,"47":9.3,"48":6.7,"49":2.4,"50":2.0,"51":6.2,"53":4.1,"54":5.9,"55":4.6,"56":2.8
+};
+
+// Corn production data (million bushels, 2024 est.)
+const cornData = {
+"01":33,"02":0,"04":5,"05":47,"06":25,"08":149,"09":5,"10":21,
+"12":8,"13":55,"15":0,"16":42,"17":2310,"18":965,"19":2680,"20":790,
+"21":219,"22":62,"23":1,"24":56,"25":1,"26":350,"27":1440,"28":52,
+"29":493,"30":7,"31":1790,"32":0,"33":1,"34":10,"35":3,"36":75,
+"37":107,"38":476,"39":580,"40":32,"41":5,"42":150,"44":1,"45":42,
+"46":656,"47":99,"48":268,"49":3,"50":10,"51":52,"53":22,"54":6,"55":493,"56":5
+};
+
+
+// State dinosaur/fossil data
+const dinoData = {
+"01":{name:"Basilosaurus",type:"State Fossil",fact:"An ancient whale from 40 million years ago — not actually a dinosaur despite the name!"},
+"02":{name:"Woolly Mammoth",type:"State Fossil",fact:"Preserved in permafrost! Alaska has some of the best-preserved mammoth specimens ever found."},
+"04":{name:"Sonorasaurus",type:"State Dinosaur",fact:"Found in the Sonoran Desert in 1994 — a brachiosaurus nearly named 'Chihuahuasaurus'!"},
+"05":{name:"Arkansaurus fridayi",type:"State Dinosaur",fact:"Found by a gas station owner in 1972 who spotted bones in a ditch after road construction."},
+"06":{name:"Augustynolophus",type:"State Dinosaur",fact:"A duckbill dinosaur — the only specimens ever found came from California."},
+"08":{name:"Stegosaurus",type:"State Fossil",fact:"First Stegosaurus fossils ever found came from Colorado in 1876. Its brain was the size of a walnut!"},
+"09":{name:"Eubrontes",type:"State Fossil",fact:"Dinosaur footprints, not bones! Found along the Connecticut River Valley — hundreds of tracks."},
+"10":{name:"Belemnite",type:"State Fossil",fact:"An ancient squid-like creature. Delaware's fossil is from the Cretaceous period."},
+"12":{name:"No official fossil",type:"None",fact:"Florida has no state fossil, but the state is rich in Ice Age mammal fossils like giant sloths."},
+"13":{name:"Shark Tooth",type:"State Fossil",fact:"Georgia designated the shark tooth in 1976 — ancient megalodon teeth are found across the state."},
+"15":{name:"No official fossil",type:"None",fact:"Hawaii's volcanic islands are too young for dinosaur fossils, but marine fossils exist."},
+"16":{name:"Hagerman Horse",type:"State Fossil",fact:"A 3.5-million-year-old ancestor of the modern horse, found at Hagerman Fossil Beds."},
+"17":{name:"Tully Monster",type:"State Fossil",fact:"A bizarre soft-bodied creature found ONLY in Illinois! Scientists still debate what it was."},
+"18":{name:"No official fossil",type:"None",fact:"Indiana has no state fossil, but mastodon and mammoth remains have been found across the state."},
+"19":{name:"No official fossil",type:"None",fact:"Iowa has no state fossil, but crinoid fossils are incredibly abundant in Iowa's limestone."},
+"20":{name:"Tylosaurus",type:"State Marine Fossil",fact:"A 45-foot sea monster that ruled the oceans when Kansas was underwater 85 million years ago!"},
+"21":{name:"Brachiopod",type:"State Fossil",fact:"Kentucky's fossil is a humble brachiopod — ancient shellfish found in 450-million-year-old rocks."},
+"22":{name:"Petrified Palmwood",type:"State Fossil",fact:"Ancient palm trees turned to stone — found throughout Louisiana's Catahoula Formation."},
+"23":{name:"Pertica quadrifaria",type:"State Fossil",fact:"One of Earth's earliest trees, from 390 million years ago — older than the dinosaurs!"},
+"24":{name:"Ecphora gardnerae",type:"State Fossil",fact:"A beautifully preserved extinct snail. Maryland's is the first fossil described from North America (1685)."},
+"25":{name:"Dinosaur Tracks",type:"State Fossil",fact:"Tracks from the Connecticut Valley — Massachusetts chose the footprints, not the animal!"},
+"26":{name:"Mastodon",type:"State Fossil",fact:"Michigan's mastodon fossils are found in bogs across the state. One was found in someone's backyard!"},
+"27":{name:"No official fossil",type:"None",fact:"Minnesota has no state fossil, but giant beaver fossils from the Ice Age have been found there."},
+"28":{name:"Prehistoric Whale",type:"State Fossil",fact:"Mississippi was once an ocean! Ancient whale fossils are common in the state's chalk formations."},
+"29":{name:"Hypsibema missouriensis",type:"State Dinosaur",fact:"Missouri's dinosaur was found while digging a family well in 1942 — the only dino found in the state!"},
+"30":{name:"Maiasaura",type:"State Fossil",fact:"The 'good mother lizard' — Montana is where scientists first discovered dinosaurs cared for babies!"},
+"31":{name:"Mammoth",type:"State Fossil",fact:"Nebraska's mammoth fossils include some of the most complete specimens ever found."},
+"32":{name:"Ichthyosaur (Shonisaurus)",type:"State Fossil",fact:"A 50-foot marine reptile! 37 skeletons were found together in one Nevada bone bed."},
+"33":{name:"No official fossil",type:"None",fact:"New Hampshire has no state fossil, but ancient ocean creatures are found in its bedrock."},
+"34":{name:"Hadrosaurus foulkii",type:"State Dinosaur",fact:"The first nearly-complete dinosaur skeleton found in North America (1858)! Named by schoolkids."},
+"35":{name:"Coelophysis",type:"State Fossil",fact:"Hundreds of skeletons found at Ghost Ranch — the best-known dinosaur from the Triassic period."},
+"36":{name:"Eurypterus (Sea Scorpion)",type:"State Fossil",fact:"A giant prehistoric sea scorpion up to 5 feet long that lived 430 million years ago!"},
+"37":{name:"Megalodon Teeth",type:"State Fossil",fact:"Giant shark teeth the size of your hand! The megalodon was 60 feet long."},
+"38":{name:"Teredo Petrified Wood",type:"State Fossil",fact:"Ancient wood riddled with prehistoric worm burrows, then turned to stone."},
+"39":{name:"Isotelus (Trilobite)",type:"State Fossil",fact:"Ohio's trilobite is the size of a dinner plate — one of the largest trilobites ever found!"},
+"40":{name:"Saurophaganax",type:"State Fossil",fact:"A giant predator even bigger than T-Rex! Oklahoma also has Acrocanthosaurus as state dinosaur."},
+"41":{name:"Metasequoia (Dawn Redwood)",type:"State Fossil",fact:"Thought extinct for millions of years until living trees were found in China in 1944!"},
+"42":{name:"Trilobite (Phacops rana)",type:"State Fossil",fact:"Pennsylvania's trilobite had compound eyes with hundreds of lenses — like an insect!"},
+"44":{name:"No official fossil",type:"None",fact:"Rhode Island has no state fossil, but ancient marine fossils exist in its bedrock."},
+"45":{name:"Columbian Mammoth",type:"State Fossil",fact:"South Carolina's mammoth stood 13 feet tall and weighed 10 tons!"},
+"46":{name:"Triceratops",type:"State Fossil",fact:"South Dakota is one of the best places on Earth to find Triceratops fossils!"},
+"47":{name:"Pterotrigonia",type:"State Fossil",fact:"An ancient clam from when Tennessee was covered by a shallow sea."},
+"48":{name:"Sauroposeidon",type:"State Dinosaur",fact:"One of the tallest dinosaurs ever — 60 feet tall! Named 'earthquake god lizard.'"},
+"49":{name:"Utahraptor",type:"State Dinosaur",fact:"The real-life version of Jurassic Park's Velociraptors — but bigger and scarier!"},
+"50":{name:"Beluga Whale Skeleton",type:"State Marine Fossil",fact:"A whale fossil found in Vermont — proving the area was once underwater after the Ice Age!"},
+"51":{name:"Chesapecten jeffersonius",type:"State Fossil",fact:"A scallop fossil named after Thomas Jefferson, who first collected them at his Virginia estate."},
+"53":{name:"Columbian Mammoth",type:"State Fossil",fact:"Washington also has Suciasaurus rex — a theropod dinosaur found on the San Juan Islands!"},
+"54":{name:"Megalonyx jeffersonii",type:"State Fossil",fact:"A giant ground sloth named by Thomas Jefferson! He originally thought it was a lion."},
+"55":{name:"Trilobite",type:"State Fossil",fact:"Wisconsin's trilobite Calymene celebra is so common it's nicknamed the 'Wisconsin state bug.'"},
+"56":{name:"Triceratops / Knightia",type:"State Dino & Fossil",fact:"Wyoming has BOTH a state dinosaur (Triceratops) AND state fossil fish (Knightia herring)!"}
+};
+
+// State animal/mammal data
+const animalData = {
+"01":{animal:"Black Bear",fact:"Can run 35 mph and climb trees! Alabama's bears live in the dense forests of the southern part of the state.",weight:"200-600 lbs"},
+"02":{animal:"Moose",fact:"The largest member of the deer family. Alaska's moose can weigh 1,500 lbs and stand 7 feet at the shoulder!",weight:"800-1,500 lbs"},
+"04":{animal:"Ring-tailed Cat",fact:"Not actually a cat! It's related to raccoons and has a tail with 14-16 black and white rings.",weight:"2-3 lbs"},
+"05":{animal:"White-tailed Deer",fact:"Can leap 30 feet in a single bound and run up to 40 mph. Their tails flash white as a danger signal.",weight:"150-300 lbs"},
+"06":{animal:"Grizzly Bear",fact:"The California grizzly is on the state flag but is actually extinct in California since 1924.",weight:"400-800 lbs"},
+"08":{animal:"Rocky Mountain Bighorn Sheep",fact:"Males smash heads at 40 mph during mating season! Their horns can weigh 30 pounds.",weight:"150-300 lbs"},
+"09":{animal:"Sperm Whale",fact:"The largest toothed predator on Earth! Connecticut chose it for its historic whaling industry.",weight:"35-45 tons"},
+"10":{animal:"Grey Fox",fact:"The only fox that can climb trees! Delaware's grey foxes have cat-like retractable claws.",weight:"7-14 lbs"},
+"12":{animal:"Florida Panther",fact:"Fewer than 200 exist in the wild! One of the most endangered mammals in the world.",weight:"100-160 lbs"},
+"13":{animal:"White-tailed Deer",fact:"Georgia's deer population has exploded — there are now over 1 million in the state!",weight:"150-300 lbs"},
+"15":{animal:"Hawaiian Monk Seal",fact:"One of the most endangered seals on Earth — only about 1,400 remain. They sunbathe on beaches!",weight:"375-450 lbs"},
+"16":{animal:"Appaloosa Horse",fact:"Famous for its spotted coat! The Nez Perce people bred them near Idaho's Palouse River.",weight:"950-1,250 lbs"},
+"17":{animal:"White-tailed Deer",fact:"Illinois has over 750,000 white-tailed deer, more than when European settlers first arrived!",weight:"150-300 lbs"},
+"18":{animal:"No official mammal",fact:"Indiana has no state mammal, but is home to Indiana bats — a federally endangered species.",weight:"N/A"},
+"19":{animal:"No official mammal",fact:"Iowa has no state mammal, but its prairies support bison restoration projects.",weight:"N/A"},
+"20":{animal:"American Bison",fact:"The largest land animal in North America! Can run 40 mph despite weighing a ton.",weight:"1,000-2,000 lbs"},
+"21":{animal:"Grey Squirrel",fact:"Can find buried nuts by smell even under a foot of snow! Kentucky's squirrels bury thousands of acorns yearly.",weight:"1-1.5 lbs"},
+"22":{animal:"Louisiana Black Bear",fact:"The inspiration for the Teddy Bear! President Roosevelt refused to shoot one on a Louisiana hunt.",weight:"200-600 lbs"},
+"23":{animal:"Moose",fact:"Maine has about 75,000 moose — one of the densest populations outside of Alaska.",weight:"800-1,200 lbs"},
+"24":{animal:"Chesapeake Bay Retriever",fact:"A dog breed! Maryland's state dog was bred to retrieve ducks from the icy Chesapeake Bay.",weight:"55-80 lbs"},
+"25":{animal:"Right Whale",fact:"One of the rarest whales — only about 350 exist. Massachusetts waters are critical habitat.",weight:"70 tons"},
+"26":{animal:"White-tailed Deer",fact:"Michigan is one of the top states for deer hunting, with over 2 million deer.",weight:"150-300 lbs"},
+"27":{animal:"No official mammal",fact:"Minnesota has no state mammal, but is famous for its wolves, bears, and moose.",weight:"N/A"},
+"28":{animal:"White-tailed Deer",fact:"Mississippi's deer thrive in the state's vast pine forests and delta bottomlands.",weight:"150-300 lbs"},
+"29":{animal:"Missouri Mule",fact:"A mule is a horse-donkey hybrid! Missouri mules were essential for farming and westward expansion.",weight:"800-1,000 lbs"},
+"30":{animal:"Grizzly Bear",fact:"Montana has about 1,800 grizzlies — one of the largest populations in the Lower 48.",weight:"400-800 lbs"},
+"31":{animal:"White-tailed Deer",fact:"Nebraska's deer population thrives across the state's mix of prairie, farmland, and river valleys.",weight:"150-300 lbs"},
+"32":{animal:"Desert Bighorn Sheep",fact:"Adapted to survive with very little water! They can go days without drinking in Nevada's desert.",weight:"115-280 lbs"},
+"33":{animal:"White-tailed Deer",fact:"New Hampshire's deer survive harsh winters by yarding — huddling together in sheltered forests.",weight:"150-300 lbs"},
+"34":{animal:"Horse",fact:"New Jersey designated the horse in 1977 — the state has a rich equestrian tradition.",weight:"900-1,200 lbs"},
+"35":{animal:"Black Bear",fact:"New Mexico's bears live in the mountains and are excellent tree climbers.",weight:"200-600 lbs"},
+"36":{animal:"Beaver",fact:"New York chose the beaver for its role in the fur trade that built the state's early economy.",weight:"35-65 lbs"},
+"37":{animal:"Grey Squirrel",fact:"North Carolina's squirrels are everywhere — they can rotate their ankles 180° to climb down trees headfirst!",weight:"1-1.5 lbs"},
+"38":{animal:"Nokota Horse",fact:"A rare wild horse breed descended from horses that roamed North Dakota's Badlands.",weight:"900-1,100 lbs"},
+"39":{animal:"White-tailed Deer",fact:"Ohio's deer population has rebounded from near-extinction to over 700,000.",weight:"150-300 lbs"},
+"40":{animal:"Bison",fact:"Oklahoma's bison herds were nearly wiped out but conservation brought them back.",weight:"1,000-2,000 lbs"},
+"41":{animal:"Beaver",fact:"Oregon is 'The Beaver State'! Beavers' dams create wetlands that help prevent floods.",weight:"35-65 lbs"},
+"42":{animal:"White-tailed Deer",fact:"Pennsylvania has one of the largest deer populations in the eastern U.S.",weight:"150-300 lbs"},
+"44":{animal:"No official mammal",fact:"Rhode Island has no state mammal but is home to harbor seals along its coast.",weight:"N/A"},
+"45":{animal:"White-tailed Deer",fact:"South Carolina's deer are found in every county of the state.",weight:"150-300 lbs"},
+"46":{animal:"Coyote",fact:"South Dakota's coyotes are incredibly adaptable — they've expanded their range across all 50 states!",weight:"20-50 lbs"},
+"47":{animal:"Raccoon",fact:"Tennessee's raccoons are famous for washing their food before eating! Coonskin caps were a frontier icon.",weight:"10-30 lbs"},
+"48":{animal:"Armadillo",fact:"The nine-banded armadillo always gives birth to identical quadruplets! They can also walk underwater.",weight:"8-17 lbs"},
+"49":{animal:"Rocky Mountain Elk",fact:"Utah's elk herds number over 80,000. Males bugle — a haunting sound that echoes through mountain valleys.",weight:"700-1,100 lbs"},
+"50":{animal:"Morgan Horse",fact:"America's first horse breed! Justin Morgan's small stallion could outrun, outwalk, and outpull any horse.",weight:"900-1,100 lbs"},
+"51":{animal:"Virginia Big-eared Bat",fact:"Only 20,000 exist! These endangered bats have ears over 1 inch long — huge for their tiny body.",weight:"0.3-0.5 oz"},
+"53":{animal:"Olympic Marmot",fact:"Found ONLY in Washington's Olympic Mountains — nowhere else on Earth! They whistle to warn of danger.",weight:"11-18 lbs"},
+"54":{animal:"Black Bear",fact:"West Virginia's bears are making a comeback — the population has grown 5x since the 1970s.",weight:"200-600 lbs"},
+"55":{animal:"Badger",fact:"Wisconsin is 'The Badger State'! Badgers can dig faster than a human with a shovel.",weight:"15-30 lbs"},
+"56":{animal:"Bison",fact:"Wyoming's Yellowstone has the largest free-roaming bison herd in the U.S. — about 5,000 animals.",weight:"1,000-2,000 lbs"}
+};
+
+// Natural wonders
+const wonderData = {
+"01":"DeSoto Caverns — stunning underground caves with light shows and gemstone mining",
+"02":"Northern Lights (Aurora Borealis) — Alaska is the best place in the U.S. to see them!",
+"04":"Grand Canyon — one of the 7 Natural Wonders of the World, 277 miles long and 1 mile deep",
+"05":"Blanchard Springs Caverns — a living cave system with formations still growing today",
+"06":"Yosemite Valley — towering granite cliffs, giant sequoias, and waterfalls in one epic valley",
+"08":"Garden of the Gods — massive red rock formations jutting 300 feet into the sky",
+"09":"Sleeping Giant State Park — a mountain that looks like a giant lying down!",
+"10":"Trap Pond — home to the northernmost natural stand of bald cypress trees in the U.S.",
+"12":"The Everglades — the only place on Earth where alligators AND crocodiles coexist",
+"13":"Okefenokee Swamp — a 438,000-acre 'Land of Trembling Earth' with alligators and black bears",
+"15":"Nā Pali Coast — 4,000-foot sea cliffs accessible only by boat, helicopter, or an 11-mile hike",
+"16":"Shoshone Falls — 'The Niagara of the West,' actually 45 feet TALLER than Niagara Falls!",
+"17":"Starved Rock State Park — 18 canyons carved by glacial meltwater with stunning waterfalls",
+"18":"Indiana Dunes — massive sand dunes up to 200 feet tall on the shores of Lake Michigan",
+"19":"Maquoketa Caves — the largest concentration of caves in any Iowa state park",
+"20":"Monument Rocks — 70-foot chalk pyramids rising from the Kansas prairie, 80 million years old",
+"21":"Mammoth Cave — the LONGEST cave system in the world with 420+ miles explored (and counting!)",
+"22":"Atchafalaya Basin — the largest river swamp in the United States, teeming with wildlife",
+"23":"Acadia National Park — where mountains meet the sea, with the first sunrise in the U.S. each day",
+"24":"Chesapeake Bay — the largest estuary in the U.S., home to blue crabs and over 3,600 species",
+"25":"Cape Cod National Seashore — 40 miles of pristine beaches, marshes, and ponds",
+"26":"Pictured Rocks — multicolored sandstone cliffs rising 200 feet above Lake Superior",
+"27":"Boundary Waters — over 1 million acres of pristine lakes and forests, one of Earth's quietest places",
+"28":"Mississippi Petrified Forest — an ancient forest turned to stone 36 million years ago",
+"29":"Ha Ha Tonka — a castle ruin overlooking a spring that pumps 48 million gallons of water per day",
+"30":"Glacier National Park — 'Crown of the Continent' with 700+ miles of trails and 130 named lakes",
+"31":"Chimney Rock — a 300-foot rock spire that guided thousands of pioneers on the Oregon Trail",
+"32":"Valley of Fire — 40,000 acres of brilliant red sandstone formations, some 150 million years old",
+"33":"Flume Gorge — a dramatic 800-foot natural chasm at the base of Mount Liberty",
+"34":"Palisades — towering cliffs along the Hudson River, some of the most dramatic on the East Coast",
+"35":"Carlsbad Caverns — home to one of the world's largest cave chambers and 400,000 bats!",
+"36":"Niagara Falls — 750,000 gallons of water per second crash over the falls!",
+"37":"Chimney Rock — a 535-million-year-old rock spire sacred to the Cherokee people",
+"38":"Theodore Roosevelt Badlands — otherworldly striped rock formations carved by wind and water",
+"39":"Old Man's Cave — a stunning gorge carved into Black Hand sandstone in Hocking Hills",
+"40":"Turner Falls — Oklahoma's oldest park features a 77-foot waterfall with a natural swimming pool",
+"41":"Crater Lake — the deepest lake in the U.S. at 1,943 feet, filling a collapsed volcano",
+"42":"Pine Creek Gorge (PA Grand Canyon) — a 47-mile gorge up to 1,450 feet deep",
+"43":"skip",
+"44":"Mohegan Bluffs — dramatic 200-foot clay cliffs on Block Island with 141 steps to the beach",
+"45":"Angel Oak — a 400-year-old live oak tree with branches stretching 187 feet across",
+"46":"Badlands — alien-like landscapes with 75 million years of erosion and tons of fossils",
+"47":"Ruby Falls — the deepest commercial cave waterfall in the U.S., 1,120 feet underground!",
+"48":"Big Bend — a dark sky park where you can see more stars than almost anywhere in the U.S.",
+"49":"Bryce Canyon — thousands of red rock spires called 'hoodoos' that look like a fairy tale city",
+"50":"Quechee Gorge — Vermont's 'Little Grand Canyon,' carved 13,000 years ago by glacial rivers",
+"51":"Natural Bridge — a 215-foot-tall rock arch that George Washington surveyed as a young man",
+"53":"Mount Rainier — a 14,411-foot active volcano with the most glaciers of any U.S. peak outside Alaska",
+"54":"New River Gorge — one of the oldest rivers in the world (despite the name!) with a 876-foot bridge",
+"55":"Devil's Lake — a dramatic gorge with 500-foot quartzite bluffs and crystal-clear water",
+"56":"Yellowstone — the world's first national park, home to half of Earth's active geothermal features"
+};
+
+// Theme parks & attractions
+const parksData = {
+"01":"U.S. Space & Rocket Center — home to Space Camp where kids train like real astronauts!",
+"02":"Denali National Park — see grizzly bears, wolves, and caribou with North America's tallest mountain",
+"04":"Grand Canyon Skywalk — a glass-bottomed horseshoe bridge 4,000 feet above the canyon floor!",
+"05":"Crystal Bridges Museum — a stunning art museum set in the Ozark forest, free for all kids",
+"06":"Disneyland — the original Happiest Place on Earth, opened by Walt Disney himself in 1955",
+"08":"Pikes Peak — 'America's Mountain' where you can drive or take a cog railway to 14,115 feet",
+"09":"Mystic Aquarium — home to beluga whales, African penguins, and a touch tank with sharks",
+"10":"Hagley Museum — explore the original DuPont gunpowder mills along the Brandywine Creek",
+"12":"Walt Disney World — the most visited theme park on Earth with 4 parks and 58 million visitors/year",
+"13":"Georgia Aquarium — the largest aquarium in the Western Hemisphere with whale sharks!",
+"15":"Polynesian Cultural Center — experience the cultures of 6 Pacific island nations",
+"16":"Silverwood Theme Park — Idaho's largest amusement park with roller coasters and a water park",
+"17":"Shedd Aquarium — one of the world's largest aquariums with 32,000 animals",
+"18":"Children's Museum of Indianapolis — the LARGEST children's museum in the world!",
+"19":"RAGBRAI — the world's oldest, largest, and longest bike ride across the entire state each summer",
+"20":"Cosmosphere — a world-class space museum with actual spacecraft from Mercury, Gemini, and Apollo",
+"21":"Louisville Mega Cavern — an underground zip line, bike park, and rope course beneath the city!",
+"22":"Audubon Zoo — explore Louisiana's wildlife including white alligators and a splash park",
+"23":"Acadia National Park — carriage roads, tide pools, and the summit of Cadillac Mountain",
+"24":"National Aquarium (Baltimore) — 20,000+ animals including dolphins, sharks, and a rainforest!",
+"25":"Freedom Trail — walk 2.5 miles through 16 historic sites where the American Revolution began",
+"26":"Greenfield Village — Henry Ford's outdoor museum with Thomas Edison's actual lab!",
+"27":"Mall of America — the largest mall in the U.S. with a FULL amusement park inside (Nickelodeon Universe)",
+"28":"Mississippi Museum of Natural Science — explore the state's ecosystems from swamps to forests",
+"29":"City Museum, St. Louis — a 10-story playground made from repurposed industrial materials!",
+"30":"Glacier National Park — drive the breathtaking Going-to-the-Sun Road across the Continental Divide",
+"31":"Henry Doorly Zoo — one of the world's best zoos with the largest indoor desert and nocturnal exhibit",
+"32":"Adventuredome — America's largest indoor theme park, right on the Las Vegas Strip",
+"33":"Story Land — a fairy tale-themed amusement park beloved by young kids since 1954",
+"34":"Six Flags Great Adventure — home to Kingda Ka, the tallest roller coaster in the world (456 ft!)",
+"35":"Carlsbad Caverns — watch 400,000 bats spiral out of the cave at sunset like a living tornado",
+"36":"Statue of Liberty — climb 354 steps to the crown for an unforgettable view of New York Harbor",
+"37":"Biltmore Estate — the largest privately-owned house in America with 250 rooms!",
+"38":"Theodore Roosevelt National Park — spot wild horses, bison, and prairie dogs in the Badlands",
+"39":"Cedar Point — the 'Roller Coaster Capital of the World' with 17 coasters including Steel Vengeance",
+"40":"Frontier City — Wild West-themed amusement park with rides, shows, and gunfight reenactments",
+"41":"Oregon Museum of Science and Industry (OMSI) — includes a real submarine you can tour!",
+"42":"Hersheypark — a chocolate-themed amusement park where the streetlights are Hershey Kisses!",
+"44":"Roger Williams Park Zoo — New England's oldest zoo, with a zip line and carousel",
+"45":"Riverbanks Zoo — one of the top zoos in the country with 2,000+ animals and a botanical garden",
+"46":"Mount Rushmore — four 60-foot presidential faces carved into a granite mountain",
+"47":"Dollywood — Dolly Parton's theme park in the Smoky Mountains with 50+ rides and shows",
+"48":"San Antonio River Walk — 15 miles of riverside paths, boats, shops, and restaurants below street level",
+"49":"Natural History Museum of Utah — dinosaur bones, live bugs, and hands-on earthquake simulator",
+"50":"Ben & Jerry's Factory Tour — see how ice cream is made and get FREE samples at the end!",
+"51":"Colonial Williamsburg — step back in time to 1776 with costumed actors in a living history museum",
+"53":"MoPOP (Museum of Pop Culture) — explore sci-fi, fantasy, video games, and music in Seattle",
+"54":"Exhibition Coal Mine — ride 1,500 feet into a real coal mine on an actual mine cart!",
+"55":"Wisconsin Dells — the 'Waterpark Capital of the World' with the most water parks per capita",
+"56":"Yellowstone — see Old Faithful erupt, walk boardwalks over bubbling mud pots, and spot bison"
+};
+
+// Weird state laws
+const weirdData = {
+"01":"It's illegal to wear a fake mustache in church if it causes laughter.",
+"02":"It's legal to shoot bears, but illegal to wake one up to take a photo.",
+"04":"Donkeys cannot sleep in bathtubs. (This became law after a donkey flooded a town!)",
+"05":"A certain river can officially only be pronounced one specific way by state law.",
+"06":"Nobody is allowed to ride a bicycle in a swimming pool.",
+"08":"It was once illegal to collect rainwater without a permit. (Recently relaxed!)",
+"09":"Pickles must bounce to be legally sold. If they don't bounce, they're not real pickles!",
+"10":"It's illegal to sell perfume in a hair salon.",
+"12":"If an elephant is left tied to a parking meter, the owner must pay the parking fee.",
+"13":"It's illegal to tie a giraffe to a telephone pole or street lamp.",
+"15":"Billboards are completely illegal — banned statewide to preserve natural beauty.",
+"16":"You may not fish from a camel's back.",
+"17":"You can be arrested for vagrancy if you don't have at least $1 in your pocket.",
+"18":"A bill once tried to legally change the value of pi to 3.2! (Proposed in 1897.)",
+"19":"One-armed piano players must perform for free by law.",
+"20":"It's illegal to serve wine in teacups.",
+"21":"It's illegal to remarry the same person four times.",
+"22":"It's illegal to order pizza delivery to someone else's house without their permission.",
+"23":"It's illegal to step out of a plane while it's in flight.",
+"24":"It's illegal to take a lion to the movies.",
+"25":"Snoring is illegal unless all bedroom windows are closed and locked.",
+"26":"A woman isn't allowed to cut her own hair without her husband's permission.",
+"27":"It's illegal to stand around any building without a good reason.",
+"28":"Teaching others what polygamy is can get you fined up to $500 or jailed for 5 years.",
+"29":"It's illegal to drive with an uncaged bear in your car.",
+"30":"It's illegal to have a sheep in the cab of your truck without a chaperone.",
+"31":"Parents can be arrested if their kids burp during church.",
+"32":"It's illegal to drive a camel on the highway.",
+"33":"You cannot sell the clothes you're wearing to pay off a gambling debt.",
+"34":"It's illegal to wear a bulletproof vest while committing a murder.",
+"35":"The word 'idiot' appears in the state constitution as a category of people who cannot vote!",
+"36":"It's illegal to throw a ball at someone's head for fun.",
+"37":"It's illegal to sing off-key.",
+"38":"It's illegal to lie down and fall asleep with your shoes on.",
+"39":"It's illegal to get a fish drunk.",
+"40":"You can be arrested for making ugly faces at a dog.",
+"41":"You cannot pump your own gas — an attendant must do it for you. (Still true today!)",
+"42":"It's illegal to sleep on top of a refrigerator outdoors.",
+"44":"Professional sports (except hockey and polo) cannot be played on Sundays.",
+"45":"It's illegal to keep a horse in a bathtub.",
+"46":"It's illegal to fall asleep in a cheese factory.",
+"47":"It's illegal to share your streaming service password. (Actually passed in 2011!)",
+"48":"It's illegal to shoot a buffalo from the second story of a hotel.",
+"49":"It's illegal to not drink milk. (A 1937 law to support the dairy industry!)",
+"50":"Women must get written permission from their husbands to wear false teeth.",
+"51":"It's illegal to tickle women.",
+"53":"It's illegal to harass Bigfoot, Sasquatch, or other undiscovered species.",
+"54":"Whistling underwater is illegal.",
+"55":"It's illegal to serve apple pie in a public restaurant without cheese.",
+"56":"It's illegal to take a photo of a rabbit from January to April without a permit."
+};
+
+
+// ══════ QUESTION GENERATORS ══════
+var FIPS = Object.keys(stateData);
+// Strip state/city names from answer text to prevent leaking the answer
+var GEO_NAMES = ['Alabama','Alaska','Arizona','Arkansas','California','Colorado','Connecticut','Delaware','Florida','Georgia','Hawaii','Idaho','Illinois','Indiana','Iowa','Kansas','Kentucky','Louisiana','Maine','Maryland','Massachusetts','Michigan','Minnesota','Mississippi','Missouri','Montana','Nebraska','Nevada','New Hampshire','New Jersey','New Mexico','New York','North Carolina','North Dakota','Ohio','Oklahoma','Oregon','Pennsylvania','Rhode Island','South Carolina','South Dakota','Tennessee','Texas','Utah','Vermont','Virginia','Washington','West Virginia','Wisconsin','Wyoming','Chesapeake','Olympic','Baltimore','Hawaiian','Carolina','Nokota'];
+function stripGeo(text){
+  if(!text) return null;
+  var t = text;
+  for(var i=0;i<GEO_NAMES.length;i++){
+    if(t.indexOf(GEO_NAMES[i])>=0) return null; // skip this question entirely
+  }
+  return t;
+}
+
+var CATEGORIES = [
+  {id:'governor',emoji:'🏛️',name:'Governor',gen:function(f){var s=stateData[f];return {q:'Which state is governed by '+s.governor+'?',ans:f,cat:'Governor'}}},
+  {id:'motto',emoji:'📜',name:'State Motto',gen:function(f){var s=stateData[f];var m=s.mottoEn?'\u201C'+s.motto+'\u201D ('+s.mottoEn+')':'\u201C'+s.motto+'\u201D';return {q:'Which state\'s motto is '+m+'?',ans:f,cat:'State Motto'}}},
+  {id:'nickname',emoji:'🏷️',name:'Nickname',gen:function(f){var s=stateData[f];return {q:'Which state is known as '+s.nickname+'?',ans:f,cat:'Nickname'}}},
+  {id:'bird',emoji:'🐦',name:'State Bird',gen:function(f){var s=stateData[f];var b=stripGeo(s.bird);if(!b)return null;return {q:'Which state\'s bird is the '+b+'?',ans:f,cat:'State Bird'}}},
+  {id:'sport',emoji:'🏅',name:'State Sport',gen:function(f){var sp=sportData[f];if(!sp||sp.sport==='None designated')return null;return {q:'Which state\'s official sport is '+sp.sport+'?',ans:f,cat:'State Sport'}}},
+  {id:'flower',emoji:'🌸',name:'State Flower',gen:function(f){var fl=flowerData[f];if(!fl)return null;var fn=stripGeo(fl.flower);if(!fn)return null;return {q:'Which state\'s flower is the '+fn+'?',ans:f,cat:'State Flower'}}},
+  {id:'dino',emoji:'🦖',name:'Dino / Fossil',gen:function(f){var di=dinoData[f];if(!di||di.type==='None')return null;var dn=stripGeo(di.name);if(!dn)return null;return {q:'Which state\'s '+di.type.toLowerCase()+' is '+dn+'?',ans:f,cat:'Dino / Fossil'}}},
+  {id:'animal',emoji:'🐻',name:'State Animal',gen:function(f){var an=animalData[f];if(!an||an.animal==='No official mammal')return null;var nm=stripGeo(an.animal);if(!nm)return null;return {q:'Which state\'s animal is the '+nm+'?',ans:f,cat:'State Animal'}}},
+  {id:'wonder',emoji:'🌋',name:'Natural Wonders',gen:function(f){var w=wonderData[f];if(!w)return null;var name=w.split(' \u2014 ')[0];return {q:'Which state is home to '+name+'?',ans:f,cat:'Natural Wonders'}}},
+  {id:'parks',emoji:'🎢',name:'Attractions',gen:function(f){var p=parksData[f];if(!p)return null;var name=p.split(' \u2014 ')[0];return {q:'Which state has '+name+'?',ans:f,cat:'Attractions'}}},
+  {id:'weird',emoji:'🏆',name:'Weird Laws',gen:function(f){var w=weirdData[f];if(!w)return null;return {q:'In which state '+w.charAt(0).toLowerCase()+w.slice(1).replace(/\.$/,'')+'?',ans:f,cat:'Weird Laws'}}},
+  {id:'crime',emoji:'🔒',name:'Safety Stats',gen:function(f){var r=crimeData[f];if(!r)return null;return {q:'Which state has a homicide rate of '+r+' per 100,000?',ans:f,cat:'Safety Stats'}}},
+  {id:'corn',emoji:'🌽',name:'Corn Production',gen:function(f){var c=cornData[f];if(!c||c<50)return null;return {q:'Which state produces about '+c.toLocaleString()+' million bushels of corn annually?',ans:f,cat:'Corn Production'}}}
+];
+
+// Build category selector
+(function(){
+  var grid=document.getElementById('cat-grid');
+  // Add "All Categories" option
+  var allCard=document.createElement('div');
+  allCard.className='cat-card';
+  allCard.dataset.id='all';
+  allCard.innerHTML='<span class="cat-emoji">🎲</span><div class="cat-name">All Categories</div><div class="cat-count">Mix of everything</div>';
+  allCard.onclick=function(){selectCat('all',allCard)};
+  grid.appendChild(allCard);
+  CATEGORIES.forEach(function(cat){
+    var c=document.createElement('div');
+    c.className='cat-card';
+    c.dataset.id=cat.id;
+    // Count available questions
+    var count=0;FIPS.forEach(function(f){if(cat.gen(f))count++});
+    c.innerHTML='<span class="cat-emoji">'+cat.emoji+'</span><div class="cat-name">'+cat.name+'</div><div class="cat-count">'+count+' questions</div>';
+    c.onclick=function(){selectCat(cat.id,c)};
+    grid.appendChild(c);
+  });
+})();
+
+var selectedCat=null;
+function selectCat(id,el){
+  document.querySelectorAll('.cat-card').forEach(function(c){c.classList.remove('selected')});
+  el.classList.add('selected');
+  selectedCat=id;
+  document.getElementById('startBtn').disabled=false;
+}
+
+// ══════ QUIZ STATE ══════
+var quizQs=[],qIdx=0,score=0,streak=0,bestStreak=0,answered=false,totalQs=20;
+
+function shuffle(arr){for(var i=arr.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=arr[i];arr[i]=arr[j];arr[j]=t}return arr}
+
+function generateQuestions(){
+  var pool=[];
+  if(selectedCat==='all'){
+    CATEGORIES.forEach(function(cat){
+      FIPS.forEach(function(f){var q=cat.gen(f);if(q)pool.push(q)});
+    });
+  } else {
+    var cat=CATEGORIES.find(function(c){return c.id===selectedCat});
+    if(cat) FIPS.forEach(function(f){var q=cat.gen(f);if(q)pool.push(q)});
+  }
+  // Remove duplicates (same state can appear in multiple questions for same cat if answer is same)
+  // Shuffle and take up to totalQs, ensuring variety of answers
+  shuffle(pool);
+  var used={};var result=[];
+  pool.forEach(function(q){
+    if(result.length>=totalQs) return;
+    // Allow same state max 2 times for 'all' mode
+    if(selectedCat==='all'){
+      if((used[q.ans]||0)>=1) return;
+    } else {
+      if(used[q.ans]) return;
+    }
+    used[q.ans]=(used[q.ans]||0)+1;
+    result.push(q);
+  });
+  return result;
+}
+
+function startQuiz(){
+  quizQs=generateQuestions();
+  if(quizQs.length===0){alert('No questions available for this category!');return}
+  totalQs=quizQs.length;
+  qIdx=0;score=0;streak=0;bestStreak=0;
+  document.getElementById('start-screen').style.display='none';
+  document.getElementById('game-screen').style.display='block';
+  document.getElementById('results-screen').style.display='none';
+  loadMap();
+  showQuestion();
+}
+
+function showQuestion(){
+  if(qIdx>=quizQs.length){showResults();return}
+  answered=false;
+  var q=quizQs[qIdx];
+  document.getElementById('q-cat').textContent=q.cat.toUpperCase();
+  document.getElementById('q-text').textContent=q.q;
+  document.getElementById('q-hint').textContent='👆 Click a state on the map below';
+  document.getElementById('q-hint').style.color='var(--faint)';
+  document.getElementById('hud-q').textContent=(qIdx+1)+'/'+totalQs;
+  document.getElementById('hud-score').textContent=score;
+  document.getElementById('hud-streak').textContent=streak+'🔥';
+  document.getElementById('hud-best').textContent=bestStreak;
+  document.getElementById('progress').style.width=(qIdx/totalQs*100)+'%';
+  document.getElementById('feedback').innerHTML='';
+  // Reset map colors
+  d3.selectAll('.state-path').classed('correct wrong reveal disabled',false).style('fill',null);
+}
+
+function handleStateClick(fips){
+  if(answered) return;
+  answered=true;
+  var q=quizQs[qIdx];
+  var correct=fips===q.ans;
+  var stateName=stateData[fips]?stateData[fips].name:'Unknown';
+  var correctName=stateData[q.ans]?stateData[q.ans].name:'Unknown';
+
+  // Disable further clicks visually
+  d3.selectAll('.state-path').classed('disabled',true);
+
+  if(correct){
+    score++;streak++;
+    if(streak>bestStreak) bestStreak=streak;
+    d3.select('#state-'+fips).classed('correct',true);
+    document.getElementById('feedback').innerHTML='<div class="fb-text fb-correct">✅ Correct! '+correctName+'!</div><button class="next-btn" onclick="nextQ()">Next →</button>';
+  } else {
+    streak=0;
+    d3.select('#state-'+fips).classed('wrong',true);
+    d3.select('#state-'+q.ans).classed('reveal',true);
+    document.getElementById('feedback').innerHTML='<div class="fb-text fb-wrong">❌ That\'s '+stateName+'. The answer is <strong>'+correctName+'</strong>!</div><button class="next-btn" onclick="nextQ()">Next →</button>';
+  }
+  document.getElementById('hud-score').textContent=score;
+  document.getElementById('hud-streak').textContent=streak+'🔥';
+  document.getElementById('hud-best').textContent=bestStreak;
+}
+
+function nextQ(){
+  qIdx++;
+  showQuestion();
+}
+
+function showResults(){
+  document.getElementById('game-screen').style.display='none';
+  document.getElementById('results-screen').style.display='block';
+  var pct=Math.round(score/totalQs*100);
+  document.getElementById('final-score').textContent=pct+'%';
+  document.getElementById('r-correct').textContent=score;
+  document.getElementById('r-total').textContent=totalQs;
+  document.getElementById('r-streak').textContent=bestStreak;
+  var msg=pct===100?'🏆 Perfect score! You\'re a geography genius!':pct>=80?'🌟 Amazing! You really know your states!':pct>=60?'👏 Great job! Keep exploring!':pct>=40?'📚 Good effort! Try the State Explorer to learn more.':'🗺️ Time to explore! Check out the interactive map.';
+  document.getElementById('final-msg').textContent=msg;
+}
+
+function backToStart(){
+  document.getElementById('start-screen').style.display='block';
+  document.getElementById('game-screen').style.display='none';
+  document.getElementById('results-screen').style.display='none';
+}
+
+// Keyboard: Enter/Space for next
+function confirmQuit(){
+  if(score>0||qIdx>0){
+    if(!confirm('Quit this quiz? Your progress will be lost.')) return;
+  }
+  backToStart();
+}
+
+document.addEventListener('keydown',function(e){
+  if((e.key==='Enter'||e.key===' ')&&answered&&qIdx<quizQs.length){e.preventDefault();nextQ()}
+});
+
+// ══════ MAP (modified for quiz) ══════
+async function loadMap(){
+  try{
+    var res;
+    try{res=await fetch('https://cdn.jsdelivr.net/npm/us-atlas@3/states-albers-10m.json');if(!res.ok)throw new Error('HTTP '+res.status)}
+    catch(e1){try{res=await fetch('https://unpkg.com/us-atlas@3.0.1/states-albers-10m.json');if(!res.ok)throw new Error('HTTP '+res.status)}catch(e2){throw new Error(e1.message)}}
+    var us=await res.json();
+    var container=document.getElementById('map-container');
+    container.innerHTML='';
+    var svg=d3.select(container).append('svg').attr('viewBox','0 0 975 610').attr('preserveAspectRatio','xMidYMid meet');
+    var path=d3.geoPath();
+    var states=topojson.feature(us,us.objects.states);
+    svg.append('g').selectAll('path').data(states.features).join('path')
+      .attr('class','state-path').attr('id',function(d){return 'state-'+d.id}).attr('d',path)
+      .on('click',function(event,d){handleStateClick(d.id)});
+    svg.append('path').datum(topojson.mesh(us,us.objects.states,function(a,b){return a!==b}))
+      .attr('fill','none').attr('stroke','var(--border)').attr('stroke-width',0.6)
+      .attr('stroke-linejoin','round').attr('pointer-events','none').attr('d',path);
+    svg.append('path').datum(topojson.mesh(us,us.objects.nation))
+      .attr('fill','none').attr('stroke','var(--border2)').attr('stroke-width',1.2)
+      .attr('stroke-linejoin','round').attr('pointer-events','none').attr('d',path);
+    var offsets={"09":[34,2],"10":[30,6],"24":[34,-2],"25":[38,-3],"33":[22,-8],"34":[28,3],"44":[36,1],"50":[18,-12]};
+    svg.append('g').selectAll('text').data(states.features.filter(function(d){return stateData[d.id]})).join('text')
+      .attr('class','state-label')
+      .attr('x',function(d){var c=path.centroid(d);var o=offsets[d.id];return c[0]+(o?o[0]:0)})
+      .attr('y',function(d){var c=path.centroid(d);var o=offsets[d.id];return c[1]+(o?o[1]:0)})
+      .text(function(d){return stateData[d.id].abbr});
+  }catch(err){
+    document.getElementById('map-container').innerHTML='<div class="loading" style="color:var(--red)">Failed to load map: '+err.message+'<br><br><button onclick="loadMap()" style="padding:8px 20px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;font-family:inherit">Retry</button></div>';
+  }
+}
+</script>
+</body>
+</html>
