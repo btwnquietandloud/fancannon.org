@@ -84,6 +84,8 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .results .stat-num{font-family:'DM Serif Display',serif;font-size:28px;color:var(--accent2)}
 .results .stat-label{font-size:11px;font-weight:600;color:var(--faint);letter-spacing:0.08em;text-transform:uppercase}
 
+.state-path.choice-glow{stroke:var(--accent2) !important;stroke-width:1.5 !important;filter:drop-shadow(0 0 6px rgba(126,155,255,0.3));cursor:pointer !important}
+.state-path.choice-glow:hover{filter:brightness(1.5) drop-shadow(0 0 10px rgba(126,155,255,0.5)) !important;stroke-width:2 !important}
 .loading{text-align:center;padding:3rem 1rem;color:var(--dim)}
 .spinner{display:inline-block;width:24px;height:24px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;margin-bottom:0.75rem}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -117,7 +119,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 <div class="q-card">
   <div class="q-cat" id="q-cat">CATEGORY</div>
   <div class="q-text" id="q-text">Question goes here</div>
-  <div class="q-hint" id="q-hint">Click a state on the map below</div>
+  <div class="q-hint" id="q-hint">👆 Pick one of the 4 highlighted states!</div>
 </div>
 <div id="map-container"><div class="loading"><div class="spinner"></div><div>Loading map…</div></div></div>
 <div class="feedback" id="feedback"></div>
@@ -868,20 +870,22 @@ function showQuestion(){
   var q=quizQs[qIdx];
   document.getElementById('q-cat').textContent=q.cat.toUpperCase();
   document.getElementById('q-text').textContent=q.q;
-  document.getElementById('q-hint').textContent='👆 Click a state on the map below';
-  document.getElementById('q-hint').style.color='var(--faint)';
+  document.getElementById('q-hint').textContent='👆 Pick one of the 4 highlighted states!';
+  document.getElementById('q-hint').style.color='var(--accent2)';
   document.getElementById('hud-q').textContent=(qIdx+1)+'/'+totalQs;
   document.getElementById('hud-score').textContent=score;
   document.getElementById('hud-streak').textContent=streak+'🔥';
   document.getElementById('hud-best').textContent=bestStreak;
   document.getElementById('progress').style.width=(qIdx/totalQs*100)+'%';
   document.getElementById('feedback').innerHTML='';
+  showChoices();
   // Reset map colors
-  d3.selectAll('.state-path').classed('correct wrong reveal disabled',false).style('fill',null);
+  d3.selectAll('.state-path').classed('correct wrong reveal disabled choice-glow',false).style('fill',null).style('opacity',null);
 }
 
 function handleStateClick(fips){
   if(answered) return;
+  if(choiceFips.length && choiceFips.indexOf(fips)<0) return; // only allow clicking highlighted states
   answered=true;
   var q=quizQs[qIdx];
   var correct=fips===q.ans;
@@ -889,7 +893,7 @@ function handleStateClick(fips){
   var correctName=stateData[q.ans]?stateData[q.ans].name:'Unknown';
 
   // Disable further clicks visually
-  d3.selectAll('.state-path').classed('disabled',true);
+  d3.selectAll('.state-path').classed('disabled',true).classed('choice-glow',false).style('opacity',null);
 
   if(correct){
     score++;streak++;
@@ -931,6 +935,23 @@ function backToStart(){
 }
 
 // Keyboard: Enter/Space for next
+var choiceFips = [];
+
+function showChoices(){
+  var q = quizQs[qIdx];
+  var correctFips = q.ans;
+  // Pick 3 random wrong states
+  var wrongPool = FIPS.filter(function(f){ return f !== correctFips && stateData[f] });
+  shuffle(wrongPool);
+  choiceFips = [correctFips, wrongPool[0], wrongPool[1], wrongPool[2]];
+  shuffle(choiceFips);
+  // Dim all states, highlight the 4 choices
+  d3.selectAll('.state-path').style('opacity', 0.15).style('fill', null).classed('choice-glow', false);
+  choiceFips.forEach(function(fips){
+    d3.select('#state-' + fips).style('opacity', 1).classed('choice-glow', true);
+  });
+}
+
 function confirmQuit(){
   if(score>0||qIdx>0){
     if(!confirm('Quit this quiz? Your progress will be lost.')) return;
