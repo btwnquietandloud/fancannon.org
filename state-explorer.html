@@ -83,6 +83,7 @@
     justify-content: center;
     gap: 0.5rem;
     padding: 1rem 1rem 0.75rem;
+    flex-wrap: wrap;
   }
 
   .filter-btn {
@@ -398,6 +399,14 @@
     <button class="filter-btn" data-filter="nickname" onclick="setFilter('nickname')">🏷️ Nickname</button>
     <button class="filter-btn" data-filter="bird" onclick="setFilter('bird')">🐦 State Bird</button>
     <button class="filter-btn" data-filter="sport" onclick="setFilter('sport')">🏅 State Sport</button>
+    <button class="filter-btn" data-filter="flower" onclick="setFilter('flower')">🌸 State Flower</button>
+    <button class="filter-btn" data-filter="crime" onclick="setFilter('crime')">🔒 Safety</button>
+    <button class="filter-btn" data-filter="corn" onclick="setFilter('corn')">🌽 Corn</button>
+    <button class="filter-btn" data-filter="dino" onclick="setFilter('dino')">🦖 Dino/Fossil</button>
+    <button class="filter-btn" data-filter="animal" onclick="setFilter('animal')">🐻 Animal</button>
+    <button class="filter-btn" data-filter="wonder" onclick="setFilter('wonder')">🌋 Wonders</button>
+    <button class="filter-btn" data-filter="parks" onclick="setFilter('parks')">🎢 Attractions</button>
+    <button class="filter-btn" data-filter="weird" onclick="setFilter('weird')">🏆 Weird Laws</button>
   </div>
 
   <div class="map-section">
@@ -530,6 +539,352 @@ const sportData = {
   "56": { sport:"Rodeo", desc:"A competitive sport from cattle herding traditions, featuring bronc riding, bull riding, and roping.", origin:"Designated in 2003. Wyoming's nickname 'The Cowboy State' says it all — rodeo is celebrated annually at Cheyenne Frontier Days, one of the world's largest outdoor rodeos." },
 };
 
+// State flower data
+const flowerData = {
+"01":{flower:"Camellia",facts:["Replaced goldenrod in 1959 after a campaign by garden clubs","Alabama is one of few states where camellias bloom outdoors year-round","The flower symbolizes the state's mild Southern climate"]},
+"02":{flower:"Forget-Me-Not",facts:["Adopted in 1949 while Alaska was still a territory","The tiny blue flower grows wild across Alaska's meadows","Symbolizes remembrance and the spirit of the frontier"]},
+"04":{flower:"Saguaro Cactus Blossom",facts:["The waxy white bloom opens only at night during late spring","Adopted in 1931 to represent Arizona's iconic desert landscape","Saguaro cacti can live over 200 years and only bloom after age 35"]},
+"05":{flower:"Apple Blossom",facts:["Adopted in 1901 when Arkansas was a leading apple producer","The delicate pink-white blossoms appear each spring","Represents the once-thriving apple orchards of the Ozarks"]},
+"06":{flower:"California Poppy",facts:["Adopted in 1903; April 6 is California Poppy Day","The golden-orange flowers blanket hillsides each spring","Native Americans used the plant as both food and medicine"]},
+"08":{flower:"Rocky Mountain Columbine",facts:["Adopted in 1899; it's illegal to uproot them on public land","The blue and white colors match Colorado's clear skies and snowy peaks","Nearly harvested to extinction before legal protections were enacted"]},
+"09":{flower:"Mountain Laurel",facts:["Adopted in 1907 for its abundance in Connecticut forests","The clusters of pink-white flowers bloom in June","Leaves are toxic to livestock, earning it the nickname 'lambkill'"]},
+"10":{flower:"Peach Blossom",facts:["Adopted in 1895 when Delaware had thriving peach orchards","A disease wiped out most orchards by the 1890s but the flower remained","The delicate pink blooms symbolize Delaware's agricultural heritage"]},
+"12":{flower:"Orange Blossom",facts:["Adopted in 1909 during Florida's citrus boom era","The intensely fragrant white flowers are used in perfumes worldwide","Florida once produced 70% of America's oranges"]},
+"13":{flower:"Cherokee Rose",facts:["Adopted in 1916; it's actually native to China, not Georgia","Legend says the flower grew along the Trail of Tears","Its thorny vines were used as natural fencing by early settlers"]},
+"15":{flower:"Yellow Hibiscus (Pua Aloalo)",facts:["Adopted in 1988; the native species is critically endangered","Only about 200 plants exist in the wild on Oahu and Maui","Hawaiians traditionally used hibiscus bark to make cordage"]},
+"16":{flower:"Syringa (Mock Orange)",facts:["Adopted in 1931; the fragrant white flowers bloom in spring","Found growing wild along Idaho's rivers and mountain streams","Lewis and Clark noted the plant during their 1805 expedition"]},
+"17":{flower:"Violet",facts:["Adopted in 1908 after a vote by schoolchildren across the state","Violets grow wild in woodlands and gardens throughout Illinois","The leaves are edible and high in vitamins A and C"]},
+"18":{flower:"Peony",facts:["Adopted in 1957, replacing the zinnia which held the title since 1931","Peonies can live and bloom for over 100 years","Indiana is one of few states where peonies thrive in every county"]},
+"19":{flower:"Wild Prairie Rose",facts:["Adopted in 1897 to represent Iowa's prairie heritage","The pink flowers bloom along roadsides and meadows statewide","Iowa's prairies once covered 85% of the state before farming"]},
+"20":{flower:"Sunflower",facts:["Adopted in 1903; Kansas is literally 'The Sunflower State'","Sunflowers can grow 10+ feet tall in Kansas fields","The flowers track the sun across the sky, a behavior called heliotropism"]},
+"21":{flower:"Goldenrod",facts:["Adopted in 1926; it blooms bright yellow across Kentucky each fall","Despite popular belief, goldenrod rarely causes allergies","Native Americans used it to make dyes and medicinal teas"]},
+"22":{flower:"Magnolia",facts:["Adopted in 1900 to represent Louisiana's Southern heritage","Magnolia trees are among the oldest flowering plants, dating back 100 million years","The large fragrant blooms can be up to 12 inches across"]},
+"23":{flower:"White Pine Cone and Tassel",facts:["Adopted in 1895; Maine is 'The Pine Tree State'","It's technically not a flower but a cone — unique among state emblems","Eastern white pines in Maine can grow over 150 feet tall"]},
+"24":{flower:"Black-Eyed Susan",facts:["Adopted in 1918; it blooms across Maryland fields in summer","The Preakness Stakes winner receives a blanket of Black-Eyed Susans","The flower's colors match Maryland's state flag (gold and black)"]},
+"25":{flower:"Mayflower (Trailing Arbutus)",facts:["Adopted in 1918; one of the earliest spring wildflowers","Named for the Pilgrims' ship and the month it typically blooms","Now rare due to habitat loss; it's protected in several states"]},
+"26":{flower:"Apple Blossom",facts:["Adopted in 1897 during Michigan's apple industry boom","Michigan remains a top-5 apple-producing state","The fragrant pink-white blossoms appear in May across orchards"]},
+"27":{flower:"Pink and White Lady's Slipper",facts:["Adopted in 1902; it takes 10-15 years to bloom from seed","It's illegal to pick them in Minnesota — they're protected","This rare orchid depends on a specific fungus to germinate"]},
+"28":{flower:"Magnolia",facts:["Adopted in 1952; Mississippi is 'The Magnolia State'","Magnolia grandiflora is an evergreen with year-round glossy leaves","The flowers produce a sweet lemony fragrance detectable from far away"]},
+"29":{flower:"White Hawthorn Blossom",facts:["Adopted in 1923; hawthorn trees line Missouri's rural roads","The thorny trees provided natural fencing for early settlers","Hawthorn berries were used in folk medicine for heart health"]},
+"30":{flower:"Bitterroot",facts:["Adopted in 1895; the Bitterroot Mountains are named after it","Lewis and Clark collected specimens during their expedition","Native Americans relied on bitterroot as a food source for centuries"]},
+"31":{flower:"Goldenrod",facts:["Adopted in 1895; it blankets Nebraska's prairies each autumn","There are over 100 species of goldenrod in North America","The plant is pollinated by insects, not wind, despite allergy myths"]},
+"32":{flower:"Sagebrush",facts:["Adopted in 1959 (technically the state flower is sagebrush)","The silvery-green plant defines Nevada's high desert landscape","Its distinctive aroma intensifies after desert rainstorms"]},
+"33":{flower:"Purple Lilac",facts:["Adopted in 1919; it represents the hardy character of NH residents","Lilacs were first planted in NH by Governor Benning Wentworth in 1750","Rochester, NH hosts an annual Lilac Festival each May"]},
+"34":{flower:"Common Blue Violet",facts:["Adopted in 1913 after a vote by the state's women's organizations","Violets carpet New Jersey's woodlands each spring","The flowers are edible and commonly used to decorate cakes"]},
+"35":{flower:"Yucca Flower",facts:["Adopted in 1927; the yucca thrives in New Mexico's arid climate","Native Americans used yucca fibers for rope, sandals, and baskets","The plant depends on a specific moth species for pollination"]},
+"36":{flower:"Rose",facts:["Adopted in 1955; New York is home to many historic rose gardens","The rose was also chosen as the U.S. national flower in 1986","Over 30,000 rose varieties exist worldwide"]},
+"37":{flower:"Dogwood",facts:["Adopted in 1941; dogwood trees bloom spectacularly each spring","The 'flowers' are actually modified leaves called bracts","Dogwood wood is extremely hard and was used for weaving shuttles"]},
+"38":{flower:"Wild Prairie Rose",facts:["Adopted in 1907; the same flower as neighboring Iowa and South Dakota","The pink blooms thrive in North Dakota's harsh continental climate","Hardy enough to survive temperatures well below zero"]},
+"39":{flower:"Red Carnation",facts:["Adopted in 1904 in honor of President William McKinley of Ohio","McKinley wore a red carnation as his good luck charm","Ohio grows millions of carnations commercially each year"]},
+"40":{flower:"Oklahoma Rose",facts:["Adopted in 2004, replacing mistletoe which held the title since 1893","The hybrid tea rose was developed specifically for Oklahoma's climate","Oklahoma is the only state with a rose bred exclusively for it"]},
+"41":{flower:"Oregon Grape",facts:["Adopted in 1899; it's not actually a grape but a barberry","The tart blue berries were used by Native Americans for food and dye","The plant's holly-like leaves stay green year-round"]},
+"42":{flower:"Mountain Laurel",facts:["Adopted in 1933; it grows wild across Pennsylvania's mountains","The Poconos region is famous for spectacular mountain laurel displays","Pennsylvania shares this flower with neighboring Connecticut"]},
+"44":{flower:"Violet",facts:["Adopted in 1968 after a vote by Rhode Island schoolchildren","The modest little flower represents the small but mighty state","Rhode Island and Illinois share the violet as their state flower"]},
+"45":{flower:"Yellow Jessamine",facts:["Adopted in 1924; it climbs fences and trees across South Carolina","The trumpet-shaped flowers are among the first to bloom in spring","All parts of the plant are toxic — settlers learned this the hard way"]},
+"46":{flower:"Pasque Flower",facts:["Adopted in 1903; it blooms while snow still covers the ground","One of the earliest spring flowers, appearing in March","Its name comes from the Hebrew word for Passover (Pesach)"]},
+"47":{flower:"Iris",facts:["Adopted in 1933; Tennessee chose the purple iris specifically","The iris represents faith, wisdom, and valor","Tennessee's iris gardens attract visitors from across the South"]},
+"48":{flower:"Bluebonnet",facts:["Adopted in 1901; fields of bluebonnets are a Texas icon","Taking photos in bluebonnet fields is a beloved Texas spring tradition","It's a myth that picking them is illegal — but it is frowned upon"]},
+"49":{flower:"Sego Lily",facts:["Adopted in 1911; it saved early Mormon settlers from starvation","The bulbs are edible and were a critical food source in 1848","The flower symbolizes Utah's resilience and pioneer heritage"]},
+"50":{flower:"Red Clover",facts:["Adopted in 1894; red clover grows wild across Vermont's pastures","It enriches soil by fixing nitrogen — farmers love it","Vermont shares this humble flower with its dairy farming heritage"]},
+"51":{flower:"American Dogwood",facts:["Adopted in 1918; Virginia's dogwoods bloom spectacularly in April","Jamestown colonists sent dogwood specimens back to England in 1607","Virginia and North Carolina both chose dogwood as their state flower"]},
+"53":{flower:"Coast Rhododendron",facts:["Adopted in 1892 by women's vote before Washington was even a state","The pink blooms cover the Pacific Northwest's forests in spring","Rhododendrons can grow 20+ feet tall in Washington's wet climate"]},
+"54":{flower:"Rhododendron",facts:["Adopted in 1903; it thrives in West Virginia's mountain forests","The Appalachian woodlands provide perfect acidic soil for them","The name means 'rose tree' in Greek"]},
+"55":{flower:"Wood Violet",facts:["Adopted in 1909 after a vote by Wisconsin schoolchildren","The modest purple flower represents Wisconsin's natural beauty","Wisconsin, Illinois, and Rhode Island all chose violets"]},
+"56":{flower:"Indian Paintbrush",facts:["Adopted in 1917; the bright red-orange flowers color Wyoming's meadows","The plant is partially parasitic, tapping into other plants' roots","Legend says a young artist's discarded paintbrushes became the flowers"]}
+};
+
+// Homicide rate data (per 100,000, 2023 CDC/FBI data)
+const crimeData = {
+"01":12.4,"02":7.8,"04":7.4,"05":11.2,"06":5.4,"08":5.2,"09":2.8,"10":6.1,
+"12":5.6,"13":8.9,"15":3.1,"16":2.5,"16":2.5,"17":7.2,"18":6.8,"19":2.9,"20":5.1,
+"21":7.5,"22":15.8,"23":1.6,"24":8.3,"25":2.7,"26":6.9,"27":3.4,"28":19.4,
+"29":10.8,"30":4.5,"31":3.2,"32":8.0,"33":1.4,"34":3.5,"35":12.5,"36":3.9,
+"37":8.1,"38":3.0,"39":5.8,"40":8.4,"41":3.6,"42":6.6,"44":2.6,"45":10.1,
+"46":3.7,"47":9.3,"48":6.7,"49":2.4,"50":2.0,"51":6.2,"53":4.1,"54":5.9,"55":4.6,"56":2.8
+};
+
+// Corn production data (million bushels, 2024 est.)
+const cornData = {
+"01":33,"02":0,"04":5,"05":47,"06":25,"08":149,"09":5,"10":21,
+"12":8,"13":55,"15":0,"16":42,"17":2310,"18":965,"19":2680,"20":790,
+"21":219,"22":62,"23":1,"24":56,"25":1,"26":350,"27":1440,"28":52,
+"29":493,"30":7,"31":1790,"32":0,"33":1,"34":10,"35":3,"36":75,
+"37":107,"38":476,"39":580,"40":32,"41":5,"42":150,"44":1,"45":42,
+"46":656,"47":99,"48":268,"49":3,"50":10,"51":52,"53":22,"54":6,"55":493,"56":5
+};
+
+
+// State dinosaur/fossil data
+const dinoData = {
+"01":{name:"Basilosaurus",type:"State Fossil",fact:"An ancient whale from 40 million years ago — not actually a dinosaur despite the name!"},
+"02":{name:"Woolly Mammoth",type:"State Fossil",fact:"Preserved in permafrost! Alaska has some of the best-preserved mammoth specimens ever found."},
+"04":{name:"Sonorasaurus",type:"State Dinosaur",fact:"Found in the Sonoran Desert in 1994 — a brachiosaurus nearly named 'Chihuahuasaurus'!"},
+"05":{name:"Arkansaurus fridayi",type:"State Dinosaur",fact:"Found by a gas station owner in 1972 who spotted bones in a ditch after road construction."},
+"06":{name:"Augustynolophus",type:"State Dinosaur",fact:"A duckbill dinosaur — the only specimens ever found came from California."},
+"08":{name:"Stegosaurus",type:"State Fossil",fact:"First Stegosaurus fossils ever found came from Colorado in 1876. Its brain was the size of a walnut!"},
+"09":{name:"Eubrontes",type:"State Fossil",fact:"Dinosaur footprints, not bones! Found along the Connecticut River Valley — hundreds of tracks."},
+"10":{name:"Belemnite",type:"State Fossil",fact:"An ancient squid-like creature. Delaware's fossil is from the Cretaceous period."},
+"12":{name:"No official fossil",type:"None",fact:"Florida has no state fossil, but the state is rich in Ice Age mammal fossils like giant sloths."},
+"13":{name:"Shark Tooth",type:"State Fossil",fact:"Georgia designated the shark tooth in 1976 — ancient megalodon teeth are found across the state."},
+"15":{name:"No official fossil",type:"None",fact:"Hawaii's volcanic islands are too young for dinosaur fossils, but marine fossils exist."},
+"16":{name:"Hagerman Horse",type:"State Fossil",fact:"A 3.5-million-year-old ancestor of the modern horse, found at Hagerman Fossil Beds."},
+"17":{name:"Tully Monster",type:"State Fossil",fact:"A bizarre soft-bodied creature found ONLY in Illinois! Scientists still debate what it was."},
+"18":{name:"No official fossil",type:"None",fact:"Indiana has no state fossil, but mastodon and mammoth remains have been found across the state."},
+"19":{name:"No official fossil",type:"None",fact:"Iowa has no state fossil, but crinoid fossils are incredibly abundant in Iowa's limestone."},
+"20":{name:"Tylosaurus",type:"State Marine Fossil",fact:"A 45-foot sea monster that ruled the oceans when Kansas was underwater 85 million years ago!"},
+"21":{name:"Brachiopod",type:"State Fossil",fact:"Kentucky's fossil is a humble brachiopod — ancient shellfish found in 450-million-year-old rocks."},
+"22":{name:"Petrified Palmwood",type:"State Fossil",fact:"Ancient palm trees turned to stone — found throughout Louisiana's Catahoula Formation."},
+"23":{name:"Pertica quadrifaria",type:"State Fossil",fact:"One of Earth's earliest trees, from 390 million years ago — older than the dinosaurs!"},
+"24":{name:"Ecphora gardnerae",type:"State Fossil",fact:"A beautifully preserved extinct snail. Maryland's is the first fossil described from North America (1685)."},
+"25":{name:"Dinosaur Tracks",type:"State Fossil",fact:"Tracks from the Connecticut Valley — Massachusetts chose the footprints, not the animal!"},
+"26":{name:"Mastodon",type:"State Fossil",fact:"Michigan's mastodon fossils are found in bogs across the state. One was found in someone's backyard!"},
+"27":{name:"No official fossil",type:"None",fact:"Minnesota has no state fossil, but giant beaver fossils from the Ice Age have been found there."},
+"28":{name:"Prehistoric Whale",type:"State Fossil",fact:"Mississippi was once an ocean! Ancient whale fossils are common in the state's chalk formations."},
+"29":{name:"Hypsibema missouriensis",type:"State Dinosaur",fact:"Missouri's dinosaur was found while digging a family well in 1942 — the only dino found in the state!"},
+"30":{name:"Maiasaura",type:"State Fossil",fact:"The 'good mother lizard' — Montana is where scientists first discovered dinosaurs cared for babies!"},
+"31":{name:"Mammoth",type:"State Fossil",fact:"Nebraska's mammoth fossils include some of the most complete specimens ever found."},
+"32":{name:"Ichthyosaur (Shonisaurus)",type:"State Fossil",fact:"A 50-foot marine reptile! 37 skeletons were found together in one Nevada bone bed."},
+"33":{name:"No official fossil",type:"None",fact:"New Hampshire has no state fossil, but ancient ocean creatures are found in its bedrock."},
+"34":{name:"Hadrosaurus foulkii",type:"State Dinosaur",fact:"The first nearly-complete dinosaur skeleton found in North America (1858)! Named by schoolkids."},
+"35":{name:"Coelophysis",type:"State Fossil",fact:"Hundreds of skeletons found at Ghost Ranch — the best-known dinosaur from the Triassic period."},
+"36":{name:"Eurypterus (Sea Scorpion)",type:"State Fossil",fact:"A giant prehistoric sea scorpion up to 5 feet long that lived 430 million years ago!"},
+"37":{name:"Megalodon Teeth",type:"State Fossil",fact:"Giant shark teeth the size of your hand! The megalodon was 60 feet long."},
+"38":{name:"Teredo Petrified Wood",type:"State Fossil",fact:"Ancient wood riddled with prehistoric worm burrows, then turned to stone."},
+"39":{name:"Isotelus (Trilobite)",type:"State Fossil",fact:"Ohio's trilobite is the size of a dinner plate — one of the largest trilobites ever found!"},
+"40":{name:"Saurophaganax",type:"State Fossil",fact:"A giant predator even bigger than T-Rex! Oklahoma also has Acrocanthosaurus as state dinosaur."},
+"41":{name:"Metasequoia (Dawn Redwood)",type:"State Fossil",fact:"Thought extinct for millions of years until living trees were found in China in 1944!"},
+"42":{name:"Trilobite (Phacops rana)",type:"State Fossil",fact:"Pennsylvania's trilobite had compound eyes with hundreds of lenses — like an insect!"},
+"44":{name:"No official fossil",type:"None",fact:"Rhode Island has no state fossil, but ancient marine fossils exist in its bedrock."},
+"45":{name:"Columbian Mammoth",type:"State Fossil",fact:"South Carolina's mammoth stood 13 feet tall and weighed 10 tons!"},
+"46":{name:"Triceratops",type:"State Fossil",fact:"South Dakota is one of the best places on Earth to find Triceratops fossils!"},
+"47":{name:"Pterotrigonia",type:"State Fossil",fact:"An ancient clam from when Tennessee was covered by a shallow sea."},
+"48":{name:"Sauroposeidon",type:"State Dinosaur",fact:"One of the tallest dinosaurs ever — 60 feet tall! Named 'earthquake god lizard.'"},
+"49":{name:"Utahraptor",type:"State Dinosaur",fact:"The real-life version of Jurassic Park's Velociraptors — but bigger and scarier!"},
+"50":{name:"Beluga Whale Skeleton",type:"State Marine Fossil",fact:"A whale fossil found in Vermont — proving the area was once underwater after the Ice Age!"},
+"51":{name:"Chesapecten jeffersonius",type:"State Fossil",fact:"A scallop fossil named after Thomas Jefferson, who first collected them at his Virginia estate."},
+"53":{name:"Columbian Mammoth",type:"State Fossil",fact:"Washington also has Suciasaurus rex — a theropod dinosaur found on the San Juan Islands!"},
+"54":{name:"Megalonyx jeffersonii",type:"State Fossil",fact:"A giant ground sloth named by Thomas Jefferson! He originally thought it was a lion."},
+"55":{name:"Trilobite",type:"State Fossil",fact:"Wisconsin's trilobite Calymene celebra is so common it's nicknamed the 'Wisconsin state bug.'"},
+"56":{name:"Triceratops / Knightia",type:"State Dino & Fossil",fact:"Wyoming has BOTH a state dinosaur (Triceratops) AND state fossil fish (Knightia herring)!"}
+};
+
+// State animal/mammal data
+const animalData = {
+"01":{animal:"Black Bear",fact:"Can run 35 mph and climb trees! Alabama's bears live in the dense forests of the southern part of the state.",weight:"200-600 lbs"},
+"02":{animal:"Moose",fact:"The largest member of the deer family. Alaska's moose can weigh 1,500 lbs and stand 7 feet at the shoulder!",weight:"800-1,500 lbs"},
+"04":{animal:"Ring-tailed Cat",fact:"Not actually a cat! It's related to raccoons and has a tail with 14-16 black and white rings.",weight:"2-3 lbs"},
+"05":{animal:"White-tailed Deer",fact:"Can leap 30 feet in a single bound and run up to 40 mph. Their tails flash white as a danger signal.",weight:"150-300 lbs"},
+"06":{animal:"Grizzly Bear",fact:"The California grizzly is on the state flag but is actually extinct in California since 1924.",weight:"400-800 lbs"},
+"08":{animal:"Rocky Mountain Bighorn Sheep",fact:"Males smash heads at 40 mph during mating season! Their horns can weigh 30 pounds.",weight:"150-300 lbs"},
+"09":{animal:"Sperm Whale",fact:"The largest toothed predator on Earth! Connecticut chose it for its historic whaling industry.",weight:"35-45 tons"},
+"10":{animal:"Grey Fox",fact:"The only fox that can climb trees! Delaware's grey foxes have cat-like retractable claws.",weight:"7-14 lbs"},
+"12":{animal:"Florida Panther",fact:"Fewer than 200 exist in the wild! One of the most endangered mammals in the world.",weight:"100-160 lbs"},
+"13":{animal:"White-tailed Deer",fact:"Georgia's deer population has exploded — there are now over 1 million in the state!",weight:"150-300 lbs"},
+"15":{animal:"Hawaiian Monk Seal",fact:"One of the most endangered seals on Earth — only about 1,400 remain. They sunbathe on beaches!",weight:"375-450 lbs"},
+"16":{animal:"Appaloosa Horse",fact:"Famous for its spotted coat! The Nez Perce people bred them near Idaho's Palouse River.",weight:"950-1,250 lbs"},
+"17":{animal:"White-tailed Deer",fact:"Illinois has over 750,000 white-tailed deer, more than when European settlers first arrived!",weight:"150-300 lbs"},
+"18":{animal:"No official mammal",fact:"Indiana has no state mammal, but is home to Indiana bats — a federally endangered species.",weight:"N/A"},
+"19":{animal:"No official mammal",fact:"Iowa has no state mammal, but its prairies support bison restoration projects.",weight:"N/A"},
+"20":{animal:"American Bison",fact:"The largest land animal in North America! Can run 40 mph despite weighing a ton.",weight:"1,000-2,000 lbs"},
+"21":{animal:"Grey Squirrel",fact:"Can find buried nuts by smell even under a foot of snow! Kentucky's squirrels bury thousands of acorns yearly.",weight:"1-1.5 lbs"},
+"22":{animal:"Louisiana Black Bear",fact:"The inspiration for the Teddy Bear! President Roosevelt refused to shoot one on a Louisiana hunt.",weight:"200-600 lbs"},
+"23":{animal:"Moose",fact:"Maine has about 75,000 moose — one of the densest populations outside of Alaska.",weight:"800-1,200 lbs"},
+"24":{animal:"Chesapeake Bay Retriever",fact:"A dog breed! Maryland's state dog was bred to retrieve ducks from the icy Chesapeake Bay.",weight:"55-80 lbs"},
+"25":{animal:"Right Whale",fact:"One of the rarest whales — only about 350 exist. Massachusetts waters are critical habitat.",weight:"70 tons"},
+"26":{animal:"White-tailed Deer",fact:"Michigan is one of the top states for deer hunting, with over 2 million deer.",weight:"150-300 lbs"},
+"27":{animal:"No official mammal",fact:"Minnesota has no state mammal, but is famous for its wolves, bears, and moose.",weight:"N/A"},
+"28":{animal:"White-tailed Deer",fact:"Mississippi's deer thrive in the state's vast pine forests and delta bottomlands.",weight:"150-300 lbs"},
+"29":{animal:"Missouri Mule",fact:"A mule is a horse-donkey hybrid! Missouri mules were essential for farming and westward expansion.",weight:"800-1,000 lbs"},
+"30":{animal:"Grizzly Bear",fact:"Montana has about 1,800 grizzlies — one of the largest populations in the Lower 48.",weight:"400-800 lbs"},
+"31":{animal:"White-tailed Deer",fact:"Nebraska's deer population thrives across the state's mix of prairie, farmland, and river valleys.",weight:"150-300 lbs"},
+"32":{animal:"Desert Bighorn Sheep",fact:"Adapted to survive with very little water! They can go days without drinking in Nevada's desert.",weight:"115-280 lbs"},
+"33":{animal:"White-tailed Deer",fact:"New Hampshire's deer survive harsh winters by yarding — huddling together in sheltered forests.",weight:"150-300 lbs"},
+"34":{animal:"Horse",fact:"New Jersey designated the horse in 1977 — the state has a rich equestrian tradition.",weight:"900-1,200 lbs"},
+"35":{animal:"Black Bear",fact:"New Mexico's bears live in the mountains and are excellent tree climbers.",weight:"200-600 lbs"},
+"36":{animal:"Beaver",fact:"New York chose the beaver for its role in the fur trade that built the state's early economy.",weight:"35-65 lbs"},
+"37":{animal:"Grey Squirrel",fact:"North Carolina's squirrels are everywhere — they can rotate their ankles 180° to climb down trees headfirst!",weight:"1-1.5 lbs"},
+"38":{animal:"Nokota Horse",fact:"A rare wild horse breed descended from horses that roamed North Dakota's Badlands.",weight:"900-1,100 lbs"},
+"39":{animal:"White-tailed Deer",fact:"Ohio's deer population has rebounded from near-extinction to over 700,000.",weight:"150-300 lbs"},
+"40":{animal:"Bison",fact:"Oklahoma's bison herds were nearly wiped out but conservation brought them back.",weight:"1,000-2,000 lbs"},
+"41":{animal:"Beaver",fact:"Oregon is 'The Beaver State'! Beavers' dams create wetlands that help prevent floods.",weight:"35-65 lbs"},
+"42":{animal:"White-tailed Deer",fact:"Pennsylvania has one of the largest deer populations in the eastern U.S.",weight:"150-300 lbs"},
+"44":{animal:"No official mammal",fact:"Rhode Island has no state mammal but is home to harbor seals along its coast.",weight:"N/A"},
+"45":{animal:"White-tailed Deer",fact:"South Carolina's deer are found in every county of the state.",weight:"150-300 lbs"},
+"46":{animal:"Coyote",fact:"South Dakota's coyotes are incredibly adaptable — they've expanded their range across all 50 states!",weight:"20-50 lbs"},
+"47":{animal:"Raccoon",fact:"Tennessee's raccoons are famous for washing their food before eating! Coonskin caps were a frontier icon.",weight:"10-30 lbs"},
+"48":{animal:"Armadillo",fact:"The nine-banded armadillo always gives birth to identical quadruplets! They can also walk underwater.",weight:"8-17 lbs"},
+"49":{animal:"Rocky Mountain Elk",fact:"Utah's elk herds number over 80,000. Males bugle — a haunting sound that echoes through mountain valleys.",weight:"700-1,100 lbs"},
+"50":{animal:"Morgan Horse",fact:"America's first horse breed! Justin Morgan's small stallion could outrun, outwalk, and outpull any horse.",weight:"900-1,100 lbs"},
+"51":{animal:"Virginia Big-eared Bat",fact:"Only 20,000 exist! These endangered bats have ears over 1 inch long — huge for their tiny body.",weight:"0.3-0.5 oz"},
+"53":{animal:"Olympic Marmot",fact:"Found ONLY in Washington's Olympic Mountains — nowhere else on Earth! They whistle to warn of danger.",weight:"11-18 lbs"},
+"54":{animal:"Black Bear",fact:"West Virginia's bears are making a comeback — the population has grown 5x since the 1970s.",weight:"200-600 lbs"},
+"55":{animal:"Badger",fact:"Wisconsin is 'The Badger State'! Badgers can dig faster than a human with a shovel.",weight:"15-30 lbs"},
+"56":{animal:"Bison",fact:"Wyoming's Yellowstone has the largest free-roaming bison herd in the U.S. — about 5,000 animals.",weight:"1,000-2,000 lbs"}
+};
+
+// Natural wonders
+const wonderData = {
+"01":"DeSoto Caverns — stunning underground caves with light shows and gemstone mining",
+"02":"Northern Lights (Aurora Borealis) — Alaska is the best place in the U.S. to see them!",
+"04":"Grand Canyon — one of the 7 Natural Wonders of the World, 277 miles long and 1 mile deep",
+"05":"Blanchard Springs Caverns — a living cave system with formations still growing today",
+"06":"Yosemite Valley — towering granite cliffs, giant sequoias, and waterfalls in one epic valley",
+"08":"Garden of the Gods — massive red rock formations jutting 300 feet into the sky",
+"09":"Sleeping Giant State Park — a mountain that looks like a giant lying down!",
+"10":"Trap Pond — home to the northernmost natural stand of bald cypress trees in the U.S.",
+"12":"The Everglades — the only place on Earth where alligators AND crocodiles coexist",
+"13":"Okefenokee Swamp — a 438,000-acre 'Land of Trembling Earth' with alligators and black bears",
+"15":"Nā Pali Coast — 4,000-foot sea cliffs accessible only by boat, helicopter, or an 11-mile hike",
+"16":"Shoshone Falls — 'The Niagara of the West,' actually 45 feet TALLER than Niagara Falls!",
+"17":"Starved Rock State Park — 18 canyons carved by glacial meltwater with stunning waterfalls",
+"18":"Indiana Dunes — massive sand dunes up to 200 feet tall on the shores of Lake Michigan",
+"19":"Maquoketa Caves — the largest concentration of caves in any Iowa state park",
+"20":"Monument Rocks — 70-foot chalk pyramids rising from the Kansas prairie, 80 million years old",
+"21":"Mammoth Cave — the LONGEST cave system in the world with 420+ miles explored (and counting!)",
+"22":"Atchafalaya Basin — the largest river swamp in the United States, teeming with wildlife",
+"23":"Acadia National Park — where mountains meet the sea, with the first sunrise in the U.S. each day",
+"24":"Chesapeake Bay — the largest estuary in the U.S., home to blue crabs and over 3,600 species",
+"25":"Cape Cod National Seashore — 40 miles of pristine beaches, marshes, and ponds",
+"26":"Pictured Rocks — multicolored sandstone cliffs rising 200 feet above Lake Superior",
+"27":"Boundary Waters — over 1 million acres of pristine lakes and forests, one of Earth's quietest places",
+"28":"Mississippi Petrified Forest — an ancient forest turned to stone 36 million years ago",
+"29":"Ha Ha Tonka — a castle ruin overlooking a spring that pumps 48 million gallons of water per day",
+"30":"Glacier National Park — 'Crown of the Continent' with 700+ miles of trails and 130 named lakes",
+"31":"Chimney Rock — a 300-foot rock spire that guided thousands of pioneers on the Oregon Trail",
+"32":"Valley of Fire — 40,000 acres of brilliant red sandstone formations, some 150 million years old",
+"33":"Flume Gorge — a dramatic 800-foot natural chasm at the base of Mount Liberty",
+"34":"Palisades — towering cliffs along the Hudson River, some of the most dramatic on the East Coast",
+"35":"Carlsbad Caverns — home to one of the world's largest cave chambers and 400,000 bats!",
+"36":"Niagara Falls — 750,000 gallons of water per second crash over the falls!",
+"37":"Chimney Rock — a 535-million-year-old rock spire sacred to the Cherokee people",
+"38":"Theodore Roosevelt Badlands — otherworldly striped rock formations carved by wind and water",
+"39":"Old Man's Cave — a stunning gorge carved into Black Hand sandstone in Hocking Hills",
+"40":"Turner Falls — Oklahoma's oldest park features a 77-foot waterfall with a natural swimming pool",
+"41":"Crater Lake — the deepest lake in the U.S. at 1,943 feet, filling a collapsed volcano",
+"42":"Pine Creek Gorge (PA Grand Canyon) — a 47-mile gorge up to 1,450 feet deep",
+"43":"skip",
+"44":"Mohegan Bluffs — dramatic 200-foot clay cliffs on Block Island with 141 steps to the beach",
+"45":"Angel Oak — a 400-year-old live oak tree with branches stretching 187 feet across",
+"46":"Badlands — alien-like landscapes with 75 million years of erosion and tons of fossils",
+"47":"Ruby Falls — the deepest commercial cave waterfall in the U.S., 1,120 feet underground!",
+"48":"Big Bend — a dark sky park where you can see more stars than almost anywhere in the U.S.",
+"49":"Bryce Canyon — thousands of red rock spires called 'hoodoos' that look like a fairy tale city",
+"50":"Quechee Gorge — Vermont's 'Little Grand Canyon,' carved 13,000 years ago by glacial rivers",
+"51":"Natural Bridge — a 215-foot-tall rock arch that George Washington surveyed as a young man",
+"53":"Mount Rainier — a 14,411-foot active volcano with the most glaciers of any U.S. peak outside Alaska",
+"54":"New River Gorge — one of the oldest rivers in the world (despite the name!) with a 876-foot bridge",
+"55":"Devil's Lake — a dramatic gorge with 500-foot quartzite bluffs and crystal-clear water",
+"56":"Yellowstone — the world's first national park, home to half of Earth's active geothermal features"
+};
+
+// Theme parks & attractions
+const parksData = {
+"01":"U.S. Space & Rocket Center — home to Space Camp where kids train like real astronauts!",
+"02":"Denali National Park — see grizzly bears, wolves, and caribou with North America's tallest mountain",
+"04":"Grand Canyon Skywalk — a glass-bottomed horseshoe bridge 4,000 feet above the canyon floor!",
+"05":"Crystal Bridges Museum — a stunning art museum set in the Ozark forest, free for all kids",
+"06":"Disneyland — the original Happiest Place on Earth, opened by Walt Disney himself in 1955",
+"08":"Pikes Peak — 'America's Mountain' where you can drive or take a cog railway to 14,115 feet",
+"09":"Mystic Aquarium — home to beluga whales, African penguins, and a touch tank with sharks",
+"10":"Hagley Museum — explore the original DuPont gunpowder mills along the Brandywine Creek",
+"12":"Walt Disney World — the most visited theme park on Earth with 4 parks and 58 million visitors/year",
+"13":"Georgia Aquarium — the largest aquarium in the Western Hemisphere with whale sharks!",
+"15":"Polynesian Cultural Center — experience the cultures of 6 Pacific island nations",
+"16":"Silverwood Theme Park — Idaho's largest amusement park with roller coasters and a water park",
+"17":"Shedd Aquarium — one of the world's largest aquariums with 32,000 animals",
+"18":"Children's Museum of Indianapolis — the LARGEST children's museum in the world!",
+"19":"RAGBRAI — the world's oldest, largest, and longest bike ride across the entire state each summer",
+"20":"Cosmosphere — a world-class space museum with actual spacecraft from Mercury, Gemini, and Apollo",
+"21":"Louisville Mega Cavern — an underground zip line, bike park, and rope course beneath the city!",
+"22":"Audubon Zoo — explore Louisiana's wildlife including white alligators and a splash park",
+"23":"Acadia National Park — carriage roads, tide pools, and the summit of Cadillac Mountain",
+"24":"National Aquarium (Baltimore) — 20,000+ animals including dolphins, sharks, and a rainforest!",
+"25":"Freedom Trail — walk 2.5 miles through 16 historic sites where the American Revolution began",
+"26":"Greenfield Village — Henry Ford's outdoor museum with Thomas Edison's actual lab!",
+"27":"Mall of America — the largest mall in the U.S. with a FULL amusement park inside (Nickelodeon Universe)",
+"28":"Mississippi Museum of Natural Science — explore the state's ecosystems from swamps to forests",
+"29":"City Museum, St. Louis — a 10-story playground made from repurposed industrial materials!",
+"30":"Glacier National Park — drive the breathtaking Going-to-the-Sun Road across the Continental Divide",
+"31":"Henry Doorly Zoo — one of the world's best zoos with the largest indoor desert and nocturnal exhibit",
+"32":"Adventuredome — America's largest indoor theme park, right on the Las Vegas Strip",
+"33":"Story Land — a fairy tale-themed amusement park beloved by young kids since 1954",
+"34":"Six Flags Great Adventure — home to Kingda Ka, the tallest roller coaster in the world (456 ft!)",
+"35":"Carlsbad Caverns — watch 400,000 bats spiral out of the cave at sunset like a living tornado",
+"36":"Statue of Liberty — climb 354 steps to the crown for an unforgettable view of New York Harbor",
+"37":"Biltmore Estate — the largest privately-owned house in America with 250 rooms!",
+"38":"Theodore Roosevelt National Park — spot wild horses, bison, and prairie dogs in the Badlands",
+"39":"Cedar Point — the 'Roller Coaster Capital of the World' with 17 coasters including Steel Vengeance",
+"40":"Frontier City — Wild West-themed amusement park with rides, shows, and gunfight reenactments",
+"41":"Oregon Museum of Science and Industry (OMSI) — includes a real submarine you can tour!",
+"42":"Hersheypark — a chocolate-themed amusement park where the streetlights are Hershey Kisses!",
+"44":"Roger Williams Park Zoo — New England's oldest zoo, with a zip line and carousel",
+"45":"Riverbanks Zoo — one of the top zoos in the country with 2,000+ animals and a botanical garden",
+"46":"Mount Rushmore — four 60-foot presidential faces carved into a granite mountain",
+"47":"Dollywood — Dolly Parton's theme park in the Smoky Mountains with 50+ rides and shows",
+"48":"San Antonio River Walk — 15 miles of riverside paths, boats, shops, and restaurants below street level",
+"49":"Natural History Museum of Utah — dinosaur bones, live bugs, and hands-on earthquake simulator",
+"50":"Ben & Jerry's Factory Tour — see how ice cream is made and get FREE samples at the end!",
+"51":"Colonial Williamsburg — step back in time to 1776 with costumed actors in a living history museum",
+"53":"MoPOP (Museum of Pop Culture) — explore sci-fi, fantasy, video games, and music in Seattle",
+"54":"Exhibition Coal Mine — ride 1,500 feet into a real coal mine on an actual mine cart!",
+"55":"Wisconsin Dells — the 'Waterpark Capital of the World' with the most water parks per capita",
+"56":"Yellowstone — see Old Faithful erupt, walk boardwalks over bubbling mud pots, and spot bison"
+};
+
+// Weird state laws
+const weirdData = {
+"01":"It's illegal to wear a fake mustache in church if it causes laughter.",
+"02":"It's legal to shoot bears, but illegal to wake one up to take a photo.",
+"04":"Donkeys cannot sleep in bathtubs. (This became law after a donkey flooded a town!)",
+"05":"The Arkansas River can officially only be pronounced 'AR-kan-saw.'",
+"06":"Nobody is allowed to ride a bicycle in a swimming pool.",
+"08":"It's illegal to collect rainwater without a permit. (Recently relaxed!)",
+"09":"Pickles must bounce to be legally sold. If they don't bounce, they're not real pickles!",
+"10":"It's illegal to sell perfume in a Delaware hair salon.",
+"12":"If an elephant is left tied to a parking meter, the owner must pay the parking fee.",
+"13":"It's illegal to tie a giraffe to a telephone pole or street lamp.",
+"15":"Billboards are illegal in Hawaii — the state banned them to preserve natural beauty.",
+"16":"You may not fish from a camel's back in Idaho.",
+"17":"You can be arrested for vagrancy if you don't have at least $1 in your pocket.",
+"18":"Pi is officially 3.2 in Indiana. (A 1897 bill tried to legally change the value of pi!)",
+"19":"One-armed piano players must perform for free by law.",
+"20":"It's illegal to serve wine in teacups in Kansas.",
+"21":"It's illegal to remarry the same person four times in Kentucky.",
+"22":"It's illegal to order pizza delivery to someone else's house without their permission.",
+"23":"It's illegal to step out of a plane while it's in flight.",
+"24":"It's illegal to take a lion to the movies in Maryland.",
+"25":"Snoring is illegal in Massachusetts unless all bedroom windows are closed and locked.",
+"26":"A woman isn't allowed to cut her own hair without her husband's permission.",
+"27":"It's illegal to stand around any building without a good reason. (Anti-loitering at its finest!)",
+"28":"Teaching others what polygamy is can get you fined up to $500 or jailed for 5 years.",
+"29":"It's illegal to drive with an uncaged bear in your car in Missouri.",
+"30":"It's illegal to have a sheep in the cab of your truck without a chaperone.",
+"31":"Parents can be arrested if their kids burp during church in Nebraska.",
+"32":"It's illegal to drive a camel on the highway in Nevada.",
+"33":"You cannot sell the clothes you're wearing to pay off a gambling debt.",
+"34":"It's illegal to wear a bulletproof vest while committing a murder.",
+"35":"Idiots cannot vote in New Mexico. (The word 'idiot' is actually in the state constitution!)",
+"36":"It's illegal to throw a ball at someone's head for fun in New York.",
+"37":"It's illegal to sing off-key in North Carolina.",
+"38":"It's illegal to lie down and fall asleep with your shoes on in North Dakota.",
+"39":"It's illegal to get a fish drunk in Ohio.",
+"40":"You can be arrested for making ugly faces at a dog in Oklahoma.",
+"41":"You cannot pump your own gas in Oregon — an attendant must do it for you. (Still true!)",
+"42":"It's illegal to sleep on top of a refrigerator outdoors in Pennsylvania.",
+"44":"Professional sports (except hockey and polo) cannot be played on Sundays in Rhode Island.",
+"45":"It's illegal to keep a horse in a bathtub in South Carolina.",
+"46":"It's illegal to fall asleep in a cheese factory in South Dakota.",
+"47":"It's illegal to share your Netflix password in Tennessee. (Actually passed in 2011!)",
+"48":"It's illegal to shoot a buffalo from the second story of a hotel in Texas.",
+"49":"It's illegal to not drink milk in Utah. (A 1937 law to support the dairy industry!)",
+"50":"Women must get written permission from their husbands to wear false teeth in Vermont.",
+"51":"It's illegal to tickle women in Virginia.",
+"53":"It's illegal to harass Bigfoot, Sasquatch, or other undiscovered species in Washington.",
+"54":"Whistling underwater is illegal in West Virginia.",
+"55":"It's illegal to serve apple pie in a public restaurant without cheese in Wisconsin.",
+"56":"It's illegal to take a photo of a rabbit from January to April without a permit."
+};
+
 // Governor fun facts
 const govFacts = {
   "01": ["Kay Ivey taught high school reading and coached the girls' basketball team before entering politics.", "She became governor in 2017 when her predecessor resigned, making her only the second female governor in Alabama history."],
@@ -601,17 +956,41 @@ function applyMapColors() {
     const data = stateData[d.id];
     if (!data) return;
     if (currentFilter === 'governor') {
-      const colors = {
-        'R':  { male: '#8b2030', female: '#c75068' },
-        'D':  { male: '#1e4a8a', female: '#4a8ad4' }
-      };
+      const colors = {'R':{male:'#8b2030',female:'#c75068'},'D':{male:'#1e4a8a',female:'#4a8ad4'}};
       const c = colors[data.party];
       el.style('fill', data.female ? c.female : c.male);
+    } else if (currentFilter === 'crime') {
+      const rate = crimeData[d.id] || 5;
+      // Green (safe) to red (dangerous): 0-20 scale
+      const t = Math.min(rate / 20, 1);
+      const r = Math.round(40 + t * 200);
+      const g = Math.round(180 - t * 150);
+      const b = Math.round(80 - t * 50);
+      el.style('fill', 'rgb('+r+','+g+','+b+')');
+    } else if (currentFilter === 'corn') {
+      const bushels = cornData[d.id] || 0;
+      // Scale: 0 = dark, 2680 (Iowa max) = bright yellow
+      const t = Math.min(bushels / 2680, 1);
+      if (bushels === 0) {
+        el.style('fill', '#1c2030');
+      } else {
+        const r = Math.round(30 + t * 225);
+        const g = Math.round(30 + t * 190);
+        const b = Math.round(20 + t * 10);
+        el.style('fill', 'rgb('+r+','+g+','+b+')');
+      }
+    } else if (currentFilter === 'dino') {
+      var dd = dinoData[d.id];
+      if (dd && dd.type !== 'None') {
+        var isDino = dd.type.indexOf('Dinosaur') >= 0;
+        el.style('fill', isDino ? '#c06030' : '#708060');
+      } else {
+        el.style('fill', '#1c2030');
+      }
     } else {
-      el.style('fill', null); // reset to CSS default
+      el.style('fill', null);
     }
   });
-  // Toggle legend visibility
   const legend = document.getElementById('gov-legend');
   if (legend) legend.style.display = currentFilter === 'governor' ? 'flex' : 'none';
 }
@@ -635,6 +1014,43 @@ function buildContent(data, type, fips) {
     const isNone = s.sport === 'None designated';
     return `<div style="${labelStyle}">State Sport</div>
       <div style="font-size:0.95rem;font-weight:600;color:${isNone ? 'var(--text-dim)' : '#f09856'};">${s.sport || 'Unknown'}</div>`;
+  }
+  if (type === 'flower') {
+    const f = flowerData[fips] || {};
+    return `<div style="${labelStyle}">State Flower</div>
+      <div style="font-size:0.95rem;font-weight:500;color:#f0a0c0;">${f.flower || 'Unknown'}</div>`;
+  }
+  if (type === 'crime') {
+    const rate = crimeData[fips] || 0;
+    const color = rate > 10 ? '#ef6b6b' : rate > 6 ? '#f0c060' : '#6bcb77';
+    return `<div style="${labelStyle}">Homicide Rate (2023)</div>
+      <div style="font-size:0.95rem;font-weight:600;color:${color};">${rate} per 100,000</div>`;
+  }
+  if (type === 'corn') {
+    const b = cornData[fips] || 0;
+    const color = b > 500 ? '#f0c948' : b > 0 ? '#a0a060' : 'var(--text-dim)';
+    return `<div style="${labelStyle}">Corn Production (2024)</div>
+      <div style="font-size:0.95rem;font-weight:600;color:${color};">${b > 0 ? b.toLocaleString() + 'M bushels' : 'Minimal/None'}</div>`;
+  }
+  if (type === 'dino') {
+    const dd = dinoData[fips] || {};
+    return '<div style="' + labelStyle + '">' + (dd.type||'Fossil') + '</div><div style="font-size:0.95rem;font-weight:500;color:#c09060;">' + (dd.name||'None designated') + '</div>';
+  }
+  if (type === 'animal') {
+    const aa = animalData[fips] || {};
+    return '<div style="' + labelStyle + '">State Animal</div><div style="font-size:0.95rem;font-weight:500;color:#80c0a0;">' + (aa.animal||'None') + '</div>';
+  }
+  if (type === 'wonder') {
+    const ww = wonderData[fips] || '';
+    return '<div style="' + labelStyle + '">Natural Wonder</div><div style="font-size:0.95rem;font-weight:500;color:#70b0e0;">' + (ww ? ww.split(' — ')[0] : 'Unknown') + '</div>';
+  }
+  if (type === 'parks') {
+    const pp = parksData[fips] || '';
+    return '<div style="' + labelStyle + '">Top Attraction</div><div style="font-size:0.95rem;font-weight:500;color:#e0a060;">' + (pp ? pp.split(' — ')[0] : 'Unknown') + '</div>';
+  }
+  if (type === 'weird') {
+    const wl = weirdData[fips] || '';
+    return '<div style="' + labelStyle + '">Weird Law</div><div style="font-size:0.88rem;font-weight:500;color:#d0a0d0;line-height:1.4;">' + (wl || 'None found') + '</div>';
   }
   let h = `<div style="${labelStyle}">State Motto</div>
     <div style="font-family:'DM Serif Display',serif;font-size:1rem;color:var(--motto-gold);line-height:1.35;">\u201C${data.motto}\u201D</div>`;
@@ -701,6 +1117,66 @@ function showPanel(fips) {
       <div style="font-size:1.2rem;font-weight:600;color:${isNone ? 'var(--text-dim)' : '#f09856'};margin-top:0.2rem;">${s.sport || 'Unknown'}</div>
       <div style="font-size:0.88rem;color:var(--text-dim);margin-top:0.5rem;line-height:1.5;">${s.desc || ''}</div>
       <div style="font-size:0.85rem;color:var(--text);margin-top:0.6rem;line-height:1.5;border-left:2px solid ${isNone ? 'var(--border)' : '#f09856'};padding-left:0.75rem;">${s.origin || ''}</div>`;
+  } else if (currentFilter === 'flower') {
+    const f = flowerData[fips] || {};
+    html += `<div class="panel-label">State Flower</div>
+      <div style="font-size:1.2rem;font-weight:500;color:#f0a0c0;margin-top:0.2rem;">${f.flower || 'Unknown'}</div>`;
+    if (f.facts && f.facts.length) {
+      html += '<div style="margin-top:0.8rem;"><div class="panel-label">Why This Flower?</div>';
+      f.facts.forEach(function(fact) {
+        html += '<div style="font-size:0.88rem;color:var(--text);line-height:1.55;margin-top:0.4rem;border-left:2px solid #f0a0c0;padding-left:0.75rem;">' + fact + '</div>';
+      });
+      html += '</div>';
+    }
+  } else if (currentFilter === 'crime') {
+    const rate = crimeData[fips] || 0;
+    const natAvg = 5.7;
+    const color = rate > 10 ? '#ef6b6b' : rate > 6 ? '#f0c060' : '#6bcb77';
+    const label = rate > 10 ? 'Above Average' : rate > 6 ? 'Near Average' : 'Below Average';
+    const diff = ((rate - natAvg) / natAvg * 100).toFixed(0);
+    html += '<div class="panel-label">Homicide Rate (2023, per 100,000)</div>' +
+      '<div style="font-size:1.4rem;font-weight:600;color:' + color + ';margin-top:0.2rem;">' + rate + '</div>' +
+      '<div style="font-size:0.85rem;color:var(--text-dim);margin-top:0.3rem;">' + label + ' — National avg: ' + natAvg + ' per 100,000</div>' +
+      '<div style="font-size:0.85rem;color:var(--text);margin-top:0.5rem;line-height:1.5;border-left:2px solid ' + color + ';padding-left:0.75rem;">' +
+      (rate > natAvg ? Math.abs(diff) + '% above' : Math.abs(diff) + '% below') + ' the national average. ' +
+      (rate <= 3 ? 'One of the safest states in the country.' : rate <= 6 ? 'Relatively safe by national standards.' : rate <= 10 ? 'Moderate homicide rate.' : 'Among the higher rates nationally.') + '</div>';
+  } else if (currentFilter === 'corn') {
+    const b = cornData[fips] || 0;
+    const color = b > 1000 ? '#f0c948' : b > 100 ? '#c0a030' : b > 0 ? '#808040' : 'var(--text-dim)';
+    const rank = Object.values(cornData).filter(function(v){return v > b}).length + 1;
+    html += '<div class="panel-label">Corn Production (2024 est.)</div>' +
+      '<div style="font-size:1.4rem;font-weight:600;color:' + color + ';margin-top:0.2rem;">' + (b > 0 ? b.toLocaleString() + ' million bushels' : 'Minimal / None') + '</div>' +
+      '<div style="font-size:0.85rem;color:var(--text-dim);margin-top:0.3rem;">Rank: #' + rank + ' of 50 states</div>' +
+      '<div style="font-size:0.85rem;color:var(--text);margin-top:0.5rem;line-height:1.5;border-left:2px solid ' + color + ';padding-left:0.75rem;">' +
+      (b >= 2000 ? 'A corn belt powerhouse — one of the top producers in the nation.' : b >= 500 ? 'Major corn-producing state in the heart of the Corn Belt.' : b >= 100 ? 'Significant corn production contributing to the national supply.' : b > 0 ? 'Modest corn production, not a primary crop for this state.' : 'Little to no commercial corn production.') + '</div>';
+  } else if (currentFilter === 'dino') {
+    const dd = dinoData[fips] || {};
+    html += '<div class="panel-label">' + (dd.type||'State Fossil') + '</div>' +
+      '<div style="font-size:1.2rem;font-weight:500;color:#c09060;margin-top:0.2rem;">' + (dd.name||'None designated') + '</div>' +
+      '<div style="font-size:0.88rem;color:var(--text);margin-top:0.5rem;line-height:1.55;border-left:2px solid #c09060;padding-left:0.75rem;">' + (dd.fact||'') + '</div>';
+  } else if (currentFilter === 'animal') {
+    const aa = animalData[fips] || {};
+    html += '<div class="panel-label">State Animal / Mammal</div>' +
+      '<div style="font-size:1.2rem;font-weight:500;color:#80c0a0;margin-top:0.2rem;">' + (aa.animal||'None designated') + '</div>' +
+      (aa.weight && aa.weight !== 'N/A' ? '<div style="font-size:0.85rem;color:var(--text-dim);margin-top:0.3rem;">Weight: ' + aa.weight + '</div>' : '') +
+      '<div style="font-size:0.88rem;color:var(--text);margin-top:0.5rem;line-height:1.55;border-left:2px solid #80c0a0;padding-left:0.75rem;">' + (aa.fact||'') + '</div>';
+  } else if (currentFilter === 'wonder') {
+    const ww = wonderData[fips] || '';
+    const parts = ww.split(' — ');
+    html += '<div class="panel-label">Natural Wonder</div>' +
+      '<div style="font-size:1.2rem;font-weight:500;color:#70b0e0;margin-top:0.2rem;">' + (parts[0]||'Unknown') + '</div>' +
+      '<div style="font-size:0.88rem;color:var(--text);margin-top:0.5rem;line-height:1.55;border-left:2px solid #70b0e0;padding-left:0.75rem;">' + (parts[1]||'') + '</div>';
+  } else if (currentFilter === 'parks') {
+    const pp = parksData[fips] || '';
+    const parts = pp.split(' — ');
+    html += '<div class="panel-label">Top Kid-Friendly Attraction</div>' +
+      '<div style="font-size:1.2rem;font-weight:500;color:#e0a060;margin-top:0.2rem;">' + (parts[0]||'Unknown') + '</div>' +
+      '<div style="font-size:0.88rem;color:var(--text);margin-top:0.5rem;line-height:1.55;border-left:2px solid #e0a060;padding-left:0.75rem;">' + (parts[1]||'') + '</div>';
+  } else if (currentFilter === 'weird') {
+    const wl = weirdData[fips] || 'No weird law found for this state.';
+    html += '<div class="panel-label">Weird State Law</div>' +
+      '<div style="font-size:1.1rem;font-weight:500;color:#d0a0d0;margin-top:0.2rem;line-height:1.5;">' + wl + '</div>' +
+      '<div style="font-size:0.82rem;color:var(--text-dim);margin-top:0.6rem;font-style:italic;">Note: Many of these are outdated laws that remain technically on the books!</div>';
   }
   document.getElementById('panel-content').innerHTML = html;
   document.getElementById('info-panel').classList.add('open');
