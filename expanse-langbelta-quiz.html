@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>Lang Belta Quiz — Test Your Belter | The Expanse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#060810;--card:#0c1020;--card2:#131b30;--accent:#3a8fd4;--accent2:#e07848;--accent3:#40c890;--accent4:#c860a0;--text:#d8dce8;--muted:#7888a8;--dim:#4a5878;--border:#1e3050;--gold:#f0c060;--correct:#40c890;--wrong:#e05050}
+*{box-sizing:border-box;margin:0;padding:0}body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 20%,rgba(58,143,212,0.04) 0%,transparent 70%);pointer-events:none}
+.fc-brand-bar{position:sticky;top:0;z-index:100;background:rgba(6,8,16,0.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.06);padding:8px 16px;display:flex;align-items:center;gap:10px}
+.fc-brand-bar a{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit}.fc-brand-bar img{width:32px;height:32px;border-radius:50%}
+.fc-brand-bar span{font-family:sans-serif;font-size:14px;font-weight:600;color:#c9a44a;letter-spacing:0.5px}
+.fc-brand-bar .fc-sep{color:rgba(255,255,255,0.15);font-size:18px}.fc-brand-bar .fc-page-name{font-size:13px;font-weight:500;color:rgba(255,255,255,0.4)}
+.container{position:relative;z-index:1;max-width:700px;margin:0 auto;padding:24px 16px 80px}
+.back-link{display:inline-block;color:var(--accent);text-decoration:none;font-size:13px;font-weight:600;padding:6px 14px;border:1px solid var(--border);border-radius:99px;transition:all .2s;margin-bottom:16px}.back-link:hover{border-color:var(--accent)}
+
+/* Setup */
+.setup{text-align:center;padding:2rem 0}
+.setup h1{font-family:'Orbitron',sans-serif;font-size:clamp(22px,4.5vw,36px);font-weight:800;background:linear-gradient(135deg,#40c890,#3a8fd4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:2px}
+.setup .sub{font-family:'Orbitron',sans-serif;font-size:clamp(10px,2vw,13px);color:var(--accent2);letter-spacing:3px;margin-top:6px;font-weight:600}
+.setup p{color:var(--muted);font-size:15px;margin-top:14px;line-height:1.7;max-width:550px;margin-left:auto;margin-right:auto}
+.mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:28px 0}
+.mode-btn{background:var(--card);border:2px solid var(--border);border-radius:16px;padding:24px 16px;cursor:pointer;text-align:center;transition:all .25s}
+.mode-btn:hover{border-color:var(--accent3);transform:translateY(-3px)}
+.mode-btn.selected{border-color:var(--accent3);background:rgba(64,200,144,0.08);box-shadow:0 0 16px rgba(64,200,144,0.15)}
+.mode-btn .mode-emoji{font-size:36px;display:block;margin-bottom:6px}
+.mode-btn .mode-name{font-size:16px;font-weight:800;display:block}
+.mode-btn .mode-desc{font-size:12px;color:var(--dim);margin-top:4px;display:block;line-height:1.4}
+.go-btn{font-family:'Nunito',sans-serif;font-size:18px;font-weight:800;padding:16px 48px;border-radius:14px;border:none;background:var(--accent3);color:#0a1628;cursor:pointer;transition:all .25s;box-shadow:0 4px 20px rgba(64,200,144,0.3)}
+.go-btn:hover{filter:brightness(1.1);transform:translateY(-2px)}
+.go-btn:disabled{opacity:0.3;cursor:not-allowed;transform:none}
+
+/* HUD */
+.hud{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:var(--card);border:1px solid var(--border);border-radius:14px;margin-bottom:16px}
+.hud-item{text-align:center}
+.hud-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--dim)}
+.hud-val{font-family:'Orbitron',sans-serif;font-size:18px;font-weight:700;margin-top:2px}
+
+/* Question */
+.q-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:28px;margin-bottom:16px;text-align:center}
+.q-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--dim);margin-bottom:8px}
+.q-word{font-family:'Orbitron',sans-serif;font-size:clamp(24px,5vw,36px);font-weight:800;color:var(--accent3);letter-spacing:1px;margin-bottom:4px}
+.q-pronun{font-size:14px;color:var(--dim);font-style:italic;margin-bottom:6px}
+.q-cat{font-size:11px;font-weight:700;padding:3px 10px;border-radius:6px;background:rgba(64,200,144,0.1);color:var(--accent3);display:inline-block}
+
+/* Answer choices */
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.choice-btn{background:var(--card);border:2px solid var(--border);border-radius:14px;padding:16px;cursor:pointer;text-align:left;font-family:'Nunito',sans-serif;font-size:14px;font-weight:600;color:var(--text);transition:all .2s;line-height:1.5;position:relative}
+.choice-btn:hover:not(.locked){border-color:var(--accent);transform:translateY(-2px)}
+.choice-btn .choice-key{position:absolute;top:8px;right:10px;font-size:10px;font-weight:700;color:var(--dim);background:var(--card2);padding:2px 6px;border-radius:4px}
+.choice-btn.correct{border-color:var(--correct)!important;background:rgba(64,200,144,0.1)!important}
+.choice-btn.wrong{border-color:var(--wrong)!important;background:rgba(224,80,80,0.08)!important}
+.choice-btn.locked{cursor:default}
+
+/* Feedback */
+.feedback{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px 20px;margin-bottom:16px;display:none}
+.feedback.show{display:block}
+.feedback .fb-result{font-family:'Orbitron',sans-serif;font-size:16px;font-weight:700;margin-bottom:6px}
+.feedback .fb-result.right{color:var(--correct)}
+.feedback .fb-result.nope{color:var(--wrong)}
+.feedback .fb-explain{font-size:13px;color:var(--muted);line-height:1.6}
+.feedback .fb-origin{font-size:12px;color:var(--dim);font-style:italic;margin-top:4px}
+.next-btn{font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;padding:12px 32px;border-radius:12px;border:none;background:var(--accent);color:#fff;cursor:pointer;transition:all .2s;display:block;margin:0 auto}
+.next-btn:hover{filter:brightness(1.15);transform:translateY(-2px)}
+
+/* Results */
+.results{text-align:center;padding:24px 0}
+.results .big-score{font-family:'Orbitron',sans-serif;font-size:64px;font-weight:900}
+.results .big-score.perfect{color:var(--correct)}
+.results .big-score.good{color:var(--gold)}
+.results .big-score.ok{color:var(--accent2)}
+.results .big-score.low{color:var(--wrong)}
+.results .score-label{font-size:16px;color:var(--muted);margin-top:4px}
+.results .score-msg{font-size:15px;color:var(--muted);margin-top:12px;line-height:1.6;max-width:450px;margin-left:auto;margin-right:auto}
+.results .rank-badge{display:inline-block;font-family:'Orbitron',sans-serif;font-size:13px;font-weight:700;padding:8px 20px;border-radius:10px;margin-top:16px;letter-spacing:1px}
+.result-btns{display:flex;gap:10px;justify-content:center;margin-top:20px;flex-wrap:wrap}
+.result-btn{font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;padding:12px 24px;border-radius:10px;cursor:pointer;transition:all .2s;border:none}
+.result-btn.primary{background:var(--accent3);color:#0a1628}
+.result-btn.secondary{background:var(--card);border:1px solid var(--border);color:var(--text)}
+.result-btn:hover{transform:translateY(-2px);filter:brightness(1.1)}
+
+/* Review */
+.review-list{margin-top:20px;text-align:left}
+.review-item{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 18px;margin-bottom:8px}
+.review-item.was-correct{border-left:3px solid var(--correct)}
+.review-item.was-wrong{border-left:3px solid var(--wrong)}
+.review-word{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:700;color:var(--accent3)}
+.review-answer{font-size:13px;color:var(--muted);margin-top:4px}
+.review-yours{font-size:12px;color:var(--wrong);margin-top:2px}
+
+@media(max-width:500px){.choices{grid-template-columns:1fr}.mode-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="fc-brand-bar"><a href="index.html"><img src="fancannonlogo.png" alt="Fan Cannon"><span>Fan Cannon</span></a><span class="fc-sep">|</span><span class="fc-page-name">Lang Belta Quiz</span></div>
+<div class="container">
+<a href="expanse-langbelta.html" class="back-link">← Back to Lang Belta Dictionary</a>
+
+<!-- SETUP -->
+<div id="setup" class="setup">
+<h1>LANG BELTA QUIZ</h1>
+<div class="sub">TO SASA LANG BELTA, KE?</div>
+<p>Test your knowledge of Belter Creole! 25 random questions from a pool of 100. Choose the correct translation.</p>
+<div class="mode-grid">
+<div class="mode-btn selected" id="mode-belta" onclick="setMode('belta')"><span class="mode-emoji">🗣️</span><span class="mode-name">Belta → English</span><span class="mode-desc">See a Belter word, pick the English meaning</span></div>
+<div class="mode-btn" id="mode-english" onclick="setMode('english')"><span class="mode-emoji">🌍</span><span class="mode-name">English → Belta</span><span class="mode-desc">See an English meaning, pick the Belter word</span></div>
+</div>
+<button class="go-btn" onclick="startQuiz()">🚀 Ando! (Let's Go!)</button>
+</div>
+
+<!-- GAME -->
+<div id="game" style="display:none">
+<div style="text-align:center;margin-bottom:12px"><button onclick="confirmQuit()" style="font-family:Nunito,sans-serif;font-size:12px;font-weight:600;padding:5px 14px;border-radius:99px;border:1px solid var(--border);background:var(--card);color:var(--muted);cursor:pointer">← Back to Menu</button></div>
+<div class="hud">
+<div class="hud-item"><div class="hud-label">Question</div><div class="hud-val" id="hudQ">1/25</div></div>
+<div class="hud-item"><div class="hud-label">Score</div><div class="hud-val" id="hudScore" style="color:var(--accent3)">0</div></div>
+<div class="hud-item"><div class="hud-label">Streak</div><div class="hud-val" id="hudStreak" style="color:var(--gold)">0</div></div>
+</div>
+<div class="q-card">
+<div class="q-label" id="qLabel">TRANSLATE THIS BELTER WORD</div>
+<div class="q-word" id="qWord"></div>
+<div class="q-pronun" id="qPronun"></div>
+<div class="q-cat" id="qCat"></div>
+</div>
+<div class="choices" id="choices"></div>
+<div class="feedback" id="feedback">
+<div class="fb-result" id="fbResult"></div>
+<div class="fb-explain" id="fbExplain"></div>
+<div class="fb-origin" id="fbOrigin"></div>
+<br>
+<button class="next-btn" id="nextBtn" onclick="nextQuestion()">Next Question →</button>
+</div>
+</div>
+
+<!-- RESULTS -->
+<div id="results" style="display:none"></div>
+</div>
+<script>
+var QDB=[
+{w:"Beltalowda",short:"Us Belters / All Belters",cat:"People"},
+{w:"Inyalowda",short:"Inner planet people",cat:"People"},
+{w:"Wellwala",short:"Traitor / Inner-planets obsessed Belter",cat:"Slang"},
+{w:"Beratna",short:"Brother / Male comrade",cat:"People"},
+{w:"Sésata",short:"Sister / Female comrade",cat:"People"},
+{w:"Kopeng",short:"Friend / Companion",cat:"People"},
+{w:"Pampa",short:"Father / Dad",cat:"People"},
+{w:"Maliwala",short:"Child / Children",cat:"People"},
+{w:"Towchu",short:"Slave / Indentured laborer",cat:"People"},
+{w:"Tumang",short:"An Earther",cat:"People"},
+{w:"Pomang",short:"Police / Security forces",cat:"People"},
+{w:"Setamang",short:"Star person / Spacer",cat:"People"},
+{w:"Bosmang",short:"Boss / Chief / Leader",cat:"People"},
+{w:"Pampaw",short:"Grandpa / Old man",cat:"People"},
+{w:"Sabakawala",short:"Dog-person / Contemptible person",cat:"Curses"},
+{w:"Owkwa",short:"Water",cat:"Nouns"},
+{w:"Ereluf",short:"Air / Atmosphere",cat:"Nouns"},
+{w:"Imbobo",short:"Hole / Puncture",cat:"Nouns"},
+{w:"Setara",short:"Star",cat:"Nouns"},
+{w:"Livit",short:"Life / Living",cat:"Nouns"},
+{w:"Fong",short:"Thing / Stuff",cat:"Nouns"},
+{w:"Keting",short:"Day / Time period",cat:"Nouns"},
+{w:"Nawit",short:"Night",cat:"Nouns"},
+{w:"Kowlting",short:"Everything",cat:"Nouns"},
+{w:"Nating",short:"Nothing",cat:"Nouns"},
+{w:"Ferí",short:"Happiness / Joy",cat:"Nouns"},
+{w:"Tili",short:"Tea",cat:"Nouns"},
+{w:"Dzhush",short:"The Juice (high-g drug cocktail)",cat:"Culture"},
+{w:"Xiya",short:"Ship / Spacecraft",cat:"Nouns"},
+{w:"Ting",short:"Thing",cat:"Nouns"},
+{w:"Showxa",short:"To speak / To talk",cat:"Verbs"},
+{w:"Sasa",short:"To know",cat:"Verbs"},
+{w:"Pensa",short:"To think",cat:"Verbs"},
+{w:"Sensa",short:"To feel / To sense",cat:"Verbs"},
+{w:"Kang",short:"To work / To labor",cat:"Verbs"},
+{w:"Du",short:"To do / To make",cat:"Verbs"},
+{w:"Fongta",short:"To pretend / To fake",cat:"Verbs"},
+{w:"Mogut",short:"Can / To be able to",cat:"Verbs"},
+{w:"Dong",short:"To fight",cat:"Verbs"},
+{w:"Beref",short:"To believe",cat:"Verbs"},
+{w:"Manting",short:"To tell / To say",cat:"Verbs"},
+{w:"Pochuye",short:"To understand / To hear",cat:"Verbs"},
+{w:"Mali",short:"Small / Little",cat:"Adjectives"},
+{w:"Gut",short:"Good",cat:"Adjectives"},
+{w:"Mal",short:"Bad / Evil",cat:"Adjectives"},
+{w:"Nadzhush",short:"Tired / Exhausted",cat:"Adjectives"},
+{w:"Finyish",short:"Finished / Done",cat:"Adjectives"},
+{w:"Deting",short:"Dead",cat:"Adjectives"},
+{w:"Bera",short:"True / Real",cat:"Adjectives"},
+{w:"Felota",short:"Floating",cat:"Adjectives"},
+{w:"Asilik",short:"Honest / Genuine",cat:"Adjectives"},
+{w:"Mi",short:"I / Me / My",cat:"Pronouns"},
+{w:"To",short:"You / Your (singular)",cat:"Pronouns"},
+{w:"Im",short:"He / She / It (gender-neutral)",cat:"Pronouns"},
+{w:"Milowda",short:"We / Us",cat:"Pronouns"},
+{w:"Tolowda",short:"You all / Y'all",cat:"Pronouns"},
+{w:"Imalowda",short:"They / Them",cat:"Pronouns"},
+{w:"Da",short:"The (definite article)",cat:"Grammar"},
+{w:"Ke",short:"Question particle (yes/no)",cat:"Grammar"},
+{w:"Unte",short:"And",cat:"Grammar"},
+{w:"Fo",short:"For",cat:"Grammar"},
+{w:"Gonya",short:"Going to (future marker)",cat:"Grammar"},
+{w:"Sabaka",short:"Dammit! / Bastard! / Dog!",cat:"Curses"},
+{w:"Pashang",short:"The strongest Belter curse (F-word)",cat:"Curses"},
+{w:"Kaka",short:"Crap / Shit",cat:"Curses"},
+{w:"Kaka felota",short:"Floating shit / Worthless things",cat:"Curses"},
+{w:"Kapawu",short:"Watch out! / Heads up!",cat:"Curses"},
+{w:"Xetamang",short:"Shut up! / Be quiet!",cat:"Curses"},
+{w:"Banger",short:"A ship or missile",cat:"Slang"},
+{w:"Rock-hopper",short:"Belter miner between asteroids",cat:"Slang"},
+{w:"Dusters",short:"Martians (mildly derogatory)",cat:"Slang"},
+{w:"Squab",short:"A young person / Kid",cat:"Slang"},
+{w:"Coyo",short:"Guy / Dude / Person",cat:"Slang"},
+{w:"Inners",short:"Inner-planet people (informal)",cat:"Slang"},
+{w:"Hoy",short:"Hey / Hello",cat:"Greetings"},
+{w:"Taki taki",short:"Talk soon / See you later",cat:"Greetings"},
+{w:"Ando",short:"Let's go",cat:"Greetings"},
+{w:"Sa-sa ke?",short:"You know? / Do you understand?",cat:"Phrases"},
+{w:"To pochuye ke?",short:"Do you understand me?",cat:"Phrases"},
+{w:"Oye, Beltalowda!",short:"Hey, Belters! (rallying cry)",cat:"Phrases"},
+{w:"Mi na sasa",short:"I don't know",cat:"Phrases"},
+{w:"Kowl gut, kopeng",short:"All good, friend",cat:"Phrases"},
+{w:"Im ta nating",short:"You're welcome (It was nothing)",cat:"Phrases"},
+{w:"Lang",short:"Language",cat:"Nouns"},
+{w:"Wa",short:"A / An (indefinite article)",cat:"Grammar"},
+{w:"Keyá",short:"Isn't it? / Right? (tag question)",cat:"Grammar"},
+{w:"Wit",short:"With",cat:"Grammar"},
+{w:"Ere",short:"About / Concerning",cat:"Grammar"},
+{w:"Kowl",short:"All / Every",cat:"Grammar"},
+{w:"Paxtet",short:"Patience",cat:"Nouns"},
+{w:"Da Churn",short:"Violent reshuffling of power",cat:"Culture"},
+{w:"Spin",short:"A station with rotational gravity",cat:"Slang"},
+{w:"Long kang",short:"Hard labor / Grinding work",cat:"Slang"},
+{w:"Dzhemang",short:"Gentleman / Man of status",cat:"People"},
+{w:"Medina",short:"Hub station inside the Slow Zone",cat:"Places"},
+{w:"Ceres",short:"Largest asteroid / Major Belter city",cat:"Places"},
+{w:"Tycho",short:"Massive construction platform",cat:"Places"},
+{w:"Eros",short:"Site of the protomolecule outbreak",cat:"Places"},
+{w:"Pashangwala",short:"A contemptible person (strong curse)",cat:"Curses"},
+{w:"Ful",short:"Full / Complete",cat:"Adjectives"}
+];
+
+var mode='belta';
+var quiz=[];
+var qIdx=0;
+var score=0;
+var streak=0;
+var bestStreak=0;
+var answered=false;
+var history=[];
+
+function setMode(m){
+  mode=m;
+  document.getElementById('mode-belta').classList.toggle('selected',m==='belta');
+  document.getElementById('mode-english').classList.toggle('selected',m==='english');
+}
+
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+
+function startQuiz(){
+  var pool=QDB.slice();
+  shuffle(pool);
+  quiz=pool.slice(0,25);
+  qIdx=0;score=0;streak=0;bestStreak=0;answered=false;history=[];
+  document.getElementById('setup').style.display='none';
+  document.getElementById('game').style.display='block';
+  document.getElementById('results').style.display='none';
+  showQuestion();
+}
+
+function showQuestion(){
+  answered=false;
+  var q=quiz[qIdx];
+  document.getElementById('hudQ').textContent=(qIdx+1)+'/25';
+  document.getElementById('hudScore').textContent=score;
+  document.getElementById('hudStreak').textContent=streak;
+  document.getElementById('feedback').classList.remove('show');
+
+  if(mode==='belta'){
+    document.getElementById('qLabel').textContent='TRANSLATE THIS BELTER WORD';
+    document.getElementById('qWord').textContent=q.w;
+    document.getElementById('qPronun').textContent='';
+    document.getElementById('qCat').textContent=q.cat;
+    // Build 4 choices: 1 correct + 3 wrong
+    var wrongs=QDB.filter(function(x){return x.w!==q.w});
+    shuffle(wrongs);
+    var opts=[{text:q.short,correct:true}];
+    // Ensure wrong answers are from different meanings
+    var used={};used[q.short]=true;
+    for(var i=0;i<wrongs.length&&opts.length<4;i++){
+      if(!used[wrongs[i].short]){opts.push({text:wrongs[i].short,correct:false});used[wrongs[i].short]=true}
+    }
+    shuffle(opts);
+    renderChoices(opts);
+  } else {
+    document.getElementById('qLabel').textContent='WHICH BELTER WORD MEANS...';
+    document.getElementById('qWord').textContent=q.short;
+    document.getElementById('qPronun').textContent='';
+    document.getElementById('qCat').textContent=q.cat;
+    var wrongs=QDB.filter(function(x){return x.w!==q.w});
+    shuffle(wrongs);
+    var opts=[{text:q.w,correct:true}];
+    var used={};used[q.w]=true;
+    for(var i=0;i<wrongs.length&&opts.length<4;i++){
+      if(!used[wrongs[i].w]){opts.push({text:wrongs[i].w,correct:false});used[wrongs[i].w]=true}
+    }
+    shuffle(opts);
+    renderChoices(opts);
+  }
+}
+
+function renderChoices(opts){
+  var el=document.getElementById('choices');
+  var keys=['1','2','3','4'];
+  el.innerHTML='';
+  opts.forEach(function(o,i){
+    var btn=document.createElement('div');
+    btn.className='choice-btn';
+    btn.innerHTML=o.text+'<span class="choice-key">'+keys[i]+'</span>';
+    btn.onclick=function(){answer(btn,o.correct,opts)};
+    btn.dataset.correct=o.correct?'1':'0';
+    el.appendChild(btn);
+  });
+}
+
+function answer(btn,isCorrect,opts){
+  if(answered) return;
+  answered=true;
+  var q=quiz[qIdx];
+  var allBtns=document.querySelectorAll('.choice-btn');
+  allBtns.forEach(function(b){
+    b.classList.add('locked');
+    if(b.dataset.correct==='1') b.classList.add('correct');
+  });
+  if(isCorrect){
+    score++;streak++;
+    if(streak>bestStreak) bestStreak=streak;
+    btn.classList.add('correct');
+    document.getElementById('fbResult').className='fb-result right';
+    document.getElementById('fbResult').textContent='✅ Gut! Correct!';
+  } else {
+    streak=0;
+    btn.classList.add('wrong');
+    document.getElementById('fbResult').className='fb-result nope';
+    document.getElementById('fbResult').textContent='❌ Na gut, kopeng.';
+  }
+  document.getElementById('hudScore').textContent=score;
+  document.getElementById('hudStreak').textContent=streak;
+
+  var explain=mode==='belta'?'"'+q.w+'" means: '+q.short:'"'+q.short+'" in Belta is: '+q.w;
+  document.getElementById('fbExplain').textContent=explain;
+  document.getElementById('fbOrigin').textContent='Category: '+q.cat;
+  document.getElementById('feedback').classList.add('show');
+  document.getElementById('nextBtn').textContent=qIdx<24?'Next Question →':'See Results →';
+
+  history.push({q:q,correct:isCorrect,yourAnswer:btn.textContent.replace(/[1-4]$/,'')});
+}
+
+function nextQuestion(){
+  if(qIdx>=24){showResults();return}
+  qIdx++;
+  showQuestion();
+}
+
+function showResults(){
+  document.getElementById('game').style.display='none';
+  var el=document.getElementById('results');
+  el.style.display='block';
+  var pct=Math.round(score/25*100);
+  var cls=pct===100?'perfect':pct>=80?'good':pct>=50?'ok':'low';
+  var rank=pct===100?'BELTALOWDA MASTER':pct>=90?'TRUE BELTER':pct>=80?'KOPENG FO DA BELT':pct>=60?'LEARNING FAST':pct>=40?'INYALOWDA TOURIST':'FRESH OFF DA SHUTTLE';
+  var rankColor=pct===100?'var(--correct)':pct>=80?'var(--gold)':pct>=50?'var(--accent2)':'var(--wrong)';
+  var msg=pct===100?'Kowl gut! You know Lang Belta like a native Ceresian. Fist to the heart, beratna.':pct>=80?'Im gut, kopeng! You\'d survive in the Belt. Just a few more words to master.':pct>=50?'Not bad for an Inyalowda! You\'re picking up the language. Keep studying.':'The Belt is harsh, and so is its language. Head back to the dictionary and try again!';
+
+  var html='<div class="results">';
+  html+='<div class="big-score '+cls+'">'+score+'/25</div>';
+  html+='<div class="score-label">'+pct+'% Correct · Best Streak: '+bestStreak+'</div>';
+  html+='<div class="rank-badge" style="background:rgba(255,255,255,0.05);border:1px solid '+rankColor+';color:'+rankColor+'">'+rank+'</div>';
+  html+='<div class="score-msg">'+msg+'</div>';
+  html+='<div class="result-btns"><button class="result-btn primary" onclick="startQuiz()">🔄 Try Again</button><button class="result-btn secondary" onclick="backToSetup()">🏠 Menu</button><button class="result-btn secondary" onclick="toggleReview()">📋 Review Answers</button></div>';
+  html+='<div class="review-list" id="reviewList" style="display:none">';
+  history.forEach(function(h,i){
+    html+='<div class="review-item '+(h.correct?'was-correct':'was-wrong')+'">';
+    html+='<div class="review-word">'+(i+1)+'. '+h.q.w+'</div>';
+    html+='<div class="review-answer">✅ '+h.q.short+'</div>';
+    if(!h.correct) html+='<div class="review-yours">❌ Your answer: '+h.yourAnswer+'</div>';
+    html+='</div>';
+  });
+  html+='</div></div>';
+  el.innerHTML=html;
+}
+
+function toggleReview(){
+  var r=document.getElementById('reviewList');
+  r.style.display=r.style.display==='none'?'block':'none';
+}
+
+function backToSetup(){
+  document.getElementById('setup').style.display='block';
+  document.getElementById('game').style.display='none';
+  document.getElementById('results').style.display='none';
+}
+
+function confirmQuit(){
+  if(confirm('Quit the quiz? Your progress will be lost.')){backToSetup()}
+}
+
+// Keyboard support
+document.addEventListener('keydown',function(e){
+  if(document.getElementById('game').style.display==='none') return;
+  if(!answered){
+    var idx={'1':0,'2':1,'3':2,'4':3}[e.key];
+    if(idx!==undefined){
+      var btns=document.querySelectorAll('.choice-btn');
+      if(btns[idx]) btns[idx].click();
+    }
+  } else if(e.key==='Enter'||e.key===' '){
+    e.preventDefault();
+    nextQuestion();
+  }
+});
+</script>
+</body>
+</html>
