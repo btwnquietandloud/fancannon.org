@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>Character Deep Dives — The Expanse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#060810;--card:#0c1020;--card2:#131b30;--accent:#3a8fd4;--accent2:#e07848;--accent3:#40c890;--accent4:#c860a0;--text:#d8dce8;--muted:#7888a8;--dim:#4a5878;--border:#1e3050;--gold:#f0c060}
+*{box-sizing:border-box;margin:0;padding:0}body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 20%,rgba(58,143,212,0.04) 0%,transparent 70%);pointer-events:none}
+.fc-brand-bar{position:sticky;top:0;z-index:100;background:rgba(6,8,16,0.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.06);padding:8px 16px;display:flex;align-items:center;gap:10px}
+.fc-brand-bar a{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit}.fc-brand-bar img{width:32px;height:32px;border-radius:50%}
+.fc-brand-bar span{font-family:sans-serif;font-size:14px;font-weight:600;color:#c9a44a;letter-spacing:0.5px}
+.fc-brand-bar .fc-sep{color:rgba(255,255,255,0.15);font-size:18px}.fc-brand-bar .fc-page-name{font-size:13px;font-weight:500;color:rgba(255,255,255,0.4)}
+.container{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:24px 16px 80px}
+.back-link{display:inline-block;color:var(--accent);text-decoration:none;font-size:13px;font-weight:600;padding:6px 14px;border:1px solid var(--border);border-radius:99px;transition:all .2s;margin-bottom:16px}.back-link:hover{border-color:var(--accent)}
+.hero{text-align:center;padding:16px 0 20px}
+.hero h1{font-family:'Orbitron',sans-serif;font-size:clamp(20px,4vw,32px);font-weight:800;background:linear-gradient(135deg,#3a8fd4,#e07848);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:2px}
+.hero p{color:var(--muted);font-size:14px;margin-top:8px;line-height:1.6}
+.char-nav{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:24px;padding:8px 0}
+.char-tab{background:var(--card);border:1.5px solid var(--border);border-radius:12px;padding:10px 12px;cursor:pointer;text-align:center;transition:all .25s;min-width:80px}
+.char-tab:hover{border-color:var(--accent);transform:translateY(-2px)}
+.char-tab.active{border-color:var(--accent);background:rgba(58,143,212,0.1);box-shadow:0 0 12px rgba(58,143,212,0.15)}
+.char-tab .ct-emoji{font-size:20px;display:block;margin-bottom:2px}
+.char-tab .ct-name{font-size:10px;font-weight:800;letter-spacing:0.3px;display:block;line-height:1.3}
+.section{display:none}.section.active{display:block}
+.s-title{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:700;letter-spacing:1px;color:var(--dim);text-transform:uppercase;margin:28px 0 12px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:24px;margin-bottom:16px}
+.card h2{font-family:'Orbitron',sans-serif;font-size:20px;font-weight:700;letter-spacing:1px;margin-bottom:6px}
+.card h3{font-family:'Orbitron',sans-serif;font-size:15px;font-weight:700;letter-spacing:0.5px;margin:18px 0 8px}
+.card p{font-size:14px;color:var(--muted);line-height:1.75;margin-bottom:10px}.card p:last-child{margin-bottom:0}
+.hl{color:var(--accent);font-weight:700}.hl2{color:var(--accent2);font-weight:700}.hl3{color:var(--accent3);font-weight:700}.hl4{color:var(--accent4);font-weight:700}.hlg{color:var(--gold);font-weight:700}
+.bio-header{display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap}
+.bio-emoji{font-size:48px;flex-shrink:0}
+.bio-portrait{width:120px;height:120px;border-radius:16px;object-fit:cover;border:2px solid var(--border);flex-shrink:0;box-shadow:0 4px 20px rgba(0,0,0,0.4)}
+.char-tab-img{width:36px;height:36px;border-radius:8px;object-fit:cover;display:block;margin:0 auto 2px}
+.bio-info{flex:1;min-width:200px}
+.bio-name{font-family:'Orbitron',sans-serif;font-size:clamp(18px,3vw,26px);font-weight:800;letter-spacing:1px}
+.bio-subtitle{font-size:13px;color:var(--dim);margin-top:2px}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;margin:14px 0}
+.stat-box{background:var(--card2);border-radius:10px;padding:10px 14px}
+.stat-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--dim)}
+.stat-val{font-size:13px;font-weight:700;margin-top:2px}
+.rel-map{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.rel-node{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-size:12px;transition:border-color .2s}
+.rel-node:hover{border-color:var(--accent)}
+.rel-node .rn-name{font-weight:800;color:var(--accent)}
+.rel-node .rn-type{font-size:10px;color:var(--dim);margin-top:2px}
+.quote-carousel{background:var(--card2);border-left:3px solid var(--accent2);border-radius:0 14px 14px 0;padding:18px 22px;margin:12px 0;min-height:80px;position:relative}
+.quote-carousel .q-text{font-style:italic;font-size:15px;color:var(--muted);line-height:1.7}
+.quote-carousel .q-ctx{font-style:normal;font-size:11px;color:var(--dim);margin-top:8px}
+.quote-carousel .q-nav{display:flex;gap:8px;margin-top:10px}
+.quote-carousel .q-nav button{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:4px 12px;color:var(--text);font-size:12px;cursor:pointer;font-family:'Nunito',sans-serif}
+.quote-carousel .q-nav button:hover{border-color:var(--accent)}
+.trait-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;margin:12px 0}
+.trait-card{background:var(--card2);border-radius:10px;padding:12px 16px;text-align:center}
+.trait-card .tc-emoji{font-size:22px}
+.trait-card .tc-name{font-size:12px;font-weight:800;margin-top:2px}
+.trait-card .tc-desc{font-size:11px;color:var(--dim);margin-top:4px;line-height:1.4}
+.pen-badge{display:inline-block;font-size:10px;font-weight:700;padding:3px 10px;border-radius:6px;letter-spacing:0.05em}
+.pen-badge.ty{background:rgba(58,143,212,0.12);color:var(--accent)}
+.pen-badge.dan{background:rgba(224,120,72,0.12);color:var(--accent2)}
+.pen-badge.both{background:rgba(64,200,144,0.12);color:var(--accent3)}
+@media(max-width:600px){.bio-header{flex-direction:column}.stat-grid{grid-template-columns:1fr 1fr}.char-tab{min-width:70px;padding:8px 10px}}
+</style>
+</head>
+<body>
+<div class="fc-brand-bar"><a href="index.html"><img src="fancannonlogo.png" alt="Fan Cannon"><span>Fan Cannon</span></a><span class="fc-sep">|</span><span class="fc-page-name">Character Deep Dives</span></div>
+<div class="container">
+<a href="expanse-universe.html" class="back-link">← Back to The Expanse Universe</a>
+<div class="hero"><h1>CHARACTER DEEP DIVES</h1><p>Comprehensive profiles of the main characters — book lore, show portrayals, actor bios, relationships, quotes, and author insights.</p></div>
+<div class="char-nav" id="charNav"></div>
+<div id="charContent"></div>
+</div>
+<script>
+var CHARS=[
+{id:"holden",name:"James Holden",emoji:"⭐",img:"holden.png",color:"var(--accent)",actor:"Steven Strait",actorBio:"Steven Strait (b. 1986, New York) is an American actor and model. Before The Expanse, he starred in 10,000 BC and Sky High. He was cast as Holden after a grueling audition process where producers noted his ability to project both moral certainty and vulnerability. Strait became deeply invested in the role, reading all the novels and working closely with the authors.",
+pen:"ty",penNote:"Ty Franck writes the first drafts of Holden's chapters. Holden was originally the player character in Ty's tabletop RPG — he was designed to be 'the good guy who keeps making things worse by doing the right thing.' Abraham has said Holden is essentially Ty's idealism filtered through narrative consequences.",
+stats:{origin:"Earth (Montana)",role:"Captain, Rocinante",faction:"Independent / OPA-aligned",books:"POV in all 9 novels",status:"Sacrificed himself to destroy the ring network",seasons:"Seasons 1–6"},
+bio:"James Holden is the moral center of The Expanse — and its most divisive character. A former UN Navy officer turned ice hauler turned reluctant hero, Holden's defining trait is his compulsive need to broadcast the truth, regardless of consequences. He's the only POV character who appears in all nine novels, making him the spine of the entire series. In the books, Holden is described as unremarkable-looking but magnetically earnest. His Montana farm upbringing — raised by eight parents in a communal family — gave him an unshakeable belief that information should be free and that people, when given the truth, will do the right thing. This idealism is both his greatest strength and his most dangerous flaw. His relationship with Naomi Nagata is the emotional anchor of the series, evolving from tentative workplace romance to a partnership that endures war, betrayal, and the end of civilization.",
+traits:[{e:"⚖️",n:"Moral Compass",d:"Compulsively does what he believes is right, even when it's catastrophically stupid"},{e:"📡",n:"Broadcaster",d:"His instinct is always to share information — transparency as ideology"},{e:"❤️",n:"Loyal Partner",d:"His love for Naomi is unconditional and tested by fire"},{e:"🎯",n:"Reluctant Leader",d:"Never wanted command but keeps getting it because people trust him"},{e:"😤",n:"Stubborn Idealist",d:"Refuses to compromise on principles even when pragmatism demands it"},{e:"🔄",n:"Growth Arc",d:"Evolves from naive truth-teller to someone who understands sacrifice"}],
+rels:[{name:"Naomi Nagata",type:"Love / Partner"},{name:"Amos Burton",type:"Moral compass for"},{name:"Alex Kamal",type:"Close friend / Pilot"},{name:"Miller",type:"Reluctant ally → spiritual guide"},{name:"Avasarala",type:"Mutual respect / political tension"},{name:"Fred Johnson",type:"Patron / ally"},{name:"Teresa Duarte",type:"Mentor / surrogate father"},{name:"Proto-Miller",type:"Guided by across books"}],
+quotes:[
+{q:"I didn't want any of this. I just wanted to do the right thing.",c:"Leviathan Wakes"},
+{q:"We have to tell everyone. That's the only way this works — with the truth.",c:"Season 1"},
+{q:"I'm not a hero. I'm just a guy who keeps getting put in rooms where there's only one right thing to do.",c:"Caliban's War"},
+{q:"The stars are better off without us.",c:"Leviathan Falls"},
+{q:"You can't take the moral high ground and then just live there. Eventually you have to come down and deal with people.",c:"Nemesis Games"},
+{q:"Every time I think I'm done, the universe says 'nope, one more thing.'",c:"Cibola Burn"},
+{q:"If I have to choose between the universe and my crew, I choose my crew.",c:"Babylon's Ashes"},
+{q:"This is bigger than any of us. It was always bigger than any of us.",c:"Leviathan Falls"},
+{q:"I broadcast the data because everyone deserves to know.",c:"Leviathan Wakes"},
+{q:"Naomi. I'm coming home.",c:"Nemesis Games"}
+],
+impact:"Holden is the series' narrative through-line — the everyman who witnesses and participates in humanity's greatest crisis. His arc from naive XO to the man who sacrifices himself to save humanity is the macro-story of The Expanse. The authors designed him as deliberately ordinary: not the smartest, strongest, or most skilled, but the person who refuses to stop trying. His greatest impact on the plot is his compulsion to share information — broadcasting the Canterbury distress call triggers the Earth-Mars war in Book 1, and his decisions continue to reshape the political landscape throughout the series."
+},
+
+{id:"naomi",name:"Naomi Nagata",emoji:"🔧",img:"naomi.png",color:"var(--accent3)",actor:"Dominique Tipper",actorBio:"Dominique Tipper (b. 1987, London) is a British actress, singer, and dancer. Before The Expanse, she appeared in Vampire Academy. Tipper brought enormous depth to Naomi, particularly in Season 5 where her solo storyline aboard Marco's ship became the emotional centerpiece. She pushed to develop Naomi's code-switching between Belter Creole and English, working with dialect coach Eric Armstrong to create authentic linguistic layers.",
+pen:"dan",penNote:"Daniel Abraham writes the first drafts of Naomi's chapters. Abraham has described Naomi as 'the most competent person in any room she walks into, but carrying this wound from her past that she can never fully heal.' He wanted her to represent the Belter experience — brilliant, resilient, and constantly underestimated.",
+stats:{origin:"The Belt (Ceres)",role:"XO / Engineer, Rocinante",faction:"Belter / OPA",books:"POV in Books 5, 6, 8, 9",status:"Survived — carries on Holden's legacy",seasons:"Seasons 1–6"},
+bio:"Naomi Nagata is the soul of the Rocinante crew — the brilliant Belter engineer whose past with Marco Inaros and their son Filip haunts the entire series. She's the most technically skilled member of the crew, capable of performing miracles with ship systems, but her defining journey is personal: learning to confront the trauma of leaving her child to escape an abusive partner. In the books, Naomi is tall and thin (Belter physiology), impossibly competent, and the only person who can match both Holden's idealism and Amos's pragmatism. Her arc peaks in Nemesis Games, where she's trapped aboard Marco's ship and must survive through pure ingenuity — one of the most gripping sequences in the entire series. On the show, Dominique Tipper made Naomi's code-switching between Belter patois and standard English a defining character trait, adding layers the books only implied.",
+traits:[{e:"🧠",n:"Engineering Genius",d:"Can rebuild a ship with spare parts and willpower"},{e:"💔",n:"Trauma Survivor",d:"Escaped an abusive relationship but had to leave her son behind"},{e:"🌉",n:"Cultural Bridge",d:"Moves between Belter and Inner worlds, belonging fully to neither"},{e:"💪",n:"Resilient",d:"Survives impossible situations through sheer competence and will"},{e:"🤝",n:"Quiet Leader",d:"Leads by example and competence rather than speeches"},{e:"👩‍👦",n:"Mother's Guilt",d:"Her relationship with Filip drives the most emotional arc in the series"}],
+rels:[{name:"James Holden",type:"Love / Partner"},{name:"Amos Burton",type:"Deep bond / Moral compass"},{name:"Marco Inaros",type:"Toxic ex / abuser"},{name:"Filip Inaros",type:"Son (estranged)"},{name:"Drummer",type:"Belter ally / close friend"},{name:"Alex Kamal",type:"Crew family"}],
+quotes:[
+{q:"I'm not going to let you turn my son into a weapon.",c:"Nemesis Games"},
+{q:"You don't get to decide who I am.",c:"Season 5"},
+{q:"I left my son to save myself. I'll never forgive myself for that.",c:"Nemesis Games"},
+{q:"I can fix anything on this ship. It's the people that are harder.",c:"Caliban's War"},
+{q:"Being Belter doesn't mean being weak. It means being resourceful.",c:"Season 2"},
+{q:"I chose Holden. I choose the Roci. That's my family now.",c:"Babylon's Ashes"},
+{q:"Marco doesn't own me. He never did. He just made me think he did.",c:"Season 5"},
+{q:"The Belt doesn't need a savior. It needs systems that work.",c:"Babylon's Ashes"},
+{q:"If I die, I die as myself. Not as someone Marco made.",c:"Nemesis Games"},
+{q:"We carry the dead with us. That's how we honor them.",c:"Leviathan Falls"}
+],
+impact:"Naomi represents the Belter experience more fully than any other character — the brilliance born of necessity, the trauma of systemic oppression, and the impossible choices forced by living between worlds. Her arc with Marco and Filip is arguably the most emotionally devastating storyline in the series. The authors have said she was designed to show that surviving abuse is not a single moment of escape but a lifelong process of reclaiming yourself."
+},
+
+{id:"amos",name:"Amos Burton",emoji:"🔨",img:"amos_burton.png",color:"var(--accent2)",actor:"Wes Chatham",actorBio:"Wes Chatham (b. 1978, Georgia) is an American actor and martial artist who served in the U.S. Navy. He brought an unsettling physicality to Amos — simultaneously warm and terrifying. Chatham became so identified with the role that he co-wrote the Expanse comic 'A Little Death' expanding Amos's story. He's described Amos as 'the most honest person in the show — he doesn't pretend to be something he's not.'",
+pen:"ty",penNote:"Ty Franck writes the first drafts of Amos's chapters. Franck has said Amos is the character he relates to most — 'not because I'm a sociopath, but because Amos is the most honest character in the books. He knows exactly what he is.' The Churn novella (Amos's origin) is one of Franck's most personal pieces of writing.",
+stats:{origin:"Earth (Baltimore)",role:"Mechanic, Rocinante",faction:"Roci crew",books:"POV in Books 5, 7, 8, 9",status:"Survived — transformed by alien repair drones, no longer fully human",seasons:"Seasons 1–6"},
+bio:"Amos Burton — born Timmy Burris — is the most dangerous person on the Rocinante and possibly the most fascinating character in The Expanse. A survivor of Baltimore's criminal underworld, raised by crime boss Lydia, Amos is functionally a sociopath who has built a system for acting morally: he attaches himself to people he trusts to be good (first Naomi, then Holden) and follows their moral lead. He's not evil — he simply lacks the internal compass that most people have, and he's brutally honest about it. His famous line 'I am that guy' is both a threat and a confession. In the later books, Amos is killed and resurrected by Laconian repair drones, becoming something not quite human — a transformation that, paradoxically, makes him the last surviving member of the Roci crew in the distant future epilogue.",
+traits:[{e:"🔪",n:"Capacity for Violence",d:"The most dangerous person in any room, and completely at peace with it"},{e:"🧭",n:"Outsourced Morality",d:"Follows others' moral compass because he knows his own doesn't work"},{e:"🤗",n:"Surprising Warmth",d:"Genuinely cares about children, the vulnerable, and his crew family"},{e:"💎",n:"Radical Honesty",d:"Never lies about what he is — the most honest character in the series"},{e:"🛡️",n:"Protector",d:"Will kill anyone who threatens his people, without hesitation or guilt"},{e:"🔄",n:"Transformation",d:"From street kid to mechanic to something posthuman"}],
+rels:[{name:"Naomi Nagata",type:"Moral compass / sibling bond"},{name:"James Holden",type:"'The guy who decides'"},{name:"Clarissa Mao",type:"Kindred spirit / 'Peaches'"},{name:"Lydia",type:"Surrogate mother (Baltimore)"},{name:"Alex Kamal",type:"Crew family"},{name:"Bobbie Draper",type:"Mutual respect / combat equals"}],
+quotes:[
+{q:"I am that guy.",c:"Multiple books/episodes"},
+{q:"I'm not a good person. I just follow the lead of people who are.",c:"Season 3"},
+{q:"I don't have a conscience. I outsource it to Holden.",c:"Cibola Burn"},
+{q:"Anyone who could kill me in a fair fight, I wouldn't fight fair.",c:"Nemesis Games"},
+{q:"People like us, we don't get to be good. We just get to try.",c:"Season 4"},
+{q:"She was my family. That's the only thing that matters.",c:"On Clarissa's death"},
+{q:"I've killed a lot of people. Some of them even deserved it.",c:"The Churn"},
+{q:"Holden's the one who decides if something is right. I'm the guy who makes sure it happens.",c:"Babylon's Ashes"},
+{q:"You want to know who I am? I'm the mechanic. I fix things. Sometimes that means breaking things first.",c:"Season 2"},
+{q:"Everyone leaves eventually. Might as well be useful while you're here.",c:"Tiamat's Wrath"}
+],
+impact:"Amos is the character who most challenges readers' assumptions about morality. The authors created him to explore whether someone who lacks empathy can still choose to be good — and the answer is a complicated, fascinating yes. His survival as something posthuman in the epilogue suggests that the thing that made Amos special — his brutal honesty and fierce loyalty — transcends even biology."
+},
+
+{id:"alex",name:"Alex Kamal",emoji:"🚀",img:"alex.png",color:"var(--gold)",actor:"Cas Anvar (S1-5)",actorBio:"Cas Anvar (b. 1965, Saskatchewan, Canada) is a Canadian actor of Iranian descent who portrayed Alex through Seasons 1-5. He brought warmth and humor to Alex, particularly his Texan-Martian drawl. Anvar was removed from the show after Season 5 following misconduct allegations, and Alex was written out of the TV series. In the books, Alex survives through the entire series and remains a core Roci crew member.",
+pen:"dan",penNote:"Daniel Abraham writes the first drafts of Alex's chapters. Abraham has said Alex was designed to be 'the heart of the ship — the guy who makes everyone feel like they're home.' Alex represents the Martian perspective: someone who grew up dreaming of a terraformed Mars, then watched that dream die when the ring gates opened.",
+stats:{origin:"Mars (Mariner Valley)",role:"Pilot, Rocinante",faction:"MCRN (former) / Roci crew",books:"POV in Books 5, 6, 8",status:"Books: Survived. Show: Died (stroke) in Season 5",seasons:"Seasons 1–5"},
+bio:"Alex Kamal is the Rocinante's pilot and its emotional anchor — the crew member who turns a stolen warship into a home. A former MCRN pilot with a failed marriage, Alex found his true family on the Roci. His Mariner Valley accent (a Martian Texan drawl) and love of cooking make him the most approachable member of the crew. In the books, Alex's arc is about coming to terms with the death of Mars's dream — watching his home planet's terraforming project become irrelevant when 1,300 habitable worlds opened through the ring gates. His friendship with Bobbie Draper, built on their shared Martian identity, is one of the series' most genuine relationships. The TV show diverged from the books by killing Alex in Season 5.",
+traits:[{e:"✈️",n:"Ace Pilot",d:"One of the best pilots in the system — flies the Roci like an extension of himself"},{e:"🏠",n:"Homemaker",d:"Turns a stolen warship into a home through food, warmth, and dad energy"},{e:"🔴",n:"Martian Identity",d:"Deeply proud of Mars, even as he watches its dream die"},{e:"💔",n:"Failed Family Man",d:"Left his wife and son to chase the void — his deepest regret"},{e:"😊",n:"Everyman",d:"The most relatable crew member — no superpowers, just skill and heart"},{e:"🤝",n:"Bridge Builder",d:"The one who smooths over crew conflicts with humor and food"}],
+rels:[{name:"Bobbie Draper",type:"Deep bond / fellow Martian"},{name:"James Holden",type:"Captain / friend"},{name:"Naomi Nagata",type:"Crew family"},{name:"Amos Burton",type:"Crew family"},{name:"Talissa (ex-wife)",type:"Failed marriage / regret"}],
+quotes:[
+{q:"This is the Rocinante. We are ready to get the hell out of here.",c:"Multiple episodes"},
+{q:"Mars was supposed to be the future. Turns out the future was somewhere else.",c:"Babylon's Ashes"},
+{q:"I left my family because I needed the sky. I'll never stop feeling guilty about that.",c:"Nemesis Games"},
+{q:"The Roci is home. The crew is family. That's not second-best — that's the real thing.",c:"Persepolis Rising"},
+{q:"I'm a Martian. We dream big. That's kind of our whole thing.",c:"Season 2"},
+{q:"Flying this ship is the only thing I've ever been truly great at.",c:"Caliban's War"},
+{q:"Sometimes the best thing a pilot can do is nothing. Just hold the line.",c:"Season 3"},
+{q:"I made lasagna. Nobody's fighting while there's lasagna.",c:"Season 4"},
+{q:"You know what Mars taught me? Patience. Everything worth having takes generations.",c:"Babylon's Ashes"},
+{q:"If we die out here, at least we die flying.",c:"Leviathan Wakes"}
+],
+impact:"Alex represents the ordinary person caught up in extraordinary events. He's not a genius like Naomi or a force of nature like Amos — he's a good pilot with a kind heart who makes the right choices. His arc about Mars's dying dream mirrors one of the series' biggest themes: what happens when the future you built your identity around no longer exists?"
+},
+
+{id:"bobbie",name:"Bobbie Draper",emoji:"💪",img:"bobbie.png",color:"#e05050",actor:"Frankie Adams",actorBio:"Frankie Adams (b. 1994, Samoa, raised in New Zealand) is a Samoan-New Zealand actress who joined the cast in Season 2. At 5'11\" with an athletic build, Adams brought the physical presence Bobbie demands. She trained extensively in fight choreography and weapons handling. Adams has said playing Bobbie was transformative: 'She taught me what real strength looks like — it's not just physical, it's standing by your principles when everyone tells you not to.'",
+pen:"ty",penNote:"Ty Franck writes the first drafts of Bobbie's chapters. Franck has said Bobbie was inspired by the Marines he knew — 'that specific combination of extreme competence, absolute loyalty to your unit, and a worldview shaped by military service that doesn't always translate to civilian life.' She was designed to show what happens when a warrior's cause disappears.",
+stats:{origin:"Mars",role:"Martian Marine Gunnery Sergeant → Resistance leader",faction:"MCRN → Avasarala's operative → Underground",books:"POV in Books 2, 5, 7, 8",status:"Died heroically destroying the Heart of the Tempest",seasons:"Seasons 2–6"},
+bio:"Roberta 'Bobbie' Draper is a force of nature — a Martian Marine who could kill you with her bare hands and then eloquently explain why your political position is wrong. She enters the series in Caliban's War as a traumatized survivor of the Ganymede Incident, where she witnessed a protomolecule hybrid tear through her squad. Her journey takes her from loyal Martian soldier to disillusioned operative to underground resistance leader. Bobbie's most significant book moment is her death in Tiamat's Wrath — she sacrifices herself to destroy the Heart of the Tempest, Laconia's most powerful warship, in one of the most heroic scenes in the series. On the show, Bobbie's partnership with Avasarala became a fan-favorite dynamic — the warrior and the politician learning from each other.",
+traits:[{e:"🎖️",n:"Warrior",d:"Elite Marine — one of the deadliest fighters in the solar system"},{e:"🔴",n:"Martian Patriot",d:"Raised to believe in Mars, then forced to watch her world crumble"},{e:"🦅",n:"Independent Thinker",d:"Questions authority when it conflicts with what's right"},{e:"🛡️",n:"Protector",d:"Uses her combat skills to protect the people she loves"},{e:"💀",n:"Heroic Sacrifice",d:"Dies destroying Laconia's ultimate weapon"},{e:"🤝",n:"Unlikely Alliances",d:"Forms deep bonds with Avasarala, Alex, and the Roci crew despite factional divides"}],
+rels:[{name:"Avasarala",type:"Mentor / unlikely ally"},{name:"Alex Kamal",type:"Fellow Martian / deep bond"},{name:"Holden",type:"Respect / crew ally"},{name:"Amos Burton",type:"Combat equals / mutual respect"},{name:"Duarte",type:"Enemy — she dies fighting his empire"},{name:"David Draper",type:"Nephew (Gods of Risk)"}],
+quotes:[
+{q:"I'm a Martian Marine. I don't run from anything.",c:"Caliban's War"},
+{q:"Mars is dying. The dream is over. But I'm still here, and I still fight.",c:"Babylon's Ashes"},
+{q:"You don't get to be a soldier and pretend the killing doesn't matter.",c:"Season 3"},
+{q:"I've been shot, stabbed, and spaced. A politician isn't going to scare me.",c:"Season 4"},
+{q:"Sometimes the only way to win is to make sure you take the other guy with you.",c:"Tiamat's Wrath"},
+{q:"Avasarala taught me that power isn't just a gun. But a gun doesn't hurt either.",c:"Season 3"},
+{q:"I'm not a spy. I'm a Marine. I solve problems the old-fashioned way.",c:"Caliban's War"},
+{q:"Mars made me. Mars betrayed me. But I'm still Martian.",c:"Persepolis Rising"},
+{q:"If I'm going to die, I'm going to die doing something that matters.",c:"Tiamat's Wrath"},
+{q:"They think we're beaten. They don't know what beaten looks like to a Martian.",c:"Persepolis Rising"}
+],
+impact:"Bobbie is the series' answer to the question 'what happens to a soldier when the war is won and the cause is lost?' Her arc from Mars's greatest warrior to the woman who sacrifices everything to fight tyranny is one of the most complete character journeys in science fiction. The authors have said her death was planned from the beginning of the Laconia arc — she was always meant to be the one who proved that individual courage can still matter against an empire."
+},
+
+{id:"avasarala",name:"Chrisjen Avasarala",emoji:"🏛️",img:"avasarala.png",color:"var(--accent4)",actor:"Shohreh Aghdashloo",actorBio:"Shohreh Aghdashloo (b. 1952, Tehran, Iran) is an Oscar-nominated Iranian-American actress with a career spanning four decades. Her distinctive voice — described by fans as 'gravel dipped in honey' — made Avasarala instantly iconic. Aghdashloo won the Critics' Choice Award for her portrayal. She has said the role was special because 'Avasarala is a woman over 60 who is the most powerful person in the room, and nobody questions it.'",
+pen:"dan",penNote:"Daniel Abraham writes the first drafts of Avasarala's chapters. She doesn't appear as a POV character until Book 2, and Abraham has said she was a joy to write because 'she says everything I wish I could say to powerful people — but with better profanity.' He modeled her political instincts on real-world diplomats and intelligence operatives.",
+stats:{origin:"Earth (India)",role:"UN Secretary-General → Elder stateswoman",faction:"Earth / United Nations",books:"POV in Books 2, 5, 6, 7",status:"Died of old age before Book 9",seasons:"Seasons 1–6"},
+bio:"Chrisjen Avasarala is the most brilliant political mind in the solar system — a grandmother who can dismantle your argument, reorganize your government, and still be home in time to make dinner. She enters the series already near the top of Earth's political hierarchy and spends the next several books navigating crises, wars, and existential threats with a combination of ruthless pragmatism, genuine compassion, and spectacular profanity. The show elevated Avasarala by including her from Season 1 (she doesn't appear until Book 2), and Shohreh Aghdashloo's portrayal made her arguably the series' breakout character. Her partnership with Bobbie Draper — the politician and the warrior — became one of the show's defining relationships.",
+traits:[{e:"🧠",n:"Political Genius",d:"The smartest person in the room, and she knows it"},{e:"🤬",n:"Legendary Profanity",d:"Curses with a creativity that borders on poetry"},{e:"❤️",n:"Hidden Compassion",d:"Beneath the ruthlessness is someone who genuinely cares about people"},{e:"👵",n:"Grandmother",d:"Her relationship with Arjun and her grandchildren grounds her humanity"},{e:"♟️",n:"Chess Master",d:"Thinks 10 moves ahead and plays everyone against each other"},{e:"🌍",n:"Earth Loyalist",d:"Everything she does is to protect 30 billion people on Earth"}],
+rels:[{name:"Arjun",type:"Husband / emotional anchor"},{name:"Bobbie Draper",type:"Protégé / unlikely friend"},{name:"Holden",type:"Useful tool / grudging respect"},{name:"Errinwright",type:"Political rival / nemesis"},{name:"Marco Inaros",type:"The threat she underestimated"},{name:"Kiki",type:"Granddaughter"}],
+quotes:[
+{q:"Wherever I goddamn like.",c:"When asked where she'd like to sit — Season 1"},
+{q:"Earth must come first. Always.",c:"Caliban's War"},
+{q:"I have made a career of being underestimated by men in suits.",c:"Season 2"},
+{q:"He's either a useful idiot or a dangerous one. Either way, I need to know which.",c:"On Holden — Season 1"},
+{q:"I'm the only thing standing between Earth and oblivion, and I do it in heels.",c:"Season 3"},
+{q:"Don't be coy. I'm too old and too powerful for coy.",c:"Caliban's War"},
+{q:"The problem with being a politician is everyone assumes you're lying. The trick is to lie about different things than they expect.",c:"Babylon's Ashes"},
+{q:"Arjun made me human. Without him, I'm just the machine.",c:"Persepolis Rising"},
+{q:"I'll mourn later. Right now I have a solar system to save.",c:"Nemesis Games"},
+{q:"Every leader is a monster or a saint. I prefer to be accurate.",c:"Season 4"}
+],
+impact:"Avasarala represents the show's argument that politics matters — that the decisions made in offices and committee rooms shape lives as much as battles do. The authors have said she was designed to show that 'power wielded intelligently is not the enemy — it's the absence of intelligent power that gets people killed.' Her death from old age between books is quietly devastating — the most powerful woman in the system, defeated only by time."
+},
+
+{id:"miller",name:"Joe Miller",emoji:"🕵️",img:"miller.png",color:"#a0a0c0",actor:"Thomas Jane",actorBio:"Thomas Jane (b. 1969, Maryland) is an American actor known for The Punisher and Boogie Nights. His portrayal of Miller's weary noir detective — complete with the iconic hat — became the series' first breakout performance. Jane was so attached to the role that when the show moved to Amazon, he expressed a desire to return. His chemistry with the Miller hat became legendary among fans.",
+pen:"dan",penNote:"Daniel Abraham writes Miller's chapters. Abraham has described Miller as 'a Raymond Chandler detective dropped into a space opera' — someone whose worldview is fundamentally noir: cynical, fatalistic, but with a hidden streak of romanticism that destroys him. Miller was Abraham's entry point into the entire collaboration.",
+stats:{origin:"The Belt (Ceres)",role:"Ceres Station Security detective",faction:"Belter / Star Helix Security",books:"POV in Book 1; appears as Proto-Miller in Books 2-4, 9",status:"Died merging with the protomolecule on Eros; echoes persist",seasons:"Seasons 1–2 (physical); 3-4 (Proto-Miller)"},
+bio:"Josephus Aloisius Miller is a Belter detective who falls in love with a dead woman and it costs him everything — which is the most noir sentence ever written about a science fiction character. Miller starts as a cynical, alcoholic detective on Ceres hired to find Julie Mao. His investigation becomes an obsession, and his obsession becomes a love story with someone he never truly meets. When he finally finds Julie on Eros, she's already merged with the protomolecule. He stays with her, guiding Eros into Venus and dying in the process. But death isn't the end — Miller persists as Proto-Miller, a construct of the protomolecule that guides Holden through alien mysteries across several books. His execution of Dresden — shooting the scientist mid-sentence as he calmly explains why killing 100,000 people was acceptable — is one of the most cathartic moments in the series.",
+traits:[{e:"🎩",n:"The Hat",d:"Never takes off his pork pie hat — it's his armor against the world"},{e:"🔍",n:"Detective",d:"Thinks in patterns, connections, and evidence"},{e:"🥃",n:"Cynical Romantic",d:"Pretends not to care about anything, then dies for love"},{e:"💀",n:"Death Drive",d:"On some level, Miller was always looking for a way to matter"},{e:"❤️",n:"Obsessive Love",d:"Falls for Julie Mao through her case file — a love story with a ghost"},{e:"⚖️",n:"Frontier Justice",d:"When the system fails, Miller acts — for better or worse"}],
+rels:[{name:"Julie Mao",type:"Obsessive love / transcendent bond"},{name:"James Holden",type:"Reluctant partner / opposite"},{name:"Havelock",type:"Work partner"},{name:"Dresden",type:"The man he executed"},{name:"Fred Johnson",type:"Employer on Tycho"},{name:"Dawes",type:"Belter politics / rival"}],
+quotes:[
+{q:"Doors and corners, kid. That's where they get you.",c:"Season 1 / Leviathan Wakes"},
+{q:"You can tell a lot about a person by the cases they work.",c:"Leviathan Wakes"},
+{q:"I didn't find Julie. Julie found me.",c:"Season 1"},
+{q:"We're all just passengers. The question is where the ship is going.",c:"Leviathan Wakes"},
+{q:"I'm a cop. Or I was. Now I'm just a guy with a hat and a bad feeling.",c:"Season 1"},
+{q:"You want a detective? I'll detect. But you might not like what I find.",c:"Season 1"},
+{q:"She was trying to save the world. The least I can do is help her finish.",c:"Season 2"},
+{q:"It reaches out. It reaches out. It reaches out.",c:"Proto-Miller, Abaddon's Gate"},
+{q:"There's no version of this where I walk away. There never was.",c:"Season 2"},
+{q:"The stars. You can see the stars.",c:"Last words, guiding Eros into Venus"}
+],
+impact:"Miller is the series' most literary character — a deliberately constructed noir archetype placed in a hard sci-fi setting to see what happens. His death and resurrection as Proto-Miller introduced the series' most surreal element: a dead detective's consciousness becoming the protomolecule's spokesperson. The authors have said Miller was their test case for whether The Expanse could blend genres — and his chapters proved the concept worked."
+},
+
+{id:"drummer",name:"Camina Drummer",emoji:"🪐",img:"drummer.png",color:"#5b9bd5",actor:"Cara Gee",actorBio:"Cara Gee (b. 1983, Canada) is a Canadian actress of Ojibwe heritage who joined the show in Season 2. Gee brought a ferocious intensity to Drummer that made the character a fan obsession. On the show, Drummer absorbs elements from several book characters (Bull, Michio Pa, Sam Rosenberg), becoming a composite who carries the Belt's story from Season 2 through 6. Gee has said Drummer's Belter accent was inspired by South African and Caribbean speech patterns.",
+pen:"both",penNote:"Drummer is a unique case — she's a minor character in the books (primarily in Abaddon's Gate), but became a major composite character on the show. The show's writers, including Abraham and Franck, built TV-Drummer by merging traits from Bull (toughness), Michio Pa (moral complexity), and Sam (engineering). She's the most dramatically different character between books and show.",
+stats:{origin:"The Belt",role:"OPA leader → Transport Union President",faction:"OPA / Free Navy (forced) / Transport Union",books:"Minor role in Book 3; TV: major composite character",status:"Survived — became president of the Transport Union",seasons:"Seasons 2–6; also the Telltale game protagonist"},
+bio:"Camina Drummer on the show is one of television's great composite characters — a Belter leader assembled from the best traits of several book characters into someone who may be better than any of them individually. She enters as Fred Johnson's right hand on Tycho Station and rises to become the Transport Union's president, leading the Belt through its most turbulent era. Drummer's journey is defined by impossible choices: forced to serve Marco Inaros to protect her polyamorous family crew, then defecting at the cost of those she loves. The show made her the face of Belter pride and resilience. She's also the playable protagonist of the Telltale Expanse game, which explores her early years. Her Belter accent — fierce, musical, and layered with code-switching — became iconic.",
+traits:[{e:"👊",n:"Fierce Leader",d:"Leads through force of will and unshakeable conviction"},{e:"🪐",n:"Belter Soul",d:"The living embodiment of Belt pride, culture, and resilience"},{e:"❤️",n:"Family Devotion",d:"Her polyamorous crew-family is everything to her"},{e:"😡",n:"Righteous Anger",d:"Burns with fury at injustice done to Belters"},{e:"🎭",n:"Composite Character",d:"Carries the stories of Bull, Pa, and Sam from the books"},{e:"🏛️",n:"Political Evolution",d:"Grows from soldier to statesman without losing her edge"}],
+rels:[{name:"Fred Johnson",type:"Mentor / boss"},{name:"Ashford",type:"Rival → reluctant ally → respect"},{name:"Marco Inaros",type:"Enemy / forced servitude"},{name:"Naomi Nagata",type:"Belter ally / deep respect"},{name:"Oksana",type:"Romantic partner (show)"},{name:"Holden",type:"Respectful friction"}],
+quotes:[
+{q:"I am the Belt.",c:"Season 3"},
+{q:"If you think the Belt is broken, you haven't been paying attention.",c:"Season 4"},
+{q:"Marco Inaros doesn't speak for us. He speaks for himself.",c:"Season 5"},
+{q:"I didn't survive the Belt to kneel for anyone.",c:"Season 3"},
+{q:"Belters don't cry. We just keep working.",c:"Season 6"},
+{q:"I'll tear this system apart before I let them take what's ours.",c:"Season 5"},
+{q:"Every Belter who ever died in a dock accident, every kid who grew up without air — we remember.",c:"Season 3"},
+{q:"The inners think we're animals. Let's show them what animals can do.",c:"Season 4"},
+{q:"You don't get to betray your people and call it strategy.",c:"Season 5"},
+{q:"We built this. Not Earth. Not Mars. Us.",c:"Season 6"}
+],
+impact:"TV-Drummer proves that adaptation can improve on source material. By combining several book characters into one, the show created a figure who carries the Belt's entire arc — from oppressed workers to political power — on her shoulders. The authors have praised Cara Gee's performance as 'finding something in the character we didn't even know was there.'"
+},
+
+{id:"authors",name:"James S.A. Corey",emoji:"✍️",img:"corey.png",color:"var(--gold)",actor:null,actorBio:null,
+pen:"both",penNote:null,
+stats:{origin:"Albuquerque, New Mexico",role:"Pen name for Daniel Abraham & Ty Franck",faction:"Science fiction authors",books:"9 novels, 9 novellas, multiple comics",status:"Active — The Captive's War trilogy underway",seasons:"Writers & producers, Seasons 1–6"},
+bio:null,
+traits:null,rels:null,quotes:null,impact:null,
+isAuthors:true
+}
+];
+
+// Render navigation
+var nav=document.getElementById('charNav');
+CHARS.forEach(function(c){
+  var btn=document.createElement('div');
+  btn.className='char-tab'+(c.id==='holden'?' active':'');
+  btn.innerHTML=(c.img?'<img src="'+c.img+'" alt="'+c.name+'" class="char-tab-img">':'<span class="ct-emoji">'+c.emoji+'</span>')+'<span class="ct-name">'+c.name+'</span>';
+  btn.onclick=function(){
+    nav.querySelectorAll('.char-tab').forEach(function(b){b.classList.remove('active')});
+    btn.classList.add('active');
+    renderChar(c.id);
+  };
+  nav.appendChild(btn);
+});
+
+var quoteTimers={};
+
+function renderChar(id){
+  // Clear all quote timers first
+  Object.keys(quoteTimers).forEach(function(k){clearInterval(quoteTimers[k])});
+  quoteTimers={};
+  var c=CHARS.find(function(x){return x.id===id});
+  var el=document.getElementById('charContent');
+  if(c.isAuthors){renderAuthors(el);return}
+
+  var penLabel=c.pen==='ty'?'<span class="pen-badge ty">Primary Writer: Ty Franck</span>':c.pen==='dan'?'<span class="pen-badge dan">Primary Writer: Daniel Abraham</span>':'<span class="pen-badge both">Written by both authors</span>';
+
+  var imgHtml=c.img?'<img src="'+c.img+'" alt="'+c.name+'" class="bio-portrait">':'<div class="bio-emoji" style="font-size:56px">'+c.emoji+'</div>';
+  var html='<div class="card"><div class="bio-header">'+imgHtml+'<div class="bio-info"><div class="bio-name" style="color:'+c.color+'">'+c.name+'</div><div class="bio-subtitle">'+penLabel+'</div></div></div>';
+  html+='<div class="stat-grid">';
+  Object.keys(c.stats).forEach(function(k){
+    html+='<div class="stat-box"><div class="stat-label">'+k+'</div><div class="stat-val">'+c.stats[k]+'</div></div>';
+  });
+  html+='</div></div>';
+
+  // Book character
+  html+='<div class="s-title" style="color:'+c.color+'">📖 CHARACTER STUDY</div><div class="card"><p>'+c.bio+'</p></div>';
+
+  // Actor
+  if(c.actor){
+    html+='<div class="s-title" style="color:'+c.color+'">🎬 ON SCREEN: '+c.actor.toUpperCase()+'</div><div class="card"><p>'+c.actorBio+'</p></div>';
+  }
+
+  // Author insights
+  html+='<div class="s-title" style="color:'+c.color+'">✍️ AUTHOR INSIGHTS</div><div class="card"><p>'+c.penNote+'</p></div>';
+
+  // Traits
+  html+='<div class="s-title" style="color:'+c.color+'">🧬 KEY TRAITS</div><div class="trait-grid">';
+  c.traits.forEach(function(t){
+    html+='<div class="trait-card"><div class="tc-emoji">'+t.e+'</div><div class="tc-name">'+t.n+'</div><div class="tc-desc">'+t.d+'</div></div>';
+  });
+  html+='</div>';
+
+  // Relationships
+  html+='<div class="s-title" style="color:'+c.color+'">🔗 RELATIONSHIPS</div><div class="rel-map">';
+  c.rels.forEach(function(r){
+    html+='<div class="rel-node"><div class="rn-name">'+r.name+'</div><div class="rn-type">'+r.type+'</div></div>';
+  });
+  html+='</div>';
+
+  // Quotes
+  html+='<div class="s-title" style="color:'+c.color+'">💬 KEY QUOTES</div><div class="quote-carousel" id="qc-'+id+'"><div class="q-text" id="qt-'+id+'"></div><div class="q-ctx" id="qx-'+id+'"></div><div class="q-nav"><button onclick="prevQ(\''+id+'\')">← Prev</button><span id="qi-'+id+'" style="font-size:11px;color:var(--dim);padding:4px 8px"></span><button onclick="nextQ(\''+id+'\')">Next →</button></div></div>';
+
+  // Impact
+  html+='<div class="s-title" style="color:'+c.color+'">⚡ IMPACT & LEGACY</div><div class="card"><p>'+c.impact+'</p></div>';
+
+  el.innerHTML=html;
+  // Start quote rotation
+  window['qidx_'+id]=0;
+  showQ(id);
+  quoteTimers[id]=setInterval(function(){nextQ(id)},8000);
+}
+
+function showQ(id){
+  var c=CHARS.find(function(x){return x.id===id});
+  if(!c||!c.quotes) return;
+  var i=window['qidx_'+id]||0;
+  var q=c.quotes[i];
+  var qt=document.getElementById('qt-'+id);
+  var qx=document.getElementById('qx-'+id);
+  var qi=document.getElementById('qi-'+id);
+  if(!qt||!qx||!qi) return;
+  qt.textContent='"'+q.q+'"';
+  qx.textContent='— '+q.c;
+  qi.textContent=(i+1)+'/'+c.quotes.length;
+}
+function nextQ(id){
+  var c=CHARS.find(function(x){return x.id===id});
+  if(!c||!c.quotes) return;
+  window['qidx_'+id]=((window['qidx_'+id]||0)+1)%c.quotes.length;
+  showQ(id);
+}
+function prevQ(id){
+  var c=CHARS.find(function(x){return x.id===id});
+  if(!c||!c.quotes) return;
+  window['qidx_'+id]=((window['qidx_'+id]||0)-1+c.quotes.length)%c.quotes.length;
+  showQ(id);
+}
+
+function renderAuthors(el){
+  var html='';
+  html+='<div class="card"><div class="bio-header"><img src="corey.png" alt="James S.A. Corey" class="bio-portrait"><div class="bio-info"><div class="bio-name" style="color:var(--gold)">JAMES S.A. COREY</div><div class="bio-subtitle">The Two-Headed Author Behind The Expanse</div></div></div>';
+  html+='<p>James S.A. Corey doesn\'t exist — and that\'s the point. The pen name (combining Daniel Abraham\'s and Ty Franck\'s middle names, with Abraham\'s daughter Scarlet\'s initials as the "S.A.") is a collaborative identity that Abraham has described as <span class="hlg">"kind of a 1970s science fiction writer who\'s sort of crusty and cranky — the kind of guy who\'s drunk in the back of the bar at Worldcon."</span></p></div>';
+
+  // The Authors
+  html+='<div class="s-title" style="color:var(--accent2)">📝 DANIEL ABRAHAM</div><div class="card">';
+  html+='<div class="stat-grid"><div class="stat-box"><div class="stat-label">Born</div><div class="stat-val">November 14, 1969</div></div><div class="stat-box"><div class="stat-label">Location</div><div class="stat-val">Albuquerque, NM</div></div><div class="stat-box"><div class="stat-label">Education</div><div class="stat-val">Biology degree</div></div><div class="stat-box"><div class="stat-label">Solo Work</div><div class="stat-val">The Long Price Quartet, The Dagger and the Coin, Kithamar Trilogy</div></div></div>';
+  html+='<p>Daniel Abraham is the prose craftsman of the partnership. An established fantasy novelist before The Expanse, he brings <span class="hl2">literary structure, character depth, and elegant writing</span> to the collaboration. He focuses on the shape of chapters, the rhythm of prose, and the emotional truth of characters. He writes first drafts for <span class="hl2">Miller, Avasarala, Naomi, Alex, Prax, Bull, and Melba/Clarissa</span>.</p>';
+  html+='<p>Abraham\'s solo fantasy work (The Long Price Quartet, The Dagger and the Coin) established him as one of the most thoughtful worldbuilders in the genre. His understanding of economics, politics, and power dynamics directly shapes The Expanse\'s political storylines. He also writes under the pseudonym M.L.N. Hanover.</p>';
+  html+='<p>Abraham adapted several of George R.R. Martin\'s novels into comic form and contributed to the Wild Cards shared universe, deepening the literary connections between Martin\'s world and The Expanse.</p></div>';
+
+  html+='<div class="s-title" style="color:var(--accent)">🚀 TY FRANCK</div><div class="card">';
+  html+='<div class="stat-grid"><div class="stat-box"><div class="stat-label">Role</div><div class="stat-val">Story architect & worldbuilder</div></div><div class="stat-box"><div class="stat-label">Location</div><div class="stat-val">Albuquerque, NM</div></div><div class="stat-box"><div class="stat-label">Background</div><div class="stat-val">GRRM\'s personal assistant; Wild Cards contributor</div></div><div class="stat-box"><div class="stat-label">Social</div><div class="stat-val">Runs @JamesSACorey on Twitter</div></div></div>';
+  html+='<p>Ty Franck is the architect — the world-builder whose <span class="hl">obsessive research and plotting</span> created the universe The Expanse lives in. The entire setting originated as Franck\'s tabletop RPG, first conceived as an MMO pitch, then evolved into a pen-and-paper game so detailed that Abraham looked at his binder of notes and said: <span class="hlg">"People who write books don\'t do this much research."</span></p>';
+  html+='<p>Franck writes first drafts for <span class="hl">Holden, Amos, Bobbie, and Anna</span>. He plots the overarching story arcs and maintains the series bible. He runs the @JamesSACorey social media accounts and is the more public-facing half of the partnership.</p>';
+  html+='<p>Before The Expanse, Franck discovered his path to writing through an unlikely chain: Orson Scott Card read a short story Franck wrote "as a goof," invited him to a writers\' bootcamp, and from there Franck entered the New Mexico sci-fi writing community — where he met both Melinda Snodgrass and, through her, George R.R. Martin.</p></div>';
+
+  // How they work
+  html+='<div class="s-title" style="color:var(--accent3)">⚙️ HOW THEY WRITE TOGETHER</div><div class="card">';
+  html+='<p>Abraham and Franck meet <span class="hl3">weekly to outline chapters</span>. They plot the entire book\'s structure together, then split up to write first drafts of their respective POV characters. After first drafts, they <span class="hl2">edit each other\'s chapters multiple times</span>, so extensively that the final product is seamless — readers generally can\'t tell who wrote what.</p>';
+  html+='<p>The division is clear: <span class="hl">Franck develops the story and world</span> — the plot architecture, the science, the political systems, the technology. <span class="hl2">Abraham focuses on structure and prose</span> — the chapter rhythms, character voices, emotional beats, and literary craft. It\'s a partnership where each person\'s strengths perfectly complement the other\'s.</p>';
+  html+='<p>Their POV split has remained remarkably consistent across nine novels:</p>';
+  html+='<div style="margin:12px 0"><span class="pen-badge ty" style="margin-right:6px">Ty Franck</span> Holden, Amos, Bobbie, Anna</div>';
+  html+='<div style="margin:12px 0"><span class="pen-badge dan" style="margin-right:6px">Daniel Abraham</span> Miller, Avasarala, Naomi, Alex, Prax, Bull, Clarissa/Melba</div>';
+  html+='<p>They\'ve described the process as like being in a band: <span class="hlg">"One person writes the melody, the other writes the harmony, and by the time you\'re done, it\'s one song."</span></p></div>';
+
+  // GRRM Connection
+  html+='<div class="s-title" style="color:var(--accent4)">🐉 THE GEORGE R.R. MARTIN CONNECTION</div><div class="card">';
+  html+='<p>The Expanse\'s DNA is entangled with George R.R. Martin\'s in ways most fans don\'t realize.</p>';
+  html+='<p><span class="hl4">Ty Franck served as Martin\'s personal assistant</span> for years. Melinda Snodgrass — co-creator of Wild Cards and a close Martin collaborator — introduced them, telling Martin: <span class="hlg">"He ran a 150 million-a-year company; he can handle your paperwork."</span> Franck built Martin a new computer, managed his operations, and in return, Martin mentored Franck on the business side of writing — contracts, TV deals, and navigating Hollywood.</p>';
+  html+='<p><span class="hl2">Daniel Abraham</span> adapted Martin\'s novels into comic form and wrote for the Wild Cards shared universe. Abraham also co-wrote <span class="hl">Hunter\'s Run</span> with Martin and Gardner Dozois.</p>';
+  html+='<p>Both Expanse authors contributed to <span class="hl4">Martin\'s Wild Cards anthology series</span>. Franck created characters Baba Yaga, Horrorshow, and Tinkerbill for the Wild Cards universe.</p>';
+  html+='<p>The friendly rivalry is legendary: when Abraham and Franck finished their ninth Expanse novel, they tweeted that they\'d won their <span class="hlg">bet with Martin about who would finish their series first</span> — and that they believed the prize was "all of his treasures." (Martin, of course, still hasn\'t finished The Winds of Winter.)</p>';
+  html+='<p>Both Martin and Corey share a love of tabletop RPGs — Martin ran a Superworld campaign in the 1980s that inspired Wild Cards, while Franck\'s Expanse RPG campaign inspired The Expanse novels. The connection between gaming and epic storytelling runs deep through both.</p></div>';
+
+  // What's next
+  html+='<div class="s-title" style="color:var(--gold)">🔮 WHAT\'S NEXT</div><div class="card">';
+  html+='<p>Abraham and Franck aren\'t done. Under the Corey name, they\'re writing <span class="hlg">The Captive\'s War</span>, a new sci-fi trilogy beginning with <span class="hl">The Mercy of Gods</span> (2024). In late 2024, they co-founded <span class="hl2">Expanding Universe Productions</span> with Breck Eisner and Naren Shankar, securing a development deal with Amazon MGM Studios. Their first project: a TV adaptation of The Captive\'s War.</p>';
+  html+='<p>The Expanse universe itself continues to expand through comics, the RPG, and the upcoming Osiris Reborn video game. And there\'s always the possibility of adapting the final three Expanse novels for screen — something the authors and producers have never ruled out.</p></div>';
+
+  el.innerHTML=html;
+}
+
+// Initial render
+renderChar('holden');
+</script>
+</body>
+</html>
