@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Fan guide to Hadestown — Anaïs Mitchell's Tony-winning musical. Characters, songs, Greek mythology, trivia, and the journey from Vermont to Broadway.">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>Hadestown Universe — The Myth. The Musical.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400;1,600&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#1a0e0a;--card:#231610;--card2:#2d1e16;--accent:#c8a050;--accent2:#a05030;--accent3:#50a880;--accent4:#7868a0;--text:#e8dcd0;--muted:#a09080;--dim:#706050;--border:#3a2a20;--rose:#c06868;--vine:#608850}
+*{box-sizing:border-box;margin:0;padding:0}
+body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 70% 50% at 50% 30%,rgba(200,160,80,0.03) 0%,transparent 70%);pointer-events:none}
+.fc-brand-bar{position:sticky;top:0;z-index:100;background:rgba(26,14,10,0.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(200,160,80,0.1);padding:8px 16px;display:flex;align-items:center;gap:10px}
+.fc-brand-bar a{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit}.fc-brand-bar img{width:32px;height:32px;border-radius:50%}
+.fc-brand-bar span{font-family:sans-serif;font-size:14px;font-weight:600;color:#c9a44a;letter-spacing:0.5px}
+.fc-brand-bar .fc-sep{color:rgba(255,255,255,0.15);font-size:18px}.fc-brand-bar .fc-page-name{font-size:13px;font-weight:500;color:rgba(255,255,255,0.35)}
+.page{max-width:900px;margin:0 auto;padding:24px 16px 80px}
+nav.tabs{display:flex;gap:4px;flex-wrap:wrap;justify-content:center;margin-bottom:24px;position:sticky;top:49px;z-index:50;background:rgba(26,14,10,0.9);backdrop-filter:blur(10px);padding:10px 0;border-bottom:1px solid rgba(200,160,80,0.08)}
+nav.tabs button{background:var(--card);border:1.5px solid var(--border);border-radius:10px;padding:8px 14px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;color:var(--muted);transition:all .25s;letter-spacing:0.3px}
+nav.tabs button:hover{border-color:var(--accent);color:var(--text)}
+nav.tabs button.active{border-color:var(--accent);background:rgba(200,160,80,0.08);color:var(--accent);box-shadow:0 0 12px rgba(200,160,80,0.1)}
+.section{display:none}.section.active{display:block}
+.hero{text-align:center;padding:28px 0 16px}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(32px,6vw,52px);font-weight:800;color:var(--accent);letter-spacing:2px;line-height:1.1}
+.hero .sub{font-family:'Playfair Display',serif;font-size:clamp(13px,2.5vw,18px);font-style:italic;color:var(--accent2);letter-spacing:3px;margin-top:6px}
+.hero p{color:var(--muted);font-size:15px;margin-top:16px;line-height:1.75;max-width:640px;margin-left:auto;margin-right:auto}
+.card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:24px;margin-bottom:16px;transition:border-color .25s}
+.card:hover{border-color:rgba(200,160,80,0.3)}
+.card h2{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;margin-bottom:10px}
+.card h3{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;margin:16px 0 8px}
+.card p,.card-p{font-size:14px;color:var(--muted);line-height:1.75;margin-bottom:10px}
+.card p:last-child{margin-bottom:0}
+.hl{color:var(--accent);font-weight:700}.hl2{color:var(--accent2);font-weight:700}.hl3{color:var(--accent3);font-weight:700}.hl4{color:var(--accent4);font-weight:700}
+.s-title{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;letter-spacing:1px;color:var(--dim);margin:32px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+/* Characters */
+.char-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.char-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px;transition:all .25s}
+.char-card:hover{border-color:var(--accent);transform:translateY(-3px)}
+.char-card .cc-emoji{font-size:36px;margin-bottom:6px}
+.char-card .cc-name{font-family:'Playfair Display',serif;font-size:18px;font-weight:700}
+.char-card .cc-role{font-size:12px;color:var(--dim);margin-top:2px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em}
+.char-card .cc-myth{font-size:12px;color:var(--accent2);margin-top:4px;font-style:italic}
+.char-card p{font-size:13px;color:var(--muted);line-height:1.65;margin-top:10px}
+.char-card .cc-actor{font-size:12px;color:var(--accent);margin-top:8px;font-weight:700}
+/* Songs */
+.song-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:10px;transition:border-color .2s;cursor:pointer}
+.song-card:hover{border-color:var(--accent)}
+.song-header{display:flex;align-items:baseline;gap:12px}
+.song-num{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--dim);min-width:32px}
+.song-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--accent)}
+.song-singer{font-size:12px;color:var(--accent2);margin-left:auto;font-weight:600}
+.song-body{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.song-card.open .song-body{max-height:300px}
+.song-desc{font-size:13px;color:var(--muted);line-height:1.7;padding-top:12px}
+/* Stat grid */
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;margin:14px 0}
+.stat-box{background:var(--card2);border-radius:10px;padding:10px 14px}
+.stat-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--dim)}
+.stat-val{font-size:13px;font-weight:700;margin-top:2px}
+/* Timeline */
+.tl-item{display:flex;gap:14px;margin-bottom:16px}
+.tl-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.tl-year{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:var(--accent)}
+.tl-text{font-size:14px;color:var(--muted);line-height:1.6}
+/* Trivia */
+.trivia-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px}
+.trivia-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;font-size:13px;color:var(--muted);line-height:1.6}
+.trivia-card .tc-emoji{font-size:20px;margin-bottom:4px}
+/* Quote */
+.quote-box{background:var(--card2);border-left:3px solid var(--accent);border-radius:0 14px 14px 0;padding:18px 22px;margin:16px 0;font-family:'Playfair Display',serif;font-style:italic;font-size:16px;color:var(--muted);line-height:1.7}
+.quote-box .q-attr{font-family:'Nunito',sans-serif;font-style:normal;font-size:12px;font-weight:700;color:var(--accent2);margin-top:8px}
+@media(max-width:600px){.char-grid{grid-template-columns:1fr}.stat-grid{grid-template-columns:1fr 1fr}nav.tabs button{padding:6px 10px;font-size:11px}}
+</style>
+</head>
+<body>
+<div class="fc-brand-bar"><a href="index.html"><img src="fancannonlogo.png" alt="Fan Cannon"><span>Fan Cannon</span></a><span class="fc-sep">|</span><span class="fc-page-name">Hadestown</span></div>
+<div class="page">
+<nav class="tabs" id="tabs">
+<button class="active" onclick="showSec('home',this)">🏠 Home</button>
+<button onclick="showSec('myth',this)">🏛️ The Myth</button>
+<button onclick="showSec('chars',this)">👥 Characters</button>
+<button onclick="showSec('songs',this)">🎵 Songs</button>
+<button onclick="showSec('journey',this)">🗺️ Journey</button>
+<button onclick="showSec('anais',this)">✍️ Anaïs</button>
+<button onclick="showSec('trivia',this)">🎭 Trivia</button>
+</nav>
+
+<!-- HOME -->
+<div id="sec-home" class="section active">
+<div class="hero">
+<h1>HADESTOWN</h1>
+<div class="sub">The Myth. The Musical.</div>
+<p>A love story for today — and always. Anaïs Mitchell's Tony-winning musical weaves the ancient Greek myths of Orpheus & Eurydice and Hades & Persephone into a haunting folk opera about love, doubt, poverty, and the power of song to change the world.</p>
+</div>
+<div class="quote-box">"It's a sad song. It's a sad tale. It's a tragedy. But we sing it again — because here's the thing: to know how it ends and still begin to sing it again, as if it might turn out this time... that takes grit. That takes grace."<div class="q-attr">— Hermes, "Road to Hell"</div></div>
+<div class="stat-grid">
+<div class="stat-box"><div class="stat-label">Tony Awards</div><div class="stat-val" style="color:var(--accent)">8 wins / 14 nominations</div></div>
+<div class="stat-box"><div class="stat-label">Grammy</div><div class="stat-val" style="color:var(--accent)">Best Musical Theater Album</div></div>
+<div class="stat-box"><div class="stat-label">Broadway</div><div class="stat-val">Walter Kerr Theatre, 2019–2025</div></div>
+<div class="stat-box"><div class="stat-label">West End</div><div class="stat-val">Lyric Theatre, 2024–present</div></div>
+<div class="stat-box"><div class="stat-label">Origin</div><div class="stat-val">Vermont community theater, 2006</div></div>
+<div class="stat-box"><div class="stat-label">Songs</div><div class="stat-val">40 tracks (Broadway recording)</div></div>
+<div class="stat-box"><div class="stat-label">Style</div><div class="stat-val">Folk opera / New Orleans jazz</div></div>
+<div class="stat-box"><div class="stat-label">Creator</div><div class="stat-val">Anaïs Mitchell</div></div>
+</div>
+<div class="card">
+<h2 style="color:var(--accent)">What Makes Hadestown Special</h2>
+<p>Hadestown isn't just a retelling of a Greek myth — it's a <span class="hl">living argument</span> that stories matter. The musical's cyclical structure, ending where it begins, acknowledges the tragedy of Orpheus and Eurydice while insisting that the act of <span class="hl2">retelling a doomed love story is itself an act of hope</span>. By reimagining the Greek underworld as a Depression-era industrial hellscape and Hades as a capitalist boss building a wall, Mitchell created mythology that speaks directly to modern anxieties about inequality, climate change, and authoritarianism.</p>
+<p>The score blends <span class="hl">American folk, New Orleans jazz, indie rock, and Broadway</span> into something that sounds like no other musical. Anaïs Mitchell spent over a decade crafting it — from Vermont coffee houses in 2006 to eight Tony Awards in 2019 — and the depth shows in every lyric.</p>
+</div>
+</div>
+
+<!-- THE MYTH -->
+<div id="sec-myth" class="section">
+<h2 class="s-title" style="color:var(--accent)">🏛️ THE ORIGINAL GREEK MYTHS</h2>
+<div class="card">
+<h2 style="color:var(--accent2)">Orpheus & Eurydice</h2>
+<p>In ancient Greek mythology, <span class="hl">Orpheus</span> was the greatest musician who ever lived — son of the muse Calliope, gifted with a lyre from Apollo. His music could charm wild animals, move stones, and still rivers. He fell deeply in love with <span class="hl2">Eurydice</span>, a wood nymph. Shortly after their wedding, Eurydice was bitten by a venomous snake and died.</p>
+<p>Devastated, Orpheus descended into the Underworld to retrieve her. His music was so beautiful that it moved even <span class="hl4">Hades</span> and <span class="hl3">Persephone</span> to tears. Hades agreed to release Eurydice on one condition: Orpheus must walk ahead of her out of the Underworld and <span class="hl2">never look back</span> until they both reached the surface. At the very last moment, just before reaching daylight, Orpheus turned to look — and Eurydice vanished back into the Underworld forever.</p>
+<p>It's one of the oldest stories about love, trust, and doubt — and why we can't help repeating the same mistakes even when we know better.</p>
+</div>
+<div class="card">
+<h2 style="color:var(--accent3)">Hades & Persephone</h2>
+<p><span class="hl4">Hades</span>, god of the Underworld, fell in love with <span class="hl3">Persephone</span>, daughter of Demeter (goddess of the harvest). In most versions, he abducted her to the Underworld. Her mother Demeter's grief caused all plants to die — creating winter. A deal was struck: Persephone would spend <span class="hl">half the year above ground</span> (spring and summer) and <span class="hl2">half below</span> (fall and winter), explaining the seasons.</p>
+<p>In Mitchell's retelling, this becomes a story about a <span class="hl">marriage in trouble</span> — a powerful man who hoards what he loves, a woman who brings life wherever she goes but is trapped in a cycle she can't escape. Their relationship mirrors the larger themes of the musical: what happens when love becomes possession, when security becomes a prison.</p>
+</div>
+<div class="card">
+<h2 style="color:var(--accent4)">What Mitchell Changed</h2>
+<p>Mitchell's genius lies in what she <span class="hl2">recontextualizes</span>:</p>
+<p>• <span class="hl">Eurydice's choice</span>: In the myth, she dies accidentally. In Hadestown, she <span class="hl2">chooses</span> to go to the Underworld to escape poverty and cold — making her tragedy about economic desperation, not fate.</p>
+<p>• <span class="hl">Hades as industrial boss</span>: The Underworld becomes a factory. The dead are workers. The wall Hades builds isn't mythological — it's a metaphor for wealth hoarding and border walls.</p>
+<p>• <span class="hl">The seasons as a love story</span>: Persephone's annual return isn't a divine arrangement — it's a marriage strained by distance, control, and the weight of time.</p>
+<p>• <span class="hl">Hermes as narrator</span>: The messenger god becomes a jazz-age storyteller who knows the ending but sings the song anyway — because that's what stories are for.</p>
+<p>• <span class="hl">Orpheus as artist/activist</span>: His song isn't just beautiful — it's an argument for a better world. He's trying to literally sing the world back into tune.</p>
+</div>
+</div>
+
+<!-- CHARACTERS -->
+<div id="sec-chars" class="section">
+<h2 class="s-title" style="color:var(--accent)">👥 THE CHARACTERS</h2>
+<div class="char-grid">
+
+<div class="char-card"><div class="cc-emoji">🎵</div><div class="cc-name">Orpheus</div><div class="cc-role">The Poet / The Dreamer</div><div class="cc-myth">Greek: Son of Calliope, greatest musician who ever lived</div><p>A young songwriter trying to complete a melody that will "fix what's wrong" — literally restore the seasons and bring the world back into harmony. Orpheus is naive, idealistic, and utterly devoted to Eurydice. His gift is his music; his flaw is that he lives so deeply in his art that he fails to see Eurydice's practical needs until it's too late. His final failure — turning back to look — isn't weakness. It's love. He'd rather see her one more time than save himself from doubt.</p><div class="cc-actor">OBC: Reeve Carney · Concept album: Justin Vernon (Bon Iver)</div></div>
+
+<div class="char-card"><div class="cc-emoji">🌸</div><div class="cc-name">Eurydice</div><div class="cc-role">The Survivor / The Pragmatist</div><div class="cc-myth">Greek: Wood nymph, bride of Orpheus</div><p>Where the original myth treats Eurydice as a passive victim, Mitchell makes her the musical's most complex character. She's hungry, cold, and practical — she loves Orpheus but can't eat his songs. Her decision to go to Hadestown isn't betrayal; it's survival. She signs away her freedom for warmth and food, the way countless real people trade their dreams for security. Her arc asks: can you blame someone for choosing safety over love when they're starving?</p><div class="cc-actor">OBC: Eva Noblezada · Concept album: Anaïs Mitchell</div></div>
+
+<div class="char-card"><div class="cc-emoji">⚒️</div><div class="cc-name">Hades</div><div class="cc-role">The King / The Boss</div><div class="cc-myth">Greek: God of the Underworld, ruler of the dead</div><p>Reimagined as a Depression-era industrial titan — part robber baron, part authoritarian leader. Hades isn't purely evil; he's a man who loved so much he tried to own it. He builds his wall to keep Persephone from leaving, to keep workers productive, to keep the world under his control. Patrick Page's impossibly deep bass voice made Broadway's Hades terrifying and tragic in equal measure. His deepest fear isn't losing power — it's losing Persephone's love.</p><div class="cc-actor">OBC: Patrick Page · Concept album: Greg Brown</div></div>
+
+<div class="char-card"><div class="cc-emoji">🌺</div><div class="cc-name">Persephone</div><div class="cc-role">The Queen / The Wild One</div><div class="cc-myth">Greek: Daughter of Demeter, Queen of the Underworld</div><p>Half the year above, half below — and increasingly drinking through both halves. Persephone is the life of every party and the heart of the seasons: when she's above ground, the world blooms; when she descends, it dies. Her marriage to Hades has soured into mutual resentment and longing. She smuggles booze and springtime into Hadestown, throwing secret parties for the workers. She's the character who most directly voices the musical's critique of power.</p><div class="cc-actor">OBC: Amber Gray · Concept album: Ani DiFranco</div></div>
+
+<div class="char-card"><div class="cc-emoji">🎺</div><div class="cc-name">Hermes</div><div class="cc-role">The Narrator / The Guide</div><div class="cc-myth">Greek: Messenger god, guide of souls to the Underworld</div><p>Hermes is the storyteller who frames the entire musical. He knows how the story ends — he's told it a thousand times — but he sings it again anyway, because the telling matters more than the ending. Part Greek chorus, part jazz MC, part philosopher, Hermes opens and closes the show and guides the audience through each twist. André De Shields won the Tony for bringing effortless charisma and deep wisdom to the role.</p><div class="cc-actor">OBC: André De Shields (Tony winner) · Concept album: Ben Knox Miller</div></div>
+
+<div class="char-card"><div class="cc-emoji">🕷️</div><div class="cc-name">The Fates</div><div class="cc-role">The Voices of Doubt</div><div class="cc-myth">Greek: Clotho, Lachesis, Atropos — spinners of destiny</div><p>Three women who embody doubt, temptation, and inevitability. They whisper in Eurydice's ear to go to Hadestown. They taunt Orpheus. They narrate the moments of weakness that lead to tragedy. Musically, they function as a Greek chorus crossed with a Motown girl group — harmonizing in tight, sinuous arrangements that slither into every scene. They represent the voice inside your head that says "why bother?" and "you know how this ends."</p><div class="cc-actor">OBC: Jewelle Blackman, Yvette Gonzalez-Nacer, Kay Trinidad</div></div>
+
+<div class="char-card"><div class="cc-emoji">⛏️</div><div class="cc-name">The Workers</div><div class="cc-role">The Chorus / The Dead</div><div class="cc-myth">Greek: Shades of the dead in the Underworld</div><p>In Hadestown, the dead aren't ghosts — they're a workforce. They've traded their souls for security, and now they build the wall endlessly, having forgotten what they were before. They represent anyone who's been ground down by a system until they can't remember their own name. When Orpheus sings, they begin to remember — and that terrifies Hades more than anything.</p><div class="cc-actor">OBC: Afra Hines, Timothy Hughes, John Krause, Kimberly Marable, Ahmad Simmons</div></div>
+
+</div>
+</div>
+
+<!-- SONGS -->
+<div id="sec-songs" class="section">
+<h2 class="s-title" style="color:var(--accent)">🎵 THE SONGS</h2>
+<p class="card-p" style="margin-bottom:16px;color:var(--muted)">Hadestown is fully sung-through — 40 tracks on the Broadway recording. Click any song to see its meaning. Songs are grouped by the story's arc.</p>
+
+<h3 class="s-title" style="color:var(--accent2);font-size:14px">ACT I — THE WORLD ABOVE</h3>
+<div id="songList1"></div>
+
+<h3 class="s-title" style="color:var(--accent2);font-size:14px">ACT I — THE DESCENT</h3>
+<div id="songList2"></div>
+
+<h3 class="s-title" style="color:var(--accent2);font-size:14px">ACT II — IN HADESTOWN</h3>
+<div id="songList3"></div>
+
+<h3 class="s-title" style="color:var(--accent2);font-size:14px">ACT II — THE RETURN</h3>
+<div id="songList4"></div>
+</div>
+
+<!-- JOURNEY -->
+<div id="sec-journey" class="section">
+<h2 class="s-title" style="color:var(--accent)">🗺️ THE JOURNEY TO BROADWAY</h2>
+<div class="card">
+<p>Hadestown's path from a DIY Vermont theater project to an eight-time Tony winner is one of the most remarkable origin stories in modern musical theater — a <span class="hl">thirteen-year odyssey</span> that mirrors the persistence of its own characters.</p>
+</div>
+
+<div class="tl-item"><div class="tl-dot" style="background:var(--accent)"></div><div><div class="tl-year">2006 — The Seed</div><div class="tl-text">Anaïs Mitchell stages the first version of Hadestown as a DIY community theater project in Barre and Vergennes, Vermont. The cast and crew are all local artists. Grants from the Vermont Community Foundation help fund it. The creative team includes arranger Michael Chorney and director Ben t. Matchstick.</div></div></div>
+
+<div class="tl-item"><div class="tl-dot" style="background:var(--accent2)"></div><div><div class="tl-year">2007 — The Tour</div><div class="tl-text">A seven-day, ten-city tour through Vermont and Massachusetts. Mitchell is a folk singer, not a Broadway writer — she's learning the form as she goes.</div></div></div>
+
+<div class="tl-item"><div class="tl-dot" style="background:var(--accent3)"></div><div><div class="tl-year">2010 — The Concept Album</div><div class="tl-text">Unsure about the musical's future, Mitchell records it as a studio album on Righteous Babe Records. Justin Vernon (Bon Iver) sings Orpheus, Ani DiFranco is Persephone, Greg Brown is Hades. The album is universally acclaimed — Drowned in Sound gives it 10/10. It tops AnyDecentMusic's all-time chart.</div></div></div>
+
+<div class="tl-item"><div class="tl-dot" style="background:var(--accent4)"></div><div><div class="tl-year">2012 — The Director</div><div class="tl-text">Mitchell meets director Rachel Chavkin. Together they begin reworking the stage version, adding new songs and dialogue. This partnership transforms Hadestown from a folk concert into a fully theatrical experience.</div></div></div>
+
+<div class="tl-item"><div class="tl-dot" style="background:var(--accent)"></div><div><div class="tl-year">2016 — Off-Broadway</div><div class="tl-text">Hadestown premieres at New York Theatre Workshop, running May 6 to July 31. The New York Times calls it "inventive" and "gorgeously sung." The live cast recording follows in 2017. Patrick Page joins as Hades — his voice becomes inseparable from the role.</div></div></div>
+
+<div class="tl-item"><div class="tl-dot" style="background:var(--accent2)"></div><div><div class="tl-year">2017 — Canada</div><div class="tl-text">Canadian premiere at Citadel Theatre in Edmonton, Alberta. More new material is added and refined.</div></div></div>
+
+<div class="tl-item"><div class="tl-dot" style="background:var(--accent3)"></div><div><div class="tl-year">2018 — London</div><div class="tl-text">UK premiere at the Royal National Theatre, directed by Rufus Norris. The show is now Broadway-bound.</div></div></div>
+
+<div class="tl-item"><div class="tl-dot" style="background:var(--accent)"></div><div><div class="tl-year">2019 — Broadway</div><div class="tl-text">Hadestown opens at the Walter Kerr Theatre on April 17th. It receives 14 Tony nominations — the most of any show that season — and wins 8, including Best Musical, Best Original Score, Best Direction, and Best Featured Actor for André De Shields. The 40-track cast recording wins the Grammy for Best Musical Theater Album.</div></div></div>
+
+<div class="tl-item"><div class="tl-dot" style="background:var(--rose)"></div><div><div class="tl-year">2020 — The Shutdown</div><div class="tl-text">Broadway shuts down due to the pandemic. Hadestown goes dark for 18 months. The cast releases "If the Fates Allow," a holiday album, to stay connected with fans.</div></div></div>
+
+<div class="tl-item"><div class="tl-dot" style="background:var(--accent2)"></div><div><div class="tl-year">2021–2024 — The Long Run</div><div class="tl-text">Hadestown becomes the longest-running show in Walter Kerr Theatre history, surpassing 2,000 performances. Notable replacement casts include Lillias White, Jordan Fisher, Lola Tung, Ani DiFranco (reprising Persephone from the album), and Jon Jon Briones as Hermes.</div></div></div>
+
+<div class="tl-item"><div class="tl-dot" style="background:var(--accent3)"></div><div><div class="tl-year">2024 — West End</div><div class="tl-text">Hadestown opens in London's West End at the Lyric Theatre on February 21st. The original Broadway cast returns for a limited run in early 2025 — tickets sell out in hours. A live London cast recording is released in December.</div></div></div>
+
+<div class="tl-item"><div class="tl-dot" style="background:var(--accent4)"></div><div><div class="tl-year">2025 — Global</div><div class="tl-text">Productions in Amsterdam (Royal Theater Carré) and ongoing West End run through 2026. The Broadway production closes September 6, 2025, after over 2,500 performances. Licensing through Concord Theatricals means community and regional productions are coming worldwide.</div></div></div>
+</div>
+
+<!-- ANAIS MITCHELL -->
+<div id="sec-anais" class="section">
+<h2 class="s-title" style="color:var(--accent)">✍️ ANAÏS MITCHELL</h2>
+<div class="card">
+<h2 style="color:var(--accent)">The Woman Who Built Hadestown</h2>
+<p><span class="hl">Anaïs Mitchell</span> is a singer-songwriter from Vermont who spent thirteen years turning a Greek myth into one of the most acclaimed musicals of the 21st century — and Hadestown is her <span class="hl2">first musical</span>.</p>
+<p>Mitchell didn't come from the theater world. She came from <span class="hl3">folk music</span> — touring clubs, opening for Bon Iver and Josh Ritter, recording intimate albums on small labels. Her songwriting voice — poetic, political, rooted in American folk traditions but reaching toward the mythic — is what makes Hadestown sound like nothing else on Broadway.</p>
+<p>She's said she was inspired by <span class="hl">Les Misérables</span> to write something that combined romance and politics: "It's a love story, but politics really is romantic." Her book about the creative process, <span class="hl2">Working on a Song: The Lyrics of Hadestown</span> (2020), offers rare insight into how each lyric was crafted and revised over the musical's long development.</p>
+</div>
+<div class="card">
+<h3 style="color:var(--accent2)">Discography & Other Work</h3>
+<p>Beyond Hadestown, Mitchell's recordings include <span class="hl">Young Man in America</span> (2012), <span class="hl3">Child Ballads</span> (2013, with Jefferson Hamer, reinterpreting traditional folk songs), and <span class="hl4">Bonny Light Horseman</span> (2019, a supergroup with Eric D. Johnson and Josh Kaufman that earned a Grammy nomination). Her self-titled album <span class="hl2">Anaïs Mitchell</span> (2022) was her first solo work in a decade and was named to year-end best lists by NPR, Wall Street Journal, MOJO, Uncut, The Guardian, and more.</p>
+<p>Awards include the <span class="hl">BBC Radio 2 Folk Award</span> and the <span class="hl3">Folk Alliance International Spirit of Folk Award</span>. She's headlined worldwide and supported tours for Bon Iver, Josh Ritter, and Punch Brothers.</p>
+</div>
+<div class="quote-box">"I wanted to write something where the personal was political and the political was personal — where a love story could also be about the way the world works."<div class="q-attr">— Anaïs Mitchell</div></div>
+<div class="card">
+<h3 style="color:var(--accent3)">Key Collaborators</h3>
+<p><span class="hl">Rachel Chavkin</span> — Director. Met Mitchell in 2012 and co-developed the theatrical version. Won the Tony for Best Direction. Also known for Natasha, Pierre & The Great Comet of 1812.</p>
+<p><span class="hl2">Michael Chorney</span> — Primary arranger/orchestrator since the 2006 Vermont shows. His arrangements give Hadestown its distinctive blend of folk, jazz, and art-rock.</p>
+<p><span class="hl3">Todd Sickafoose</span> — Co-arranger/orchestrator. Produced the 2010 concept album with Mitchell.</p>
+<p><span class="hl4">Liam Robinson</span> — Music director and vocal arranger for Broadway.</p>
+</div>
+</div>
+
+<!-- TRIVIA -->
+<div id="sec-trivia" class="section">
+<h2 class="s-title" style="color:var(--accent)">🎭 FAN TRIVIA & DEEP CUTS</h2>
+<div class="trivia-grid">
+<div class="trivia-card"><div class="tc-emoji">🎸</div>The concept album's Orpheus was <span class="hl">Justin Vernon</span> of Bon Iver — recorded before Vernon became world-famous. Vernon's falsetto interpretation is strikingly different from Reeve Carney's Broadway tenor.</div>
+<div class="trivia-card"><div class="tc-emoji">🎤</div><span class="hl">Ani DiFranco</span> — who sang Persephone on the concept album — returned to Broadway in 2024 to reprise the role live, fourteen years after the recording.</div>
+<div class="trivia-card"><div class="tc-emoji">🏆</div>André De Shields was <span class="hl">73 years old</span> when he won the Tony for Hermes, delivering one of the most memorable acceptance speeches in Tony history: "Slowly is the fastest way to get where you want to be."</div>
+<div class="trivia-card"><div class="tc-emoji">🎵</div>"Why We Build the Wall" became a <span class="hl">protest anthem</span> after 2016, despite being written years earlier. Billy Bragg covered it for his EP "Bridges Not Walls."</div>
+<div class="trivia-card"><div class="tc-emoji">🗣️</div>Patrick Page's Hades voice is so deep it registers as a <span class="hl">bass profondo</span> — one of the rarest vocal ranges. Audiences routinely gasp when he first speaks.</div>
+<div class="trivia-card"><div class="tc-emoji">📖</div>Mitchell's book <span class="hl">Working on a Song</span> (2020) reveals that "Wait for Me" went through dozens of rewrites over a decade. The final version barely resembles the original.</div>
+<div class="trivia-card"><div class="tc-emoji">🌍</div>The show's <span class="hl">set design</span> by Rachel Hauck (Tony winner) uses a turntable, hanging lights, and a trapdoor — the audience feels like they're in a New Orleans jazz club that descends into hell.</div>
+<div class="trivia-card"><div class="tc-emoji">🎹</div>The band sits <span class="hl">on stage</span> throughout the show — there's no orchestra pit. Musicians interact with actors, blurring the line between performance and storytelling.</div>
+<div class="trivia-card"><div class="tc-emoji">💡</div>Bradley King's <span class="hl">Tony-winning lighting</span> design uses hundreds of exposed Edison bulbs that evoke both a speakeasy and the industrial underworld.</div>
+<div class="trivia-card"><div class="tc-emoji">🔄</div>The show's <span class="hl">cyclical structure</span> — ending with Hermes beginning the story again — was inspired by the myth's nature but also by Mitchell's belief that "hope is a discipline, not a feeling."</div>
+<div class="trivia-card"><div class="tc-emoji">❄️</div>The concept of <span class="hl">climate change</span> is woven throughout: the seasons are broken because Hades and Persephone's relationship is broken. Fix the love story, fix the world.</div>
+<div class="trivia-card"><div class="tc-emoji">🏗️</div>"Why We Build the Wall" uses <span class="hl">call-and-response</span> — Hades asks, the workers answer — echoing real authoritarian rhetoric where the oppressed repeat their own oppressor's logic.</div>
+<div class="trivia-card"><div class="tc-emoji">🎭</div>Eva Noblezada was only <span class="hl">23 years old</span> at the Broadway opening. She'd previously starred as Kim in Miss Saigon in the West End at age 17.</div>
+<div class="trivia-card"><div class="tc-emoji">🚂</div>The phrase <span class="hl">"the train to Hadestown"</span> is both literal (workers descend on a train) and metaphorical — referencing the Great Migration, labor exploitation, and the one-way trip to the afterlife.</div>
+<div class="trivia-card"><div class="tc-emoji">💍</div>When the original Broadway cast returned to London in 2025, tickets <span class="hl">sold out in hours</span>. Patrick Page was injured during rehearsals, but returned for the filmed performance.</div>
+<div class="trivia-card"><div class="tc-emoji">🎶</div>The <span class="hl">holiday album</span> "If the Fates Allow" (2020) was recorded during the pandemic shutdown and features the Fates (Blackman, Gonzalez-Nacer, Trinidad) singing holiday classics with the full cast.</div>
+<div class="trivia-card"><div class="tc-emoji">📺</div>A <span class="hl">16-part digital experience</span> called "Talking Hadestown" was created for streaming, featuring behind-the-scenes content and Mitchell discussing each song.</div>
+<div class="trivia-card"><div class="tc-emoji">🌿</div>Mitchell was partly inspired by <span class="hl">growing up in rural Vermont</span> — the economic hardship of small-town America is embedded in Eurydice's desperation and Hadestown's false promise of prosperity.</div>
+</div>
+</div>
+
+</div><!-- end .page -->
+<script>
+function showSec(id,btn){
+  document.querySelectorAll('.section').forEach(function(s){s.classList.remove('active')});
+  document.getElementById('sec-'+id).classList.add('active');
+  document.querySelectorAll('nav.tabs button').forEach(function(b){b.classList.remove('active')});
+  if(btn) btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// Songs data
+var SONGS={
+act1a:[
+{n:1,t:"Road to Hell",s:"Hermes & Company",d:"The opening number and frame for the entire musical. Hermes introduces the characters, the setting, and the story — acknowledging it's a tragedy but insisting we sing it again. Establishes the cyclical structure and sets the tone: part jazz club, part campfire myth."},
+{n:2,t:"Any Way the Wind Blows",s:"Eurydice & Company",d:"Introduces Eurydice as a wanderer, unmoored and hungry. The wind is both literal (she's cold) and metaphorical (she has no stability). Establishes her pragmatism — she goes wherever survival takes her."},
+{n:3,t:"Come Home with Me",s:"Orpheus & Eurydice",d:"Orpheus and Eurydice meet. He offers her everything he has — which is nothing but his music and his love. She's skeptical but charmed. The tension between his idealism and her pragmatism is established immediately."},
+{n:4,t:"Wedding Song",s:"Orpheus & Eurydice",d:"A conditional love song — Eurydice keeps asking 'how will we pay for this?' and Orpheus keeps answering with music. It's romantic but also a warning: he's offering something beautiful but not practical."},
+{n:5,t:"Epic I",s:"Orpheus",d:"The first part of Orpheus's song that will fix the world. He sings of how Hades and Persephone's love story began — how the world was once in harmony. It's gorgeous but unfinished."},
+{n:6,t:"Livin' It Up on Top",s:"Persephone & Company",d:"Persephone arrives for her half-year above ground, throwing a wild party. She brings springtime, music, and bootleg booze. It's joyous but tinged with desperation — she's partying because she knows winter is coming."},
+{n:7,t:"All I've Ever Known",s:"Eurydice & Orpheus",d:"Eurydice's love confession. She's never had stability, but Orpheus makes her feel safe. Heartbreakingly tender — and made devastating by what comes next."},
+{n:8,t:"Way Down Hadestown",s:"Hermes, Company",d:"Describes the road to the Underworld and what Hadestown is: a factory, a mine, a place where the dead work forever. Each character sees it differently — security, prison, opportunity, nightmare."},
+{n:9,t:"A Gathering Storm",s:"Persephone, Eurydice, Fates",d:"The seasons shift. Persephone must return below. Eurydice starts to feel the cold. The Fates begin their work, whispering doubt."}
+],
+act1b:[
+{n:10,t:"Epic II",s:"Orpheus",d:"The second part of Orpheus's world-fixing melody. He's so absorbed in composing that he doesn't notice Eurydice shivering beside him — the central dramatic irony."},
+{n:11,t:"Chant",s:"Company",d:"A rhythmic, driving number where the world falls apart. Hades calls Eurydice. Orpheus is oblivious. The Fates push. Everything accelerates toward the moment of decision."},
+{n:12,t:"Hey, Little Songbird",s:"Hades",d:"Hades seduces Eurydice — not with love but with warmth, food, and security. Patrick Page's bass voice makes this one of the most chilling songs on Broadway. It's the devil's bargain in musical form."},
+{n:13,t:"When the Chips Are Down",s:"The Fates",d:"The Fates challenge the audience: don't judge Eurydice for choosing survival. You don't know what you'd do when you're hungry and cold. One of the most politically charged numbers."},
+{n:14,t:"Gone, I'm Gone",s:"Eurydice & The Fates",d:"Eurydice signs the contract and descends to Hadestown. She apologizes to Orpheus but can't stay. A devastating farewell driven by economic necessity."},
+{n:15,t:"Wait for Me",s:"Orpheus & Hermes",d:"Orpheus discovers Eurydice has gone and decides to follow her to hell. Hermes guides him. Musically, it's the show's anthem — building from intimate folk ballad to soaring declaration. One of the most rewritten songs in the show's history."},
+{n:16,t:"Why We Build the Wall",s:"Hades & Company",d:"Act I finale. Hades leads the workers in a call-and-response about why the wall exists. The workers parrot his propaganda. It became a protest anthem in 2016 despite being written years earlier. Chilling because the oppressed enthusiastically recite their own oppression."}
+],
+act2a:[
+{n:17,t:"Our Lady of the Underground",s:"Persephone",d:"Act II opener. Persephone throws a secret speakeasy party for the workers of Hadestown. She brings booze, music, and a taste of the world above. It's defiant — she's smuggling joy into a joyless place."},
+{n:18,t:"Way Down Hadestown II",s:"Hermes & Company",d:"Orpheus arrives in Hadestown. The reprise of the earlier number now feels claustrophobic rather than enticing — we're inside the factory now."},
+{n:19,t:"Flowers / Paper Flowers",s:"Eurydice",d:"Eurydice has lost her memories of the world above. She can barely remember Orpheus. The paper flowers she makes in the factory are a ghost of real spring."},
+{n:20,t:"Come Home with Me II",s:"Orpheus & Eurydice",d:"Orpheus finds Eurydice but she barely recognizes him. He tries to remind her who she is. Heartbreaking reprise of their meeting — now she's the one who's lost."},
+{n:21,t:"Epic III",s:"Orpheus",d:"The climax of the melody Orpheus has been writing all along. He sings to Hades — not a protest song but a love song. He reminds Hades of how he fell in love with Persephone, and Hades begins to weep. It's the song that moves a god to tears."},
+{n:22,t:"Chant II",s:"Company",d:"Reprise of the driving chant — now the workers are awakening, remembering who they were. Hades is shaken. The power dynamic shifts."},
+{n:23,t:"His Kiss, the Riot",s:"Persephone & Hades",d:"Hades realizes Orpheus's song has made the workers remember their humanity. It's a 'riot' — but it began with a kiss, with love. Hades must make a choice."}
+],
+act2b:[
+{n:24,t:"Promises",s:"Hades & Persephone",d:"Hades and Persephone confront their broken marriage. He asks if she remembers why she fell in love with him. She does. The most vulnerable moment between them."},
+{n:25,t:"Word to the Wise",s:"The Fates",d:"The Fates warn Hades that if he lets Orpheus and Eurydice go, his workers will want to leave too. They represent the pragmatic, cynical voice of power."},
+{n:26,t:"If It's True",s:"Orpheus & Company",d:"Orpheus nearly gives up. If the world is really this cruel, what's the point of singing? The workers answer him — his song is the only thing that's given them hope in years."},
+{n:27,t:"How Long?",s:"Persephone & Hades",d:"Originally titled 'Hades & Persephone' on Mitchell's 2007 album. The couple sings about how long they can keep this up. It's a reconciliation song — tentative, raw, real."},
+{n:28,t:"Chant (Reprise)",s:"Company",d:"The deal is struck. Hades will let Eurydice go — if Orpheus walks ahead and doesn't look back."},
+{n:29,t:"Epic III (Reprise) / Wait for Me II",s:"Orpheus, Eurydice, Company",d:"The walk out of Hadestown. The audience knows what's coming. The tension is unbearable. Every step forward is a triumph; every moment of doubt is agony."},
+{n:30,t:"Doubt Comes In",s:"Orpheus, Eurydice, Company",d:"The final stretch. Orpheus can hear Eurydice behind him — or can he? Doubt creeps in. The Fates whisper. The audience holds their breath. He turns. She's gone."},
+{n:31,t:"Road to Hell II",s:"Hermes & Company",d:"Hermes closes the show by beginning the story again. 'It's a sad song... but we sing it again.' The cyclical structure completes — and the audience understands that the point was never the ending. It was the singing."}
+]
+};
+
+function renderSongs(){
+  var lists={act1a:'songList1',act1b:'songList2',act2a:'songList3',act2b:'songList4'};
+  Object.keys(lists).forEach(function(key){
+    var el=document.getElementById(lists[key]);
+    if(!el) return;
+    var html='';
+    SONGS[key].forEach(function(s){
+      html+='<div class="song-card" onclick="this.classList.toggle(\'open\')">';
+      html+='<div class="song-header"><span class="song-num">'+s.n+'</span><span class="song-title">'+s.t+'</span><span class="song-singer">'+s.s+'</span></div>';
+      html+='<div class="song-body"><div class="song-desc">'+s.d+'</div></div>';
+      html+='</div>';
+    });
+    el.innerHTML=html;
+  });
+}
+renderSongs();
+</script>
+</body>
+</html>

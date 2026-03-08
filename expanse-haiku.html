@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>Lang Belta Haiku Generator | The Expanse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#060810;--card:#0c1020;--card2:#131b30;--accent:#3a8fd4;--accent2:#e07848;--accent3:#40c890;--accent4:#c860a0;--text:#d8dce8;--muted:#7888a8;--dim:#4a5878;--border:#1e3050;--gold:#f0c060}
+*{box-sizing:border-box;margin:0;padding:0}
+body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 40%,rgba(64,200,144,0.03) 0%,transparent 70%);pointer-events:none}
+.fc-brand-bar{position:sticky;top:0;z-index:100;background:rgba(6,8,16,0.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.06);padding:8px 16px;display:flex;align-items:center;gap:10px}
+.fc-brand-bar a{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit}.fc-brand-bar img{width:32px;height:32px;border-radius:50%}
+.fc-brand-bar span{font-family:sans-serif;font-size:14px;font-weight:600;color:#c9a44a;letter-spacing:0.5px}
+.fc-brand-bar .fc-sep{color:rgba(255,255,255,0.15);font-size:18px}.fc-brand-bar .fc-page-name{font-size:13px;font-weight:500;color:rgba(255,255,255,0.4)}
+.container{position:relative;z-index:1;max-width:650px;margin:0 auto;padding:24px 16px 80px}
+.back-link{display:inline-block;color:var(--accent);text-decoration:none;font-size:13px;font-weight:600;padding:6px 14px;border:1px solid var(--border);border-radius:99px;transition:all .2s;margin-bottom:16px}.back-link:hover{border-color:var(--accent)}
+.hero{text-align:center;padding:24px 0 20px}
+.hero h1{font-family:'Orbitron',sans-serif;font-size:clamp(20px,4vw,32px);font-weight:800;background:linear-gradient(135deg,#40c890,#c860a0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:2px}
+.hero .sub{font-family:'Orbitron',sans-serif;font-size:12px;color:var(--accent2);letter-spacing:3px;margin-top:4px;font-weight:600}
+.hero p{color:var(--muted);font-size:14px;margin-top:12px;line-height:1.6}
+.haiku-frame{background:var(--card);border:1px solid var(--border);border-radius:24px;padding:32px 28px;margin:24px 0;text-align:center;position:relative;overflow:hidden;min-height:280px}
+.haiku-frame::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent3),var(--accent4),var(--accent2))}
+.haiku-frame .stars{position:absolute;inset:0;pointer-events:none;opacity:0.15}
+.haiku-label{font-family:'Orbitron',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;color:var(--dim);text-transform:uppercase;margin-bottom:20px}
+.haiku-line{font-family:'Orbitron',sans-serif;font-size:clamp(16px,3.5vw,22px);font-weight:700;color:var(--accent3);letter-spacing:1px;margin:12px 0;line-height:1.4;min-height:30px;transition:opacity .3s}
+.haiku-line.l2{color:var(--accent)}
+.haiku-line.l3{color:var(--accent4)}
+.trans-label{font-family:'Orbitron',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;color:var(--dim);text-transform:uppercase;margin:24px 0 12px}
+.trans-line{font-size:15px;color:var(--muted);font-style:italic;margin:6px 0;line-height:1.5;min-height:22px}
+.syl-count{font-size:11px;color:var(--dim);margin-top:16px;font-style:italic}
+.gen-btn{font-family:'Orbitron',sans-serif;font-size:16px;font-weight:700;padding:16px 40px;border-radius:14px;border:none;background:linear-gradient(135deg,var(--accent3),var(--accent4));color:#fff;cursor:pointer;transition:all .3s;box-shadow:0 4px 24px rgba(64,200,144,0.2);letter-spacing:1px;margin-top:8px}
+.gen-btn:hover{transform:translateY(-3px);box-shadow:0 8px 32px rgba(64,200,144,0.3);filter:brightness(1.1)}
+.gen-btn:active{transform:translateY(0)}
+.info-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;margin-top:20px;font-size:13px;color:var(--muted);line-height:1.65}
+.info-card h3{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:700;color:var(--accent3);letter-spacing:0.5px;margin-bottom:8px}
+.collection{margin-top:24px}
+.collection h3{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:700;color:var(--gold);letter-spacing:1px;margin-bottom:12px}
+.saved-haiku{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 18px;margin-bottom:8px;font-size:13px;position:relative}
+.saved-haiku .sh-belta{color:var(--accent3);font-family:'Orbitron',sans-serif;font-size:12px;letter-spacing:0.5px;line-height:1.6}
+.saved-haiku .sh-eng{color:var(--dim);font-style:italic;margin-top:6px;font-size:12px;line-height:1.5}
+.saved-haiku .sh-del{position:absolute;top:8px;right:10px;background:none;border:none;color:var(--dim);cursor:pointer;font-size:14px}
+.save-btn{font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;padding:8px 18px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--muted);cursor:pointer;transition:all .2s;margin-top:12px}
+.save-btn:hover{border-color:var(--gold);color:var(--gold)}
+.counter{font-size:11px;color:var(--dim);margin-top:8px}
+</style>
+</head>
+<body>
+<div class="fc-brand-bar"><a href="index.html"><img src="fancannonlogo.png" alt="Fan Cannon"><span>Fan Cannon</span></a><span class="fc-sep">|</span><span class="fc-page-name">Belta Haiku</span></div>
+<div class="container">
+<a href="expanse-langbelta.html" class="back-link">← Back to Lang Belta Dictionary</a>
+<div class="hero">
+<h1>BELTA HAIKU</h1>
+<div class="sub">ADEWU MALI FO DA BELT</div>
+<p>Generate haiku poetry in Lang Belta — the creole language of the Asteroid Belt. Each haiku follows the traditional 5-7-5 syllable structure, assembled from real Belter vocabulary.</p>
+</div>
+
+<div class="haiku-frame" id="haikuFrame">
+<div class="haiku-label">HAIKU FO DA BELT</div>
+<div class="haiku-line l1" id="line1">—</div>
+<div class="haiku-line l2" id="line2">—</div>
+<div class="haiku-line l3" id="line3">—</div>
+<div class="trans-label">TRANSLATION</div>
+<div class="trans-line" id="trans1"></div>
+<div class="trans-line" id="trans2"></div>
+<div class="trans-line" id="trans3"></div>
+<div class="syl-count" id="sylCount"></div>
+</div>
+
+<div style="text-align:center">
+<button class="gen-btn" onclick="generateHaiku()">🌟 GENERATE HAIKU</button>
+<br>
+<button class="save-btn" id="saveBtn" onclick="saveHaiku()" style="display:none">⭐ Save This Haiku</button>
+<div class="counter" id="counter"></div>
+</div>
+
+<div class="collection" id="collection" style="display:none">
+<h3>⭐ SAVED HAIKU</h3>
+<div id="savedList"></div>
+</div>
+
+<div class="info-card">
+<h3>How It Works</h3>
+<p>This generator assembles haiku from a database of 675+ real Lang Belta words, categorized by part of speech and syllable count. Each line is constructed to hit the traditional 5-7-5 syllable pattern using combinations of nouns, verbs, adjectives, and grammatical particles. The translations are word-by-word — Belter grammar differs from English, so consider them poetic interpretations rather than strict translations.</p>
+</div>
+</div>
+
+<script>
+var H_NOUNS_1=[{w:"bap",e:"door"},{w:"bowl",e:"Ball, small spherical toy"},{w:"buk",e:"book"},{w:"buk",e:"book"},{w:"bush",e:"mouth"},{w:"but",e:"boot"},{w:"chesh",e:"hunt; chase"},{w:"de",e:"that"},{w:"dek",e:"deck, floor"},{w:"do",e:"Ass, anus"},{w:"dzhi",e:"gee"},{w:"dzhing",e:"gin"},{w:"dzhush",e:"high-G drugs; juice"},{w:"ent",e:"end"},{w:"fit",e:"broadcast, feed, likely show, program"},{w:"fut",e:"food"},{w:"gash",e:"gas"},{w:"im",e:"him - her - it"},{w:"kosh",e:"cost, price"},{w:"lang",e:"language"},{w:"lek",e:"leg, foot"},{w:"losh",e:"loss"},{w:"lush",e:"light, bright"},{w:"mang",e:"person"},{w:"mash",e:"propellant"},{w:"meng",e:"noodels"},{w:"nax",e:"night"},{w:"nem",e:"name"},{w:"not",e:"node"},{w:"pash",e:"peace"},{w:"peng",e:"pain"},{w:"pish",e:"urine"},{w:"po",e:"dust"},{w:"pot",e:"pod, car"},{w:"push",e:"push, press"},{w:"sem",e:"seed"},{w:"shāsa",e:"odds, chance"},{w:"sheláf",e:"sleep"},{w:"sheng",e:"truth"},{w:"shif",e:"shift, as in work"},{w:"shio",e:"salt"},{w:"sif",e:"self"},{w:"sowng",e:"sun"},{w:"sut",e:"suit"},{w:"terásh",e:"thrust"},{w:"ting",e:"thing"},{w:"to",e:"you"},{w:"towsh",e:"teeth"},{w:"tu",e:"dirt, earth"},{w:"tung",e:"shot, a single firing of a gun"},{w:"we",e:"way, path, route"},{w:"wok",e:"walk/step"},{w:"wow",e:"war"},{w:"wowk",e:"work, labor"},{w:"wowm",e:"worm"},{w:"wowt",e:"word"},{w:"xash",e:"hazard, threat"},{w:"xep",e:"help, aid, assistance"},{w:"xi",e:"this"},{w:"xop",e:"hope"},{w:"xow",e:"barf, puke"}];
+var H_NOUNS_2=[{w:"*nawe",e:"no-way"},{w:"ámolof",e:"love"},{w:"ansa",e:"answer"},{w:"baseng",e:"clothing"},{w:"belówt",e:"blood"},{w:"belta",e:"Belter"},{w:"beref",e:"birth"},{w:"bikang",e:"beacon"},{w:"bingi",e:"fun"},{w:"bitnish",e:"business"},{w:"biya",e:"beer"},{w:"bodzha",e:"explosion"},{w:"bosmang",e:"boss, chief"},{w:"botong",e:"button"},{w:"buro",e:"donkey"},{w:"butong",e:"button"},{w:"buza",e:"target"},{w:"da wel",e:"The Well"},{w:"data",e:"data, information"},{w:"dek lek",e:"leg-deck"},{w:"demang",e:"whom"},{w:"detim",e:"that-time"},{w:"deting",e:"that-thing"},{w:"dewe",e:"that-way"},{w:"deya",e:"There"},{w:"diye",e:"day"},{w:"dowta",e:"daughter"},{w:"du losh",e:"lose"},{w:"du nem",e:"name, call. put name = register"},{w:"du pish",e:"urinate , aka make piss"},{w:"du push",e:"jump, press"},{w:"du sheláf",e:"sleep , do sleep"},{w:"du tung",e:"shoot , aka make BANG"},{w:"du wowk",e:"work"},{w:"du xow",e:"barf, puke"},{w:"duting",e:"console"},{w:"dzhemang",e:"asshole"},{w:"dzhogem",e:"game"},{w:"fewa",e:"faith"},{w:"fidesh",e:"trust"},{w:"fo lek",e:"descending"},{w:"fosh wowk",e:"Practice"},{w:"fotet",e:"trade , Shipping"},{w:"foto",e:"picture, image, photograph"},{w:"gang bang",e:"steering-roundtrip"},{w:"gang rowm",e:"rum-roundtrip"},{w:"gányamang",e:"winner"},{w:"godzha",e:"gyoza"},{w:"gova",e:"head"},{w:"gowe",e:"route"},{w:"hamma",e:"Inescapable torpedo range"},{w:"imim",e:"them-them"},{w:"inteng",e:"intern"},{w:"inya",e:"inner"},{w:"kaka",e:"shit"},{w:"kaxa",e:"box, case, crate"},{w:"kemang",e:"who?"},{w:"ketim",e:"when?"},{w:"keting",e:"what-thing"},{w:"kewe",e:"what-way"},{w:"kom sif",e:"become"},{w:"koma",e:"“,"},{w:"kombat",e:"fight, battle"},{w:"koming",e:"coming, arrival"},{w:"kontów",e:"control"},{w:"kopa",e:"cup"},{w:"kopeng",e:"friend"},{w:"kori",e:"heart, core"},{w:"kowe*",e:"every-way"},{w:"kowltim",e:"always, every-time"},{w:"kowlting",e:"everything"},{w:"kowmang",e:"everyone"},{w:"kowpush",e:"body"},{w:"koyo",e:"dog, cat, weasel, small mammal"},{w:"kula",e:"balls"},{w:"kuwang",e:"corner"},{w:"livit",e:"life"},{w:"mama",e:"Mom, mama"},{w:"mámamang",e:"mamas boy"},{w:"manting",e:"humanity"},{w:"menyu",e:"menu"},{w:"mesa",e:"board, table"},{w:"meshang",e:"mission"},{w:"meyo",e:"honor"},{w:"minyi",e:"minute"},{w:"miso",e:"miso"},{w:"misong",e:"mission"},{w:"mowteng",e:"requirement, necessity,need"},{w:"nafut",e:"hunger"},{w:"namang",e:"no-one"},{w:"náterash",e:"no-thrust"},{w:"nating",e:"no-thing, nothing"},{w:"obi",e:"obeah, aka sorcery"},{w:"ora",e:"hour"},{w:"owbit",e:"orbit"},{w:"owkwa",e:"water"},{w:"oxo",e:"eye"},{w:"pasa",e:"passage, pass, opening, clearance"},{w:"pati",e:"party, part"},{w:"páxari",e:"rumor, source"},{w:"pelésh",e:"place"},{w:"pesha",e:"pressure"},{w:"peshi",e:"fish"},{w:"pexa",e:"partner, spouse"},{w:"pigi",e:"pig"},{w:"pomang",e:"duster, martian"},{w:"radzhang",e:"reason, motivation"},{w:"raya",e:"beam"},{w:"retnet",e:"network"},{w:"Sabat",e:"Saturday"},{w:"sake",e:"sake"},{w:"sako",e:"bag, sack"},{w:"salta",e:"leap / jump"},{w:"sekang",e:"second"},{w:"sekóch",e:"Scotch"},{w:"sepíng",e:"spin"},{w:"seteráx",e:"fear"},{w:"seva",e:"server"},{w:"sevish",e:"service"},{w:"shapu",e:"hat"},{w:"shoyu",e:"shoyu"},{w:"sodzha",e:"soldier"},{w:"sowngit",e:"music"},{w:"sownte",e:"sound"},{w:"suchok",e:"mess, tangle"},{w:"suku",e:"juice"},{w:"tempe",e:"temperature"},{w:"tensha",e:"attention"},{w:"terásh do",e:"ass-thrust"},{w:"tomak",e:"stomach"},{w:"towchu",e:"slave"},{w:"tumang",e:"dirt-person, Earther"},{w:"vichi",e:"victory"},{w:"voka",e:"vodka"},{w:"volkang",e:"volcano"},{w:"vomit",e:"vomit"},{w:"wamang",e:"Someone, somebody"},{w:"wangu",e:"toy"},{w:"watim",e:"sometime"},{w:"wating",e:"something"},{w:"wawe*",e:"someway, somehow"},{w:"we ship",e:"Flight"},{w:"wedzha",e:"wager, bet"},{w:"welte",e:"welding"},{w:"weting",e:"type, style, kind"},{w:"wowmow",e:"wormhole"},{w:"wupo",e:"witch, sorceress"},{w:"xante",e:"arm, hand"},{w:"xashish",e:"cannabis, ganja"},{w:"xáshiting",e:"pipe, vaporizer, dab-rig,"},{w:"xelep",e:"expletive; What the xelep? Hell"},{w:"xeta",e:"hate"},{w:"xite",e:"hit, strike, blow"},{w:"xitem",e:"item , subject `"},{w:"xitim",e:"now"},{w:"xiya",e:"here"},{w:"xownyat",e:"treachery, betrayal"},{w:"yam seng",e:"cocktail, mixed drink"},{w:"yáterash",e:"yes-thrust"},{w:"yawu",e:"yaw"},{w:"ying ding",e:"Power armor"},{w:"yitim",e:"New Year"},{w:"zakong",e:"law, rule, regulation"}];
+var H_NOUNS_3=[{w:"adewu",e:"song"},{w:"afeta",e:"effect. Possibly also influence"},{w:"ámawala",e:"Boyfriend, girlfriend, lover"},{w:"ánkawala",e:"anchor-person"},{w:"anyiye",e:"year"},{w:"atake",e:"attack, assault"},{w:"bekpelésh",e:"leak; lit. break-place"},{w:"beratna",e:"brother"},{w:"béveting",e:"drink, beverage"},{w:"botiya",e:"bottle, jar"},{w:"burito",e:"burrito"},{w:"da Belte",e:"the Belt"},{w:"da nax de",e:"that night"},{w:"da NOUN de",e:"that NOUN, those NOUNs"},{w:"da weyu",e:"the gravity"},{w:"da weyu",e:"Gravity"},{w:"dedawang",e:"that-one"},{w:"dedeya",e:"that-there"},{w:"dek gova",e:"head-deck"},{w:"delowda",e:"those, that many, that much"},{w:"depelésh",e:"where…, the-place"},{w:"depeshang",e:"depression"},{w:"deradzhang",e:"that-reason"},{w:"deweting",e:"that-kind"},{w:"du ámolof",e:"love , aka do love"},{w:"du ansa",e:"answer"},{w:"du dzhogem",e:"Play"},{w:"du fo wong",e:"“tun on, aka Make to on"},{w:"du meyo",e:"honor"},{w:"du mowteng",e:"need , aka Do necessity"},{w:"du NOUN gut",e:"fix / repair NOUN, Make NOUN right"},{w:"du NOUN xush",e:"make NOUN happy, aka please "},{w:"du owbit",e:"orbit"},{w:"du sevish",e:"serve, do service"},{w:"du sherú",e:"begin"},{w:"du suchok",e:"Mess around, tangle"},{w:"du towsh bik",e:"smile"},{w:"du wang wit",e:"join, unite"},{w:"du wedzha",e:"wager, bet"},{w:"du welte",e:"weld"},{w:"du xeta",e:"hate"},{w:"du xite",e:"hit, strike"},{w:"du xom wit",e:"do home with aka marry"},{w:"du zakong",e:"rule, regulate"},{w:"ényedzhi",e:"energy"},{w:"epinya",e:"back/spine"},{w:"épisot",e:"episode"},{w:"éreluf",e:"air , soul, spirit"},{w:"érete",e:"Earth"},{w:"felota",e:"“Floater”."},{w:"ferádiye",e:"Friday"},{w:"feriting",e:"freedom, liberty"},{w:"feronte",e:"frontier, border, edge. possibly limit"},{w:"fit xitim",e:"live feed"},{w:"fo bodzha",e:"exploded, lit to explosion"},{w:"fo gova",e:"ascending"},{w:"fokaso",e:"focus . possible private?"},{w:"fongi de",e:"outside aka from-here that"},{w:"gang ámolof",e:"Love-trip"},{w:"gelori",e:"glory"},{w:"gif xep fo",e:"give help to"},{w:"gif xop fo",e:"give hope to"},{w:"gova tet",e:"“tight head”."},{w:"imbobo",e:"room, apartment, hole"},{w:"impake",e:"impact, crash"},{w:"kamera",e:"camera"},{w:"kapawu",e:"ship"},{w:"kasinyo",e:"casino"},{w:"kedawang",e:"which"},{w:"kekoku",e:"warning"},{w:"kelowda",e:"which"},{w:"kepelésh",e:"where?"},{w:"keradzhang",e:"Why? what-reason?"},{w:"keweting",e:"what-kind"},{w:"kímechi",e:"kimchi"},{w:"komante",e:"Command, Management"},{w:"kómeting",e:"received, also  inbox"},{w:"koweting*",e:"every-kind,"},{w:"kowpelésh",e:"everywhere"},{w:"kowradzhang*",e:"every-reason"},{w:"kuxaku",e:"space, vacuum"},{w:"lang belta",e:"Belter-language"},{w:"langemang",e:"linguist"},{w:"leyalting",e:"loyalty"},{w:"liperi",e:"library"},{w:"lówkedong",e:"lockdown"},{w:"malimang",e:"child"},{w:"métexeng",e:"girl"},{w:"milowda",e:"we, us"},{w:"Mundiye",e:"monday"},{w:"not fo lek",e:"“descending node aka node for leg"},{w:"ofisha",e:"official"},{w:"ora xush",e:"happy hour"},{w:"papeka",e:"sin, transgression"},{w:"pegunta",e:"question"},{w:"pénsating",e:"thought"},{w:"perepish",e:"periapsis"},{w:"péyeting",e:"payload"},{w:"péyeting",e:"payment."},{w:"pirata",e:"pirate"},{w:"pólisi",e:"policy"},{w:"raya bik",e:"wide beam, big beam"},{w:"redeshang",e:"radiation"},{w:"rédzherosh",e:"rage"},{w:"rísiko",e:"risk"},{w:"rowmwala",e:"bartender"},{w:"rúserux",e:"face"},{w:"saviting",e:"salvage, salvation"},{w:"sedneshang",e:"sedation"},{w:"seleshang",e:"acceleration"},{w:"sempere",e:"eternity"},{w:"senyawu",e:"signal"},{w:"setara",e:"star"},{w:"seteshang",e:"station"},{w:"sévelang",e:"civilain"},{w:"shukumi",e:"fate, destiny."},{w:"tadisong",e:"tradition"},{w:"tekidok",e:"technical document"},{w:"tékimang",e:"geek/engineer"},{w:"tékiting",e:"technology"},{w:"tekiwa",e:"tequila"},{w:"terampa",e:"cheater"},{w:"tolowda",e:"yall"},{w:"tudiye",e:"today"},{w:"tung tung tung",e:"shooting"},{w:"túngeting",e:"gun"},{w:"ubicha",e:"Killer, bladeboy"},{w:"úzilik",e:"Link"},{w:"vediting",e:"monitor"},{w:"vídeyo",e:"video"},{w:"wameku",e:"scream, shout, yell. also cry/weep"},{w:"wapelésh",e:"someplace"},{w:"waradzhang",e:"some-reason"},{w:"waweting*",e:"some-kind"},{w:"we fotet",e:"trade route, route  trade"},{w:"wíseki",e:"whiskey"},{w:"wit náterash",e:"with zero-g"},{w:"wit yáterash",e:"with thrust-gravity"},{w:"xaltewe",e:"status"},{w:"xanteting",e:"handrail"},{w:"xashimang",e:"stoner, weed smoker"},{w:"xétamang",e:"hater"},{w:"xidawang",e:"this-the-one, this-one"},{w:"xilowda",e:"this-many, these"},{w:"zakomang",e:"police officer"}];
+var H_NOUNS_4=[{w:"anyalasi",e:"analysis"},{w:"aseroka",e:"asteroid"},{w:"bap kuxaku",e:"space-door"},{w:"bukipelesh",e:"bookstore"},{w:"condenashang",e:"condemnation"},{w:"da diye de",e:"that day"},{w:"da NOUN xiya",e:"This NOUN"},{w:"diye beref",e:"birth-day"},{w:"du adewu",e:"sing  aka “do song”"},{w:"du afeta",e:"influence, affect"},{w:"du ferí NOUN",e:"liberate, free"},{w:"du gatamang",e:"guard, protect"},{w:"Du gut da we",e:"“set the course aka make good the way"},{w:"du nago NOUN",e:"switch off NOUNS power"},{w:"du NOUN ferí",e:"make NOUN free"},{w:"du NOUN nago",e:"stop NOUN , Make NOUN no-go"},{w:"du pasa tim",e:"wait. aka make pasage  time"},{w:"du pegunta",e:"Ask , aka make question"},{w:"du terampa",e:"cheat"},{w:"du úzilik",e:"link, connect"},{w:"du xom ere",e:"make home at/in aka live"},{w:"dusiwala",e:"sweetie"},{w:"duting xante",e:"hand-terminal"},{w:"edamame",e:"edamame"},{w:"eletisi",e:"electricity"},{w:"éntediye",e:"Wedesday"},{w:"fibafare",e:"Fever"},{w:"fo sémpere",e:"forever, permanent. “For eternity”"},{w:"fo sémpere",e:"for eternity, forever."},{w:"fotowala",e:"photographer, journalist"},{w:"gang kuxaku",e:"spacewalk, EVA"},{w:"gif pasa fo",e:"allow, permit"},{w:"govawala",e:"psychiatrist"},{w:"imalowda",e:"they, them"},{w:"imbobo rowm",e:"rum-hole"},{w:"ipulangi",e:"bed"},{w:"kakamali",e:"little shit"},{w:"kondenashang",e:"condemnation"},{w:"kula buro",e:"donkey ball"},{w:"kula peshi",e:"fish-ball"},{w:"maliwala",e:"kid, kiddo"},{w:"matnawala",e:"tits-person, breast fan"},{w:"mediwala",e:"doctor"},{w:"melodiye",e:"melody"},{w:"navigeshang",e:"navigtion"},{w:"not fo gova",e:"“ascending node aka Node for head"},{w:"okwa kaka",e:"shit-water"},{w:"okwa matna",e:"breast milk ; lit. mother-water"},{w:"onyigiri",e:"onigiri"},{w:"opereshang",e:"operations"},{w:"pansetaro",e:"all-star, superstar"},{w:"pashangimang",e:"fucker"},{w:"pashangwala",e:"fucker"},{w:"paxoniski",e:"shorty"},{w:"paxoníski",e:"Earther/Martian"},{w:"pelésh-pelésh",e:"places, somewhere significant"},{w:"revelushang",e:"revolution"},{w:"sakopinya",e:"back  bag"},{w:"seka-seka,",e:"dryer"},{w:"senyidiye",e:"week, seven-day"},{w:"setóriye",e:"story"},{w:"shetéxeting",e:"knife"},{w:"suku matna",e:"breast milk ; lit. mothers juice"},{w:"takoyaki",e:"takoyaki"},{w:"tatuyingi",e:"tattoo"},{w:"tenyaniye",e:"decade"},{w:"terásh rúserux",e:"face-thrust"},{w:"Tusidiye",e:"Tuesday"},{w:"wa koming gut",e:"welcome"},{w:"wang anyiye",e:"one year"},{w:"we ruserux",e:"straight ahead, face way"},{w:"wéltewala",e:"welder"},{w:"wit afeta",e:"affected, influenced aka with effect"},{w:"wit lowkedong",e:"with lockdown, locked down"},{w:"wit sedneshang",e:"with sedation, aka sedated"},{w:"wit úzilik",e:"linked, connected, with link"},{w:"xantedura",e:"weapons station, hardpoint"},{w:"xashiwala",e:"weed dealer, “budtender”"},{w:"xowmonyiye",e:"harmony"},{w:"xunyampelesh",e:"school, place of study"}];
+var H_NOUNS_5=[{w:"bosmang kapawu",e:"ship-boss"},{w:"but fo kapawu",e:"magnetic boots"},{w:"da NOUN dedeya",e:"that-there NOUN, them-there NOUNs"},{w:"ényedzhi owkwa",e:"water-energy"},{w:"imbobo koyo",e:"dog-hole"},{w:"kaka felota",e:"floater-shit"},{w:"sut fo kuxaku",e:"spacesuit"},{w:"tensha fo pasa",e:"“watch you step"},{w:"xalte ere pash",e:"stay in peace"}];
+var H_VERBS_1=[{w:"bang",e:"steer, navigate"},{w:"bek",e:"break"},{w:"bi",e:"“be"},{w:"chu",e:"choose"},{w:"desh",e:"there-is, there-are."},{w:"du",e:"do, make, compel, create, fabricate, put"},{w:"et",e:"Eat"},{w:"ge",e:"get, acquire"},{w:"gif",e:"give"},{w:"go",e:"go, travel"},{w:"kom",e:"come"},{w:"kush",e:"crash"},{w:"lit",e:"read"},{w:"muf",e:"move"},{w:"sit",e:"sit"},{w:"tek",e:"steal, overtake"}];
+var H_VERBS_2=[{w:"beve",e:"drink"},{w:"dansa",e:"dance"},{w:"decho",e:"die, be destroyed"},{w:"ganya",e:"win"},{w:"gif-go",e:"transfer, send"},{w:"kapa",e:"catch, capture"},{w:"kom-ge*",e:"receive"},{w:"kom-go",e:"arrive"},{w:"leta",e:"take"},{w:"lusa",e:"“lose track of"},{w:"na desh",e:"there isnt/there arent"},{w:"natim",e:"never, no-time"},{w:"openg",e:"open"},{w:"pashang",e:"fuck"},{w:"pensa",e:"think , believe"},{w:"peye",e:"pay, make payment"},{w:"sasa",e:"know"},{w:"sensa",e:"feel , sense"},{w:"sera",e:"close, shut"},{w:"setóp",e:"cease"},{w:"showxa",e:"speak, tell, say"},{w:"tenye",e:"have , also hold as in grip"},{w:"vedi",e:"see, look,"},{w:"vota",e:"vote"},{w:"wanya",e:"want, desire"},{w:"xalte",e:"keep / stay / remain / hold"},{w:"xunyam",e:"learn, study"}];
+var H_VERBS_3=[{w:"avita",e:"avoid"},{w:"du-sensa",e:"apologize . Literally “make feelings”"},{w:"du-showxa",e:"chat, make small talk"},{w:"ékepesh",e:"express"},{w:"leta-go",e:"take-away"},{w:"leta-kom",e:"bring"},{w:"peroba",e:"try, sample, taste"},{w:"pochuye",e:"hear, understand, comprehend"},{w:"rembera",e:"remember"},{w:"riyaka",e:"react"},{w:"sefoka",e:"choke, suffocate"},{w:"shetexe",e:"stab, cut"},{w:"xalte fong",e:"stay away, keep off"},{w:"xalte wit",e:"stay with, hold with"}];
+var H_VERBS_4=[{w:"finyish vedi",e:"have seen; found"},{w:"fo xalte gut",e:"Maintainence"},{w:"tili tenye",e:"own, possess"},{w:"vedi ere",e:"Try, attempt, aka look at"}];
+var H_VERBS_5=[{w:"go fongi fode",e:"leave"}];
+var H_ADJS_1=[{w:"beláng",e:"white"},{w:"bik",e:"big, wide, loud"},{w:"det",e:"dead"},{w:"fash",e:"fast"},{w:"gosh",e:"left"},{w:"gut",e:"good, correct, proper, right"},{w:"kong",e:"next , upcoming"},{w:"kosh",e:"close"},{w:"lok",e:"locked"},{w:"lowng",e:"long, far, tall"},{w:"mal",e:"bad, evil"},{w:"ong",e:"own"},{w:"ret",e:"red"},{w:"tet",e:"tight"},{w:"wowm",e:"warm"},{w:"xox",e:"high, elevated, up"},{w:"xush",e:"happy"}];
+var H_ADJS_2=[{w:"belék",e:"black"},{w:"belú",e:"blue/green, grue"},{w:"dura",e:"Hard. Also, difficult"},{w:"dusi",e:"sweet"},{w:"eka",e:"equivalent, equal"},{w:"fasi",e:"?"},{w:"ferí",e:"free"},{w:"gérowsh",e:"Gross, as in big, large, grand"},{w:"idzhi",e:"easy, simple, uncomplex"},{w:"leyal",e:"loyal"},{w:"mali",e:"little, small, quiet, young"},{w:"mofash",e:"faster"},{w:"mogut",e:"better"},{w:"molowng",e:"longer"},{w:"momal",e:"worse"},{w:"nadzhush",e:"tired"},{w:"nagut",e:"wrong, incorrect, not-good"},{w:"nalik",e:"unlike"},{w:"nalok",e:"unlocked"},{w:"nalush",e:"dark, not-light"},{w:"nasheng",e:"“untrue, false"},{w:"náshowxa",e:"silent, muted,no-speak"},{w:"natet",e:"loose, un-tight"},{w:"nuva",e:"new"},{w:"owte",e:"old"},{w:"pagal",e:"crazy, wild"},{w:"richa",e:"right"},{w:"seka",e:"dry"},{w:"solo",e:"alone, lone, possibly single"},{w:"sunte",e:"Healthy"},{w:"tubik",e:"giant, very big"},{w:"tufash",e:"very fast"},{w:"tugut",e:"Very good"},{w:"tumal",e:"very bad, “too bad”"},{w:"ultim",e:"final, last, ultimate"}];
+var H_ADJS_3=[{w:"defotung",e:"armed"},{w:"eletík",e:"electric, electrical"},{w:"ematim",e:"Soon"},{w:"étera",e:"extra, surplus"},{w:"foriya",e:"True, real, authentic"},{w:"gútegow",e:"ready, prepared, set"},{w:"legawu",e:"legal, legitimate"},{w:"mogut fo",e:"“should aka better for"},{w:"nakángego",e:"stuck, jammed, un able to move/operate"},{w:"nakángekeng",e:"unknowable"},{w:"nasunte",e:"unhealthy, sick"},{w:"owlesi",e:"lazy"},{w:"pikante",e:"spicy"},{w:"séfesowng",e:"safe"},{w:"teristi",e:"sad"},{w:"wamotim",e:"again"},{w:"xélixup",e:"awesome, very good"}];
+var H_ADJS_4=[{w:"bekedabush",e:"delicious"},{w:"gótefodam",e:"goddamned"},{w:"idzhifobék",e:"brittle, weak"},{w:"nalegawu",e:"illegal, illegitimate"}];
+var H_ADJS_5=[{w:"kapadagova",e:"interesting, catches-the-mind"},{w:"nakangepensa",e:"dumb, stupid"},{w:"tugufovedi",e:"too-beautiful"}];
+var H_OTHER_1=[{w:"da",e:"the"},{w:"deng",e:"then, In-that-case"},{w:"et",e:"eight"},{w:"faf",e:"five"},{w:"fing",e:"until,"},{w:"fo",e:"for / to / towards / because"},{w:"fong",e:"from, off. possibly since as well"},{w:"fosh",e:"first"},{w:"fu",e:"four"},{w:"kang",e:"mood: CAPABLE"},{w:"kená",e:"No?"},{w:"keyá",e:"Yes?"},{w:"ko",e:"“ok"},{w:"kowl",e:"all, every"},{w:"lik",e:"like, aka in the manner of"},{w:"mo",e:"more"},{w:"mo-",e:"“more affix , intensifier"},{w:"mosh",e:"most"},{w:"mowsh",e:"mood: must, have to"},{w:"na",e:"no, not, negative"},{w:"na-",e:"“negation affix"},{w:"neng",e:"nine"},{w:"o",e:"or"},{w:"pash",e:"than, beyond, past"},{w:"seng",e:"seven"},{w:"so",e:"so, such"},{w:"soyá",e:"Umm, yeah"},{w:"teng",e:"ten"},{w:"tu",e:"two"},{w:"tu-",e:"“very” affix"},{w:"wa",e:"a / an"},{w:"wa-",e:"“some- affix"},{w:"wang",e:"one"},{w:"wit",e:"with, between"},{w:"ya",e:"yes, affirmative"}];
+var H_OTHER_2=[{w:"amash",e:"but"},{w:"bera",e:"Nothing but aka only, merely, just"},{w:"deng fo",e:"would  aka in-that-case for"},{w:"efa",e:"after,, the opposite of before"},{w:"ere",e:"On, at, in, inside, about, regarding"},{w:"fode",e:"to-there"},{w:"fongi",e:"from-here"},{w:"fore",e:"before, the opposite of after"},{w:"fosho",e:"strong belief"},{w:"gata",e:"gate ? guard ?"},{w:"go go",e:"“Go on”."},{w:"kasi",e:"almost"},{w:"kom kom",e:"come come, come on"},{w:"nada",e:"zero"},{w:"oso",e:"also, additionally"},{w:"owta",e:"other, different"},{w:"oye",e:"hey, hello"},{w:"sekang",e:"second"},{w:"serí",e:"three"},{w:"Setóp!",e:"STOP!"},{w:"síkesh",e:"six"},{w:"teki-",e:"technology-related  prefix"},{w:"tuteng",e:"twenty"},{w:"unte",e:"and"},{w:"wang wit",e:"together, “one with…”"},{w:"Ya fet!",e:"alright!"},{w:"yam seng",e:"cheers"}];
+var H_OTHER_3=[{w:"asilik",e:"Like, “as if it were the case ”"},{w:"erefo",e:"into"},{w:"fodagut",e:"please"},{w:"gútemang",e:"Mr / Ms  / Mx"},{w:"oyedeng",e:"goodbye"},{w:"walowda",e:"some"},{w:"wamali",e:"a few, a little bit"},{w:"Wepera!",e:"Wait!"}];
+var H_OTHER_4=[{w:"da nax xiya",e:"this night"},{w:"fongi fode",e:"away"},{w:"sili... mebi...",e:"if"},{w:"taki taki",e:"thank you"}];
+var H_OTHER_5=[{w:"da diye xiya",e:"this day"}];
+// Haiku line templates - patterns of [part_of_speech, syllables]
+// These create grammatically plausible Belter phrases
+var TEMPLATES_5 = [
+  [["nouns",2],["adjs",1],["verbs",2]],
+  [["nouns",1],["nouns",2],["adjs",2]],
+  [["adjs",2],["nouns",3]],
+  [["nouns",3],["verbs",2]],
+  [["verbs",2],["nouns",3]],
+  [["other",1],["nouns",2],["adjs",2]],
+  [["nouns",2],["other",1],["adjs",2]],
+  [["adjs",1],["nouns",1],["nouns",3]],
+  [["nouns",1],["verbs",1],["nouns",3]],
+  [["nouns",5]],
+  [["nouns",2],["nouns",3]],
+  [["verbs",2],["adjs",1],["nouns",2]],
+  [["other",2],["nouns",1],["verbs",2]],
+  [["adjs",2],["nouns",1],["verbs",2]]
+];
+
+var TEMPLATES_7 = [
+  [["nouns",2],["verbs",2],["nouns",3]],
+  [["nouns",3],["adjs",2],["verbs",2]],
+  [["adjs",2],["nouns",2],["verbs",3]],
+  [["other",1],["nouns",3],["adjs",3]],
+  [["nouns",2],["nouns",2],["adjs",3]],
+  [["verbs",2],["nouns",2],["adjs",3]],
+  [["other",2],["nouns",3],["verbs",2]],
+  [["nouns",3],["verbs",2],["other",2]],
+  [["nouns",1],["adjs",2],["nouns",2],["verbs",2]],
+  [["nouns",4],["adjs",3]],
+  [["adjs",3],["nouns",4]],
+  [["nouns",2],["adjs",2],["nouns",3]],
+  [["verbs",3],["nouns",2],["adjs",2]],
+  [["nouns",3],["other",1],["nouns",3]]
+];
+
+function pick(arr){return arr[Math.floor(Math.random()*arr.length)]}
+
+function getWordPool(cat, syls){
+  var name='H_'+cat.toUpperCase()+'_'+syls;
+  var pool=window[name];
+  if(!pool||pool.length===0){
+    // Fallback: try nouns of same syllable count
+    pool=window['H_NOUNS_'+syls];
+  }
+  if(!pool||pool.length===0){
+    // Last resort: any 1-syllable noun
+    pool=window['H_NOUNS_1']||[{w:'da',e:'the'}];
+  }
+  return pool;
+}
+
+function buildLine(templates){
+  var tmpl=pick(templates);
+  var words=[];
+  var engs=[];
+  var used={};
+  for(var i=0;i<tmpl.length;i++){
+    var cat=tmpl[i][0];
+    var syls=tmpl[i][1];
+    var pool=getWordPool(cat,syls);
+    // Avoid repeats
+    var attempts=0;
+    var w;
+    do{
+      w=pick(pool);
+      attempts++;
+    }while(used[w.w]&&attempts<10);
+    used[w.w]=true;
+    words.push(w.w);
+    engs.push(w.e);
+  }
+  return {belta:words.join(' '),eng:engs.join(' / ')};
+}
+
+var currentHaiku=null;
+var saved=[];
+var generated=0;
+
+function generateHaiku(){
+  var l1=buildLine(TEMPLATES_5);
+  var l2=buildLine(TEMPLATES_7);
+  var l3=buildLine(TEMPLATES_5);
+  
+  currentHaiku={l1:l1,l2:l2,l3:l3};
+  generated++;
+  
+  // Animate in
+  var lines=['line1','line2','line3'];
+  var trans=['trans1','trans2','trans3'];
+  lines.forEach(function(id){document.getElementById(id).style.opacity=0});
+  trans.forEach(function(id){document.getElementById(id).style.opacity=0});
+  
+  setTimeout(function(){
+    document.getElementById('line1').textContent=l1.belta;
+    document.getElementById('line2').textContent=l2.belta;
+    document.getElementById('line3').textContent=l3.belta;
+    document.getElementById('trans1').textContent=l1.eng;
+    document.getElementById('trans2').textContent=l2.eng;
+    document.getElementById('trans3').textContent=l3.eng;
+    document.getElementById('sylCount').textContent='5 · 7 · 5';
+    
+    lines.forEach(function(id,i){
+      setTimeout(function(){document.getElementById(id).style.opacity=1},i*200);
+    });
+    trans.forEach(function(id,i){
+      setTimeout(function(){document.getElementById(id).style.opacity=1},600+i*150);
+    });
+  },150);
+  
+  document.getElementById('saveBtn').style.display='inline-block';
+  document.getElementById('counter').textContent=generated+' haiku generated';
+}
+
+function saveHaiku(){
+  if(!currentHaiku) return;
+  saved.push({...currentHaiku});
+  renderSaved();
+}
+
+function deleteSaved(i){
+  saved.splice(i,1);
+  renderSaved();
+}
+
+function renderSaved(){
+  var el=document.getElementById('savedList');
+  var col=document.getElementById('collection');
+  if(saved.length===0){col.style.display='none';return}
+  col.style.display='block';
+  var html='';
+  saved.forEach(function(h,i){
+    html+='<div class="saved-haiku"><button class="sh-del" onclick="deleteSaved('+i+')">✕</button>';
+    html+='<div class="sh-belta">'+h.l1.belta+'<br>'+h.l2.belta+'<br>'+h.l3.belta+'</div>';
+    html+='<div class="sh-eng">'+h.l1.eng+' / '+h.l2.eng+' / '+h.l3.eng+'</div></div>';
+  });
+  el.innerHTML=html;
+}
+
+// Generate one on load
+generateHaiku();
+</script>
+</body>
+</html>
