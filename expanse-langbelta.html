@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>Lang Belta — The Language of the Belt | The Expanse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#060810;--card:#0c1020;--card2:#131b30;--accent:#3a8fd4;--accent2:#e07848;--accent3:#40c890;--accent4:#c860a0;--text:#d8dce8;--muted:#7888a8;--dim:#4a5878;--border:#1e3050;--gold:#f0c060}
+*{box-sizing:border-box;margin:0;padding:0}
+body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 20%,rgba(58,143,212,0.04) 0%,transparent 70%);pointer-events:none}
+.fc-brand-bar{position:sticky;top:0;z-index:100;background:rgba(6,8,16,0.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.06);padding:8px 16px;display:flex;align-items:center;gap:10px}
+.fc-brand-bar a{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit}
+.fc-brand-bar img{width:32px;height:32px;border-radius:50%}
+.fc-brand-bar span{font-family:sans-serif;font-size:14px;font-weight:600;color:#c9a44a;letter-spacing:0.5px}
+.fc-brand-bar .fc-sep{color:rgba(255,255,255,0.15);font-size:18px;font-weight:300}
+.fc-brand-bar .fc-page-name{font-size:13px;font-weight:500;color:rgba(255,255,255,0.4)}
+.container{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:24px 16px 80px}
+.back-link{display:inline-block;color:var(--accent);text-decoration:none;font-size:13px;font-weight:600;padding:6px 14px;border:1px solid var(--border);border-radius:99px;transition:all .2s;margin-bottom:16px}
+.back-link:hover{border-color:var(--accent)}
+.hero{text-align:center;padding:20px 0 28px}
+.hero h1{font-family:'Orbitron',sans-serif;font-size:clamp(22px,4.5vw,38px);font-weight:800;background:linear-gradient(135deg,#3a8fd4,#40c890);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:2px;line-height:1.3}
+.hero .hero-sub{font-family:'Orbitron',sans-serif;font-size:clamp(11px,2vw,14px);color:var(--accent2);letter-spacing:3px;margin-top:6px;font-weight:600}
+.hero p{color:var(--muted);font-size:15px;margin-top:14px;line-height:1.7;max-width:680px;margin-left:auto;margin-right:auto}
+
+/* Info cards */
+.info-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:28px;margin-bottom:20px;transition:border-color .25s}
+.info-card:hover{border-color:var(--accent)}
+.info-card h2{font-family:'Orbitron',sans-serif;font-size:18px;font-weight:700;letter-spacing:0.5px;margin-bottom:12px}
+.info-card p{font-size:15px;color:var(--muted);line-height:1.75;margin-bottom:10px}
+.info-card p:last-child{margin-bottom:0}
+.hl{color:var(--accent);font-weight:700}
+.hl2{color:var(--accent2);font-weight:700}
+.hl3{color:var(--accent3);font-weight:700}
+.hl4{color:var(--accent4);font-weight:700}
+.hlg{color:var(--gold);font-weight:700}
+.belta{font-style:italic;color:var(--accent3)}
+.grammar-row{display:flex;gap:16px;margin:12px 0;flex-wrap:wrap}
+.grammar-ex{background:var(--card2);border-radius:12px;padding:14px 18px;flex:1;min-width:200px}
+.grammar-ex .belta-line{font-family:'Orbitron',sans-serif;font-size:14px;color:var(--accent3);letter-spacing:0.5px;margin-bottom:4px}
+.grammar-ex .eng-line{font-size:13px;color:var(--muted)}
+.grammar-ex .lit-line{font-size:11px;color:var(--dim);font-style:italic}
+.gesture-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-top:12px}
+.gesture-card{background:var(--card2);border-radius:12px;padding:14px;text-align:center}
+.gesture-card .gesture-emoji{font-size:28px;margin-bottom:4px}
+.gesture-card .gesture-name{font-size:13px;font-weight:700;color:var(--accent2)}
+.gesture-card .gesture-desc{font-size:12px;color:var(--dim);margin-top:4px;line-height:1.5}
+
+/* Dictionary section */
+.section-title{font-family:'Orbitron',sans-serif;font-size:20px;font-weight:700;letter-spacing:1px;margin:40px 0 16px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+
+.dict-controls{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;align-items:center}
+.search-box{flex:1;min-width:200px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 16px;color:var(--text);font-family:'Nunito',sans-serif;font-size:14px;outline:none;transition:border-color .2s}
+.search-box:focus{border-color:var(--accent)}
+.search-box::placeholder{color:var(--dim)}
+.cat-filters{display:flex;gap:6px;flex-wrap:wrap}
+.cat-filter{background:var(--card);color:var(--muted);border:1px solid var(--border);padding:6px 14px;border-radius:99px;cursor:pointer;font-size:12px;font-weight:700;font-family:'Nunito',sans-serif;transition:all .2s}
+.cat-filter:hover{border-color:var(--accent)}
+.cat-filter.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.dict-count{font-size:12px;color:var(--dim);margin-bottom:12px}
+
+.dict-entry{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:8px;transition:border-color .2s}
+.dict-entry:hover{border-color:var(--accent3)}
+.dict-top{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.dict-word{font-family:'Orbitron',sans-serif;font-size:16px;font-weight:700;color:var(--accent3);letter-spacing:0.5px}
+.dict-pronun{font-size:13px;color:var(--dim);font-style:italic}
+.dict-cat-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:6px;text-transform:uppercase;letter-spacing:0.08em;margin-left:auto}
+.dict-cat-badge.greetings{background:rgba(58,143,212,0.12);color:var(--accent)}
+.dict-cat-badge.nouns{background:rgba(64,200,144,0.12);color:var(--accent3)}
+.dict-cat-badge.verbs{background:rgba(224,120,72,0.12);color:var(--accent2)}
+.dict-cat-badge.adjectives{background:rgba(200,96,160,0.12);color:var(--accent4)}
+.dict-cat-badge.pronouns{background:rgba(240,192,96,0.12);color:var(--gold)}
+.dict-cat-badge.phrases{background:rgba(58,143,212,0.12);color:var(--accent)}
+.dict-cat-badge.curses{background:rgba(255,80,80,0.12);color:#ff5050}
+.dict-cat-badge.slang{background:rgba(200,96,160,0.12);color:var(--accent4)}
+.dict-cat-badge.grammar{background:rgba(240,192,96,0.12);color:var(--gold)}
+.dict-cat-badge.people{background:rgba(64,200,144,0.12);color:var(--accent3)}
+.dict-cat-badge.places{background:rgba(58,143,212,0.12);color:var(--accent)}
+.dict-cat-badge.body{background:rgba(224,120,72,0.12);color:var(--accent2)}
+.dict-cat-badge.culture{background:rgba(200,96,160,0.12);color:var(--accent4)}
+.dict-def{font-size:14px;color:var(--muted);margin-top:6px;line-height:1.65}
+.dict-origin{font-size:12px;color:var(--dim);margin-top:4px;font-style:italic}
+.dict-example{background:var(--card2);border-radius:8px;padding:8px 12px;margin-top:8px;font-size:13px}
+.dict-example .ex-belta{color:var(--accent3);font-style:italic}
+.dict-example .ex-eng{color:var(--dim);margin-top:2px}
+.dict-empty{text-align:center;padding:32px;color:var(--dim)}
+
+@media(max-width:600px){.dict-controls{flex-direction:column}.search-box{min-width:100%}.dict-top{flex-direction:column;gap:4px}.dict-cat-badge{margin-left:0}}
+</style>
+</head>
+<body>
+<div class="fc-brand-bar"><a href="index.html"><img src="fancannonlogo.png" alt="Fan Cannon"><span>Fan Cannon</span></a><span class="fc-sep">|</span><span class="fc-page-name">Lang Belta</span></div>
+<div class="container">
+<a href="expanse-universe.html" class="back-link">← Back to The Expanse Universe</a>
+
+<div class="hero">
+<h1>LANG BELTA</h1>
+<div class="hero-sub">DA LANGUAGE FO DA BELT</div>
+<p>Far from Earth's gravity well, the resourceful people of the Asteroid Belt forged their own creole language from fragments of every tongue that came before. Created by linguist Nick Farmer for the TV series, Lang Belta is one of the most fully realized constructed languages in science fiction.</p>
+</div>
+
+<!-- HISTORY -->
+<div class="info-card">
+<h2 style="color:var(--accent)">🌍 How Lang Belta Was Born</h2>
+<p>In the universe of The Expanse, Belter Creole evolved naturally over generations. When humans from every nation on Earth migrated to the Asteroid Belt to work, they needed to communicate — often while wearing <span class="hl">space suits with poor comms</span>. What started as a pidgin of necessity slowly crystallized into a full creole language, mixing <span class="hl2">English, Chinese, Spanish, Hindi, Arabic, Russian, German, Japanese, Zulu, Portuguese, French, Polish, Swedish, Hebrew, Persian</span>, and more.</p>
+<p>In the real world, linguist <span class="hl3">Nick Farmer</span> was hired during Season 1 of the show (2014-2015) to transform the scattered Belter slang in the novels into a functioning language with grammar, phonology, and over <span class="hlg">1,000 words</span>. He created three levels: <span class="hl">Pure Belta</span> (fully Belter, subtitles needed), <span class="hl2">Medium Belta</span> (mixed with English), and <span class="hl3">Light Belta</span> (mostly English with Belter flavoring). Actors filmed scenes in all three versions, and producers chose which to use.</p>
+<p>The show's producers deliberately <span class="hl4">avoided subtitles</span> — they wanted viewers to feel like outsiders slowly learning the language through context, just like a newly arrived Earther on Ceres would. Dialect coach <span class="hl">Eric Armstrong</span> helped each actor develop a personal accent and style of code-switching, reflecting where their character grew up in the Belt.</p>
+</div>
+
+<!-- GRAMMAR -->
+<div class="info-card">
+<h2 style="color:var(--accent3)">📐 How It Works: Grammar Basics</h2>
+<p>Lang Belta is an <span class="hl3">analytic (isolating) language</span> — it uses word order and particles instead of inflections. It's <span class="hl">gender-neutral</span>, uses <span class="hl2">subject-verb-object</span> word order, and has a <span class="hl4">zero copula</span> (no "is" or "am").</p>
+<div class="grammar-row">
+<div class="grammar-ex"><div class="belta-line">Mi nadzhush.</div><div class="eng-line">"I am tired."</div><div class="lit-line">Lit: "I tired" — no verb "to be"</div></div>
+<div class="grammar-ex"><div class="belta-line">To showxa lang Belta, ke?</div><div class="eng-line">"Do you speak Belter?"</div><div class="lit-line">"ke" at the end forms a question</div></div>
+</div>
+<p><span class="hl3">Adjectives follow the noun</span> they modify (opposite of English), and nouns modifying other nouns also follow:</p>
+<div class="grammar-row">
+<div class="grammar-ex"><div class="belta-line">setara mali</div><div class="eng-line">"little star"</div><div class="lit-line">star + small</div></div>
+<div class="grammar-ex"><div class="belta-line">kopeng mi</div><div class="eng-line">"my friend"</div><div class="lit-line">friend + I/me</div></div>
+</div>
+<p>The definite article <span class="belta">da</span> goes before proper names (<span class="belta">da Mila</span> = "Miller") and must be repeated before every modified word: <span class="belta">da setara da mali</span> = "the little star." Questions end with <span class="belta">ke</span> (yes/no) or <span class="belta">keyá</span> ("isn't it?"). Verbs don't inflect for person or tense — context and particles handle everything.</p>
+</div>
+
+<!-- PRONUNCIATION -->
+<div class="info-card">
+<h2 style="color:var(--accent2)">🗣️ Pronunciation Guide</h2>
+<p>Most letters sound like English, with these key differences:</p>
+<div class="grammar-row">
+<div class="grammar-ex"><div class="belta-line">x = "sh"</div><div class="eng-line">showxa → "SHOW-sha"</div></div>
+<div class="grammar-ex"><div class="belta-line">zh = French "j"</div><div class="eng-line">nadzhush → "nad-ZHOOSH"</div></div>
+</div>
+<div class="grammar-row">
+<div class="grammar-ex"><div class="belta-line">ch = always "ch"</div><div class="eng-line">pochuye → "po-CHOO-yeh"</div></div>
+<div class="grammar-ex"><div class="belta-line">-lowda = "LOW-dah"</div><div class="eng-line">beltalowda → "bel-ta-LOW-dah"</div></div>
+</div>
+<p>The <span class="belta">-lowda</span> suffix is one of Belter's most distinctive features — it creates plural/collective forms, especially for pronouns. The accent and cadence vary by region: Ceres dialect (the main one in the show) has a lilting, musical quality influenced by Caribbean and South African speech patterns.</p>
+</div>
+
+<!-- GESTURES -->
+<div class="info-card">
+<h2 style="color:var(--gold)">🤌 Physical Idioms & Gestures</h2>
+<p>Because Belters originally had to communicate in <span class="hl">space suits with poor comms</span>, physical gestures became as important as spoken words. Some essential ones:</p>
+<div class="gesture-grid">
+<div class="gesture-card"><div class="gesture-emoji">✊</div><div class="gesture-name">Fist to Heart</div><div class="gesture-desc">The Beltalowda salute. Solidarity, respect, "I'm with you."</div></div>
+<div class="gesture-card"><div class="gesture-emoji">🤏</div><div class="gesture-name">Finger Circle</div><div class="gesture-desc">Index nail touching inner thumb — derogatory, like giving the finger.</div></div>
+<div class="gesture-card"><div class="gesture-emoji">🖐️</div><div class="gesture-name">Open Palm Out</div><div class="gesture-desc">Stop, halt, or "I come in peace."</div></div>
+<div class="gesture-card"><div class="gesture-emoji">👆</div><div class="gesture-name">Point Up</div><div class="gesture-desc">Refers to the inners, Earth, or authority figures.</div></div>
+<div class="gesture-card"><div class="gesture-emoji">🤙</div><div class="gesture-name">Rock On</div><div class="gesture-desc">Agreement, approval, "right on."</div></div>
+<div class="gesture-card"><div class="gesture-emoji">🫳</div><div class="gesture-name">Palm Down Wave</div><div class="gesture-desc">"Calm down" or "lower your voice."</div></div>
+</div>
+</div>
+
+<!-- DICTIONARY -->
+<h2 class="section-title" style="color:var(--accent3)">📖 LANG BELTA DICTIONARY</h2>
+<div class="dict-controls">
+<input type="text" class="search-box" id="searchBox" placeholder="Search Belter or English...">
+<div class="cat-filters" id="catFilters"></div>
+</div>
+<div class="dict-count" id="dictCount"></div>
+<div id="dictList"></div>
+
+<!-- CLOSING -->
+<div style="text-align:center;margin-top:40px;padding:24px;background:var(--card);border:1px solid var(--border);border-radius:18px">
+<div style="font-size:28px;margin-bottom:6px">🗣️</div>
+<div style="font-family:'Orbitron',sans-serif;font-size:14px;font-weight:700;color:var(--accent3);letter-spacing:1px;margin-bottom:6px">KOWL LANG GUT, BERATNA</div>
+<p style="color:var(--muted);font-size:13px;line-height:1.6;max-width:500px;margin:0 auto">Lang Belta lives on in the Expanse Discord community, where fans chat, write, and even compose poetry in it. Nick Farmer continues to expand the vocabulary. The language is one of the most detailed constructed languages in modern sci-fi — a living testament to the show's commitment to worldbuilding.</p>
+</div>
+
+</div>
+<script>
+var DICT=[
+// ══════ GREETINGS & FAREWELLS ══════
+{w:"Bosmang",p:"BOSS-mang",d:"Boss, chief, leader. Anyone in charge. Literally 'boss man.'",cat:"greetings",o:"English: boss + man",ex:{b:"Hoy, bosmang!",e:"Hey, boss!"}},
+{w:"Hoy",p:"HOY",d:"Hey, hello. A general greeting or attention-getter.",cat:"greetings",o:"English: ahoy / hey"},
+{w:"Keting gut, kopeng",p:"KEH-ting GOOT, ko-PENG",d:"Good day, friend. A warm greeting.",cat:"phrases",o:"Mixed: greeting + good + friend"},
+{w:"Im ta nating",p:"eem ta NAH-ting",d:"You're welcome. Literally 'it was nothing.'",cat:"phrases",o:"English: it + was + nothing"},
+{w:"Taki taki",p:"TAH-kee TAH-kee",d:"Talk soon / see you later / goodbye.",cat:"greetings",o:"Derived from 'talk talk'"},
+{w:"Ando",p:"AN-doh",d:"Let's go. Used as a farewell or call to action.",cat:"greetings",o:"Spanish: andamos (let's go)"},
+
+// ══════ PEOPLE & IDENTITY ══════
+{w:"Beltalowda",p:"bel-ta-LOW-dah",d:"Us Belters. All Belters collectively. The most iconic Belter word — a declaration of identity and solidarity.",cat:"people",o:"Belt + -lowda (collective suffix)",ex:{b:"Owkwa beltalowda!",e:"Our water! (Water belonging to the Belters)"}},
+{w:"Inyalowda",p:"in-ya-LOW-dah",d:"Inner planet people. Anyone from Earth or Mars. Somewhat derogatory — implies privilege and ignorance.",cat:"people",o:"Inner + -lowda (collective)"},
+{w:"Wellwala",p:"WELL-wah-lah",d:"A Belter who identifies with or is obsessed with the inner planets. Traitor, sell-out. One of the worst things you can call a Belter.",cat:"slang",o:"Well (gravity well) + -wala (Hindi: person associated with)",ex:{b:"To wa wellwala, sasa ke?",e:"You're a well-dweller, you know?"}},
+{w:"Beratna",p:"beh-RAT-nah",d:"Brother. Used broadly for any male ally, comrade, or close friend.",cat:"people",o:"Slavic: brat (brother) + modification"},
+{w:"Sésata",p:"SEH-sah-tah",d:"Sister. Used broadly for any female ally, comrade, or close friend.",cat:"people",o:"Related to 'sister' with Belter modification"},
+{w:"Kopeng",p:"ko-PENG",d:"Friend, companion, mate.",cat:"people",o:"Possibly Malay: kawan (friend) + modification"},
+{w:"Pampa",p:"PAM-pah",d:"Father, dad.",cat:"people",o:"Romance: papa / pampa"},
+{w:"Maliwala",p:"mah-lee-WAH-lah",d:"Child, children. Literally 'small person.'",cat:"people",o:"mali (small) + -wala (person)"},
+{w:"Dzhemang",p:"jeh-MANG",d:"Gentleman, man of status.",cat:"people",o:"English: gentleman + compression"},
+{w:"Towchu",p:"TOW-choo",d:"Slave, indentured laborer. A word loaded with Belter history — many early Belters were essentially forced labor.",cat:"people",o:"Possible Chinese origin"},
+{w:"Sabakawala",p:"sah-BAH-kah-WAH-lah",d:"A dog-person; someone contemptible, a bastard.",cat:"curses",o:"sabaka (dog) + -wala (person)"},
+{w:"Tumang",p:"TOO-mang",d:"An Earther. Can be neutral or derogatory depending on context.",cat:"people",o:"Possibly from 'to man' or 'too man'"},
+{w:"Pomang",p:"PO-mang",d:"Police, security forces.",cat:"people",o:"English: po(lice) + mang"},
+{w:"Setamang",p:"SEH-tah-mang",d:"Star person, spacer. Someone who lives and works in deep space.",cat:"people",o:"setara (star) + mang (person)"},
+
+// ══════ NOUNS ══════
+{w:"Owkwa",p:"OWK-wah",d:"Water. The most precious resource in the Belt. Wars are fought over it.",cat:"nouns",o:"Possibly from Igbo: okwu",ex:{b:"Owkwa beltalowda!",e:"Our water!"}},
+{w:"Ereluf",p:"EH-reh-loof",d:"Air, atmosphere. The second most precious thing on a station.",cat:"nouns",o:"English: air + German: Luft (air)"},
+{w:"Imbobo",p:"im-BOH-boh",d:"Hole, puncture. On a station, an imbobo can mean death.",cat:"nouns",o:"Possibly Zulu: imbobo (hole)"},
+{w:"Setara",p:"seh-TAR-ah",d:"Star.",cat:"nouns",o:"Portuguese/Spanish: estrela/estrella"},
+{w:"Gonya",p:"GOHN-yah",d:"Going to, about to. Future intention marker.",cat:"grammar",o:"English: gonna"},
+{w:"Livit",p:"LIH-vit",d:"Life, living.",cat:"nouns",o:"English: live/life + modification"},
+{w:"Lang",p:"LAHNG",d:"Language.",cat:"nouns",o:"English: language (shortened)"},
+{w:"Fong",p:"FONG",d:"Thing, stuff. Generic noun for anything.",cat:"nouns",o:"Chinese: 东西 (dōngxi) or similar"},
+{w:"Keting",p:"KEH-ting",d:"Day, time period.",cat:"nouns",o:"Uncertain; possibly Dutch: keer (time)"},
+{w:"Nawit",p:"NAH-wit",d:"Night.",cat:"nouns",o:"English: night + modification"},
+{w:"Kowlting",p:"KOWL-ting",d:"Everything.",cat:"nouns",o:"kowl (all) + ting (thing)"},
+{w:"Nating",p:"NAH-ting",d:"Nothing.",cat:"nouns",o:"English: nothing"},
+{w:"Ferí",p:"feh-REE",d:"Happiness, joy.",cat:"nouns",o:"Portuguese: feliz/alegria"},
+{w:"Paxtet",p:"PAHKS-tet",d:"Patience.",cat:"nouns",o:"Latin: pax (peace)"},
+{w:"Tili",p:"TIH-lee",d:"Tea.",cat:"nouns",o:"Hindi: chai / Chinese: chá"},
+{w:"Milowda kowl",p:"mee-LOW-dah KOWL",d:"All of us. The whole crew/community.",cat:"nouns",o:"mi (I) + -lowda (plural) + kowl (all)"},
+{w:"Dzhush",p:"ZHOOSH",d:"Juice — specifically 'the Juice,' the cocktail of drugs used to survive high-g acceleration.",cat:"nouns",o:"English: juice + Belter phonology"},
+{w:"Kaka felota",p:"KAH-kah feh-LOH-tah",d:"Shit that floats. Expressive Belter compound noun for worthless things or people.",cat:"curses",o:"Spanish: caca + English: float"},
+{w:"Pochuye",p:"po-CHOO-yeh",d:"Understanding, hearing. Often used as a verb: to understand, to hear.",cat:"verbs",o:"Russian: почуять (to sense/feel)"},
+{w:"Xiya",p:"SHEE-yah",d:"Ship, spacecraft.",cat:"nouns",o:"Chinese: 舰 (jiàn) or modified"},
+{w:"Unte",p:"OON-teh",d:"And. The basic conjunction.",cat:"grammar",o:"German: und (and)"},
+{w:"Ere",p:"EH-reh",d:"About, concerning, on the topic of.",cat:"grammar",o:"English: 'ere (about)"},
+{w:"Kowl",p:"KOWL",d:"All, every, everything.",cat:"grammar",o:"English: all + modification"},
+{w:"Ting",p:"TING",d:"Thing. Also used as a non-specific demonstrative 'this.'",cat:"nouns",o:"English: thing"},
+{w:"Da",p:"DAH",d:"The (definite article). Used before proper names and repeated before each modifier.",cat:"grammar",o:"English: the/that",ex:{b:"Da Mila",e:"Miller (with the definite article)"}},
+{w:"Wa",p:"WAH",d:"A, an (indefinite article).",cat:"grammar",o:"English: a + modification"},
+{w:"Ke",p:"KEH",d:"Question particle. Added to end of statement to form yes/no questions.",cat:"grammar",o:"Creole question marker",ex:{b:"To sasa, ke?",e:"You know, right? / Do you know?"}},
+{w:"Keyá",p:"keh-YAH",d:"Tag question: 'isn't it?' or 'right?' Expects agreement.",cat:"grammar",o:"ke + yá (yes)"},
+{w:"Fo",p:"FOH",d:"For.",cat:"grammar",o:"English: for"},
+{w:"Wit",p:"WIT",d:"With.",cat:"grammar",o:"English: with"},
+
+// ══════ PRONOUNS ══════
+{w:"Mi",p:"MEE",d:"I, me, my.",cat:"pronouns",o:"English: me"},
+{w:"To",p:"TOH",d:"You, your (singular).",cat:"pronouns",o:"French: tu / Portuguese: tu"},
+{w:"Im",p:"EEM",d:"He, she, it, him, her. Gender-neutral third person singular.",cat:"pronouns",o:"English: him/her compressed"},
+{w:"Milowda",p:"mee-LOW-dah",d:"We, us. First person plural.",cat:"pronouns",o:"mi + -lowda (plural suffix)"},
+{w:"Tolowda",p:"toh-LOW-dah",d:"You all, y'all. Second person plural.",cat:"pronouns",o:"to + -lowda"},
+{w:"Imalowda",p:"ee-mah-LOW-dah",d:"They, them. Third person plural.",cat:"pronouns",o:"im + -lowda"},
+
+// ══════ VERBS ══════
+{w:"Showxa",p:"SHOW-sha",d:"To speak, to talk, to say.",cat:"verbs",o:"English: show + -xa (Belter verb ending)"},
+{w:"Sasa",p:"SAH-sah",d:"To know. One of the most common Belter words.",cat:"verbs",o:"Possibly Swahili/Portuguese: saber",ex:{b:"Mi sasa.",e:"I know."}},
+{w:"Pensa",p:"PEN-sah",d:"To think.",cat:"verbs",o:"Spanish/Portuguese: pensar"},
+{w:"Sensa",p:"SEN-sah",d:"To feel, to sense.",cat:"verbs",o:"Latin: sentire / Spanish: sentir"},
+{w:"Kang",p:"KAHNG",d:"To work, to do labor.",cat:"verbs",o:"Possibly Chinese: 干 (gàn, to do)"},
+{w:"Gonya",p:"GOHN-yah",d:"Going to (future marker). Placed before verb to indicate future action.",cat:"grammar",o:"English: gonna",ex:{b:"Mi gonya go fo Ceres.",e:"I'm going to go to Ceres."}},
+{w:"Du",p:"DOO",d:"To do, to make.",cat:"verbs",o:"English: do"},
+{w:"Fongta",p:"FONG-tah",d:"To pretend, to fake.",cat:"verbs",o:"fong (thing) + ta (modification)"},
+{w:"Mogut",p:"mo-GOOT",d:"Can, to be able to. Ability marker.",cat:"verbs",o:"Russian: могут (they can)"},
+{w:"Ferí",p:"feh-REE",d:"To be happy, to rejoice.",cat:"verbs",o:"Portuguese: feliz (happy)"},
+{w:"Dong",p:"DONG",d:"To fight.",cat:"verbs",o:"Uncertain origin"},
+{w:"Beref",p:"beh-REFF",d:"To believe.",cat:"verbs",o:"English: believe + modification"},
+{w:"Tili",p:"TIH-lee",d:"To drink (also: tea).",cat:"verbs",o:"Context-dependent"},
+{w:"Manting",p:"MAN-ting",d:"To tell, to say, to mean.",cat:"verbs",o:"English: mention + modification"},
+
+// ══════ ADJECTIVES ══════
+{w:"Mali",p:"MAH-lee",d:"Small, little.",cat:"adjectives",o:"Possibly Malay/Hindi origin"},
+{w:"Gut",p:"GOOT",d:"Good.",cat:"adjectives",o:"German: gut (good)"},
+{w:"Mal",p:"MAHL",d:"Bad, evil.",cat:"adjectives",o:"Latin/Spanish: mal (bad)"},
+{w:"Nadzhush",p:"nad-ZHOOSH",d:"Tired, exhausted.",cat:"adjectives",o:"Uncertain; possibly Slavic"},
+{w:"Finyish",p:"FIN-yish",d:"Finished, done, over.",cat:"adjectives",o:"English: finished"},
+{w:"Mogut",p:"mo-GOOT",d:"Capable, able.",cat:"adjectives",o:"Russian: могут (they can)"},
+{w:"Deting",p:"DEH-ting",d:"Dead.",cat:"adjectives",o:"English: dead + ting"},
+{w:"Bera",p:"BEH-rah",d:"True, real.",cat:"adjectives",o:"Latin: vera (true)"},
+{w:"Ful",p:"FOOL",d:"Full, complete.",cat:"adjectives",o:"English: full"},
+{w:"Felota",p:"feh-LOH-tah",d:"Floating. Used literally and metaphorically.",cat:"adjectives",o:"English: float + Belter suffix"},
+
+// ══════ PHRASES & EXPRESSIONS ══════
+{w:"Sa-sa ke?",p:"SAH-sah KEH",d:"You know? / Do you understand? The most common Belter phrase, used constantly as a verbal tic and genuine question.",cat:"phrases",o:"sasa (know) + ke (question)"},
+{w:"To pochuye ke?",p:"toh po-CHOO-yeh KEH",d:"Do you understand me? Literally: 'You hear/sense, yes?'",cat:"phrases",o:"Russian: почуять + question marker"},
+{w:"Oye, Beltalowda!",p:"OY-eh bel-ta-LOW-dah",d:"Hey, Belters! A rallying cry. The most famous Belter phrase — used by leaders, protesters, and anyone stirring solidarity.",cat:"phrases",o:"Spanish: oye (listen) + Beltalowda"},
+{w:"Kewe to pensa ere?",p:"KEH-weh toh PEN-sah EH-reh",d:"What do you think about...? A polite conversation opener.",cat:"phrases",o:"what + you + think + about"},
+{w:"Mi na sasa",p:"MEE nah SAH-sah",d:"I don't know. The negation particle 'na' goes before the verb.",cat:"phrases",o:"I + not + know"},
+{w:"Kowl gut, kopeng",p:"KOWL GOOT ko-PENG",d:"All good, friend. Everything's fine.",cat:"phrases",o:"all + good + friend"},
+{w:"Milowda gonya du kowlting",p:"mee-LOW-dah GOHN-yah DOO KOWL-ting",d:"We're going to do everything. A Belter battle cry of determination.",cat:"phrases",o:"we + gonna + do + everything"},
+{w:"Da owkwa im gut fo kowl",p:"dah OWK-wah eem GOOT fo KOWL",d:"The water is good for everyone. A statement of communal values.",cat:"phrases",o:"the + water + it + good + for + all"},
+{w:"Tumang gonya finyish",p:"TOO-mang GOHN-yah FIN-yish",d:"The Earthers are going to be finished. A threat or prediction.",cat:"phrases",o:"Earther + gonna + finished"},
+{w:"Gut xitush, bosmang",p:"GOOT shee-TOOSH BOSS-mang",d:"Good hunting, boss. A farewell wish for success.",cat:"phrases",o:"good + hunting + boss"},
+{w:"Mi pensa to ferí",p:"MEE PEN-sah toh feh-REE",d:"I think you're happy.",cat:"phrases",o:"I + think + you + happy"},
+{w:"Keting mogut fo deting",p:"KEH-ting mo-GOOT fo DEH-ting",d:"A day that could mean death. Expression for a dangerous situation.",cat:"phrases",o:"day + capable + for + death"},
+
+// ══════ CURSES & EXCLAMATIONS ══════
+{w:"Sabaka!",p:"sah-BAH-kah",d:"Dammit! Bastard! Dog! A general-purpose curse — one of the most common Belter expletives.",cat:"curses",o:"Russian: собака (sobaka, dog)"},
+{w:"Pashang!",p:"pah-SHAHNG",d:"The strongest Belter curse. Comparable to the F-word in intensity and versatility.",cat:"curses",o:"Chinese: 爬上 (páshàng, to mount)",ex:{b:"Pashang fong, zakomang!",e:"Roughly: 'F*** it, how much?'"}},
+{w:"Pashangwala",p:"pah-SHAHNG-wah-lah",d:"A f***ing person. Someone contemptible. Pashang + the -wala person suffix.",cat:"curses",o:"pashang + -wala (person)"},
+{w:"Kaka",p:"KAH-kah",d:"Crap, shit. Mild curse.",cat:"curses",o:"Spanish/Portuguese: caca"},
+{w:"Kaka felota",p:"KAH-kah feh-LOH-tah",d:"Floating shit. Things or people that are worthless. Vivid Belter imagery — in zero-g, everything floats.",cat:"curses",o:"caca + float"},
+{w:"Pochuye!",p:"po-CHOO-yeh",d:"Listen! Hear me! Used as a sharp command for attention.",cat:"curses",o:"Russian: почуять (to sense)"},
+{w:"Xetamang!",p:"sheh-TAH-mang",d:"Shut up! Be quiet!",cat:"curses",o:"Possibly: shut + man"},
+{w:"Kapawu!",p:"kah-PAH-woo",d:"Watch out! Heads up!",cat:"curses",o:"Uncertain; possibly from 'careful'"},
+
+// ══════ SLANG & CULTURE ══════
+{w:"Dzhush",p:"ZHOOSH",d:"'The Juice' — the drug cocktail injected by crash couches to keep you alive during high-g maneuvers. Everyone in space relies on it.",cat:"culture",o:"English: juice"},
+{w:"Banger",p:"BANG-er",d:"A ship or missile. Something that goes bang.",cat:"slang",o:"English: banger"},
+{w:"Rock-hopper",p:"ROCK-hop-er",d:"A Belter miner who travels between asteroids. Blue-collar space worker.",cat:"slang",o:"English: rock + hopper"},
+{w:"Da Churn",p:"dah CHURN",d:"When the criminal ecosystem reshuffles violently. Baltimore slang that Amos carries — adopted by Belters for any chaotic upheaval.",cat:"culture",o:"English (Baltimore slang)"},
+{w:"Spin",p:"SPIN",d:"A station with rotational gravity (as opposed to natural or thrust gravity).",cat:"slang",o:"English: spin"},
+{w:"Long kang",p:"LONG KAHNG",d:"Long work, hard labor. The grinding daily existence of a Belter.",cat:"slang",o:"long + kang (work)"},
+{w:"Inners",p:"IN-ers",d:"English slang for inner-planet people (Earth, Mars). Less formal than inyalowda.",cat:"slang",o:"English"},
+{w:"Earthers",p:"EARTH-ers",d:"People from Earth specifically. Can be neutral or loaded depending on tone.",cat:"slang",o:"English"},
+{w:"Dusters",p:"DUS-ters",d:"Martians. Named for Mars's dust storms. Mildly derogatory.",cat:"slang",o:"English: dust + -ers"},
+{w:"Squab",p:"SKWAHB",d:"A young person, a kid. Slightly rough term.",cat:"slang",o:"English: squab (young pigeon)"},
+{w:"Coyo",p:"KOY-oh",d:"Guy, dude, person. Casual male reference.",cat:"slang",o:"Spanish: coño / colloquial"},
+{w:"Asilik",p:"ah-SIH-lik",d:"Honest, genuine, true in character.",cat:"adjectives",o:"Uncertain; possibly Arabic origin"},
+{w:"Pampaw",p:"PAM-paw",d:"Grandpa, old man. Affectionate.",cat:"people",o:"French: pépé / English: paw-paw"},
+
+// ══════ PLACES & THINGS ══════
+{w:"Medina",p:"meh-DEE-nah",d:"Medina Station — the hub station inside the Slow Zone controlling all ring gates.",cat:"places",o:"Arabic: medina (city)"},
+{w:"Ceres",p:"SEER-eez",d:"The largest asteroid, a major Belter city. Where Miller works and the OPA operates.",cat:"places",o:"Roman goddess of harvest"},
+{w:"Tycho",p:"TY-koh",d:"Tycho Station — massive construction platform run by Fred Johnson.",cat:"places",o:"Named after Tycho Brahe"},
+{w:"Eros",p:"EH-ross",d:"Eros Station — the site of the protomolecule outbreak. A name that haunts every Belter.",cat:"places",o:"Greek god of love"}
+];
+
+var CATS=['all','greetings','nouns','verbs','adjectives','pronouns','phrases','curses','slang','grammar','people','places','culture'];
+var CAT_LABELS={all:'All',greetings:'Greetings',nouns:'Nouns',verbs:'Verbs',adjectives:'Adjectives',pronouns:'Pronouns',phrases:'Phrases',curses:'Curses',slang:'Slang',grammar:'Grammar',people:'People',places:'Places',culture:'Culture'};
+var activeCat='all';
+
+(function(){
+  var fl=document.getElementById('catFilters');
+  CATS.forEach(function(c){
+    var b=document.createElement('button');
+    b.className='cat-filter'+(c==='all'?' active':'');
+    b.textContent=CAT_LABELS[c];
+    b.onclick=function(){
+      fl.querySelectorAll('.cat-filter').forEach(function(x){x.classList.remove('active')});
+      b.classList.add('active');
+      activeCat=c;
+      renderDict();
+    };
+    fl.appendChild(b);
+  });
+  document.getElementById('searchBox').addEventListener('input',renderDict);
+  renderDict();
+})();
+
+function renderDict(){
+  var q=document.getElementById('searchBox').value.toLowerCase().trim();
+  var list=document.getElementById('dictList');
+  var html='';
+  var count=0;
+  // Sort alphabetically
+  var sorted=DICT.slice().sort(function(a,b){return a.w.toLowerCase().localeCompare(b.w.toLowerCase())});
+  sorted.forEach(function(e){
+    if(activeCat!=='all'&&e.cat!==activeCat) return;
+    if(q){
+      var haystack=(e.w+' '+e.d+' '+(e.o||'')+' '+(e.p||'')).toLowerCase();
+      if(haystack.indexOf(q)<0) return;
+    }
+    count++;
+    html+='<div class="dict-entry"><div class="dict-top"><span class="dict-word">'+e.w+'</span>';
+    if(e.p) html+='<span class="dict-pronun">/'+e.p+'/</span>';
+    html+='<span class="dict-cat-badge '+e.cat+'">'+e.cat+'</span></div>';
+    html+='<div class="dict-def">'+e.d+'</div>';
+    if(e.o) html+='<div class="dict-origin">Origin: '+e.o+'</div>';
+    if(e.ex) html+='<div class="dict-example"><div class="ex-belta">'+e.ex.b+'</div><div class="ex-eng">→ '+e.ex.e+'</div></div>';
+    html+='</div>';
+  });
+  if(!html) html='<div class="dict-empty">No entries match your search.</div>';
+  list.innerHTML=html;
+  document.getElementById('dictCount').textContent=count+' of '+DICT.length+' entries';
+}
+</script>
+</body>
+</html>

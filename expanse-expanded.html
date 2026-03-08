@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>Expanding the Universe — The Expanse Beyond the Books & Show</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#060810;--card:#0c1020;--card2:#182540;--accent:#3a8fd4;--accent2:#e07848;--accent3:#40c890;--accent4:#c860a0;--text:#d8dce8;--muted:#7888a8;--dim:#4a5878;--border:#1e3050;--gold:#f0c060}
+*{box-sizing:border-box;margin:0;padding:0}
+body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 20%,rgba(58,143,212,0.04) 0%,transparent 70%);pointer-events:none}
+.fc-brand-bar{position:sticky;top:0;z-index:100;background:rgba(6,8,16,0.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.06);padding:8px 16px;display:flex;align-items:center;gap:10px}
+.fc-brand-bar a{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit}
+.fc-brand-bar img{width:32px;height:32px;border-radius:50%}
+.fc-brand-bar span{font-family:sans-serif;font-size:14px;font-weight:600;color:#c9a44a;letter-spacing:0.5px}
+.fc-brand-bar .fc-sep{color:rgba(255,255,255,0.15);font-size:18px;font-weight:300}
+.fc-brand-bar .fc-page-name{font-size:13px;font-weight:500;color:rgba(255,255,255,0.4)}
+.container{position:relative;z-index:1;max-width:850px;margin:0 auto;padding:24px 16px 80px}
+.back-link{display:inline-block;color:var(--accent);text-decoration:none;font-size:13px;font-weight:600;padding:6px 14px;border:1px solid var(--border);border-radius:99px;transition:all .2s;margin-bottom:16px}
+.back-link:hover{border-color:var(--accent)}
+.hero{text-align:center;padding:20px 0 32px}
+.hero h1{font-family:'Orbitron',sans-serif;font-size:clamp(20px,4vw,36px);font-weight:800;background:linear-gradient(135deg,#3a8fd4,#e07848);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:2px;line-height:1.3}
+.hero p{color:var(--muted);font-size:15px;margin-top:10px;line-height:1.7;max-width:650px;margin-left:auto;margin-right:auto}
+.section-title{font-family:'Orbitron',sans-serif;font-size:20px;font-weight:700;letter-spacing:1px;margin:40px 0 16px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.media-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:28px;margin-bottom:20px;transition:border-color .25s}
+.media-card:hover{border-color:var(--accent)}
+.media-header{display:flex;align-items:flex-start;gap:16px;margin-bottom:14px}
+.media-emoji{font-size:40px;flex-shrink:0}
+.media-header h3{font-family:'Orbitron',sans-serif;font-size:17px;font-weight:700;letter-spacing:0.5px}
+.media-header .media-meta{font-size:12px;color:var(--dim);margin-top:3px}
+.media-card p{font-size:15px;color:var(--muted);line-height:1.75;margin-bottom:12px}
+.media-card p:last-child{margin-bottom:0}
+.highlight{color:var(--accent2);font-weight:700}
+.highlight-blue{color:var(--accent);font-weight:700}
+.highlight-green{color:var(--accent3);font-weight:700}
+.highlight-gold{color:var(--gold);font-weight:700}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.detail-box{background:var(--card2);border-radius:12px;padding:12px 16px}
+.detail-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--dim);margin-bottom:3px}
+.detail-val{font-size:14px;font-weight:700}
+.novella-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-top:14px}
+.novella-card{background:var(--card2);border:1px solid rgba(255,255,255,0.04);border-radius:12px;padding:14px 16px;transition:border-color .2s}
+.novella-card:hover{border-color:var(--accent)}
+.novella-card h4{font-size:14px;font-weight:800;margin-bottom:3px}
+.novella-card .nov-year{font-size:11px;color:var(--dim)}
+.novella-card p{font-size:13px;color:var(--muted);line-height:1.6;margin-top:6px}
+.quote-box{background:var(--card2);border-left:3px solid var(--accent2);border-radius:0 12px 12px 0;padding:16px 20px;margin:16px 0;font-style:italic;color:var(--muted);line-height:1.7}
+.quote-box .quote-attr{font-style:normal;font-size:12px;font-weight:700;color:var(--accent2);margin-top:8px}
+.zeitgeist-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-top:16px}
+.zeit-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;text-align:center;transition:all .25s}
+.zeit-card:hover{border-color:var(--accent2);transform:translateY(-3px)}
+.zeit-card .zeit-emoji{font-size:32px;margin-bottom:6px}
+.zeit-card h4{font-size:14px;font-weight:800;margin-bottom:4px}
+.zeit-card p{font-size:12px;color:var(--dim);line-height:1.5}
+@media(max-width:600px){.detail-grid{grid-template-columns:1fr}.media-header{flex-direction:column;gap:8px}}
+</style>
+</head>
+<body>
+<div class="fc-brand-bar"><a href="index.html"><img src="fancannonlogo.png" alt="Fan Cannon"><span>Fan Cannon</span></a><span class="fc-sep">|</span><span class="fc-page-name">Expanding the Universe</span></div>
+<div class="container">
+<a href="expanse-universe.html" class="back-link">← Back to The Expanse Universe</a>
+<div class="hero">
+<h1>EXPANDING THE UNIVERSE</h1>
+<p>The Expanse didn't end when the TV show wrapped or the last book was published. Through novellas, comics, games, and an upcoming AAA video game, the universe keeps growing — and its influence on sci-fi culture runs deeper than ever.</p>
+</div>
+
+<!-- NOVELLAS -->
+<h2 class="section-title" style="color:var(--accent)">📚 THE NOVELLAS</h2>
+<div class="media-card">
+<div class="media-header"><div class="media-emoji">📖</div><div><h3>Nine Stories That Fill the Gaps</h3><div class="media-meta">2011–2022 · Compiled in Memory's Legion (2022)</div></div></div>
+<p>Between the nine mainline novels, Daniel Abraham and Ty Franck wrote <span class="highlight-blue">nine novellas</span> that fill crucial gaps in the story. These aren't optional extras — they contain character origins, key plot bridges, and moments that recontextualize the entire series. In 2022, all nine were compiled into <span class="highlight-gold">Memory's Legion</span>, which also includes a brand new story.</p>
+<div class="novella-grid">
+<div class="novella-card"><h4>"The Butcher of Anderson Station"</h4><div class="nov-year">2011</div><p>Fred Johnson's backstory — the massacre that turned a UN colonel into the Belt's most important ally.</p></div>
+<div class="novella-card"><h4>"Gods of Risk"</h4><div class="nov-year">2012</div><p>Bobbie Draper's nephew David gets caught up in drug manufacturing on Mars. A quiet, human story.</p></div>
+<div class="novella-card"><h4>"Drive"</h4><div class="nov-year">2012</div><p>Solomon Epstein's fatal test flight — the accidental invention that made interplanetary civilization possible.</p></div>
+<div class="novella-card"><h4>"The Churn"</h4><div class="nov-year">2014</div><p>Amos Burton's origin story in Baltimore. Meet "Timmy" and the crime boss Lydia who shaped him. Essential reading.</p></div>
+<div class="novella-card"><h4>"The Vital Abyss"</h4><div class="nov-year">2015</div><p>Told from inside a prison, a Protogen scientist reflects on the Eros experiment. Chilling and clinical.</p></div>
+<div class="novella-card"><h4>"Strange Dogs"</h4><div class="nov-year">2017</div><p>Children on Laconia discover alien repair drones that can resurrect the dead. Foreshadows everything Duarte does.</p></div>
+<div class="novella-card"><h4>"Auberon"</h4><div class="nov-year">2019</div><p>A Laconian governor arrives on a colony world run by a crime boss. Old-Earth corruption patterns repeat on new worlds.</p></div>
+<div class="novella-card"><h4>"The Sins of Our Fathers"</h4><div class="nov-year">2022</div><p>Filip Nagata's life on the colony world Jannah after the gates close. The series' emotional epilogue.</p></div>
+<div class="novella-card"><h4>"The Last Flight of the Cassandra"</h4><div class="nov-year">2019</div><p>RPG-exclusive short story included in The Expanse Roleplaying Game. Canon, per the authors.</p></div>
+</div>
+</div>
+
+<!-- COMICS -->
+<h2 class="section-title" style="color:var(--accent2)">🎨 THE COMICS</h2>
+<div class="media-card">
+<div class="media-header"><div class="media-emoji">💥</div><div><h3>The Expanse: Dragon Tooth</h3><div class="media-meta">BOOM! Studios · 12 Issues · 2023–2024 · Written by Andy Diggle</div></div></div>
+<p>The most ambitious Expanse expansion outside the novels. <span class="highlight">Dragon Tooth</span> is a 12-issue comic series that bridges the <span class="highlight-blue">30-year gap</span> between the TV show's finale (Babylon's Ashes) and the unadapted Book 7 (Persepolis Rising). It fills in what happened to the Rocinante crew, the Transport Union, and the rising threat of Laconia during those missing decades.</p>
+<p>The Kickstarter campaign raised <span class="highlight-gold">$1.4 million</span> — smashing BOOM! Studios' record. The series was overseen by Ty Franck and Daniel Abraham, making it essentially canon. Collected in three trade paperback volumes.</p>
+<div class="quote-box">"It's not often you get to work on something you already love with your whole heart."<div class="quote-attr">— Andy Diggle, writer</div></div>
+<div class="detail-grid">
+<div class="detail-box"><div class="detail-label">Writer</div><div class="detail-val">Andy Diggle</div></div>
+<div class="detail-box"><div class="detail-label">Artists</div><div class="detail-val">Rubine (#1-5), Francesco Pisa (#6-12)</div></div>
+<div class="detail-box"><div class="detail-label">Covers</div><div class="detail-val">Christian Ward (main)</div></div>
+<div class="detail-box"><div class="detail-label">Kickstarter</div><div class="detail-val" style="color:var(--gold)">$1.4M raised</div></div>
+</div>
+</div>
+
+<div class="media-card">
+<div class="media-header"><div class="media-emoji">📔</div><div><h3>The Expanse: A Little Death</h3><div class="media-meta">BOOM! Studios · 2025 · Co-written by Wes Chatham (Amos Burton)</div></div></div>
+<p>A newer comic series co-written by <span class="highlight-blue">Wes Chatham</span> — the actor who played Amos Burton on the show. This extends Amos's story beyond what we saw on screen, written by someone who understands the character intimately.</p>
+</div>
+
+<div class="media-card">
+<div class="media-header"><div class="media-emoji">🎬</div><div><h3>The Expanse: Origins</h3><div class="media-meta">ComiXology · 4 Issues · 2017</div></div></div>
+<p>Four digital comics released alongside the TV show's early seasons, each exploring the origin story of a core Rocinante crew member: <span class="highlight-blue">Holden</span>, <span class="highlight-blue">Naomi</span>, <span class="highlight-blue">Alex</span>, and <span class="highlight-blue">Amos</span>. Short but illuminating character studies.</p>
+</div>
+
+<!-- TABLETOP RPG -->
+<h2 class="section-title" style="color:var(--accent3)">🎲 THE TABLETOP RPG</h2>
+<div class="media-card">
+<div class="media-header"><div class="media-emoji">🎯</div><div><h3>The Expanse Roleplaying Game</h3><div class="media-meta">Green Ronin Publishing · 2019–Present · AGE System</div></div></div>
+<p>It's fitting that The Expanse started as a tabletop RPG setting (originally called "2350") and has come full circle with an official, <span class="highlight-green">author-approved tabletop game</span>. Published by Green Ronin, the game uses the Adventure Game Engine (AGE) rules and lets players create their own crews — Earthers, Martians, or Belters — navigating the same political powder keg as the novels.</p>
+<p>The Kickstarter hit <span class="highlight-gold">$194,000</span> (goal was $30,000) in under 24 hours. The game is considered canon by Abraham and Franck, and even includes an exclusive short story, "The Last Flight of the Cassandra."</p>
+<p>The product line has grown to include <span class="highlight-blue">four hardbound rulebooks</span>, a GM kit, custom dice sets, a ships sourcebook with detailed deckplans, and a series of "Trades of The Expanse" PDFs covering professions from bounty hunters to journalists. A <span class="highlight-gold">Transport Union Edition</span> was Kickstarted in 2024 to update the game with content through the full series.</p>
+<div class="detail-grid">
+<div class="detail-box"><div class="detail-label">Publisher</div><div class="detail-val">Green Ronin</div></div>
+<div class="detail-box"><div class="detail-label">System</div><div class="detail-val">Adventure Game Engine (AGE)</div></div>
+<div class="detail-box"><div class="detail-label">Setting</div><div class="detail-val">Between Books 1 & 2</div></div>
+<div class="detail-box"><div class="detail-label">Status</div><div class="detail-val" style="color:var(--accent3)">Active / Expanding</div></div>
+</div>
+<div class="quote-box">"People who write books don't do this much research."<div class="quote-attr">— Daniel Abraham, on Ty Franck's worldbuilding that became The Expanse</div></div>
+</div>
+
+<!-- BOARD GAME -->
+<h2 class="section-title" style="color:var(--gold)">♟️ THE BOARD GAME</h2>
+<div class="media-card">
+<div class="media-header"><div class="media-emoji">🗺️</div><div><h3>The Expanse Board Game</h3><div class="media-meta">WizKids · 2017 · Designed by Geoff Engelstein</div></div></div>
+<p>A political strategy board game designed by <span class="highlight-gold">Geoff Engelstein</span> in collaboration with the series authors. Players represent four factions — <span class="highlight-blue">Earth's UN</span>, <span class="highlight">Mars's MCRN</span>, <span class="highlight-green">the OPA</span>, and <span class="highlight-gold">Protogen Inc.</span> — competing for dominance of the solar system through fleets, influence, and event cards featuring characters and moments from the series.</p>
+<p>The game draws inspiration from <span class="highlight-blue">Twilight Struggle</span> but plays in about 60 minutes. Each card represents a character or event from the books, creating a tense game of political maneuvering that captures the series' themes of power, conspiracy, and fragile alliances.</p>
+<div class="detail-grid">
+<div class="detail-box"><div class="detail-label">Players</div><div class="detail-val">2-4</div></div>
+<div class="detail-box"><div class="detail-label">Play Time</div><div class="detail-val">~60 minutes</div></div>
+<div class="detail-box"><div class="detail-label">Designer</div><div class="detail-val">Geoff Engelstein</div></div>
+<div class="detail-box"><div class="detail-label">Inspired By</div><div class="detail-val">Twilight Struggle</div></div>
+</div>
+</div>
+
+<!-- VIDEO GAMES -->
+<h2 class="section-title" style="color:var(--accent4)">🎮 THE VIDEO GAMES</h2>
+<div class="media-card" style="border-color:rgba(200,96,160,0.3)">
+<div class="media-header"><div class="media-emoji">🔥</div><div><h3>The Expanse: Osiris Reborn</h3><div class="media-meta">Owlcat Games · Coming 2026 · PS5, Xbox Series X|S, PC · Action RPG</div></div></div>
+<p>The most anticipated Expanse media in years. <span class="highlight" style="color:var(--accent4)">Osiris Reborn</span> is a third-person action RPG developed by <span class="highlight-blue">Owlcat Games</span> (the studio behind Pathfinder and Warhammer 40K: Rogue Trader). Announced at the Future Games Show in June 2025, it immediately drew comparisons to <span class="highlight-gold">Mass Effect</span> — and the developers embrace the comparison.</p>
+<p>You play as a <span class="highlight-blue">Pinkwater Security mercenary</span> on shore leave at Eros Station when everything goes sideways. Create your own captain — Earther, Martian, or Belter — and take command of the solar system's most advanced ship. The game spans from the events of <span class="highlight">Leviathan Wakes through Caliban's War</span>, meaning protomolecule horrors, Eros, and the Ganymede Incident are all on the table.</p>
+<p>Features include:</p>
+<p>• <span class="highlight-blue">Custom character creation</span> with three origin backgrounds affecting dialogue and relationships<br>
+• <span class="highlight">Companion system</span> with deep relationships, personal stories, and romance options<br>
+• <span class="highlight-green">Third-person cover-based combat</span> with squad commands and real-time tactics<br>
+• <span class="highlight-gold">Consequences that matter</span> — your choices shape relationships and outcomes across the solar system<br>
+• <span class="highlight" style="color:var(--accent4)">TV show actors reprising roles</span> from the original series</p>
+<p>Nominated for <span class="highlight-gold">Best Game Trailer</span> and <span class="highlight-gold">Most Wanted Game</span> at the Golden Joystick Awards 2025. No exact release date yet, but 2026 is confirmed for PS5, Xbox Series X|S, and PC (Steam, Epic, GOG).</p>
+<div class="quote-box">"It's a very good match for us because of the stories we want to tell."<div class="quote-attr">— Owlcat Games, on choosing The Expanse</div></div>
+<div class="detail-grid">
+<div class="detail-box"><div class="detail-label">Developer</div><div class="detail-val">Owlcat Games</div></div>
+<div class="detail-box"><div class="detail-label">Genre</div><div class="detail-val">Third-Person Action RPG</div></div>
+<div class="detail-box"><div class="detail-label">Timeline</div><div class="detail-val">Books 1–2 / Seasons 1–3</div></div>
+<div class="detail-box"><div class="detail-label">Platforms</div><div class="detail-val">PS5, Xbox Series X|S, PC</div></div>
+<div class="detail-box"><div class="detail-label">Inspiration</div><div class="detail-val" style="color:var(--accent4)">Mass Effect</div></div>
+<div class="detail-box"><div class="detail-label">Release</div><div class="detail-val" style="color:var(--gold)">2026 (confirmed)</div></div>
+</div>
+</div>
+
+<div class="media-card">
+<div class="media-header"><div class="media-emoji">🕹️</div><div><h3>The Expanse: A Telltale Series</h3><div class="media-meta">Telltale Games · 2023 · 5 Episodes · PC, PS4/5, Xbox</div></div></div>
+<p>A narrative-driven adventure game from the revived <span class="highlight-blue">Telltale Games</span>, set before the events of the TV show. Players control <span class="highlight">Camina Drummer</span> — the Belter leader who became a fan favorite — in her earlier years, making choices that shape her path and the people around her.</p>
+<p>The game captures the intimate, character-driven storytelling that made the show special, with branching dialogue and moral dilemmas that feel authentically Expanse. It proved there was a massive appetite for Expanse games, directly paving the way for Osiris Reborn.</p>
+<div class="detail-grid">
+<div class="detail-box"><div class="detail-label">Player Character</div><div class="detail-val">Camina Drummer</div></div>
+<div class="detail-box"><div class="detail-label">Episodes</div><div class="detail-val">5</div></div>
+<div class="detail-box"><div class="detail-label">Timeline</div><div class="detail-val">Pre-series</div></div>
+<div class="detail-box"><div class="detail-label">Type</div><div class="detail-val">Narrative adventure</div></div>
+</div>
+</div>
+
+<!-- CULTURAL IMPACT -->
+<h2 class="section-title" style="color:var(--accent2)">🌍 THE CULTURAL ZEITGEIST</h2>
+<div class="media-card">
+<div class="media-header"><div class="media-emoji">✨</div><div><h3>Why The Expanse Still Matters</h3><div class="media-meta">2015–Present · And counting</div></div></div>
+<p>The Expanse isn't just a good sci-fi series — it fundamentally <span class="highlight">changed what audiences expect from space opera</span>. Before The Expanse, "realistic" sci-fi on TV meant sterile corridors and technobabble. After it, audiences demand physics that work, politics that matter, and characters who feel like real people navigating impossible systems.</p>
+<p>The show's rescue from cancellation by Amazon — driven by a <span class="highlight-blue">massive fan campaign</span> that included a plane towing a #SaveTheExpanse banner and bezos personally tweeting the announcement — became one of the most famous examples of fan activism saving a show. It proved that passionate niche audiences could move mountains.</p>
+<p>The series' themes have become <span class="highlight-gold">eerily prescient</span>: income inequality between inner planets and Belt mirrors real-world wealth gaps; pandemic lockdowns echoed the Eros quarantine; the protomolecule's weaponization parallels debates about dangerous technologies; and Marco's radicalization arc reads like a case study in extremism. Critics have called it "the most politically relevant sci-fi of the decade."</p>
+<p>The authors, Abraham and Franck, continue to shape sci-fi — their new book series has already been optioned for adaptation by the same team. The show's influence echoes through every new space series that tries to get the physics right, the politics messy, and the characters human.</p>
+</div>
+
+<div class="zeitgeist-grid">
+<div class="zeit-card"><div class="zeit-emoji">🏆</div><h4>Hugo Award</h4><p>Best Series, 2020 — the entire novel series</p></div>
+<div class="zeit-card"><div class="zeit-emoji">📺</div><h4>6 TV Seasons</h4><p>62 episodes across Syfy and Amazon Prime</p></div>
+<div class="zeit-card"><div class="zeit-emoji">📖</div><h4>9 Novels + 9 Novellas</h4><p>4,500+ pages of universe</p></div>
+<div class="zeit-card"><div class="zeit-emoji">🎨</div><h4>3 Comic Series</h4><p>Origins, Dragon Tooth, A Little Death</p></div>
+<div class="zeit-card"><div class="zeit-emoji">🎮</div><h4>2 Video Games</h4><p>Telltale (2023) + Osiris Reborn (2026)</p></div>
+<div class="zeit-card"><div class="zeit-emoji">🎲</div><h4>Tabletop RPG</h4><p>Green Ronin, 6+ books, active community</p></div>
+<div class="zeit-card"><div class="zeit-emoji">♟️</div><h4>Board Game</h4><p>WizKids political strategy game</p></div>
+<div class="zeit-card"><div class="zeit-emoji">📱</div><h4>#SaveTheExpanse</h4><p>One of TV's most famous fan campaigns</p></div>
+<div class="zeit-card"><div class="zeit-emoji">🗣️</div><h4>Lang Belta</h4><p>A constructed language with active speakers</p></div>
+<div class="zeit-card"><div class="zeit-emoji">🔬</div><h4>Scientific Praise</h4><p>Physicists call it the most realistic sci-fi ever on TV</p></div>
+<div class="zeit-card"><div class="zeit-emoji">🌐</div><h4>Global Fandom</h4><p>Reddit, Discord, conventions, fan films, cosplay</p></div>
+<div class="zeit-card"><div class="zeit-emoji">📝</div><h4>New Series</h4><p>Abraham & Franck's next work already optioned for TV</p></div>
+</div>
+
+<div style="text-align:center;margin-top:40px;padding:24px;background:var(--card);border:1px solid var(--border);border-radius:18px">
+<div style="font-size:32px;margin-bottom:8px">🚀</div>
+<div style="font-family:'Orbitron',sans-serif;font-size:16px;font-weight:700;color:var(--accent2);letter-spacing:1px;margin-bottom:8px">THE EXPANSE ISN'T OVER</div>
+<p style="color:var(--muted);font-size:14px;line-height:1.7;max-width:500px;margin:0 auto">With Osiris Reborn on the horizon, the Transport Union RPG expanding, new comics releasing, and a TV adaptation continuation still on the table — the universe keeps growing. As Amos would say: <em style="color:var(--accent)">"I am that guy."</em></p>
+</div>
+
+</div>
+</body>
+</html>
