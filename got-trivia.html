@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Game of Thrones trivia — 200 quotes and 200 knowledge questions. Who Said It and General Knowledge quizzes.">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>GOT Trivia — Game of Thrones Quiz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0c14;--card:#10131e;--card2:#161a28;--accent:#c8a050;--accent2:#a04040;--accent3:#4080b0;--text:#d8d0c4;--muted:#908878;--dim:#605848;--border:#2a2420;--ice:#6090c0;--fire:#c06030;--gold:#d4a840;--correct:#50a870;--wrong:#c04040}
+*{box-sizing:border-box;margin:0;padding:0}
+body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 30%,rgba(200,160,80,0.02) 0%,transparent 70%);pointer-events:none}
+.fc-brand-bar{position:sticky;top:0;z-index:100;background:rgba(10,12,20,0.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(200,160,80,0.08);padding:8px 16px;display:flex;align-items:center;gap:10px}
+.fc-brand-bar a{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit}.fc-brand-bar img{width:32px;height:32px;border-radius:50%}
+.fc-brand-bar span{font-family:sans-serif;font-size:14px;font-weight:600;color:#c9a44a;letter-spacing:0.5px}
+.fc-brand-bar .fc-sep{color:rgba(255,255,255,0.12);font-size:18px}.fc-brand-bar .fc-page-name{font-size:13px;font-weight:500;color:rgba(255,255,255,0.3)}
+.container{position:relative;z-index:1;max-width:700px;margin:0 auto;padding:24px 16px 80px}
+.back-link{display:inline-block;color:var(--accent);text-decoration:none;font-size:13px;font-weight:600;padding:6px 14px;border:1px solid var(--border);border-radius:99px;transition:all .2s;margin-bottom:16px}.back-link:hover{border-color:var(--accent)}
+.setup{text-align:center;padding:2rem 0}
+.setup h1{font-family:'Cinzel',serif;font-size:clamp(24px,5vw,38px);font-weight:800;color:var(--accent);letter-spacing:2px}
+.setup .sub{font-family:'Cinzel',serif;font-size:13px;color:var(--fire);letter-spacing:3px;margin-top:4px}
+.setup p{color:var(--muted);font-size:14px;margin-top:12px;line-height:1.6}
+.mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:28px 0}
+.mode-btn{background:var(--card);border:2px solid var(--border);border-radius:18px;padding:28px 18px;cursor:pointer;text-align:center;transition:all .25s}
+.mode-btn:hover{border-color:var(--accent);transform:translateY(-3px)}
+.mode-btn.selected{border-color:var(--accent);background:rgba(200,160,80,0.06);box-shadow:0 0 16px rgba(200,160,80,0.1)}
+.mode-btn .mb-emoji{font-size:40px;display:block;margin-bottom:8px}
+.mode-btn .mb-name{font-family:'Cinzel',serif;font-size:18px;font-weight:700;display:block}
+.mode-btn .mb-desc{font-size:12px;color:var(--dim);margin-top:6px;display:block;line-height:1.4}
+.go-btn{font-family:'Cinzel',serif;font-size:18px;font-weight:700;padding:16px 48px;border-radius:14px;border:none;background:var(--accent);color:#0a0c14;cursor:pointer;transition:all .25s;box-shadow:0 4px 20px rgba(200,160,80,0.25);letter-spacing:1px}
+.go-btn:hover{filter:brightness(1.1);transform:translateY(-2px)}
+.go-btn:disabled{opacity:0.3;cursor:not-allowed;transform:none}
+.hud{display:flex;justify-content:space-between;padding:12px 16px;background:var(--card);border:1px solid var(--border);border-radius:14px;margin-bottom:14px}
+.hud-item{text-align:center}.hud-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--dim)}.hud-val{font-family:'Cinzel',serif;font-size:18px;font-weight:700;margin-top:2px}
+.q-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:28px;margin-bottom:14px;text-align:center}
+.q-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--dim);margin-bottom:10px}
+.q-text{font-family:'Cinzel',serif;font-size:clamp(16px,3.5vw,24px);font-weight:700;color:var(--accent);line-height:1.4;min-height:40px;font-style:italic}
+.q-text.knowledge{font-style:normal;font-size:clamp(15px,3vw,20px);color:var(--text)}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.choice{background:var(--card);border:2px solid var(--border);border-radius:14px;padding:16px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:14px;font-weight:600;color:var(--text);transition:all .2s;line-height:1.4;text-align:left;position:relative}
+.choice:hover:not(.locked){border-color:var(--accent);transform:translateY(-2px)}
+.choice .ck{position:absolute;top:8px;right:10px;font-size:10px;font-weight:700;color:var(--dim);background:var(--card2);padding:2px 6px;border-radius:4px}
+.choice.correct{border-color:var(--correct)!important;background:rgba(80,168,112,0.08)!important}
+.choice.wrong{border-color:var(--wrong)!important;background:rgba(192,64,64,0.06)!important}
+.choice.locked{cursor:default}
+.fb{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px 20px;margin-bottom:14px;display:none}
+.fb.show{display:block}
+.fb-result{font-family:'Cinzel',serif;font-size:16px;font-weight:700;margin-bottom:4px}
+.fb-result.right{color:var(--correct)}.fb-result.nope{color:var(--wrong)}
+.fb-explain{font-size:13px;color:var(--muted);line-height:1.6}
+.next-btn{font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;padding:12px 32px;border-radius:12px;border:none;background:var(--accent);color:#0a0c14;cursor:pointer;display:block;margin:10px auto 0}
+.next-btn:hover{filter:brightness(1.1)}
+.results{text-align:center;padding:20px 0}
+.results .big{font-family:'Cinzel',serif;font-size:64px;font-weight:900}
+.results .big.perfect{color:var(--correct)}.results .big.good{color:var(--gold)}.results .big.ok{color:var(--accent)}.results .big.low{color:var(--wrong)}
+.results .score-sub{font-size:15px;color:var(--muted);margin-top:4px}
+.results .rank{display:inline-block;font-family:'Cinzel',serif;font-size:14px;font-weight:700;padding:8px 20px;border-radius:10px;margin-top:14px;letter-spacing:1px}
+.results .msg{font-size:14px;color:var(--muted);margin-top:12px;line-height:1.6;max-width:450px;margin-left:auto;margin-right:auto}
+.r-btns{display:flex;gap:10px;justify-content:center;margin-top:18px;flex-wrap:wrap}
+.r-btn{font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;padding:12px 24px;border-radius:10px;cursor:pointer;border:none;transition:all .2s}
+.r-btn.primary{background:var(--accent);color:#0a0c14}.r-btn.secondary{background:var(--card);border:1px solid var(--border);color:var(--text)}
+.r-btn:hover{transform:translateY(-2px)}
+.review{margin-top:18px;text-align:left;display:none}
+.rev-item{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 16px;margin-bottom:6px;font-size:12px}
+.rev-item.was-right{border-left:3px solid var(--correct)}.rev-item.was-wrong{border-left:3px solid var(--wrong)}
+.rev-q{color:var(--accent);font-style:italic;margin-bottom:4px}.rev-a{color:var(--muted)}.rev-yours{color:var(--wrong);margin-top:2px}
+@media(max-width:500px){.choices{grid-template-columns:1fr}.mode-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="fc-brand-bar"><a href="index.html"><img src="fancannonlogo.png" alt="Fan Cannon"><span>Fan Cannon</span></a><span class="fc-sep">|</span><span class="fc-page-name">GOT Trivia</span></div>
+<div class="container">
+<a href="got-universe.html" class="back-link">← Back to Game of Thrones</a>
+<div id="setup" class="setup">
+<h1>GOT TRIVIA</h1>
+<div class="sub">VALAR MORGHULIS</div>
+<p>Two quizzes, 200 questions each. 20 random questions per round.</p>
+<div class="mode-grid">
+<div class="mode-btn" id="mode-quotes" onclick="setMode('quotes')"><span class="mb-emoji">🗣️</span><span class="mb-name">Who Said It?</span><span class="mb-desc">200 iconic quotes. Name the character.</span></div>
+<div class="mode-btn" id="mode-knowledge" onclick="setMode('knowledge')"><span class="mb-emoji">⚔️</span><span class="mb-name">General Knowledge</span><span class="mb-desc">200 questions about the books & show.</span></div>
+</div>
+<button class="go-btn" id="goBtn" disabled onclick="startQuiz()">Begin the Trial</button>
+</div>
+<div id="game" style="display:none">
+<div style="text-align:center;margin-bottom:10px"><button onclick="confirmQuit()" style="font-family:Nunito;font-size:12px;font-weight:600;padding:5px 14px;border-radius:99px;border:1px solid var(--border);background:var(--card);color:var(--muted);cursor:pointer">← Back</button></div>
+<div class="hud"><div class="hud-item"><div class="hud-label">Question</div><div class="hud-val" id="hudQ">1/20</div></div><div class="hud-item"><div class="hud-label">Score</div><div class="hud-val" id="hudS" style="color:var(--correct)">0</div></div><div class="hud-item"><div class="hud-label">Streak</div><div class="hud-val" id="hudK" style="color:var(--gold)">0</div></div></div>
+<div class="q-card"><div class="q-label" id="qLabel"></div><div class="q-text" id="qText"></div></div>
+<div class="choices" id="choices"></div>
+<div class="fb" id="fb"><div class="fb-result" id="fbR"></div><div class="fb-explain" id="fbE"></div><br><button class="next-btn" id="nextBtn" onclick="next()">Next →</button></div>
+</div>
+<div id="results" style="display:none"></div>
+</div>
+<script>
+var QUOTE_CHARS=["Jon Snow","Daenerys","Tyrion","Cersei","Jaime","Arya","Sansa","Ned Stark","The Hound","Littlefinger","Varys","Tywin","Olenna","Bronn","Tormund","Melisandre","Joffrey","Ramsay","Oberyn","Brienne","Davos","Margaery","Robert","Stannis","Ygritte","Sam","Theon","Bran","Missandei","Grey Worm"];
+var QUOTES=[
+{q:"When you play the game of thrones, you win or you die.",a:"Cersei"},
+{q:"A Lannister always pays his debts.",a:"Tyrion"},
+{q:"You know nothing, Jon Snow.",a:"Ygritte"},
+{q:"Winter is coming.",a:"Ned Stark"},
+{q:"The things I do for love.",a:"Jaime"},
+{q:"Chaos isn't a pit. Chaos is a ladder.",a:"Littlefinger"},
+{q:"I drink and I know things.",a:"Tyrion"},
+{q:"Not today.",a:"Arya"},
+{q:"Dracarys.",a:"Daenerys"},
+{q:"A girl has no name.",a:"Arya"},
+{q:"Any man who must say 'I am the king' is no true king.",a:"Tywin"},
+{q:"The night is dark and full of terrors.",a:"Melisandre"},
+{q:"Valar morghulis.",a:"Arya"},
+{q:"I am the sword in the darkness. I am the watcher on the walls.",a:"Jon Snow"},
+{q:"Power resides where men believe it resides. It's a trick, a shadow on the wall.",a:"Varys"},
+{q:"Hold the door!",a:"Hodor"},
+{q:"Tell Cersei. I want her to know it was me.",a:"Olenna"},
+{q:"The man who passes the sentence should swing the sword.",a:"Ned Stark"},
+{q:"I choose violence.",a:"Cersei"},
+{q:"There is only one god, and his name is Death. And there is only one thing we say to Death: Not today.",a:"Syrio Forel"},
+{q:"If you think this has a happy ending, you haven't been paying attention.",a:"Ramsay"},
+{q:"A mind needs books like a sword needs a whetstone.",a:"Tyrion"},
+{q:"The lone wolf dies, but the pack survives.",a:"Sansa"},
+{q:"I'm not going to stop the wheel. I'm going to break the wheel.",a:"Daenerys"},
+{q:"There's no cure for being a c***.",a:"Bronn"},
+{q:"Nothing f***s you harder than time.",a:"Davos"},
+{q:"Every flight begins with a fall.",a:"Bran"},
+{q:"Leave one wolf alive and the sheep are never safe.",a:"Arya"},
+{q:"I would let myself be consumed by maggots before mocking the family name.",a:"Tywin"},
+{q:"What is dead may never die.",a:"Theon"},
+{q:"Burn them all!",a:"The Mad King"},
+{q:"Fire cannot kill a dragon.",a:"Daenerys"},
+{q:"The North remembers.",a:"Multiple Northerners"},
+{q:"I am Daenerys Stormborn of House Targaryen, the First of Her Name, the Unburnt, Queen of the Andals and the First Men, Khaleesi of the Great Grass Sea, Breaker of Chains, and Mother of Dragons.",a:"Daenerys"},
+{q:"That's what I do: I drink and I know things.",a:"Tyrion"},
+{q:"You want a good girl, but you need the bad pussy.",a:"Tyene Sand"},
+{q:"I've seen your pecker. What kind of god would have a pecker that small?",a:"Tormund"},
+{q:"There's a beast in every man and it stirs when you put a sword in his hand.",a:"Jorah"},
+{q:"A lion does not concern himself with the opinion of sheep.",a:"Tywin"},
+{q:"Never forget what you are. The rest of the world will not. Wear it like armor, and it can never be used to hurt you.",a:"Tyrion"},
+{q:"Everyone is mine to torment.",a:"Joffrey"},
+{q:"I will take what is mine with fire and blood.",a:"Daenerys"},
+{q:"Night gathers, and now my watch begins.",a:"Jon Snow"},
+{q:"I am the god of tits and wine.",a:"Tyrion"},
+{q:"You're a talker. Listening to talkers makes me thirsty.",a:"The Hound"},
+{q:"If you ever call me sister again, I'll have you strangled in your sleep.",a:"Cersei"},
+{q:"I learned how to die a long time ago.",a:"Ned Stark"},
+{q:"They can live in my new world, or they can die in their old one.",a:"Daenerys"},
+{q:"All men must die, but we are not men.",a:"Daenerys"},
+{q:"Shame! Shame! Shame!",a:"Septa Unella"},
+{q:"By what right does the wolf judge the lion?",a:"Jaime"},
+{q:"I once walked into a brothel with a honeycomb and a jackass...",a:"Tyrion"},
+{q:"There are no men like me. There's only me.",a:"Jaime"},
+{q:"It's not easy being drunk all the time. Everyone would do it if it were easy.",a:"Tyrion"},
+{q:"The things we love destroy us every time.",a:"Jeor Mormont"},
+{q:"Kill the boy, and let the man be born.",a:"Maester Aemon"},
+{q:"Fewer.",a:"Stannis"},
+{q:"I'm a slow learner, it's true. But I learn.",a:"Sansa"},
+{q:"The big woman still here?",a:"Tormund"},
+{q:"I read it in a book.",a:"Sam"},
+{q:"My watch is ended.",a:"Jon Snow"},
+{q:"I'm not a lady.",a:"Arya"},
+{q:"You either die a hero or you live long enough to see yourself become the villain... wrong franchise, but applicable.",a:"Cersei"},
+{q:"A girl is Arya Stark of Winterfell, and I'm going home.",a:"Arya"},
+{q:"The next time you raise a hand to me will be the last time you have hands.",a:"Daenerys"},
+{q:"I demand a trial by combat.",a:"Tyrion"},
+{q:"He's a right proper lad.",a:"Multiple Night's Watch"},
+{q:"I am your son. I have always been your son.",a:"Tyrion"},
+{q:"Stick them with the pointy end.",a:"Jon Snow"},
+{q:"I swear to you, sitting a throne is a thousand times harder than winning one.",a:"Robert"},
+{q:"The powerful have always preyed on the powerless. That's how they became powerful in the first place.",a:"Tyrion"},
+{q:"I want to make babies with her. Think of them — great big monsters. They'd conquer the world.",a:"Tormund"},
+{q:"When the snows fall and the white winds blow, the lone wolf dies, but the pack survives.",a:"Ned Stark"},
+{q:"A very small man can cast a very large shadow.",a:"Varys"},
+{q:"You were beautiful that night.",a:"Bran"},
+{q:"I don't plan to stop.",a:"Jon Snow"},
+{q:"Love is the death of duty.",a:"Maester Aemon"},
+{q:"We don't get to choose who we love.",a:"Jaime"},
+{q:"In the game of thrones, even the humblest pieces can have wills of their own.",a:"Varys"},
+{q:"I don't believe you.",a:"Brienne"},
+{q:"You're going to die tomorrow, Lord Bolton. Sleep well.",a:"Sansa"},
+{q:"Any man who says 'I am the king' is no true king. I'll make sure you understand that when I've won your war for you.",a:"Tywin"},
+{q:"They've got my brother.",a:"Robb Stark"},
+{q:"I pledge my life and honor to the Night's Watch, for this night and all the nights to come.",a:"Jon Snow"},
+{q:"I'm going to have to eat every chicken in this room.",a:"The Hound"},
+{q:"Your sister.",a:"The Hound"},
+{q:"I wish you good fortune in the wars to come.",a:"Mance Rayder"},
+{q:"Could you bring back a man without a head? Not six times, just once.",a:"Arya"},
+{q:"Winter came for House Frey.",a:"Arya"},
+{q:"What do we say to the God of Death?",a:"Arya"},
+{q:"I will do what queens do. I will rule.",a:"Daenerys"},
+{q:"Money buys a man's silence for a time. A bolt in the heart buys it forever.",a:"Littlefinger"},
+{q:"I wonder if you're the worst person I've ever met.",a:"Cersei"},
+{q:"The more people you love, the weaker you are.",a:"Cersei"},
+{q:"There is no justice in this world. Not unless we make it.",a:"Littlefinger"},
+{q:"Everything before the word 'but' is horse****.",a:"Jon Snow"},
+{q:"The world is built by killers. So you'd better get used to looking at them.",a:"The Hound"},
+{q:"A ruler who kills those devoted to her is not a ruler who inspires devotion.",a:"Tyrion"},
+{q:"I fought for you. Did I not fight for you?",a:"Oberyn"},
+{q:"Who has a better story than Bran the Broken?",a:"Tyrion"},
+{q:"My reign has just begun.",a:"Daenerys"},
+{q:"We are going to leave the world better than we found it.",a:"Daenerys"},
+{q:"Nothing isn't better or worse than anything. Nothing is just nothing.",a:"Arya"},
+{q:"There is a beast in every man and it stirs when you put a sword in his hand.",a:"Jorah"},
+{q:"If I look back, I am lost.",a:"Daenerys"},
+{q:"The wars to come are not a concern of ours.",a:"Olenna"},
+{q:"What kind of a queen am I if I'm not willing to risk my life to fight them?",a:"Daenerys"},
+{q:"I understand that if any more words come pouring out your c*** mouth, I'm going to have to eat every f***ing chicken in this room.",a:"The Hound"},
+{q:"No one can survive in this world without help.",a:"Jorah"},
+{q:"Is that what you want? Never.",a:"Jaime"},
+{q:"I am a Khaleesi of the Dothraki. I am the wife of the great Khal and I carry his son inside me.",a:"Daenerys"},
+{q:"We both peddle fantasies. Mine just happen to be true.",a:"Cersei"},
+{q:"The Lannisters send their regards.",a:"Roose Bolton"},
+{q:"And now his watch is ended.",a:"Sam"},
+{q:"My name is Reek. It rhymes with weak.",a:"Theon"},
+{q:"You are the moon of my life.",a:"Drogo"},
+{q:"When I'm gone, you and your brother and your sister will carry on. You'll have to.",a:"Olenna"},
+{q:"You looked beautiful the night you were...",a:"Bran"},
+{q:"The lady is not my type.",a:"Renly"},
+{q:"I've been worrying about Jon for years. He always comes back.",a:"Sam"},
+{q:"High Sparrow: What atonement do you offer? Cersei: I have a proposal.",a:"Cersei"},
+{q:"You're shit at dying, you know that?",a:"The Hound"},
+{q:"I am no one.",a:"Arya"},
+{q:"They don't get to choose.",a:"Stannis"},
+{q:"There's no safety, you dumb b****. If you don't know that by now, you're the wrong one to watch over her.",a:"The Hound"},
+{q:"The freedom to make my own mistakes was all I ever wanted.",a:"Mance Rayder"},
+{q:"You need me.",a:"Melisandre"},
+{q:"Ours is the fury.",a:"Robert"},
+{q:"First lesson: stick them with the pointy end.",a:"Jon Snow"},
+{q:"People work together when it suits them. They're loyal when it suits them.",a:"Cersei"},
+{q:"You've got to be smarter than Father. You need to be smarter than everyone.",a:"Sansa"},
+{q:"Give me ten good men and some climbing spikes. I'll impregnate the b****.",a:"Bronn"},
+{q:"I'm a monster, as well as a dwarf. You should charge me double.",a:"Tyrion"},
+{q:"When my dragons are grown, we will take back what was stolen from me. We will lay waste to armies and burn cities to the ground.",a:"Daenerys"},
+{q:"If you want justice, you've come to the wrong place.",a:"Tyrion"},
+{q:"Every time a Targaryen is born, the gods toss a coin and the world holds its breath.",a:"Varys"},
+{q:"I'm the queen of the Seven Kingdoms.",a:"Cersei"},
+{q:"No one minds what you do in the dark.",a:"Cersei"},
+{q:"You've been out there. You know what's coming for us.",a:"Jon Snow"},
+{q:"Any fool with a bit of luck can end up on the Iron Throne.",a:"Varys"},
+{q:"Rhaegar fought valiantly. Rhaegar fought nobly. Rhaegar fought honorably. And Rhaegar died.",a:"Jorah"},
+{q:"Our way is the old way.",a:"Ned Stark"},
+{q:"I am the shield that guards the realms of men.",a:"Jon Snow"},
+{q:"Jaime Lannister sends his regards.",a:"Roose Bolton"},
+{q:"You'll be queen, for a time. Then comes another, younger, more beautiful, to cast you down.",a:"Maggy the Frog"},
+{q:"A girl has many names on her list.",a:"Arya"},
+{q:"I know a killer when I see one.",a:"Arya"},
+{q:"There's nothing in the world more powerful than a good story.",a:"Tyrion"},
+{q:"The things we do for love.",a:"Jaime"},
+{q:"She's hateful. And so am I.",a:"Jaime"},
+{q:"I'm asking you to trust in a stranger because it's our best chance.",a:"Jon Snow"},
+{q:"The dead are already here.",a:"Jon Snow"},
+{q:"I served as Hand of the King under your father's murderer. Did you know that?",a:"Varys"},
+{q:"A hundred lashes if you don't start talking.",a:"Joffrey"},
+{q:"The only way to keep your people loyal is to make certain they fear you more than they do the enemy.",a:"Cersei"},
+{q:"The King in the North!",a:"Multiple"},
+{q:"My only regret is dying before I get to watch them execute you.",a:"Olenna"},
+{q:"There sits the only king I mean to bow my knee to: the King in the North!",a:"Greatjon Umber"},
+{q:"I've had an exciting life. I want my death to be boring.",a:"Varys"},
+{q:"Let me give you some advice, bastard. Never forget what you are.",a:"Tyrion"},
+{q:"You should have taken the black, brother.",a:"Renly"},
+{q:"Promise me, Ned.",a:"Lyanna Stark"},
+{q:"I'll go to war for Cersei. With a Dothraki horde and three dragons? I want to fight for the living.",a:"Jaime"},
+{q:"I looked for you on the Trident. I did not find you there.",a:"Ned Stark"},
+{q:"Ser Jaime Lannister, the Kingslayer. Call him what he is.",a:"Ned Stark"},
+{q:"I wish I was the monster you think I am.",a:"Tyrion"},
+{q:"Bran the Broken? Who has a better story than Bran the Broken?",a:"Tyrion"},
+{q:"The Prince That Was Promised will bring the dawn.",a:"Melisandre"},
+{q:"I sentence you to die.",a:"Sansa"},
+{q:"I, Daenerys of House Targaryen, sentence you to die.",a:"Daenerys"},
+{q:"All dwarves are bastards in their father's eyes.",a:"Tyrion"},
+{q:"When people ask you what happened here, tell them the North remembers.",a:"Wyman Manderly"},
+{q:"The common people pray for rain, healthy children, and a summer that never ends.",a:"Jorah"},
+{q:"That is the only time a man can be brave — when he is afraid.",a:"Ned Stark"},
+{q:"Nothing burns like the cold.",a:"Old Nan"},
+{q:"A girl is not ready. A girl is not No One. A girl is Arya Stark of Winterfell.",a:"Arya"},
+{q:"I would rather die free than live as a slave.",a:"Missandei"},
+{q:"I've known a great many clever men. I've outlived them all.",a:"Olenna"},
+{q:"Hard truths cut both ways.",a:"Davos"},
+{q:"There is only one war that matters. The Great War. And it is here.",a:"Jon Snow"},
+{q:"No one is very happy. Which means it's a good compromise, I suppose.",a:"Tyrion"},
+{q:"I grew up with soldiers. I learned how to die a long time ago.",a:"Ned Stark"},
+{q:"His watch is ended.",a:"Edd"},
+{q:"Lannister, Targaryen, Baratheon, Stark, Tyrell — they're all just spokes on a wheel.",a:"Daenerys"},
+{q:"My real father lost his head at King's Landing.",a:"Theon"}
+,
+{q:"We are only human, and the gods have fashioned us for love.",a:"Sam"},
+{q:"The man who fears losing has already lost.",a:"Tywin"},
+{q:"You are no son of mine.",a:"Tywin"},
+{q:"A dragon is not a slave.",a:"Daenerys"},
+{q:"I'm going to kill the queen.",a:"Jaime"},
+{q:"I don't want it. I never have.",a:"Jon Snow"},
+{q:"Someday I'm going to put a sword through your eye and out the back of your skull.",a:"Arya"},
+{q:"I grew up with boys who were smug little shits just like him.",a:"The Hound"},
+{q:"I've been through worse and lived.",a:"Jaime"},
+{q:"We could arrange to have you carried.",a:"Tyrion"},
+{q:"I will answer injustice with justice.",a:"Daenerys"},
+{q:"You're not dressed for a Northern winter.",a:"Sansa"},
+{q:"Can a man be brave when he's afraid? That is the only time a man can be brave.",a:"Ned Stark"},
+{q:"I don't distrust you because you're a woman. I distrust you because you're not as smart as you think you are.",a:"Tywin"},
+{q:"The gods have no mercy, that's why they're gods.",a:"Cersei"}
+];
+
+var KNOWLEDGE=[
+{q:"What is the name of the Stark family's ancestral sword?",a:"Ice",d:["Longclaw","Needle","Dawn"]},
+{q:"How many direwolf pups do the Stark children find?",a:"Six",d:["Five","Seven","Four"]},
+{q:"Who created the White Walkers?",a:"The Children of the Forest",d:["The Night King","The First Men","The Three-Eyed Raven"]},
+{q:"What is the name of Daenerys's largest dragon?",a:"Drogon",d:["Rhaegal","Viserion","Balerion"]},
+{q:"Who kills Joffrey at his wedding?",a:"Olenna Tyrell",d:["Tyrion Lannister","Sansa Stark","Littlefinger"]},
+{q:"What is Tyrion's weapon of choice at the Battle of Blackwater?",a:"Wildfire",d:["A crossbow","A battle axe","Dragon glass"]},
+{q:"Who says 'The Lannisters send their regards' at the Red Wedding?",a:"Roose Bolton",d:["Walder Frey","Tywin Lannister","Jaime Lannister"]},
+{q:"What is the name of Jon Snow's Valyrian steel sword?",a:"Longclaw",d:["Ice","Heartsbane","Oathkeeper"]},
+{q:"Which city does Daenerys rule before coming to Westeros?",a:"Meereen",d:["Astapor","Yunkai","Volantis"]},
+{q:"What is the seat of House Lannister?",a:"Casterly Rock",d:["King's Landing","Lannisport","The Rock"]},
+{q:"How many kingdoms make up Westeros?",a:"Seven",d:["Nine","Six","Eight"]},
+{q:"Who is Jon Snow's real father?",a:"Rhaegar Targaryen",d:["Ned Stark","Robert Baratheon","Arthur Dayne"]},
+{q:"What material can kill White Walkers?",a:"Dragonglass and Valyrian steel",d:["Regular steel","Wildfire","Gold"]},
+{q:"Who becomes King at the end of the series?",a:"Bran Stark",d:["Jon Snow","Tyrion Lannister","Sansa Stark"]},
+{q:"What is the name of Arya's sword?",a:"Needle",d:["Oathkeeper","Dark Sister","Ice"]},
+{q:"Who is the Three-Eyed Raven before Bran?",a:"Brynden Rivers (Bloodraven)",d:["The Night King","Jojen Reed","Maester Aemon"]},
+{q:"What event starts the War of the Five Kings?",a:"Ned Stark's execution",d:["Robert's death","The Red Wedding","Jon Arryn's murder"]},
+{q:"Which house's words are 'Ours is the Fury'?",a:"Baratheon",d:["Lannister","Stark","Targaryen"]},
+{q:"What is the name of the massive wall in the North?",a:"The Wall",d:["The Barrier","The Shield","The Gate"]},
+{q:"How tall is the Wall?",a:"700 feet",d:["300 feet","500 feet","1000 feet"]},
+{q:"Who kills the Night King?",a:"Arya Stark",d:["Jon Snow","Daenerys","Bran Stark"]},
+{q:"What is wildfire?",a:"A highly flammable green liquid created by pyromancers",d:["Dragon breath","A type of magic","A poison"]},
+{q:"Which Lannister kills their father?",a:"Tyrion",d:["Jaime","Cersei","Kevan"]},
+{q:"What is the Iron Bank's home city?",a:"Braavos",d:["Pentos","Volantis","Lys"]},
+{q:"Who is Hodor's real name?",a:"Wylis",d:["Brandon","Harold","Walter"]},
+{q:"What phrase do the Faceless Men use?",a:"Valar morghulis (All men must die)",d:["Valar dohaeris","Dracarys","What is dead may never die"]},
+{q:"How many children does Cersei have?",a:"Three (Joffrey, Myrcella, Tommen)",d:["Two","Four","Five"]},
+{q:"Who kills Robb Stark at the Red Wedding?",a:"Roose Bolton",d:["Walder Frey","A Frey soldier","Tywin Lannister"]},
+{q:"What is the Dothraki word for king?",a:"Khal",d:["Drogo","Maegi","Ko"]},
+{q:"Which character has the most kills in the show?",a:"Daenerys (King's Landing)",d:["Arya Stark","Cersei Lannister","The Night King"]},
+{q:"What is the name of the order that trains Arya?",a:"The Faceless Men",d:["The Unsullied","The Golden Company","The Sorrowful Men"]},
+{q:"Who forged the Iron Throne?",a:"Aegon the Conqueror (with Balerion's fire)",d:["The First Men","The Children of the Forest","Tywin Lannister"]},
+{q:"What is dragonglass actually made of?",a:"Obsidian (volcanic glass)",d:["Dragon scales","Valyrian steel","Frozen fire"]},
+{q:"How many seasons did Game of Thrones run?",a:"Eight",d:["Seven","Nine","Ten"]},
+{q:"Who betrays Ned Stark in King's Landing?",a:"Littlefinger",d:["Varys","Cersei","Janos Slynt"]},
+{q:"What is the name of the Targaryen ancestral sword?",a:"Blackfyre",d:["Longclaw","Dark Sister","Brightroar"]},
+{q:"Which house's sigil is a golden rose?",a:"Tyrell",d:["Martell","Tully","Arryn"]},
+{q:"What creature pulls the Night King's army south?",a:"An undead dragon (Viserion)",d:["Giants","Mammoths","Shadow creatures"]},
+{q:"Who is the youngest Stark child?",a:"Rickon",d:["Bran","Arya","Sansa"]},
+{q:"What is the name of Joffrey's sword?",a:"Widow's Wail",d:["Heartsbane","Lion's Tooth","Brightroar"]},
+{q:"Which character famously says 'Fewer'?",a:"Stannis Baratheon",d:["Tyrion Lannister","Davos Seaworth","Maester Aemon"]},
+{q:"What is Robert Baratheon's weapon of choice?",a:"A war hammer",d:["A sword","A battle axe","A mace"]},
+{q:"Who is the Mad King?",a:"Aerys II Targaryen",d:["Aegon IV","Maegor the Cruel","Joffrey Baratheon"]},
+{q:"What event does 'The Rains of Castamere' commemorate?",a:"Tywin's destruction of House Reyne",d:["Robert's Rebellion","The Red Wedding","The Dance of the Dragons"]},
+{q:"How many Valyrian steel swords are known in Westeros?",a:"About 200 (very few remain)",d:["Thousands","About 20","Only 5"]},
+{q:"Who is the first character to die in the show?",a:"A Night's Watch ranger (Will/Waymar Royce)",d:["Ned Stark","Jon Arryn","Viserys"]},
+{q:"What is the name of the strait between Westeros and Essos?",a:"The Narrow Sea",d:["The Sunset Sea","The Shivering Sea","The Jade Sea"]},
+{q:"Who is the Lord Commander of the Kingsguard during Season 1?",a:"Barristan Selmy",d:["Jaime Lannister","Meryn Trant","The Hound"]},
+{q:"What house rules Dorne?",a:"Martell",d:["Dayne","Yronwood","Sand"]},
+{q:"How did Jaime earn the name 'Kingslayer'?",a:"He killed the Mad King Aerys",d:["He killed Joffrey","He killed Robert","He killed Robb Stark"]},
+{q:"What is the name of the continent east of Westeros?",a:"Essos",d:["Sothoryos","Ulthos","Yi Ti"]},
+{q:"Who teaches Arya to sword fight?",a:"Syrio Forel",d:["Jon Snow","The Hound","Jaqen H'ghar"]},
+{q:"What is the ancestral home of the Targaryens in Westeros?",a:"Dragonstone",d:["King's Landing","Summerhall","Oldtown"]},
+{q:"How many books has George R.R. Martin published in ASOIAF?",a:"Five",d:["Seven","Six","Four"]},
+{q:"What year was the first book published?",a:"1996",d:["1991","2001","1998"]},
+{q:"Who was the first Targaryen to conquer Westeros?",a:"Aegon I (Aegon the Conqueror)",d:["Daenerys","Maegor","Jaehaerys"]},
+{q:"What color is Lannister gold on their sigil?",a:"Crimson and gold",d:["Black and gold","Red and silver","Gold and white"]},
+{q:"Which poison kills Joffrey?",a:"The Strangler",d:["Tears of Lys","Basilisk venom","Wolfsbane"]},
+{q:"What organization does Sam Tarly study with?",a:"The Citadel (maesters)",d:["The Night's Watch","The Faith Militant","The Faceless Men"]},
+{q:"How many dragons does Daenerys hatch?",a:"Three",d:["Two","Five","One"]},
+{q:"What is the name of Daenerys's dragon that becomes undead?",a:"Viserion",d:["Drogon","Rhaegal","Balerion"]},
+{q:"Who is the High Septon who forms the Faith Militant?",a:"The High Sparrow",d:["The High Septon","Lancel Lannister","Brother Ray"]},
+{q:"What keeps the White Walkers from crossing the Wall?",a:"Ancient magic woven into its ice",d:["The Night's Watch","Dragonglass","The cold"]},
+{q:"What is the name of Gendry's father?",a:"Robert Baratheon",d:["Stannis Baratheon","Ned Stark","Tobho Mott"]},
+{q:"Which castle does Brienne swear an oath to protect?",a:"She swears oaths to people, not castles (Catelyn, then Sansa)",d:["Winterfell","Storm's End","Tarth"]},
+{q:"What is the Doom of Valyria?",a:"A cataclysmic volcanic event that destroyed the Valyrian Freehold",d:["A plague","A war","An earthquake"]},
+{q:"Who writes the official history of Westerosi kings?",a:"The maesters of the Citadel",d:["The Faith of the Seven","The King's Hand","The Small Council"]},
+{q:"What trial does Tyrion demand after being accused of killing Joffrey?",a:"Trial by combat",d:["Trial by the Faith","Trial by seven","Trial by jury"]},
+{q:"Who fights as Tyrion's champion in his trial by combat?",a:"Oberyn Martell",d:["Bronn","Jaime Lannister","The Hound"]},
+{q:"What is the name of the massive prison in King's Landing?",a:"The Black Cells",d:["The Red Keep dungeons","The Sky Cells","The Pit"]},
+{q:"Who destroys the Sept of Baelor?",a:"Cersei (with wildfire)",d:["Daenerys","The High Sparrow","Tyrion"]},
+{q:"What is a warg?",a:"A person who can enter the mind of an animal",d:["A type of wolf","A White Walker","A giant"]},
+{q:"Which Stark child is the strongest warg?",a:"Bran",d:["Arya","Jon","Rickon"]},
+{q:"What is the name of the sellsword company Daario leads?",a:"The Second Sons",d:["The Golden Company","The Stormcrows","The Brave Companions"]},
+{q:"Who rules the Iron Islands at the start of the series?",a:"Balon Greyjoy",d:["Euron Greyjoy","Theon Greyjoy","Yara Greyjoy"]},
+{q:"What is the motto of House Greyjoy?",a:"We Do Not Sow",d:["What Is Dead May Never Die","Ours Is the Fury","Fire and Blood"]},
+{q:"Where is the Night's Watch headquartered?",a:"Castle Black",d:["Eastwatch","The Shadow Tower","Winterfell"]},
+{q:"What great structure did Bran the Builder construct?",a:"The Wall and Winterfell",d:["The Iron Throne","Storm's End","Casterly Rock"]},
+{q:"What does 'Valar dohaeris' mean?",a:"All men must serve",d:["All men must die","Fire and blood","Winter is coming"]},
+{q:"Which house's words are 'Growing Strong'?",a:"Tyrell",d:["Tully","Martell","Arryn"]},
+{q:"What creature is on the Lannister sigil?",a:"A lion",d:["A stag","An eagle","A direwolf"]},
+{q:"How does Khal Drogo die?",a:"Infection from a wound, worsened by blood magic",d:["Killed in battle","Poisoned","Assassinated"]},
+{q:"What is the Red Keep?",a:"The royal castle in King's Landing",d:["A Lannister fortress","A temple","A prison"]},
+{q:"What is the name of Samwell Tarly's Valyrian steel sword?",a:"Heartsbane",d:["Longclaw","Dawn","Oathkeeper"]},
+{q:"Who poisons Jon Arryn, starting the events of the series?",a:"Lysa Arryn (at Littlefinger's command)",d:["Cersei Lannister","Varys","Pycelle"]},
+{q:"What is the title of Book 3 in ASOIAF?",a:"A Storm of Swords",d:["A Clash of Kings","A Feast for Crows","A Dance with Dragons"]},
+{q:"How many Emmy Awards did Game of Thrones win?",a:"59",d:["47","38","73"]},
+{q:"What is the name of the pen George R.R. Martin writes with?",a:"He uses WordStar 4.0 on a DOS computer",d:["A fountain pen","Microsoft Word","Google Docs"]},
+{q:"Which house has the words 'Fire and Blood'?",a:"Targaryen",d:["Lannister","Baratheon","Martell"]},
+{q:"What is the Golden Company?",a:"A famous sellsword company from Essos",d:["Cersei's Kingsguard","A Lannister army","A Braavosi bank"]},
+{q:"What color is Ghost (Jon's direwolf)?",a:"White with red eyes (albino)",d:["Grey","Black","Brown"]},
+{q:"Who is Jon Snow's mother?",a:"Lyanna Stark",d:["Ashara Dayne","Wylla","Catelyn Stark"]},
+{q:"What season of the show is widely considered the best?",a:"Season 4",d:["Season 1","Season 3","Season 6"]},
+{q:"Which season is the most controversial?",a:"Season 8",d:["Season 7","Season 5","Season 6"]},
+{q:"What real-world location was used for King's Landing?",a:"Dubrovnik, Croatia",d:["Rome, Italy","Seville, Spain","Malta"]},
+{q:"What is Cersei's prophecy called?",a:"The Maggy the Frog prophecy (valonqar)",d:["The Azor Ahai prophecy","The Prince prophecy","The Doom prophecy"]},
+{q:"How long did the show's Battle of Winterfell take to film?",a:"55 consecutive night shoots over 11 weeks",d:["2 weeks","1 month","3 weeks"]},
+{q:"What is the Iron Throne made of?",a:"The swords of Aegon's defeated enemies, forged by dragonfire",d:["Iron from Valyria","Dragonglass","Gold and steel"]}
+,
+{q:"What is the name of Brienne's Valyrian steel sword?",a:"Oathkeeper",d:["Ice","Widow's Wail","Needle"]},
+{q:"Who rules Highgarden at the start of the series?",a:"Mace Tyrell",d:["Olenna Tyrell","Loras Tyrell","Margaery Tyrell"]},
+{q:"What animal is on the Stark sigil?",a:"Direwolf",d:["Wolf","Bear","Eagle"]},
+{q:"How does Lyanna Mormont die?",a:"Killed by a wight giant at Winterfell, stabbing it in the eye",d:["Arrow wound","Dragonfire","She survives"]},
+{q:"What is the name of the religious order that imprisons Cersei?",a:"The Faith Militant",d:["The Silent Sisters","The Sparrows","The Seven"]},
+{q:"Which character is known as the Spider?",a:"Varys",d:["Littlefinger","Qyburn","Pycelle"]},
+{q:"What is Podrick's famous talent?",a:"He's apparently incredible in bed (the women returned his money)",d:["Singing","Sword fighting","Cooking"]},
+{q:"Who names Jon Snow 'King in the North'?",a:"Lyanna Mormont (initiates it)",d:["Sansa Stark","Davos Seaworth","Tormund"]},
+{q:"What poison kills Jon Arryn?",a:"Tears of Lys",d:["The Strangler","Basilisk venom","Wolfsbane"]},
+{q:"What is the Horn of Winter said to do?",a:"Bring down the Wall",d:["Control dragons","Raise the dead","Summon storms"]},
+{q:"Who sits on the Small Council as Master of Coin in Season 1?",a:"Petyr Baelish (Littlefinger)",d:["Varys","Pycelle","Renly"]},
+{q:"What is the name of the castle where the Red Wedding takes place?",a:"The Twins",d:["Riverrun","Harrenhal","The Dreadfort"]},
+{q:"Which character rides a dragon first (other than Daenerys)?",a:"Jon Snow (rides Rhaegal)",d:["Tyrion","The Night King","Bran"]},
+{q:"What is the Brotherhood Without Banners?",a:"An outlaw group led by Beric Dondarrion serving the common folk",d:["A sellsword company","A religious order","The Night's Watch deserters"]},
+{q:"Who is the last person Arya kills?",a:"Daenerys (debatable — the Night King if counting the show's timeline)",d:["Cersei","Walder Frey","Littlefinger"]},
+{q:"What does Melisandre sacrifice to bring storms?",a:"King's blood (via leeches from Gendry)",d:["Dragonglass","Gold","Livestock"]},
+{q:"How does Tommen die?",a:"Jumps from a window after the Sept explosion",d:["Poisoned","Stabbed","Falls in battle"]},
+{q:"What is the name of Ramsay's hunting dogs?",a:"His 'girls' (his hounds)",d:["The Dread Pack","Bolton's Bitches","The Flayers"]},
+{q:"Who becomes Hand of the King after Ned Stark?",a:"Tyrion Lannister",d:["Tywin Lannister","Cersei Lannister","Kevan Lannister"]},
+{q:"What secret does Gilly discover in the Citadel?",a:"Rhaegar's annulment and remarriage to Lyanna",d:["The location of dragonglass","How to cure greyscale","The Night King's weakness"]},
+{q:"What is the correct response to 'Valar morghulis'?",a:"Valar dohaeris",d:["Dracarys","What is dead may never die","Not today"]},
+{q:"Which two characters have a 'Cleganebowl'?",a:"The Hound and The Mountain",d:["Jon and Ramsay","Brienne and Jaime","Arya and The Waif"]},
+{q:"What is the name of the last episode of Game of Thrones?",a:"The Iron Throne",d:["A Dream of Spring","The Long Night","Winter Is Coming"]},
+{q:"How does Cersei die?",a:"Crushed by rubble in the Red Keep with Jaime",d:["Killed by Arya","Executed by Daenerys","Poisoned by Tyrion"]},
+{q:"What is Jon Snow's real Targaryen name?",a:"Aegon",d:["Aemon","Rhaegar","Jaehaerys"]},
+{q:"Where does Jon Snow end up at the end of the series?",a:"Beyond the Wall with the wildlings",d:["King's Landing","The Night's Watch","Winterfell"]},
+{q:"What color are Targaryen eyes?",a:"Purple/violet",d:["Blue","Green","Silver"]},
+{q:"What is the largest dragon in known history?",a:"Balerion the Black Dread",d:["Drogon","Vhagar","Meraxes"]},
+{q:"How many episodes are in the final season?",a:"Six",d:["Eight","Ten","Seven"]},
+{q:"What house does Brienne of Tarth belong to?",a:"House Tarth",d:["House Baratheon","House Stark","No house"]},
+{q:"What is the Valyrian word for dragonfire?",a:"Dracarys",d:["Valar","Dohaeris","Daor"]},
+{q:"Who is Robert Baratheon's Hand of the King at the start?",a:"Jon Arryn (deceased) then Ned Stark",d:["Tywin Lannister","Stannis Baratheon","Renly Baratheon"]},
+{q:"What year did Game of Thrones premiere on HBO?",a:"2011",d:["2010","2012","2013"]},
+{q:"How many total episodes of Game of Thrones were produced?",a:"73",d:["80","67","60"]},
+{q:"What is the name of the prequel series about the Targaryen civil war?",a:"House of the Dragon",d:["Fire and Blood","Dance of Dragons","The Conqueror"]},
+{q:"What is the name of the Dunk and Egg adaptation?",a:"A Knight of the Seven Kingdoms",d:["The Hedge Knight","Tales of Westeros","The Sworn Sword"]},
+{q:"What animal does House Arryn use as its sigil?",a:"Falcon (and crescent moon)",d:["Eagle","Hawk","Owl"]},
+{q:"What is the seat of House Arryn?",a:"The Eyrie",d:["The Vale","Gulltown","The Bloody Gate"]},
+{q:"Who wins the Battle of the Blackwater?",a:"The Lannisters (with Tyrell reinforcements)",d:["Stannis Baratheon","The Gold Cloaks","Renly Baratheon"]},
+{q:"What is the name of Theon's torture chamber?",a:"The Dreadfort",d:["The Twins","Winterfell crypts","The Black Cells"]},
+{q:"Who is known as the Red Woman?",a:"Melisandre",d:["Cersei","Daenerys","Catelyn"]},
+{q:"What body of water surrounds Dragonstone?",a:"Blackwater Bay",d:["The Narrow Sea","Shipbreaker Bay","The Sunset Sea"]},
+{q:"What event is known as the Purple Wedding?",a:"Joffrey's death at his wedding feast",d:["Robb Stark's death","Sansa's wedding to Tyrion","Margaery's wedding to Tommen"]},
+{q:"What is Samwell Tarly's father's name?",a:"Randyll Tarly",d:["Robert Tarly","Rickard Tarly","Rodrik Tarly"]},
+{q:"Who is the Onion Knight?",a:"Davos Seaworth",d:["Bronn","Jorah Mormont","Barristan Selmy"]},
+{q:"What did Davos smuggle to save Stannis during Robert's Rebellion?",a:"Onions and other food",d:["Weapons","Gold","Messages"]},
+{q:"How many Stark children survive the series?",a:"Four (Sansa, Arya, Bran, Jon — if you count him)",d:["Three","Five","Two"]},
+{q:"What is the name of the enormous castle built by Harren the Black?",a:"Harrenhal",d:["The Twins","Casterly Rock","Storm's End"]},
+{q:"What happened to Harrenhal when Aegon conquered it?",a:"Balerion melted its towers with dragonfire",d:["It surrendered peacefully","It was flooded","It was abandoned"]},
+{q:"What is a greenseer?",a:"Someone who can see through weirwood trees and has prophetic visions",d:["A type of maester","A wildling shaman","A Targaryen with green eyes"]},
+{q:"What does the Night King mark Bran with?",a:"A handprint grip on his arm",d:["A scar on his face","A mark on his forehead","Nothing physical"]},
+{q:"Who captures Jaime Lannister in Season 1?",a:"Robb Stark's forces",d:["Ned Stark","The Brotherhood","Brienne"]},
+{q:"What is greyscale?",a:"A deadly disease that turns flesh to stone",d:["A dragon disease","A type of armor","A poison"]},
+{q:"Who cures Jorah's greyscale?",a:"Samwell Tarly",d:["Qyburn","Melisandre","Daenerys"]}
+];
+
+var mode=null,quiz=[],qIdx=0,score=0,streak=0,best=0,answered=false,history=[];
+
+function setMode(m){mode=m;document.getElementById('mode-quotes').classList.toggle('selected',m==='quotes');document.getElementById('mode-knowledge').classList.toggle('selected',m==='knowledge');document.getElementById('goBtn').disabled=!m}
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+
+function startQuiz(){
+  qIdx=0;score=0;streak=0;best=0;answered=false;history=[];
+  if(mode==='quotes'){
+    var pool=QUOTES.slice();shuffle(pool);quiz=pool.slice(0,20);
+  } else {
+    var pool=KNOWLEDGE.slice();shuffle(pool);quiz=pool.slice(0,20);
+  }
+  document.getElementById('setup').style.display='none';
+  document.getElementById('game').style.display='block';
+  document.getElementById('results').style.display='none';
+  showQ();
+}
+
+function showQ(){
+  answered=false;
+  var q=quiz[qIdx];
+  document.getElementById('hudQ').textContent=(qIdx+1)+'/20';
+  document.getElementById('hudS').textContent=score;
+  document.getElementById('hudK').textContent=streak;
+  document.getElementById('fb').classList.remove('show');
+
+  if(mode==='quotes'){
+    document.getElementById('qLabel').textContent='WHO SAID IT?';
+    document.getElementById('qText').className='q-text';
+    document.getElementById('qText').textContent='"'+q.q+'"';
+    // Build choices
+    var wrongs=QUOTE_CHARS.filter(function(c){return c!==q.a});
+    shuffle(wrongs);
+    var opts=[{t:q.a,c:true},{t:wrongs[0],c:false},{t:wrongs[1],c:false},{t:wrongs[2],c:false}];
+    shuffle(opts);
+    renderChoices(opts);
+  } else {
+    document.getElementById('qLabel').textContent='GENERAL KNOWLEDGE';
+    document.getElementById('qText').className='q-text knowledge';
+    document.getElementById('qText').textContent=q.q;
+    var opts=[{t:q.a,c:true}];
+    q.d.forEach(function(w){opts.push({t:w,c:false})});
+    shuffle(opts);
+    renderChoices(opts);
+  }
+}
+
+function renderChoices(opts){
+  var el=document.getElementById('choices');
+  var keys=['1','2','3','4'];
+  el.innerHTML='';
+  opts.forEach(function(o,i){
+    var btn=document.createElement('div');
+    btn.className='choice';
+    btn.innerHTML=o.t+'<span class="ck">'+keys[i]+'</span>';
+    btn.onclick=function(){answer(btn,o.c,o.t)};
+    btn.dataset.correct=o.c?'1':'0';
+    el.appendChild(btn);
+  });
+}
+
+function answer(btn,isCorrect,chosen){
+  if(answered)return;answered=true;
+  var q=quiz[qIdx];
+  document.querySelectorAll('.choice').forEach(function(b){b.classList.add('locked');if(b.dataset.correct==='1')b.classList.add('correct')});
+  if(isCorrect){score++;streak++;if(streak>best)best=streak;btn.classList.add('correct');document.getElementById('fbR').className='fb-result right';document.getElementById('fbR').textContent='⚔️ Correct!'}
+  else{streak=0;btn.classList.add('wrong');document.getElementById('fbR').className='fb-result nope';document.getElementById('fbR').textContent='💀 Incorrect.'}
+  document.getElementById('hudS').textContent=score;document.getElementById('hudK').textContent=streak;
+  var explain=mode==='quotes'?'Said by: '+q.a:'Answer: '+q.a;
+  document.getElementById('fbE').textContent=explain;
+  document.getElementById('fb').classList.add('show');
+  document.getElementById('nextBtn').textContent=qIdx<19?'Next →':'See Results →';
+  history.push({q:mode==='quotes'?q.q:q.q,correct:isCorrect,answer:q.a,yours:chosen});
+}
+
+function next(){if(qIdx>=19){showResults();return}qIdx++;showQ()}
+
+function showResults(){
+  document.getElementById('game').style.display='none';
+  var el=document.getElementById('results');el.style.display='block';
+  var pct=Math.round(score/20*100);
+  var cls=pct===100?'perfect':pct>=75?'good':pct>=50?'ok':'low';
+  var rank=pct===100?'THE THREE-EYED RAVEN':pct>=90?'HAND OF THE KING':pct>=75?'LORD COMMANDER':pct>=50?'HEDGE KNIGHT':pct>=25?'NIGHT\'S WATCH RECRUIT':'KNOWS NOTHING';
+  var rc=pct===100?'var(--correct)':pct>=75?'var(--gold)':pct>=50?'var(--accent)':'var(--wrong)';
+  var msg=pct===100?'You see all, know all. The realm is yours.':pct>=75?'A formidable mind. The Small Council could use you.':pct>=50?'You know your way around Westeros. Keep studying.':'As Ygritte would say... you know nothing.';
+  var html='<div class="results"><div class="big '+cls+'">'+score+'/20</div><div class="score-sub">'+pct+'% · Best Streak: '+best+'</div><div class="rank" style="background:rgba(255,255,255,0.04);border:1px solid '+rc+';color:'+rc+'">'+rank+'</div><div class="msg">'+msg+'</div>';
+  html+='<div class="r-btns"><button class="r-btn primary" onclick="startQuiz()">⚔️ Try Again</button><button class="r-btn secondary" onclick="backToSetup()">🏠 Menu</button><button class="r-btn secondary" onclick="toggleReview()">📋 Review</button></div>';
+  html+='<div class="review" id="review">';
+  history.forEach(function(h,i){
+    html+='<div class="rev-item '+(h.correct?'was-right':'was-wrong')+'"><div class="rev-q">'+(i+1)+'. '+h.q+'</div><div class="rev-a">✅ '+h.answer+'</div>';
+    if(!h.correct)html+='<div class="rev-yours">❌ You said: '+h.yours+'</div>';
+    html+='</div>';
+  });
+  html+='</div></div>';
+  el.innerHTML=html;
+}
+function toggleReview(){var r=document.getElementById('review');r.style.display=r.style.display==='none'?'block':'none'}
+function backToSetup(){document.getElementById('setup').style.display='block';document.getElementById('game').style.display='none';document.getElementById('results').style.display='none'}
+function confirmQuit(){if(confirm('Quit? Progress will be lost.')){backToSetup()}}
+document.addEventListener('keydown',function(e){
+  if(document.getElementById('game').style.display==='none')return;
+  if(!answered){var idx={'1':0,'2':1,'3':2,'4':3}[e.key];if(idx!==undefined){var btns=document.querySelectorAll('.choice');if(btns[idx])btns[idx].click()}}
+  else if(e.key==='Enter'||e.key===' '){e.preventDefault();next()}
+});
+</script>
+</body>
+</html>
