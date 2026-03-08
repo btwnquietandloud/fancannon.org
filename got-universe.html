@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Interactive fan guide to Game of Thrones / A Song of Ice and Fire. Characters, timeline, book vs show differences, relationships, and fun facts.">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>Game of Thrones Universe — A Song of Ice and Fire</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0c14;--card:#10131e;--card2:#161a28;--accent:#c8a050;--accent2:#a04040;--accent3:#4080b0;--accent4:#508050;--text:#d8d0c4;--muted:#908878;--dim:#605848;--border:#2a2420;--ice:#6090c0;--fire:#c06030;--gold:#d4a840;--stark:#708090;--lannister:#b8860b;--targaryen:#8b0000;--baratheon:#2f4f4f}
+*{box-sizing:border-box;margin:0;padding:0}
+body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 30%,rgba(200,160,80,0.02) 0%,transparent 70%);pointer-events:none}
+.fc-brand-bar{position:sticky;top:0;z-index:100;background:rgba(10,12,20,0.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(200,160,80,0.08);padding:8px 16px;display:flex;align-items:center;gap:10px}
+.fc-brand-bar a{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit}.fc-brand-bar img{width:32px;height:32px;border-radius:50%}
+.fc-brand-bar span{font-family:sans-serif;font-size:14px;font-weight:600;color:#c9a44a;letter-spacing:0.5px}
+.fc-brand-bar .fc-sep{color:rgba(255,255,255,0.12);font-size:18px}.fc-brand-bar .fc-page-name{font-size:13px;font-weight:500;color:rgba(255,255,255,0.3)}
+.page{max-width:920px;margin:0 auto;padding:24px 16px 80px}
+nav.tabs{display:flex;gap:4px;flex-wrap:wrap;justify-content:center;margin-bottom:20px;position:sticky;top:49px;z-index:50;background:rgba(10,12,20,0.9);backdrop-filter:blur(10px);padding:10px 0;border-bottom:1px solid rgba(200,160,80,0.06)}
+nav.tabs button{background:var(--card);border:1.5px solid var(--border);border-radius:10px;padding:8px 13px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:11px;font-weight:700;color:var(--muted);transition:all .25s;letter-spacing:0.3px}
+nav.tabs button:hover{border-color:var(--accent);color:var(--text)}
+nav.tabs button.active{border-color:var(--accent);background:rgba(200,160,80,0.06);color:var(--accent);box-shadow:0 0 10px rgba(200,160,80,0.08)}
+.section{display:none}.section.active{display:block}
+.hero{text-align:center;padding:24px 0 16px}
+.hero h1{font-family:'Cinzel',serif;font-size:clamp(28px,5.5vw,48px);font-weight:800;letter-spacing:3px;line-height:1.1}
+.hero h1 .ice{color:var(--ice)}.hero h1 .fire{color:var(--fire)}
+.hero .sub{font-family:'Cinzel',serif;font-size:clamp(11px,2vw,15px);color:var(--dim);letter-spacing:4px;margin-top:6px;font-weight:600}
+.hero p{color:var(--muted);font-size:14px;margin-top:14px;line-height:1.75;max-width:650px;margin-left:auto;margin-right:auto}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:14px;transition:border-color .25s}
+.card:hover{border-color:rgba(200,160,80,0.2)}
+.card h2{font-family:'Cinzel',serif;font-size:20px;font-weight:700;margin-bottom:10px}
+.card h3{font-family:'Cinzel',serif;font-size:16px;font-weight:700;margin:16px 0 8px}
+.card p{font-size:14px;color:var(--muted);line-height:1.75;margin-bottom:10px}.card p:last-child{margin-bottom:0}
+.hl{color:var(--accent);font-weight:700}.hl2{color:var(--accent2);font-weight:700}.hl3{color:var(--accent3);font-weight:700}.hl4{color:var(--accent4);font-weight:700}
+.s-title{font-family:'Cinzel',serif;font-size:16px;font-weight:700;letter-spacing:1px;color:var(--dim);margin:28px 0 12px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;margin:14px 0}
+.stat-box{background:var(--card2);border-radius:10px;padding:10px 14px}
+.stat-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--dim)}
+.stat-val{font-size:13px;font-weight:700;margin-top:2px}
+/* Characters */
+.char-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.char-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;transition:all .25s}
+.char-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.char-card .cc-top{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.char-card .cc-emoji{font-size:28px}
+.char-card .cc-name{font-family:'Cinzel',serif;font-size:16px;font-weight:700}
+.char-card .cc-house{font-size:11px;font-weight:700;padding:2px 8px;border-radius:5px;letter-spacing:0.05em}
+.char-card p{font-size:13px;color:var(--muted);line-height:1.65;margin-top:6px}
+.char-card .cc-actor{font-size:11px;color:var(--dim);margin-top:6px}
+.house-stark{background:rgba(112,128,144,0.12);color:var(--stark)}
+.house-lannister{background:rgba(184,134,11,0.12);color:var(--lannister)}
+.house-targaryen{background:rgba(139,0,0,0.12);color:var(--targaryen)}
+.house-baratheon{background:rgba(47,79,79,0.12);color:#5f9f9f}
+.house-other{background:rgba(200,160,80,0.08);color:var(--accent)}
+/* Timeline */
+.tl-item{display:flex;gap:14px;margin-bottom:14px}
+.tl-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.tl-year{font-family:'Cinzel',serif;font-size:14px;font-weight:700;color:var(--accent)}
+.tl-text{font-size:13px;color:var(--muted);line-height:1.6}
+/* Compare cards */
+.cmp-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin-bottom:8px;cursor:pointer;transition:border-color .2s}
+.cmp-card:hover{border-color:var(--accent)}
+.cmp-header{display:flex;align-items:center;gap:10px}
+.cmp-title{font-family:'Cinzel',serif;font-size:14px;font-weight:700;flex:1}
+.cmp-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:5px;letter-spacing:0.05em}
+.cmp-badge.major{background:rgba(160,64,64,0.12);color:var(--accent2)}
+.cmp-badge.minor{background:rgba(200,160,80,0.1);color:var(--accent)}
+.cmp-badge.show-only{background:rgba(64,128,176,0.12);color:var(--accent3)}
+.cmp-body{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.cmp-card.open .cmp-body{max-height:400px}
+.cmp-desc{font-size:13px;color:var(--muted);line-height:1.65;padding-top:10px}
+/* Relationships */
+.rel-filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.rel-filter{background:var(--card);color:var(--muted);border:1px solid var(--border);padding:5px 12px;border-radius:99px;cursor:pointer;font-size:11px;font-weight:700;transition:all .2s}
+.rel-filter:hover{border-color:var(--accent)}.rel-filter.active{background:var(--accent);color:#0a0c14;border-color:var(--accent)}
+.rel-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:10px;transition:border-color .2s}
+.rel-card:hover{border-color:var(--rel-color,var(--accent))}
+.rel-pair{display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap}
+.rel-char{font-family:'Cinzel',serif;font-size:13px;font-weight:700;padding:3px 10px;border-radius:6px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06)}
+.rel-arrow{font-size:16px;color:var(--dim)}
+.rel-type{font-size:10px;font-weight:700;padding:2px 8px;border-radius:5px;margin-left:auto;letter-spacing:0.05em}
+.rel-desc{font-size:13px;color:var(--muted);line-height:1.65;margin-top:6px}
+/* Fun facts */
+.fact-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
+.fact-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;font-size:13px;color:var(--muted);line-height:1.6}
+.fact-card .fc-emoji{font-size:20px;margin-bottom:4px}
+.quote-box{background:var(--card2);border-left:3px solid var(--accent);border-radius:0 12px 12px 0;padding:16px 20px;margin:16px 0;font-family:'Cinzel',serif;font-style:italic;font-size:15px;color:var(--muted);line-height:1.7}
+.quote-box .q-attr{font-family:'Nunito',sans-serif;font-style:normal;font-size:11px;font-weight:700;color:var(--accent2);margin-top:6px}
+@media(max-width:600px){.char-grid{grid-template-columns:1fr}.stat-grid{grid-template-columns:1fr 1fr}nav.tabs button{padding:6px 10px;font-size:10px}}
+</style>
+</head>
+<body>
+<div class="fc-brand-bar"><a href="index.html"><img src="fancannonlogo.png" alt="Fan Cannon"><span>Fan Cannon</span></a><span class="fc-sep">|</span><span class="fc-page-name">Game of Thrones</span></div>
+<div class="page">
+<nav class="tabs" id="tabs">
+<button class="active" onclick="showSec('home',this)">🏠 Home</button>
+<button onclick="showSec('timeline',this)">📜 Timeline</button>
+<button onclick="showSec('chars',this)">👥 Characters</button>
+<button onclick="showSec('facts',this)">🎲 Fun Facts</button>
+<button onclick="showSec('bookvshow',this)">📖 Book vs Show</button>
+<button onclick="showSec('plotdiff',this)">⚔️ Plot Differences</button>
+<button onclick="showSec('rels',this)">💞 Relationships</button>
+</nav>
+
+<!-- HOME -->
+<div id="sec-home" class="section active">
+<div class="hero">
+<h1><span class="ice">ICE</span> & <span class="fire">FIRE</span></h1>
+<div class="sub">A SONG OF ICE AND FIRE · GAME OF THRONES</div>
+<p>George R.R. Martin's epic fantasy saga — where noble houses clash for power, ancient threats stir beyond the Wall, and fire-breathing dragons return to a world that forgot them. From the page to the screen and beyond.</p>
+</div>
+<div class="quote-box">"When you play the game of thrones, you win or you die. There is no middle ground."<div class="q-attr">— Cersei Lannister</div></div>
+<div class="stat-grid">
+<div class="stat-box"><div class="stat-label">Books Published</div><div class="stat-val" style="color:var(--accent)">5 of 7 planned</div></div>
+<div class="stat-box"><div class="stat-label">TV Seasons</div><div class="stat-val">8 (73 episodes)</div></div>
+<div class="stat-box"><div class="stat-label">Emmys</div><div class="stat-val" style="color:var(--gold)">59 wins (record)</div></div>
+<div class="stat-box"><div class="stat-label">Copies Sold</div><div class="stat-val">100M+ in 47 languages</div></div>
+<div class="stat-box"><div class="stat-label">First Book</div><div class="stat-val">A Game of Thrones (1996)</div></div>
+<div class="stat-box"><div class="stat-label">Author</div><div class="stat-val">George R.R. Martin</div></div>
+<div class="stat-box"><div class="stat-label">Spin-offs</div><div class="stat-val">House of the Dragon, A Knight of the Seven Kingdoms</div></div>
+<div class="stat-box"><div class="stat-label">The Winds of Winter</div><div class="stat-val" style="color:var(--accent2)">Still waiting...</div></div>
+</div>
+<div class="card">
+<h2 style="color:var(--accent)">The Books</h2>
+<p><span class="hl">A Game of Thrones</span> (1996) · <span class="hl">A Clash of Kings</span> (1998) · <span class="hl">A Storm of Swords</span> (2000) · <span class="hl">A Feast for Crows</span> (2005) · <span class="hl">A Dance with Dragons</span> (2011) · <span class="hl2">The Winds of Winter</span> (TBD) · <span class="hl2">A Dream of Spring</span> (TBD)</p>
+<p>Plus companion works: <span class="hl3">Fire & Blood</span> (Targaryen history, basis for House of the Dragon), <span class="hl4">The World of Ice & Fire</span> (encyclopedia), and <span class="hl">Tales of Dunk and Egg</span> (prequel novellas, basis for A Knight of the Seven Kingdoms).</p>
+</div>
+</div>
+<div style="text-align:center;margin:18px 0"><a href="got-characters.html" style="display:inline-block;font-family:Cinzel,serif;font-size:14px;font-weight:700;padding:14px 28px;border-radius:12px;background:var(--accent);color:#0a0c14;text-decoration:none;transition:all .25s;box-shadow:0 4px 16px rgba(200,160,80,0.2);letter-spacing:0.5px">🗡️ Explore All 100 Characters →</a></div>
+
+
+<!-- TIMELINE -->
+<div id="sec-timeline" class="section">
+<h2 class="s-title" style="color:var(--accent)">📜 TIMELINE OF WESTEROS</h2>
+<div class="tl-item"><div class="tl-dot" style="background:var(--ice)"></div><div><div class="tl-year">~12,000 BAC — The Dawn Age</div><div class="tl-text">The Children of the Forest inhabit Westeros. The First Men arrive from Essos via the land bridge at Dorne. War breaks out; the Children shatter the land bridge, creating the Stepstones.</div></div></div>
+<div class="tl-item"><div class="tl-dot" style="background:var(--ice)"></div><div><div class="tl-year">~10,000 BAC — The Pact</div><div class="tl-text">The First Men and Children of the Forest sign the Pact on the Isle of Faces, ending their war. The era of the Thousand Kingdoms begins.</div></div></div>
+<div class="tl-item"><div class="tl-dot" style="background:var(--accent3)"></div><div><div class="tl-year">~8,000 BAC — The Long Night</div><div class="tl-text">The White Walkers descend from the far north, bringing endless winter and death. The First Men and Children unite to defeat them in the War for the Dawn. Bran the Builder raises the Wall and founds House Stark and the Night's Watch.</div></div></div>
+<div class="tl-item"><div class="tl-dot" style="background:var(--accent)"></div><div><div class="tl-year">~6,000 BAC — The Andal Invasion</div><div class="tl-text">The Andals cross the Narrow Sea, conquering all of southern Westeros. Only the North remains under First Men rule. The Faith of the Seven arrives.</div></div></div>
+<div class="tl-item"><div class="tl-dot" style="background:var(--fire)"></div><div><div class="tl-year">~5,000 BAC — Rise of Valyria</div><div class="tl-text">The Valyrian Freehold rises in Essos, taming dragons and building the greatest civilization the world has known. The Targaryens are one of forty dragonlord families.</div></div></div>
+<div class="tl-item"><div class="tl-dot" style="background:var(--fire)"></div><div><div class="tl-year">~100 BAC — The Doom of Valyria</div><div class="tl-text">A cataclysm destroys Valyria and nearly all its dragons. The Targaryens, who relocated to Dragonstone before the Doom (warned by a prophetic dream), are among the few survivors.</div></div></div>
+<div class="tl-item"><div class="tl-dot" style="background:var(--fire)"></div><div><div class="tl-year">1 AC — Aegon's Conquest</div><div class="tl-text">Aegon I Targaryen and his sister-wives Visenya and Rhaenys conquer six of the Seven Kingdoms with three dragons. The Iron Throne is forged from the swords of the defeated. Only Dorne resists.</div></div></div>
+<div class="tl-item"><div class="tl-dot" style="background:var(--accent2)"></div><div><div class="tl-year">129–131 AC — Dance of the Dragons</div><div class="tl-text">Civil war between Targaryen factions: Rhaenyra vs. Aegon II. Dragon fights dragon. Nearly all dragons are killed. The basis for House of the Dragon.</div></div></div>
+<div class="tl-item"><div class="tl-dot" style="background:var(--accent)"></div><div><div class="tl-year">~209 AC — Tales of Dunk and Egg</div><div class="tl-text">The adventures of Ser Duncan the Tall and his squire Egg (future King Aegon V). A simpler, more personal era. Basis for A Knight of the Seven Kingdoms.</div></div></div>
+<div class="tl-item"><div class="tl-dot" style="background:var(--accent2)"></div><div><div class="tl-year">259 AC — Tragedy at Summerhall</div><div class="tl-text">King Aegon V and his son die in a fire at Summerhall, possibly trying to hatch dragon eggs. Rhaegar Targaryen is born the same day amid the flames.</div></div></div>
+<div class="tl-item"><div class="tl-dot" style="background:var(--accent2)"></div><div><div class="tl-year">280–283 AC — Robert's Rebellion</div><div class="tl-text">Prince Rhaegar abducts (or elopes with) Lyanna Stark. The Mad King Aerys burns Ned's father and brother alive. Robert Baratheon, Ned Stark, and Jon Arryn overthrow the Targaryens. Jaime kills the Mad King. Robert takes the throne. Rhaegar's children are murdered. Daenerys and Viserys flee to Essos.</div></div></div>
+<div class="tl-item"><div class="tl-dot" style="background:var(--stark)"></div><div><div class="tl-year">298 AC — A Game of Thrones Begins</div><div class="tl-text">Jon Arryn is poisoned. Ned Stark becomes Hand of the King. He discovers Cersei's children are Jaime's. Robert dies. Ned is betrayed and executed. The War of the Five Kings erupts. Daenerys hatches three dragons.</div></div></div>
+<div class="tl-item"><div class="tl-dot" style="background:var(--lannister)"></div><div><div class="tl-year">299 AC — War of the Five Kings</div><div class="tl-text">Robb Stark, Joffrey Baratheon, Stannis Baratheon, Renly Baratheon, and Balon Greyjoy all claim power. The Red Wedding massacres the Starks. Joffrey is poisoned. Tyrion kills Tywin.</div></div></div>
+<div class="tl-item"><div class="tl-dot" style="background:var(--targaryen)"></div><div><div class="tl-year">300–302 AC — Fire & Blood Return</div><div class="tl-text">Jon Snow is elected Lord Commander, killed, and resurrected. Daenerys conquers cities across Essos. Cersei destroys the Sept of Baelor. The Wall falls. The Battle of Winterfell defeats the Night King. Daenerys burns King's Landing. Jon kills Daenerys. Bran becomes King.</div></div></div>
+</div>
+
+<!-- CHARACTERS -->
+<div id="sec-chars" class="section">
+<h2 class="s-title" style="color:var(--accent)">👥 KEY CHARACTERS</h2>
+<div style="text-align:center;margin:14px 0 18px"><a href="got-characters.html" style="display:inline-block;font-family:Cinzel,serif;font-size:14px;font-weight:700;padding:14px 28px;border-radius:12px;background:var(--accent);color:#0a0c14;text-decoration:none;transition:all .25s;box-shadow:0 4px 16px rgba(200,160,80,0.2)">🗡️ Full 100-Character Guide with Book vs Show Details →</a></div>
+
+<div class="char-grid">
+<div class="char-card"><div class="cc-top"><span class="cc-emoji">🐺</span><div><div class="cc-name">Jon Snow</div><span class="cc-house house-stark">Stark / Targaryen</span></div></div><p>Raised as Ned Stark's bastard, actually Aegon Targaryen — son of Rhaegar and Lyanna. Lord Commander of the Night's Watch, resurrected from death, King in the North, and the man who kills Daenerys to save the realm. His honor is his strength and his curse.</p><div class="cc-actor">Kit Harington</div></div>
+
+<div class="char-card"><div class="cc-top"><span class="cc-emoji">🐉</span><div><div class="cc-name">Daenerys Targaryen</div><span class="cc-house house-targaryen">Targaryen</span></div></div><p>The Mother of Dragons. Exiled princess who rises from nothing to conquer cities, free slaves, and hatch the first dragons in a century. Her descent from liberator to tyrant is the series' most debated arc. Fire and blood indeed.</p><div class="cc-actor">Emilia Clarke</div></div>
+
+<div class="char-card"><div class="cc-top"><span class="cc-emoji">🦁</span><div><div class="cc-name">Tyrion Lannister</div><span class="cc-house house-lannister">Lannister</span></div></div><p>The Imp. Despised by his father, mocked for his dwarfism, but the most intelligent person in Westeros. His wit is his weapon, his compassion his secret strength. Drinks and knows things.</p><div class="cc-actor">Peter Dinklage</div></div>
+
+<div class="char-card"><div class="cc-top"><span class="cc-emoji">👑</span><div><div class="cc-name">Cersei Lannister</div><span class="cc-house house-lannister">Lannister</span></div></div><p>The Lioness. A queen who wanted the power her gender denied her, and destroyed everything to get it. Her love for her children is genuine; her methods are monstrous. The most dangerous woman in Westeros.</p><div class="cc-actor">Lena Headey</div></div>
+
+<div class="char-card"><div class="cc-top"><span class="cc-emoji">⚔️</span><div><div class="cc-name">Jaime Lannister</div><span class="cc-house house-lannister">Lannister</span></div></div><p>The Kingslayer. Broke his oath to save half a million people, then spent his life paying for it. His redemption arc — from arrogant knight to humbled man — is one of the series' finest. Lost his hand, found his honor.</p><div class="cc-actor">Nikolaj Coster-Waldau</div></div>
+
+<div class="char-card"><div class="cc-top"><span class="cc-emoji">🐺</span><div><div class="cc-name">Arya Stark</div><span class="cc-house house-stark">Stark</span></div></div><p>The girl who became No One — then chose to be Arya Stark. Trained by assassins, driven by a kill list, but ultimately the one who kills the Night King. A girl has many names, but only one identity.</p><div class="cc-actor">Maisie Williams</div></div>
+
+<div class="char-card"><div class="cc-top"><span class="cc-emoji">🐺</span><div><div class="cc-name">Sansa Stark</div><span class="cc-house house-stark">Stark</span></div></div><p>From naive girl dreaming of princes to Queen in the North. Sansa's education comes from the cruelest teachers: Cersei, Littlefinger, Ramsay. She survives them all and becomes the leader Winterfell needs.</p><div class="cc-actor">Sophie Turner</div></div>
+
+<div class="char-card"><div class="cc-top"><span class="cc-emoji">🐺</span><div><div class="cc-name">Ned Stark</div><span class="cc-house house-stark">Stark</span></div></div><p>The honorable fool. Ned's death in Season 1 told the world this wasn't a normal fantasy story — heroes die, honor gets you killed, and the game of thrones has no mercy for the good.</p><div class="cc-actor">Sean Bean</div></div>
+
+<div class="char-card"><div class="cc-top"><span class="cc-emoji">🔥</span><div><div class="cc-name">The Night King</div><span class="cc-house house-other">White Walkers</span></div></div><p>The existential threat. Created by the Children of the Forest as a weapon against men, the Night King became an unstoppable force of death. His army of the dead represents the ultimate enemy — one that doesn't care about your politics.</p><div class="cc-actor">Vladimir Furdik</div></div>
+
+<div class="char-card"><div class="cc-top"><span class="cc-emoji">🕸️</span><div><div class="cc-name">Petyr 'Littlefinger' Baelish</div><span class="cc-house house-other">None</span></div></div><p>Chaos is a ladder. The master manipulator who engineered the War of the Five Kings from behind the scenes, all because he was rejected by Catelyn Stark decades earlier. Proof that the most dangerous weapon in Westeros is a grudge.</p><div class="cc-actor">Aidan Gillen</div></div>
+
+<div class="char-card"><div class="cc-top"><span class="cc-emoji">🗡️</span><div><div class="cc-name">Brienne of Tarth</div><span class="cc-house house-other">Tarth</span></div></div><p>The truest knight in Westeros — who happens to be a woman. Mocked for her appearance, she proves her worth through unwavering loyalty and skill. Her knighting scene is among the show's most emotional moments.</p><div class="cc-actor">Gwendoline Christie</div></div>
+
+<div class="char-card"><div class="cc-top"><span class="cc-emoji">🐶</span><div><div class="cc-name">Sandor 'The Hound' Clegane</div><span class="cc-house house-other">Clegane</span></div></div><p>A killer who hates killers. The Hound's journey from Joffrey's attack dog to Arya's reluctant protector is one of the show's most human arcs. His hatred of his brother and his fear of fire define him.</p><div class="cc-actor">Rory McCann</div></div>
+</div>
+</div>
+
+<!-- FUN FACTS -->
+<div id="sec-facts" class="section">
+<h2 class="s-title" style="color:var(--accent)">🎲 FUN FACTS</h2>
+<div class="fact-grid">
+<div class="fact-card"><div class="fc-emoji">✍️</div>Martin wrote the first chapter — Bran seeing the execution and finding the direwolves — <span class="hl">in a sudden burst of inspiration in 1991</span>, while he was supposed to be writing a sci-fi novel called Avalon.</div>
+<div class="fact-card"><div class="fc-emoji">📺</div>The original pilot was so bad it was <span class="hl2">completely reshot</span>. Almost 90% was refilmed, Daenerys was recast (from Tamzin Merchant to Emilia Clarke), and the entire Dothraki wedding was redone.</div>
+<div class="fact-card"><div class="fc-emoji">🐺</div>The <span class="hl">direwolves</span> in the show were played by real Northern Inuit dogs in early seasons, with CGI enhancement. Sophie Turner adopted her on-screen direwolf Lady.</div>
+<div class="fact-card"><div class="fc-emoji">🗡️</div>The <span class="hl">Iron Throne</span> in the books is described as a massive, ugly, asymmetric monstrosity made from a thousand swords. Martin said the show version is too small and too neat.</div>
+<div class="fact-card"><div class="fc-emoji">📖</div>Martin originally planned ASOIAF as a <span class="hl">trilogy</span>. It expanded to four books, then six, then seven. He's been writing Book 6 since 2011.</div>
+<div class="fact-card"><div class="fc-emoji">💀</div>The <span class="hl2">Red Wedding</span> was inspired by two real Scottish historical events: the Black Dinner of 1440 and the Glencoe Massacre of 1692.</div>
+<div class="fact-card"><div class="fc-emoji">🎭</div>Peter Dinklage was Martin's <span class="hl">first and only choice</span> for Tyrion. Martin wrote: "I have only one request. No matter what else you do, please get Peter Dinklage."</div>
+<div class="fact-card"><div class="fc-emoji">🐉</div>The Dothraki language in the show was created by linguist <span class="hl3">David J. Peterson</span>, who also created the High Valyrian language. Both are fully functional constructed languages.</div>
+<div class="fact-card"><div class="fc-emoji">👑</div>The show became the <span class="hl">most Emmy-winning narrative series</span> in history with 59 wins, surpassing Frasier's long-standing record.</div>
+<div class="fact-card"><div class="fc-emoji">📊</div>The Season 8 finale drew <span class="hl">19.3 million viewers</span>, making it the most-watched HBO program ever at the time.</div>
+<div class="fact-card"><div class="fc-emoji">🗺️</div>Martin based Westeros's geography partly on <span class="hl3">Britain and Ireland</span> — Westeros is roughly an upside-down, enlarged version of the British Isles. The Wall echoes Hadrian's Wall.</div>
+<div class="fact-card"><div class="fc-emoji">⚔️</div>Sean Bean (<span class="hl">Ned Stark</span>) was cast partly because audiences associate him with dying in movies — it made Ned's death simultaneously shocking and, in retrospect, inevitable.</div>
+<div class="fact-card"><div class="fc-emoji">🎵</div>The <span class="hl2">Rains of Castamere</span> — the Lannister victory song — was written by Martin in the books and composed for the show by Ramin Djawadi. It plays during the Red Wedding.</div>
+<div class="fact-card"><div class="fc-emoji">🏰</div>Filming locations spanned <span class="hl">10 countries</span>: Northern Ireland, Croatia, Spain, Morocco, Iceland, Malta, Scotland, Canada, United States, and Greece.</div>
+<div class="fact-card"><div class="fc-emoji">💰</div>Each episode of the final season cost an estimated <span class="hl">$15 million</span>. The Battle of Winterfell episode took 55 consecutive night shoots over 11 weeks.</div>
+<div class="fact-card"><div class="fc-emoji">🐲</div>The <span class="hl3">House of the Dragon</span> prequel, set 172 years before GOT, premiered in 2022 and was renewed through Season 4. <span class="hl">A Knight of the Seven Kingdoms</span> (Dunk & Egg) premiered in 2025.</div>
+<div class="fact-card"><div class="fc-emoji">📝</div>Martin still writes on a <span class="hl">DOS computer using WordStar 4.0</span>, a word processor from 1987. He says it does everything he needs and has no distracting internet.</div>
+<div class="fact-card"><div class="fc-emoji">🤝</div>Martin was <span class="hl2">Ty Franck's boss</span> — Franck was Martin's personal assistant before co-creating The Expanse with Daniel Abraham. The sci-fi and fantasy worlds are directly connected.</div>
+</div>
+</div>
+
+<!-- BOOK VS SHOW -->
+<div id="sec-bookvshow" class="section">
+<h2 class="s-title" style="color:var(--accent)">📖 BOOK VS SHOW — CHARACTER DIFFERENCES</h2>
+<p style="color:var(--muted);font-size:13px;margin-bottom:14px">Click any card to see how the character differs between the books and the HBO adaptation.</p>
+<div id="bvsList"></div>
+</div>
+
+<!-- PLOT DIFFERENCES -->
+<div id="sec-plotdiff" class="section">
+<h2 class="s-title" style="color:var(--accent)">⚔️ MAJOR PLOT DIFFERENCES</h2>
+<p style="color:var(--muted);font-size:13px;margin-bottom:14px">The show followed the books closely through Season 4, then diverged increasingly. Here are the biggest changes.</p>
+<div id="plotList"></div>
+</div>
+
+<!-- RELATIONSHIPS -->
+<div id="sec-rels" class="section">
+<h2 class="s-title" style="color:var(--accent)">💞 KEY RELATIONSHIPS</h2>
+<div class="rel-filters" id="relFilters"></div>
+<div id="relList"></div>
+</div>
+
+</div><!-- end .page -->
+<script>
+function showSec(id,btn){
+  document.querySelectorAll('.section').forEach(function(s){s.classList.remove('active')});
+  document.getElementById('sec-'+id).classList.add('active');
+  document.querySelectorAll('nav.tabs button').forEach(function(b){b.classList.remove('active')});
+  if(btn) btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// Book vs Show data
+var BVS=[
+{name:"Tyrion Lannister",badge:"major",desc:"In the books, Tyrion becomes much darker after killing Tywin — bitter, vengeful, and struggling with alcoholism. The show keeps him largely sympathetic and witty throughout. Book-Tyrion also has a much more disfigured face after the Battle of the Blackwater (losing most of his nose, not just a scar). His journey through Essos is longer and more harrowing."},
+{name:"Daenerys Targaryen",badge:"major",desc:"Book-Daenerys is 13 when the story begins (aged up to ~17 on the show for obvious reasons). Her inner monologue in the books shows far more political calculation and moral complexity. The show's 'Mad Queen' turn in Season 8 is foreshadowed more gradually in the books through her increasing comfort with fire and blood as solutions."},
+{name:"Jon Snow",badge:"minor",desc:"Book-Jon is more politically savvy and morally gray. He makes harder decisions at the Wall and his assassination by the Night's Watch is more clearly motivated by his breaking of vows. His parentage (R+L=J) is still unconfirmed in the books as of ADWD."},
+{name:"Sansa Stark",badge:"major",desc:"The show merges Sansa with a different book character (Jeyne Poole) who marries Ramsay Bolton. Book-Sansa remains in the Vale with Littlefinger through AFFC/ADWD. Her entire Winterfell-Ramsay plotline is show-only."},
+{name:"Jaime Lannister",badge:"major",desc:"Book-Jaime's redemption arc is more complete — he explicitly rejects Cersei and burns her letter begging for help. The show has him return to Cersei in the end, undermining years of character development for many fans."},
+{name:"Cersei Lannister",badge:"minor",desc:"Book-Cersei is a POV character in AFFC, revealing her as far less competent than she believes — paranoid, alcoholic, and making catastrophic political errors. The show makes her more calculating and formidable."},
+{name:"Euron Greyjoy",badge:"major",desc:"Book-Euron is one of the most terrifying villains in the series — a Lovecraftian pirate king with possible magical powers, a suit of Valyrian steel armor, and a dragonbinding horn. Show-Euron is a cocky pirate with a leather jacket. The difference is staggering."},
+{name:"Stannis Baratheon",badge:"major",desc:"Book-Stannis is a complex, tragic figure — a just but unloved king fighting impossible odds. The show reduces him significantly, and his death (burning Shireen, defeated by the Boltons) happens very differently in the books where he's still alive and marching on Winterfell."},
+{name:"Dorne (the entire storyline)",badge:"major",desc:"The books have a rich, complex Dorne plotline with Arianne Martell, Quentyn Martell, and Doran's long game. The show replaced this with the widely criticized 'Sand Snakes' storyline that most fans consider the weakest part of the adaptation."},
+{name:"Lady Stoneheart",badge:"show-only",desc:"In the books, Catelyn Stark is resurrected by Beric Dondarrion as a vengeful, undead figure called Lady Stoneheart, who leads the Brotherhood Without Banners on a campaign of revenge against Freys and Lannisters. The show cut this entirely — one of the most controversial omissions."},
+{name:"Young Griff / Aegon",badge:"show-only",desc:"The books introduce a character claiming to be Aegon Targaryen (Rhaegar's supposedly dead son), raised in secret in Essos. He invades Westeros with the Golden Company. The show cut this entire plotline and gave some of his story beats to other characters."},
+{name:"Arya Stark",badge:"minor",desc:"Book-Arya's training in Braavos is longer, darker, and involves actual face-changing magic in more detail. She also has active warging abilities (seeing through her direwolf Nymeria and cats). The show simplifies her Faceless Men arc."}
+];
+
+var bvsList=document.getElementById('bvsList');
+BVS.forEach(function(b){
+  var div=document.createElement('div');
+  div.className='cmp-card';
+  div.onclick=function(){div.classList.toggle('open')};
+  div.innerHTML='<div class="cmp-header"><span class="cmp-title">'+b.name+'</span><span class="cmp-badge '+b.badge+'">'+b.badge.replace('-',' ')+'</span></div><div class="cmp-body"><div class="cmp-desc">'+b.desc+'</div></div>';
+  bvsList.appendChild(div);
+});
+
+// Plot Differences
+var PLOTS=[
+{t:"The Battle of the Bastards",b:"major",d:"In the books, Stannis marches on Winterfell and the Battle of Ice hasn't happened yet. The show's Battle of the Bastards (Jon vs. Ramsay) is entirely original — one of the most acclaimed episodes but with no book equivalent."},
+{t:"Cersei's Destruction of the Sept",b:"major",d:"Cersei blowing up the Sept of Baelor with wildfire is show-only. In the books, the Faith Militant arc is still unresolved, and Cersei's trial is pending. The show condensed several book plotlines into this explosive moment."},
+{t:"Hold the Door (Hodor's Origin)",b:"minor",d:"Both versions reveal that Hodor's name comes from 'Hold the Door,' but the show did it first — Martin confirmed the core concept came from him, making this one of the spoilers the show revealed before the books."},
+{t:"The Night King",b:"show-only",d:"The Night King as a specific character doesn't exist in the books. The books have the Others (White Walkers) but no single leader figure. The Night King was created for the show to give the threat a face."},
+{t:"Bran Becomes King",b:"major",d:"Martin confirmed this is his planned ending — 'Bran the Broken' becomes king. But the execution in the books is expected to be very different, with more buildup and justification than the show's abrupt Season 8 resolution."},
+{t:"Daenerys Burns King's Landing",b:"major",d:"Martin has confirmed this broad stroke is his, but the show's version felt rushed to many fans. The books are expected to build this turn more gradually through Daenerys's increasingly ruthless decisions across several hundred pages."},
+{t:"Jon Kills Daenerys",b:"major",d:"Likely Martin's endgame as well, but the book version is expected to carry more emotional weight with Jon's Targaryen identity playing a larger role in the political implications."},
+{t:"The Long Night in One Episode",b:"major",d:"The show resolved the entire White Walker threat in a single battle episode. The books are expected to make the conflict with the Others a more prolonged, devastating war that fundamentally reshapes Westeros."},
+{t:"R+L=J Reveal",b:"minor",d:"The show confirms Jon is the son of Rhaegar and Lyanna through Bran's visions. The books have heavy foreshadowing but haven't confirmed it yet — and the political implications (legitimate heir?) may play out very differently."},
+{t:"Robb Stark's Wife",b:"minor",d:"In the books, Robb marries Jeyne Westerling, a minor noblewoman, out of honor. The show changes her to Talisa Maegyr, a foreign healer, for a more romantic arc. Both die at the Red Wedding."},
+{t:"The Fate of Barristan Selmy",b:"major",d:"Book-Barristan is still alive and a major POV character in Meereen. The show kills him in a street fight in Season 5, which actor Ian McElhinney publicly criticized as premature."},
+{t:"Catelyn Stark's Return",b:"show-only",d:"Lady Stoneheart (undead Catelyn) is a major book presence through AFFC and ADWD. Her complete omission from the show changes the entire Brotherhood Without Banners arc and removes a key moral question about the cost of resurrection."}
+];
+
+var plotList=document.getElementById('plotList');
+PLOTS.forEach(function(p){
+  var div=document.createElement('div');
+  div.className='cmp-card';
+  div.onclick=function(){div.classList.toggle('open')};
+  div.innerHTML='<div class="cmp-header"><span class="cmp-title">'+p.t+'</span><span class="cmp-badge '+p.b+'">'+p.b.replace('-',' ')+'</span></div><div class="cmp-body"><div class="cmp-desc">'+p.d+'</div></div>';
+  plotList.appendChild(div);
+});
+
+// Relationships
+var RELS=[
+{a:"Jon Snow",b:"Daenerys",type:"romantic",color:"var(--fire)",d:"Aunt and nephew who fall in love without knowing their blood relation. Their romance drives the final season's central conflict — love vs. duty. Jon ultimately kills her to save the realm."},
+{a:"Jon Snow",b:"Ygritte",type:"romantic",color:"var(--fire)",d:"'You know nothing, Jon Snow.' The wildling woman who taught Jon that the world beyond the Wall has its own beauty. Their love breaks his vows and her death breaks his heart."},
+{a:"Ned Stark",b:"Robert Baratheon",type:"alliance",color:"var(--accent3)",d:"Brothers in arms during the rebellion, bound by love for Lyanna Stark. Robert became king; Ned became the man who kept his secrets. Their friendship is the foundation the entire story is built on."},
+{a:"Jaime",b:"Cersei",type:"romantic",color:"var(--lannister)",d:"Twin siblings, secret lovers, and each other's destruction. The most toxic relationship in the series — they're born together and die together, but Jaime's redemption arc is about escaping her gravity."},
+{a:"Jaime",b:"Brienne",type:"complex",color:"var(--accent)",d:"The Kingslayer and the Lady Knight. He gives her a sword; she gives him back his honor. Their relationship redefines what love and respect mean in Westeros. The knighting scene is the show's most beautiful moment."},
+{a:"Tyrion",b:"Tywin",type:"family",color:"var(--lannister)",d:"A father who despised his son for being born a dwarf and killing his mother in childbirth. Tyrion spent his life trying to earn Tywin's approval, then killed him on the privy. The defining father-son conflict of the series."},
+{a:"Arya",b:"The Hound",type:"complex",color:"var(--accent)",d:"Captor and captive who become reluctant family. He protects her; she refuses to kill him (mercy or cruelty?). Their reunion years later is one of the show's warmest moments between two of its coldest characters."},
+{a:"Sansa",b:"Littlefinger",type:"rivalry",color:"var(--accent2)",d:"Manipulator and student. Littlefinger shaped Sansa into a political player, but she ultimately outgrew and destroyed him. 'I'm a slow learner, it's true. But I learn.'"},
+{a:"Cersei",b:"Margaery",type:"rivalry",color:"var(--accent2)",d:"Two queens fighting for control of the same king and kingdom. Margaery's soft power vs. Cersei's brute force. Cersei wins by literally blowing up the playing field."},
+{a:"Daenerys",b:"Jorah Mormont",type:"complex",color:"var(--accent)",d:"The knight who loved his queen and could never have her. Jorah's devotion spans the entire series — from spy to advisor to the man who dies protecting her. Unrequited love as its most noble."},
+{a:"Tyrion",b:"Jaime",type:"family",color:"var(--lannister)",d:"The brothers Lannister. Jaime is the only family member who truly loves Tyrion. Jaime freed Tyrion from his death sentence; Tyrion never forgot it. Their bond survives everything the family throws at them."},
+{a:"Jon Snow",b:"Sam Tarly",type:"alliance",color:"var(--stark)",d:"Best friends from the Night's Watch. Sam is the brain to Jon's sword. Sam discovers Jon's parentage, cures greyscale, and becomes Grand Maester. The purest friendship in the series."},
+{a:"Theon",b:"Ramsay",type:"enemy",color:"var(--accent2)",d:"Torturer and victim. Ramsay breaks Theon into 'Reek' — one of the most disturbing arcs in the series. Theon's slow recovery and ultimate sacrifice at Winterfell completes one of the show's most painful redemption stories."},
+{a:"Ned Stark",b:"Catelyn Stark",type:"romantic",color:"var(--stark)",d:"A marriage that began as duty and became love. Catelyn never forgave Ned for Jon's supposed bastard — the one lie Ned told to protect his sister's son. Their love story is quiet, dignified, and ends in tragedy."},
+{a:"Daenerys",b:"Her Dragons",type:"family",color:"var(--fire)",d:"Mother of Dragons — literally. Drogon, Rhaegal, and Viserion are her children, her power, and her identity. Losing them (Viserion to the Night King, Rhaegal to Euron) drives her toward the breaking point."},
+{a:"Robert",b:"Cersei",type:"complex",color:"var(--baratheon)",d:"A marriage built on a lie. Robert loved Lyanna; Cersei loved Jaime. Neither loved each other. Their toxic union poisoned the realm and produced three illegitimate children whose secret started a war."}
+];
+
+var REL_TYPES=['All','romantic','family','alliance','rivalry','complex','enemy'];
+var relFilter='All';
+var relColors={romantic:'var(--fire)',family:'var(--lannister)',alliance:'var(--accent3)',rivalry:'var(--accent2)',complex:'var(--accent)',enemy:'var(--accent2)'};
+var relBgColors={romantic:'rgba(192,96,48,0.1)',family:'rgba(184,134,11,0.1)',alliance:'rgba(64,128,176,0.1)',rivalry:'rgba(160,64,64,0.1)',complex:'rgba(200,160,80,0.1)',enemy:'rgba(160,64,64,0.1)'};
+
+(function(){
+  var fl=document.getElementById('relFilters');
+  REL_TYPES.forEach(function(t){
+    var b=document.createElement('button');
+    b.className='rel-filter'+(t==='All'?' active':'');
+    b.textContent=t==='All'?'All':t.charAt(0).toUpperCase()+t.slice(1);
+    b.onclick=function(){
+      fl.querySelectorAll('.rel-filter').forEach(function(x){x.classList.remove('active')});
+      b.classList.add('active');
+      relFilter=t;renderRels();
+    };
+    fl.appendChild(b);
+  });
+  renderRels();
+})();
+
+function renderRels(){
+  var el=document.getElementById('relList');
+  var html='';
+  RELS.forEach(function(r){
+    if(relFilter!=='All'&&r.type!==relFilter) return;
+    html+='<div class="rel-card" style="--rel-color:'+r.color+'">';
+    html+='<div class="rel-pair"><span class="rel-char">'+r.a+'</span><span class="rel-arrow">⟷</span><span class="rel-char">'+r.b+'</span><span class="rel-type" style="background:'+relBgColors[r.type]+';color:'+relColors[r.type]+'">'+r.type+'</span></div>';
+    html+='<div class="rel-desc">'+r.d+'</div></div>';
+  });
+  if(!html) html='<div style="text-align:center;padding:24px;color:var(--dim)">No relationships match this filter.</div>';
+  el.innerHTML=html;
+}
+</script>
+</body>
+</html>
