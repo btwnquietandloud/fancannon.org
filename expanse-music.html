@@ -57,6 +57,19 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .song-card.open .song-body{max-height:3000px}
 .song-inner{padding:0 24px 24px}
 @media(max-width:600px){.tradition-grid{grid-template-columns:1fr}}
+
+/* Custom Audio Player */
+.custom-player{display:flex;align-items:center;gap:12px;background:var(--card2);border-radius:12px;padding:12px 16px;margin:8px 0}
+.play-btn{width:40px;height:40px;border-radius:50%;border:none;background:var(--accent2);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
+.play-btn:hover{filter:brightness(1.2);transform:scale(1.05)}
+.play-btn svg{width:18px;height:18px}
+.player-track{flex:1;min-width:0}
+.track-bar{height:6px;background:rgba(255,255,255,0.08);border-radius:3px;cursor:pointer;position:relative;margin-bottom:6px}
+.track-progress{height:100%;background:var(--accent2);border-radius:3px;width:0%;transition:width .1s linear}
+.track-handle{position:absolute;top:50%;width:12px;height:12px;background:#fff;border-radius:50%;transform:translate(-50%,-50%);left:0%;opacity:0;transition:opacity .2s}
+.custom-player:hover .track-handle{opacity:1}
+.track-times{display:flex;justify-content:space-between;font-size:11px;color:var(--dim);font-weight:600;font-variant-numeric:tabular-nums}
+.player-title{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:700;letter-spacing:0.5px;margin-bottom:6px}
 </style>
 </head>
 <body>
@@ -108,12 +121,19 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 <div class="sh-toggle">▼</div>
 </div>
 
-<div style="padding:0 24px 12px"><div style="background:var(--card2);border-radius:14px;padding:18px;margin-bottom:12px">
-<div style="font-size:13px;font-weight:700;color:var(--accent3);margin-bottom:8px">🎵 Audio — Adewu fo da Belt</div>
-<audio controls style="width:100%;border-radius:8px" preload="metadata">
-<source src="Adewu_fo_da_Belt.mp3" type="audio/mpeg">
-Your browser does not support the audio element.
-</audio>
+<div style="padding:0 24px 12px"><div style="margin-bottom:12px">
+<div class="player-title" style="color:var(--accent3)">🎵 Adewu fo da Belt</div>
+<audio id="audio1" src="Adewu_fo_da_Belt.mp3" preload="metadata"></audio>
+<div class="custom-player" id="player1">
+<button class="play-btn" id="playBtn1" aria-label="Play">
+<svg class="icon-play" viewBox="0 0 24 24"><polygon points="8,4 20,12 8,20" fill="currentColor"/></svg>
+<svg class="icon-pause" viewBox="0 0 24 24" style="display:none"><rect x="6" y="4" width="4" height="16" fill="currentColor"/><rect x="14" y="4" width="4" height="16" fill="currentColor"/></svg>
+</button>
+<div class="player-track">
+<div class="track-bar" id="trackBar1"><div class="track-progress" id="prog1"></div><div class="track-handle" id="handle1"></div></div>
+<div class="track-times"><span id="cur1">0:00</span><span id="tot1">0:00</span></div>
+</div>
+</div>
 </div></div>
 <div class="song-body"><div class="song-inner">
 <p style="color:var(--muted);font-size:14px;line-height:1.7;margin-bottom:14px">A work-song-turned-anthem about Belter identity, resistance, and the refusal to be owned. Written in Lang Belta with the rhythmic intensity of industrial folk — imagine a hundred miners stamping their boots on metal decking.</p>
@@ -219,11 +239,19 @@ Your browser does not support the video element.
 <div class="sh-toggle">▼</div>
 </div>
 
-<div style="padding:0 24px 12px"><div style="background:var(--card2);border-radius:14px;padding:18px;margin-bottom:12px">
-<div style="font-size:13px;font-weight:700;color:var(--accent3);margin-bottom:8px">🎵 Audio — Setara Tu</div>
-<audio controls style="width:100%;border-radius:8px" preload="metadata">
-<source src="setara_tu.mp3" type="audio/mpeg">
-</audio>
+<div style="padding:0 24px 12px"><div style="margin-bottom:12px">
+<div class="player-title" style="color:var(--accent4)">🕯️ Setara Tu (Your Star)</div>
+<audio id="audio2" src="setara_tu.mp3" preload="metadata"></audio>
+<div class="custom-player" id="player2">
+<button class="play-btn" id="playBtn2" aria-label="Play" style="background:var(--accent4)">
+<svg class="icon-play" viewBox="0 0 24 24"><polygon points="8,4 20,12 8,20" fill="currentColor"/></svg>
+<svg class="icon-pause" viewBox="0 0 24 24" style="display:none"><rect x="6" y="4" width="4" height="16" fill="currentColor"/><rect x="14" y="4" width="4" height="16" fill="currentColor"/></svg>
+</button>
+<div class="player-track">
+<div class="track-bar" id="trackBar2"><div class="track-progress" id="prog2" style="background:var(--accent4)"></div><div class="track-handle" id="handle2"></div></div>
+<div class="track-times"><span id="cur2">0:00</span><span id="tot2">0:00</span></div>
+</div>
+</div>
 </div></div>
 <div class="song-body"><div class="song-inner">
 <p style="color:var(--muted);font-size:14px;line-height:1.7;margin-bottom:14px">A Belter funeral ballad for the detective who loved a ghost and the woman who became a star. Miller and Julie never met in life — he knew her only through a case file. She was already dead when he found her on Eros. But in the protomolecule's blue glow, they found each other and guided Eros into Venus together. This is the song someone sings in a dim Ceres bar, for two people the Belt will never forget.</p>
@@ -346,5 +374,34 @@ Your browser does not support the video element.
 <div class="quote-box">"In the Belt, we don't have land or sky or sea. We have the song. And as long as one Belter remembers the words, we exist."<div class="q-attr">— Attributed to an anonymous Ceres dockworker</div></div>
 
 </div>
+
+<script>
+function fmt(s){var m=Math.floor(s/60);var sec=Math.floor(s%60);return m+':'+(sec<10?'0':'')+sec;}
+function initPlayer(audioId,btnId,barId,progId,handleId,curId,totId,playerId){
+var a=document.getElementById(audioId);
+var btn=document.getElementById(btnId);
+var iPlay=btn.querySelector('.icon-play');
+var iPause=btn.querySelector('.icon-pause');
+var bar=document.getElementById(barId);
+var prog=document.getElementById(progId);
+var handle=document.getElementById(handleId);
+var cur=document.getElementById(curId);
+var tot=document.getElementById(totId);
+var pl=document.getElementById(playerId);
+a.addEventListener('loadedmetadata',function(){tot.textContent=fmt(a.duration);});
+a.addEventListener('timeupdate',function(){var pct=(a.currentTime/a.duration)*100;prog.style.width=pct+'%';handle.style.left=pct+'%';cur.textContent=fmt(a.currentTime);});
+a.addEventListener('ended',function(){pl.classList.remove('playing');iPlay.style.display='';iPause.style.display='none';});
+btn.addEventListener('click',function(){
+allP.forEach(function(p){if(p.a!==a&&!p.a.paused){p.a.pause();p.pl.classList.remove('playing');p.iPlay.style.display='';p.iPause.style.display='none';}});
+if(a.paused){a.play();pl.classList.add('playing');iPlay.style.display='none';iPause.style.display='';}
+else{a.pause();pl.classList.remove('playing');iPlay.style.display='';iPause.style.display='none';}
+});
+bar.addEventListener('click',function(e){var rect=bar.getBoundingClientRect();var pct=(e.clientX-rect.left)/rect.width;a.currentTime=pct*a.duration;});
+return{a:a,pl:pl,iPlay:iPlay,iPause:iPause};
+}
+var allP=[];
+allP.push(initPlayer('audio1','playBtn1','trackBar1','prog1','handle1','cur1','tot1','player1'));
+allP.push(initPlayer('audio2','playBtn2','trackBar2','prog2','handle2','cur2','tot2','player2'));
+</script>
 </body>
 </html>
