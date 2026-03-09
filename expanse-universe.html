@@ -153,6 +153,18 @@ nav button.active{background:var(--accent);color:#fff;border-color:var(--accent)
 
 @media(max-width:600px){.cmp-row,.plot-cols{grid-template-columns:1fr}}
 @media(max-width:600px){.trivia-opts{grid-template-columns:1fr}.char-grid{grid-template-columns:1fr}.faction-grid{grid-template-columns:1fr 1fr}}
+
+/* Custom Audio Player */
+.custom-player{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.03);border-radius:12px;padding:12px 16px;margin:8px 0}
+.play-btn{width:40px;height:40px;border-radius:50%;border:none;background:var(--accent2);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
+.play-btn:hover{filter:brightness(1.2);transform:scale(1.05)}
+.play-btn svg{width:18px;height:18px}
+.player-track{flex:1;min-width:0}
+.track-bar{height:6px;background:rgba(255,255,255,0.08);border-radius:3px;cursor:pointer;position:relative;margin-bottom:6px}
+.track-progress{height:100%;background:var(--accent2);border-radius:3px;width:0%;transition:width .1s linear}
+.track-handle{position:absolute;top:50%;width:12px;height:12px;background:#fff;border-radius:50%;transform:translate(-50%,-50%);left:0%;opacity:0;transition:opacity .2s}
+.custom-player:hover .track-handle{opacity:1}
+.track-times{display:flex;justify-content:space-between;font-size:11px;color:var(--text-dim);font-weight:600;font-variant-numeric:tabular-nums}
 </style>
 </head>
 <body>
@@ -187,9 +199,17 @@ nav button.active{background:var(--accent);color:#fff;border-color:var(--accent)
 <div><div style="font-family:Orbitron,sans-serif;font-size:14px;font-weight:700;color:var(--accent2);letter-spacing:0.5px">Adewu fo da Belt</div>
 <div style="font-size:11px;color:var(--text-dim)">An original Belter anthem in Lang Belta</div></div>
 </div>
-<audio controls style="width:100%" preload="metadata">
-<source src="Adewu_fo_da_Belt.mp3" type="audio/mpeg">
-</audio>
+<audio id="audioMain" src="Adewu_fo_da_Belt.mp3" preload="metadata"></audio>
+<div class="custom-player" id="playerMain">
+<button class="play-btn" id="playBtnMain" aria-label="Play">
+<svg class="icon-play" viewBox="0 0 24 24"><polygon points="8,4 20,12 8,20" fill="currentColor"/></svg>
+<svg class="icon-pause" viewBox="0 0 24 24" style="display:none"><rect x="6" y="4" width="4" height="16" fill="currentColor"/><rect x="14" y="4" width="4" height="16" fill="currentColor"/></svg>
+</button>
+<div class="player-track">
+<div class="track-bar" id="trackBarMain"><div class="track-progress" id="progMain"></div><div class="track-handle" id="handleMain"></div></div>
+<div class="track-times"><span id="curMain">0:00</span><span id="totMain">0:00</span></div>
+</div>
+</div>
 <div style="margin-top:8px;text-align:right"><a href="expanse-music.html" style="font-size:11px;color:var(--accent2);text-decoration:none;font-weight:700">Full lyrics & video →</a></div>
 </div>
 
@@ -1183,6 +1203,30 @@ function renderRels(){
   renderRels();
 })();
 
+
+// Audio Player
+(function(){
+var a=document.getElementById('audioMain');
+if(!a)return;
+var btn=document.getElementById('playBtnMain');
+var iPlay=btn.querySelector('.icon-play');
+var iPause=btn.querySelector('.icon-pause');
+var bar=document.getElementById('trackBarMain');
+var prog=document.getElementById('progMain');
+var handle=document.getElementById('handleMain');
+var cur=document.getElementById('curMain');
+var tot=document.getElementById('totMain');
+var pl=document.getElementById('playerMain');
+function fmt(s){var m=Math.floor(s/60);var sec=Math.floor(s%60);return m+':'+(sec<10?'0':'')+sec;}
+a.addEventListener('loadedmetadata',function(){tot.textContent=fmt(a.duration);});
+a.addEventListener('timeupdate',function(){var pct=(a.currentTime/a.duration)*100;prog.style.width=pct+'%';handle.style.left=pct+'%';cur.textContent=fmt(a.currentTime);});
+a.addEventListener('ended',function(){pl.classList.remove('playing');iPlay.style.display='';iPause.style.display='none';});
+btn.addEventListener('click',function(){
+if(a.paused){a.play().then(function(){pl.classList.add('playing');iPlay.style.display='none';iPause.style.display='';}).catch(function(){iPlay.style.display='';iPause.style.display='none';cur.textContent='Audio not found';cur.style.color='var(--accent2)';});}
+else{a.pause();pl.classList.remove('playing');iPlay.style.display='';iPause.style.display='none';}
+});
+bar.addEventListener('click',function(e){var rect=bar.getBoundingClientRect();var pct=(e.clientX-rect.left)/rect.width;a.currentTime=pct*a.duration;});
+})();
 </script>
 </body>
 </html>
