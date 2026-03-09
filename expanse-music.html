@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Belter music from The Expanse — original songs in Lang Belta with translations, analysis, and the musical traditions of the Asteroid Belt.">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>Belter Music — Songs of the Belt | The Expanse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#060810;--card:#0c1020;--card2:#131b30;--accent:#3a8fd4;--accent2:#e07848;--accent3:#40c890;--accent4:#c860a0;--text:#d8dce8;--muted:#7888a8;--dim:#4a5878;--border:#1e3050;--gold:#f0c060}
+*{box-sizing:border-box;margin:0;padding:0}
+body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 70% 50% at 50% 30%,rgba(224,120,72,0.03) 0%,transparent 70%);pointer-events:none}
+.fc-brand-bar{position:sticky;top:0;z-index:100;background:rgba(6,8,16,0.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.06);padding:8px 16px;display:flex;align-items:center;gap:10px}
+.fc-brand-bar a{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit}.fc-brand-bar img{width:32px;height:32px;border-radius:50%}
+.fc-brand-bar span{font-family:sans-serif;font-size:14px;font-weight:600;color:#c9a44a;letter-spacing:0.5px}
+.fc-brand-bar .fc-sep{color:rgba(255,255,255,0.15);font-size:18px}.fc-brand-bar .fc-page-name{font-size:13px;font-weight:500;color:rgba(255,255,255,0.4)}
+.container{position:relative;z-index:1;max-width:850px;margin:0 auto;padding:24px 16px 80px}
+.back-link{display:inline-block;color:var(--accent);text-decoration:none;font-size:13px;font-weight:600;padding:6px 14px;border:1px solid var(--border);border-radius:99px;transition:all .2s;margin-bottom:16px}.back-link:hover{border-color:var(--accent)}
+.hero{text-align:center;padding:20px 0 28px}
+.hero h1{font-family:'Orbitron',sans-serif;font-size:clamp(22px,4.5vw,36px);font-weight:800;background:linear-gradient(135deg,#e07848,#c860a0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:2px}
+.hero .sub{font-family:'Orbitron',sans-serif;font-size:12px;color:var(--accent3);letter-spacing:3px;margin-top:4px;font-weight:600}
+.hero p{color:var(--muted);font-size:15px;margin-top:14px;line-height:1.7;max-width:660px;margin-left:auto;margin-right:auto}
+.s-title{font-family:'Orbitron',sans-serif;font-size:18px;font-weight:700;letter-spacing:1px;margin:36px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:28px;margin-bottom:18px;transition:border-color .25s}
+.card:hover{border-color:rgba(224,120,72,0.3)}
+.card h2{font-family:'Orbitron',sans-serif;font-size:20px;font-weight:700;letter-spacing:0.5px;margin-bottom:8px}
+.card h3{font-family:'Orbitron',sans-serif;font-size:15px;font-weight:700;letter-spacing:0.5px;margin:18px 0 8px}
+.card p{font-size:14px;color:var(--muted);line-height:1.75;margin-bottom:10px}
+.card p:last-child{margin-bottom:0}
+.hl{color:var(--accent);font-weight:700}.hl2{color:var(--accent2);font-weight:700}.hl3{color:var(--accent3);font-weight:700}.hl4{color:var(--accent4);font-weight:700}.hlg{color:var(--gold);font-weight:700}
+.lyric-block{background:var(--card2);border-radius:14px;padding:20px 24px;margin:14px 0}
+.lyric-section{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;color:var(--dim);letter-spacing:1px;margin:16px 0 8px;text-transform:uppercase}
+.lyric-section:first-child{margin-top:0}
+.lyric-line{font-size:15px;color:var(--accent3);line-height:1.8;font-style:italic}
+.lyric-trans{font-size:13px;color:var(--dim);line-height:1.6;margin-top:2px;margin-bottom:8px;padding-left:16px;border-left:2px solid rgba(224,120,72,0.2)}
+.quote-box{background:var(--card2);border-left:3px solid var(--accent2);border-radius:0 14px 14px 0;padding:18px 22px;margin:16px 0;font-style:italic;color:var(--muted);line-height:1.7}
+.quote-box .q-attr{font-style:normal;font-size:12px;font-weight:700;color:var(--accent2);margin-top:8px}
+.tradition-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin:14px 0}
+.trad-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;transition:border-color .2s}
+.trad-card:hover{border-color:var(--accent2)}
+.trad-card .tc-emoji{font-size:28px;margin-bottom:6px}
+.trad-card .tc-name{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:700;margin-bottom:4px}
+.trad-card p{font-size:13px;color:var(--muted);line-height:1.6}
+.song-card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:16px;transition:border-color .25s}
+.song-card:hover{border-color:var(--accent2)}
+.song-header{padding:20px 24px;cursor:pointer;display:flex;align-items:center;gap:14px}
+.song-header .sh-emoji{font-size:32px}
+.song-header .sh-title{font-family:'Orbitron',sans-serif;font-size:17px;font-weight:700;color:var(--accent2)}
+.song-header .sh-sub{font-size:12px;color:var(--dim);margin-top:2px}
+.song-header .sh-toggle{margin-left:auto;font-size:18px;color:var(--dim);transition:transform .3s}
+.song-card.open .sh-toggle{transform:rotate(180deg)}
+.song-body{max-height:0;overflow:hidden;transition:max-height .5s ease}
+.song-card.open .song-body{max-height:3000px}
+.song-inner{padding:0 24px 24px}
+@media(max-width:600px){.tradition-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="fc-brand-bar"><a href="index.html"><img src="fancannonlogo.png" alt="Fan Cannon"><span>Fan Cannon</span></a><span class="fc-sep">|</span><span class="fc-page-name">Belter Music</span></div>
+<div class="container">
+<a href="expanse-universe.html" class="back-link">← Back to The Expanse Universe</a>
+
+<div class="hero">
+<h1>BELTER MUSIC</h1>
+<div class="sub">DA ADEWU FO DA BELT</div>
+<p>Music in the Belt isn't entertainment — it's survival. When your history is oral, your borders are invisible, and your identity is under constant threat, song becomes the most powerful technology you have.</p>
+</div>
+
+<!-- MUSIC IN THE EXPANSE -->
+<h2 class="s-title" style="color:var(--accent2)">🎵 MUSIC IN THE EXPANSE</h2>
+<div class="card">
+<h2 style="color:var(--accent2)">Why Belters Sing</h2>
+<p>In the novels and show, Belter music serves the same purpose as folk music in every oppressed culture throughout history: it <span class="hl2">preserves identity, transmits history, and builds solidarity</span>. When you live on a station where the air is recycled and the water is rationed, a song costs nothing and means everything.</p>
+<p>Belter music draws from the same roots as Lang Belta itself — a <span class="hl">creole of every Earth tradition</span> that came to the Belt. You hear echoes of sea shanties, protest songs, work chants, lullabies, and hymns, all filtered through centuries of zero-gravity living and industrial labor. The rhythms mimic the sounds of the Belt: the clang of mining equipment, the hiss of airlocks, the pulse of station life support.</p>
+<p>In the show, <span class="hl3">Ashford's singing before his execution</span> is one of the most powerful musical moments — a man facing death who chooses to sing a Belter folk song as his final act. It's not performance; it's identity. He dies as he lived: Beltalowda.</p>
+</div>
+
+<div class="card">
+<h2 style="color:var(--accent)">The Show's Musical DNA</h2>
+<p>Composer <span class="hl">Clinton Shorter</span> scored Seasons 1-3, establishing the show's sound — atmospheric, industrial, and vast. <span class="hl2">Ramin Djawadi</span> would later score the Expanse video game. The show's music blends orchestral scoring with electronic textures and, crucially, diegetic Belter music that the characters themselves perform.</p>
+<p>The concept album (2010) had its own musical identity: <span class="hl3">Justin Vernon's</span> (Bon Iver) falsetto Orpheus-like quality as the show's soul, combined with folk instrumentation that grounded the sci-fi setting in something ancient and human.</p>
+</div>
+
+<!-- BELTER MUSICAL TRADITIONS -->
+<h2 class="s-title" style="color:var(--accent3)">🎶 BELTER MUSICAL TRADITIONS</h2>
+<div class="tradition-grid">
+<div class="trad-card"><div class="tc-emoji">⛏️</div><div class="tc-name">Work Songs</div><p>Rhythmic chants synchronized to mining operations and construction labor. The beat matches the tools. When the singing stops, something's wrong.</p></div>
+<div class="trad-card"><div class="tc-emoji">✊</div><div class="tc-name">Protest Songs</div><p>Songs of resistance against Inner exploitation. Call-and-response structure lets entire stations sing together. "Why We Build the Wall" from Hadestown could be a Belter anthem.</p></div>
+<div class="trad-card"><div class="tc-emoji">🕯️</div><div class="tc-name">Mourning Songs</div><p>When Belters die in space, there are often no bodies to bury. Song becomes the funeral. The community sings the dead into memory — the only grave they'll ever have.</p></div>
+<div class="trad-card"><div class="tc-emoji">🍺</div><div class="tc-name">Drinking Songs</div><p>Bar songs on stations like Ceres and Tycho. Loud, crude, funny, and meant to be shouted by a room full of miners after a shift. Persephone would fit right in.</p></div>
+<div class="trad-card"><div class="tc-emoji">💕</div><div class="tc-name">Love Songs</div><p>Tender and private in a world with no privacy. Belter love songs are whispered, not performed — shared between partners in the quiet between shifts.</p></div>
+<div class="trad-card"><div class="tc-emoji">🌌</div><div class="tc-name">Void Songs</div><p>Eerie, ambient pieces sung during long transits between stations. Part meditation, part navigation aid, part prayer against the emptiness. The Belt's equivalent of whale song.</p></div>
+</div>
+
+<!-- FEATURED SONGS -->
+<h2 class="s-title" style="color:var(--accent2)">🎤 ORIGINAL COMPOSITIONS</h2>
+<p style="color:var(--muted);font-size:14px;margin-bottom:16px">Fan-created songs written in Lang Belta. Click to expand and see full lyrics with translations.</p>
+
+<!-- ANTHEM -->
+<div class="song-card" id="song1">
+<div class="song-header" onclick="document.getElementById('song1').classList.toggle('open')">
+<div class="sh-emoji">✊</div>
+<div><div class="sh-title">Adewu fo da Belt</div><div class="sh-sub">Song of the Belt — A Belter protest anthem</div></div>
+<div class="sh-toggle">▼</div>
+</div>
+<div class="song-body"><div class="song-inner">
+<p style="color:var(--muted);font-size:14px;line-height:1.7;margin-bottom:14px">A work-song-turned-anthem about Belter identity, resistance, and the refusal to be owned. Written in Lang Belta with the rhythmic intensity of industrial folk — imagine a hundred miners stamping their boots on metal decking.</p>
+
+<div class="lyric-block">
+<div class="lyric-section">Verse 1</div>
+<div class="lyric-line">Milowda beref ere da void</div>
+<div class="lyric-trans">We were born in the void</div>
+<div class="lyric-line">Mi pampa kang, im pampa kang</div>
+<div class="lyric-trans">My father worked, his father worked</div>
+<div class="lyric-line">Setara mali, ereluf mali</div>
+<div class="lyric-trans">Little stars, little air</div>
+<div class="lyric-line">Amash milowda livit bik</div>
+<div class="lyric-trans">But we live large</div>
+
+<div class="lyric-section">Chorus</div>
+<div class="lyric-line">Beltalowda! Beltalowda!</div>
+<div class="lyric-trans">All us Belters! All us Belters!</div>
+<div class="lyric-line">Milowda na towchu, milowda ferí</div>
+<div class="lyric-trans">We are not slaves, we are free</div>
+<div class="lyric-line">Beltalowda! Beltalowda!</div>
+<div class="lyric-trans">All us Belters! All us Belters!</div>
+<div class="lyric-line">Showxa da adewu — milowda na die</div>
+<div class="lyric-trans">Sing the song — we will not die</div>
+
+<div class="lyric-section">Verse 2</div>
+<div class="lyric-line">Owkwa mali, amash milowda share</div>
+<div class="lyric-trans">Little water, but we share it</div>
+<div class="lyric-line">Ereluf mali, amash milowda breathe</div>
+<div class="lyric-trans">Little air, but we breathe it</div>
+<div class="lyric-line">Da bosmang showxa: du im kang</div>
+<div class="lyric-trans">The boss says: do your work</div>
+<div class="lyric-line">Milowda showxa: milowda ferí</div>
+<div class="lyric-trans">We say: we are free</div>
+
+<div class="lyric-section">Bridge</div>
+<div class="lyric-line">Beratna, sesata, kopeng mi</div>
+<div class="lyric-trans">Brothers, sisters, my friends</div>
+<div class="lyric-line">Pochuye da adewu fo da Belt</div>
+<div class="lyric-trans">Hear the song of the Belt</div>
+<div class="lyric-line">Fong da nating, milowda du kowlting</div>
+<div class="lyric-trans">From nothing, we make everything</div>
+<div class="lyric-line">Fong da belék, milowda du light</div>
+<div class="lyric-trans">From darkness, we make light</div>
+
+<div class="lyric-section">Verse 3</div>
+<div class="lyric-line">Inyalowda wit da gravity</div>
+<div class="lyric-trans">Inners have their gravity</div>
+<div class="lyric-line">Imalowda na sasa milowda pain</div>
+<div class="lyric-trans">They don't know our pain</div>
+<div class="lyric-line">Amash ere da void milowda sensa</div>
+<div class="lyric-trans">But in the void we feel</div>
+<div class="lyric-line">Kowl setara showxa milowda name</div>
+<div class="lyric-trans">Every star speaks our name</div>
+
+<div class="lyric-section">Final Chorus (slower, building)</div>
+<div class="lyric-line">Beltalowda... Beltalowda...</div>
+<div class="lyric-trans">All us Belters... All us Belters...</div>
+<div class="lyric-line">Da Belt im milowda, milowda im da Belt</div>
+<div class="lyric-trans">The Belt is us, we are the Belt</div>
+<div class="lyric-line">Beltalowda... Beltalowda...</div>
+<div class="lyric-trans">All us Belters... All us Belters...</div>
+<div class="lyric-line">Til da setara finyish — milowda na stop</div>
+<div class="lyric-trans">Until the stars die — we don't stop</div>
+
+<div class="lyric-section">Outro (chanted)</div>
+<div class="lyric-line">Sa-sa ke? Milowda im xiya.</div>
+<div class="lyric-trans">You know? We are here.</div>
+<div class="lyric-line">Sa-sa ke? Milowda im xiya.</div>
+<div class="lyric-trans">You know? We are here.</div>
+</div>
+
+<div style="margin-top:18px">
+<div style="font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--accent2);text-transform:uppercase;margin-bottom:12px">▶ LISTEN & WATCH</div>
+
+<div style="background:var(--card2);border-radius:14px;padding:18px;margin-bottom:12px">
+<div style="font-size:13px;font-weight:700;color:var(--accent3);margin-bottom:8px">🎵 Audio — Adewu fo da Belt</div>
+<audio controls style="width:100%;border-radius:8px" preload="metadata">
+<source src="Adewu_fo_da_Belt.mp3" type="audio/mpeg">
+Your browser does not support the audio element.
+</audio>
+</div>
+
+<div style="background:var(--card2);border-radius:14px;padding:18px;margin-bottom:12px">
+<div style="font-size:13px;font-weight:700;color:var(--accent2);margin-bottom:8px">🎬 Video — Beltalowda</div>
+<video controls style="width:100%;border-radius:10px;max-height:400px" preload="metadata" poster="">
+<source src="beltalowda.mp4" type="video/mp4">
+Your browser does not support the video element.
+</video>
+</div>
+</div>
+
+<div class="card" style="margin-top:16px;background:var(--card2)">
+<h3 style="color:var(--accent2)">Song Notes</h3>
+<p><span class="hl2">Genre:</span> Industrial folk anthem — sea shanty meets protest song meets zero-g work chant. Think The Pogues in space.</p>
+<p><span class="hl">Structure:</span> Verse-chorus with a bridge that drops to intimacy before the final chorus builds to maximum power. The outro is a raw chant meant to echo through station corridors.</p>
+<p><span class="hl3">Themes:</span> Generational labor ("my father worked, his father worked"), scarcity as shared experience, the boss as antagonist, freedom as collective declaration, and the Belt itself as identity.</p>
+<p><span class="hl4">Key phrase:</span> "Fong da nating, milowda du kowlting" (From nothing, we make everything) — the Belter ethos in one line. It's a statement of pride, resourcefulness, and defiance.</p>
+</div>
+</div></div>
+</div>
+
+
+<!-- SETARA TU -->
+<div class="song-card" id="song2">
+<div class="song-header" onclick="document.getElementById('song2').classList.toggle('open')">
+<div class="sh-emoji">🕯️</div>
+<div><div class="sh-title">Setara Tu (Your Star)</div><div class="sh-sub">A mourning song for Miller and Julie Mao</div></div>
+<div class="sh-toggle">▼</div>
+</div>
+<div class="song-body"><div class="song-inner">
+<p style="color:var(--muted);font-size:14px;line-height:1.7;margin-bottom:14px">A Belter funeral ballad for the detective who loved a ghost and the woman who became a star. Miller and Julie never met in life — he knew her only through a case file. She was already dead when he found her on Eros. But in the protomolecule's blue glow, they found each other and guided Eros into Venus together. This is the song someone sings in a dim Ceres bar, for two people the Belt will never forget.</p>
+
+<div style="background:var(--card2);border-radius:14px;padding:18px;margin-bottom:12px">
+<div style="font-size:13px;font-weight:700;color:var(--accent3);margin-bottom:8px">🎵 Audio — Setara Tu</div>
+<audio controls style="width:100%;border-radius:8px" preload="metadata">
+<source src="setara_tu.mp3" type="audio/mpeg">
+</audio>
+</div>
+
+<div style="background:var(--card2);border-radius:14px;padding:18px;margin-bottom:14px">
+<div style="font-size:13px;font-weight:700;color:var(--accent2);margin-bottom:8px">🎬 Video — Setara Tu</div>
+<video controls style="width:100%;border-radius:10px;max-height:400px" preload="metadata">
+<source src="setara_tu_video.mp4" type="video/mp4">
+</video>
+</div>
+
+<div class="lyric-block">
+<div class="lyric-section">Verse 1</div>
+<div class="lyric-line">Da Mila, im wit da hat</div>
+<div class="lyric-trans">Miller, the man with the hat</div>
+<div class="lyric-line">Im kang ere da Ceres nawit</div>
+<div class="lyric-trans">He worked through the Ceres night</div>
+<div class="lyric-line">Wa detective nadzhush nadzhush</div>
+<div class="lyric-trans">A detective, so very tired</div>
+<div class="lyric-line">Sensa nating, sensa nawit</div>
+<div class="lyric-trans">Feeling nothing, feeling the dark</div>
+
+<div class="lyric-section">Chorus</div>
+<div class="lyric-line">Setara tu, mi na kang tuch</div>
+<div class="lyric-trans">Your star, I cannot touch</div>
+<div class="lyric-line">Amash mi gonya try fo du</div>
+<div class="lyric-trans">But I will try to reach</div>
+<div class="lyric-line">Setara tu, ere da Venus bik</div>
+<div class="lyric-trans">Your star, on the great Venus</div>
+<div class="lyric-line">Mi sensa to — mi follow true</div>
+<div class="lyric-trans">I feel you — I follow true</div>
+
+<div class="lyric-section">Verse 2</div>
+<div class="lyric-line">Julie, da mali belta brave</div>
+<div class="lyric-trans">Julie, the small brave Belter</div>
+<div class="lyric-line">Im pampa mal, im livit mal</div>
+<div class="lyric-trans">Her father evil, her life cruel</div>
+<div class="lyric-line">Im losa da kowlting fo free</div>
+<div class="lyric-trans">She lost everything to be free</div>
+<div class="lyric-line">Im fly fong da cage fo da Belt</div>
+<div class="lyric-trans">She flew from the cage for the Belt</div>
+
+<div class="lyric-section">Bridge (slower, intimate)</div>
+<div class="lyric-line">Im na meet ere da livit</div>
+<div class="lyric-trans">They never met in life</div>
+<div class="lyric-line">Im na tuch ere da light</div>
+<div class="lyric-trans">They never touched in the light</div>
+<div class="lyric-line">Amash ere da proto-blue</div>
+<div class="lyric-trans">But in the proto-blue</div>
+<div class="lyric-line">Imalowda finyish da dong</div>
+<div class="lyric-trans">They finished the fight</div>
+<div class="lyric-line">Imalowda bi wan</div>
+<div class="lyric-trans">They became one</div>
+
+<div class="lyric-section">Verse 3</div>
+<div class="lyric-line">Da Mila pensa ere Julie</div>
+<div class="lyric-trans">Miller thought about Julie</div>
+<div class="lyric-line">Im read da file, im sasa im heart</div>
+<div class="lyric-trans">He read the file, he knew her heart</div>
+<div class="lyric-line">Wa mang ámolof wa ghost</div>
+<div class="lyric-trans">A man loved a ghost</div>
+<div class="lyric-line">Wa ghost ámolof im back</div>
+<div class="lyric-trans">A ghost loved him back</div>
+
+<div class="lyric-section">Breakdown (spoken)</div>
+<div class="lyric-line">Doors unte corners, kopeng</div>
+<div class="lyric-trans">Doors and corners, friend</div>
+<div class="lyric-line">De im kewe imalowda get to</div>
+<div class="lyric-trans">That is where they get you</div>
+<div class="lyric-line">Amash im na get Julie</div>
+<div class="lyric-trans">But it did not get Julie</div>
+<div class="lyric-line">Julie get im</div>
+<div class="lyric-trans">Julie got him</div>
+
+<div class="lyric-section">Final Chorus (slow, building)</div>
+<div class="lyric-line">Setara tu... mi gonya follow</div>
+<div class="lyric-trans">Your star... I will follow</div>
+<div class="lyric-line">Ere da belék... mi gonya follow</div>
+<div class="lyric-trans">Through the darkness... I will follow</div>
+<div class="lyric-line">Til Venus... mi gonya follow</div>
+<div class="lyric-trans">To Venus... I will follow</div>
+<div class="lyric-line">Milowda gonya bi wan setara</div>
+<div class="lyric-trans">We will become one star</div>
+
+<div class="lyric-section">Outro (whispered)</div>
+<div class="lyric-line">Da setara. To kang sensa da setara.</div>
+<div class="lyric-trans">The stars. You can see the stars.</div>
+<div class="lyric-line">Im bera gut.</div>
+<div class="lyric-trans">It is truly beautiful.</div>
+</div>
+
+<div class="card" style="margin-top:16px;background:var(--card2)">
+<h3 style="color:var(--accent4)">Song Notes</h3>
+<p><span class="hl4">Genre:</span> Belter mourning ballad — Nick Cave meets a sea shanty through a space station intercom at 3 AM. Dark folk noir for the void.</p>
+<p><span class="hl2">The love story:</span> Miller fell in love with Julie Mao through her case file — her courage, her choices, the trail she left behind. He never met her alive. When he finally found her on Eros, she was fused with the protomolecule, barely human. He stayed with her anyway, and together they guided Eros into Venus — dying and transcending in the same moment.</p>
+<p><span class="hl3">Key moment:</span> The spoken breakdown references Miller's signature warning — "Doors and corners, kid. That's where they get you." But here it's inverted: the doors and corners didn't get Julie. She was the one doing the finding. She found Miller across death itself.</p>
+<p><span class="hl">The outro:</span> Miller's actual last words in the show — looking out at the stars as Eros crashes into Venus. "You can see the stars." It transforms from a detective's observation into a dying man's wonder.</p>
+</div>
+
+</div></div>
+</div>
+
+<!-- MUSIC & LANG BELTA -->
+<h2 class="s-title" style="color:var(--gold)">🔗 EXPLORE MORE</h2>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0">
+<a href="expanse-langbelta.html" style="display:block;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;text-decoration:none;text-align:center;transition:all .25s;color:inherit">
+<div style="font-size:28px;margin-bottom:6px">📖</div>
+<div style="font-family:Orbitron,sans-serif;font-size:14px;font-weight:700;color:var(--accent3)">Lang Belta Dictionary</div>
+<div style="font-size:12px;color:var(--dim);margin-top:4px">844 words to write your own songs</div>
+</a>
+<a href="expanse-haiku.html" style="display:block;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;text-decoration:none;text-align:center;transition:all .25s;color:inherit">
+<div style="font-size:28px;margin-bottom:6px">🌸</div>
+<div style="font-family:Orbitron,sans-serif;font-size:14px;font-weight:700;color:var(--accent4)">Belta Haiku</div>
+<div style="font-size:12px;color:var(--dim);margin-top:4px">50 poems of the void</div>
+</a>
+</div>
+
+<div class="quote-box">"In the Belt, we don't have land or sky or sea. We have the song. And as long as one Belter remembers the words, we exist."<div class="q-attr">— Attributed to an anonymous Ceres dockworker</div></div>
+
+</div>
+</body>
+</html>
