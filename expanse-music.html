@@ -393,7 +393,7 @@ a.addEventListener('timeupdate',function(){var pct=(a.currentTime/a.duration)*10
 a.addEventListener('ended',function(){pl.classList.remove('playing');iPlay.style.display='';iPause.style.display='none';});
 btn.addEventListener('click',function(){
 allP.forEach(function(p){if(p.a!==a&&!p.a.paused){p.a.pause();p.pl.classList.remove('playing');p.iPlay.style.display='';p.iPause.style.display='none';}});
-if(a.paused){a.play();pl.classList.add('playing');iPlay.style.display='none';iPause.style.display='';}
+if(a.paused){a.play().then(function(){pl.classList.add('playing');iPlay.style.display='none';iPause.style.display='';}).catch(function(err){iPlay.style.display='';iPause.style.display='none';pl.classList.remove('playing');cur.textContent='Audio file not found — will work when deployed';cur.style.color='var(--accent2)';});}
 else{a.pause();pl.classList.remove('playing');iPlay.style.display='';iPause.style.display='none';}
 });
 bar.addEventListener('click',function(e){var rect=bar.getBoundingClientRect();var pct=(e.clientX-rect.left)/rect.width;a.currentTime=pct*a.duration;});
