@@ -42,6 +42,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .collection h3{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:700;color:var(--gold);letter-spacing:1px;margin-bottom:12px}
 .saved-haiku{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 18px;margin-bottom:8px;font-size:13px;position:relative}
 .saved-haiku .sh-belta{color:var(--accent3);font-family:'Orbitron',sans-serif;font-size:12px;letter-spacing:0.5px;line-height:1.6}
+.saved-haiku .sh-analysis{font-size:11px;color:var(--dim);margin-top:6px;font-style:italic;line-height:1.5}
 .saved-haiku .sh-eng{color:var(--dim);font-style:italic;margin-top:6px;font-size:12px;line-height:1.5}
 .saved-haiku .sh-del{position:absolute;top:8px;right:10px;background:none;border:none;color:var(--dim);cursor:pointer;font-size:14px}
 .save-btn{font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;padding:8px 18px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--muted);cursor:pointer;transition:all .2s;margin-top:12px}
@@ -56,7 +57,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 <div class="hero">
 <h1>BELTA HAIKU</h1>
 <div class="sub">ADEWU MALI FO DA BELT</div>
-<p>Generate haiku poetry in Lang Belta — the creole language of the Asteroid Belt. Each haiku follows the traditional 5-7-5 syllable structure, assembled from real Belter vocabulary.</p>
+<p>Generate haiku poetry in Lang Belta — the creole language of the Asteroid Belt. Each haiku follows the traditional 5-7-5 syllable structure, crafted from authentic Belter vocabulary.</p>
 </div>
 
 <div class="haiku-frame" id="haikuFrame">
@@ -69,6 +70,10 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 <div class="trans-line" id="trans2"></div>
 <div class="trans-line" id="trans3"></div>
 <div class="syl-count" id="sylCount"></div>
+<div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border)">
+<div style="font-family:Orbitron,sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;color:var(--dim);text-transform:uppercase;margin-bottom:10px">ANALYSIS</div>
+<div id="analysisText" style="font-size:13px;color:var(--muted);line-height:1.7;font-style:italic;transition:opacity .3s"></div>
+</div>
 </div>
 
 <div style="text-align:center">
@@ -85,168 +90,141 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 
 <div class="info-card">
 <h3>How It Works</h3>
-<p>This generator assembles haiku from a database of 675+ real Lang Belta words, categorized by part of speech and syllable count. Each line is constructed to hit the traditional 5-7-5 syllable pattern using combinations of nouns, verbs, adjectives, and grammatical particles. The translations are word-by-word — Belter grammar differs from English, so consider them poetic interpretations rather than strict translations.</p>
+<p>This collection contains 50 hand-crafted haiku written in Lang Belta, the creole language of the Asteroid Belt. Each poem uses authentic Belter vocabulary and explores themes of Belt life — scarcity, solidarity, freedom, love, labor, and the vast indifference of space. The English translations are poetic rather than literal, capturing the spirit and emotion of each piece. Click the button to cycle through all 50 — no repeats until you have seen them all.</p>
 </div>
 </div>
 
 <script>
-var H_NOUNS_1=[{w:"bap",e:"door"},{w:"bowl",e:"Ball, small spherical toy"},{w:"buk",e:"book"},{w:"buk",e:"book"},{w:"bush",e:"mouth"},{w:"but",e:"boot"},{w:"chesh",e:"hunt; chase"},{w:"de",e:"that"},{w:"dek",e:"deck, floor"},{w:"do",e:"Ass, anus"},{w:"dzhi",e:"gee"},{w:"dzhing",e:"gin"},{w:"dzhush",e:"high-G drugs; juice"},{w:"ent",e:"end"},{w:"fit",e:"broadcast, feed, likely show, program"},{w:"fut",e:"food"},{w:"gash",e:"gas"},{w:"im",e:"him - her - it"},{w:"kosh",e:"cost, price"},{w:"lang",e:"language"},{w:"lek",e:"leg, foot"},{w:"losh",e:"loss"},{w:"lush",e:"light, bright"},{w:"mang",e:"person"},{w:"mash",e:"propellant"},{w:"meng",e:"noodels"},{w:"nax",e:"night"},{w:"nem",e:"name"},{w:"not",e:"node"},{w:"pash",e:"peace"},{w:"peng",e:"pain"},{w:"pish",e:"urine"},{w:"po",e:"dust"},{w:"pot",e:"pod, car"},{w:"push",e:"push, press"},{w:"sem",e:"seed"},{w:"shāsa",e:"odds, chance"},{w:"sheláf",e:"sleep"},{w:"sheng",e:"truth"},{w:"shif",e:"shift, as in work"},{w:"shio",e:"salt"},{w:"sif",e:"self"},{w:"sowng",e:"sun"},{w:"sut",e:"suit"},{w:"terásh",e:"thrust"},{w:"ting",e:"thing"},{w:"to",e:"you"},{w:"towsh",e:"teeth"},{w:"tu",e:"dirt, earth"},{w:"tung",e:"shot, a single firing of a gun"},{w:"we",e:"way, path, route"},{w:"wok",e:"walk/step"},{w:"wow",e:"war"},{w:"wowk",e:"work, labor"},{w:"wowm",e:"worm"},{w:"wowt",e:"word"},{w:"xash",e:"hazard, threat"},{w:"xep",e:"help, aid, assistance"},{w:"xi",e:"this"},{w:"xop",e:"hope"},{w:"xow",e:"barf, puke"}];
-var H_NOUNS_2=[{w:"*nawe",e:"no-way"},{w:"ámolof",e:"love"},{w:"ansa",e:"answer"},{w:"baseng",e:"clothing"},{w:"belówt",e:"blood"},{w:"belta",e:"Belter"},{w:"beref",e:"birth"},{w:"bikang",e:"beacon"},{w:"bingi",e:"fun"},{w:"bitnish",e:"business"},{w:"biya",e:"beer"},{w:"bodzha",e:"explosion"},{w:"bosmang",e:"boss, chief"},{w:"botong",e:"button"},{w:"buro",e:"donkey"},{w:"butong",e:"button"},{w:"buza",e:"target"},{w:"da wel",e:"The Well"},{w:"data",e:"data, information"},{w:"dek lek",e:"leg-deck"},{w:"demang",e:"whom"},{w:"detim",e:"that-time"},{w:"deting",e:"that-thing"},{w:"dewe",e:"that-way"},{w:"deya",e:"There"},{w:"diye",e:"day"},{w:"dowta",e:"daughter"},{w:"du losh",e:"lose"},{w:"du nem",e:"name, call. put name = register"},{w:"du pish",e:"urinate , aka make piss"},{w:"du push",e:"jump, press"},{w:"du sheláf",e:"sleep , do sleep"},{w:"du tung",e:"shoot , aka make BANG"},{w:"du wowk",e:"work"},{w:"du xow",e:"barf, puke"},{w:"duting",e:"console"},{w:"dzhemang",e:"asshole"},{w:"dzhogem",e:"game"},{w:"fewa",e:"faith"},{w:"fidesh",e:"trust"},{w:"fo lek",e:"descending"},{w:"fosh wowk",e:"Practice"},{w:"fotet",e:"trade , Shipping"},{w:"foto",e:"picture, image, photograph"},{w:"gang bang",e:"steering-roundtrip"},{w:"gang rowm",e:"rum-roundtrip"},{w:"gányamang",e:"winner"},{w:"godzha",e:"gyoza"},{w:"gova",e:"head"},{w:"gowe",e:"route"},{w:"hamma",e:"Inescapable torpedo range"},{w:"imim",e:"them-them"},{w:"inteng",e:"intern"},{w:"inya",e:"inner"},{w:"kaka",e:"shit"},{w:"kaxa",e:"box, case, crate"},{w:"kemang",e:"who?"},{w:"ketim",e:"when?"},{w:"keting",e:"what-thing"},{w:"kewe",e:"what-way"},{w:"kom sif",e:"become"},{w:"koma",e:"“,"},{w:"kombat",e:"fight, battle"},{w:"koming",e:"coming, arrival"},{w:"kontów",e:"control"},{w:"kopa",e:"cup"},{w:"kopeng",e:"friend"},{w:"kori",e:"heart, core"},{w:"kowe*",e:"every-way"},{w:"kowltim",e:"always, every-time"},{w:"kowlting",e:"everything"},{w:"kowmang",e:"everyone"},{w:"kowpush",e:"body"},{w:"koyo",e:"dog, cat, weasel, small mammal"},{w:"kula",e:"balls"},{w:"kuwang",e:"corner"},{w:"livit",e:"life"},{w:"mama",e:"Mom, mama"},{w:"mámamang",e:"mamas boy"},{w:"manting",e:"humanity"},{w:"menyu",e:"menu"},{w:"mesa",e:"board, table"},{w:"meshang",e:"mission"},{w:"meyo",e:"honor"},{w:"minyi",e:"minute"},{w:"miso",e:"miso"},{w:"misong",e:"mission"},{w:"mowteng",e:"requirement, necessity,need"},{w:"nafut",e:"hunger"},{w:"namang",e:"no-one"},{w:"náterash",e:"no-thrust"},{w:"nating",e:"no-thing, nothing"},{w:"obi",e:"obeah, aka sorcery"},{w:"ora",e:"hour"},{w:"owbit",e:"orbit"},{w:"owkwa",e:"water"},{w:"oxo",e:"eye"},{w:"pasa",e:"passage, pass, opening, clearance"},{w:"pati",e:"party, part"},{w:"páxari",e:"rumor, source"},{w:"pelésh",e:"place"},{w:"pesha",e:"pressure"},{w:"peshi",e:"fish"},{w:"pexa",e:"partner, spouse"},{w:"pigi",e:"pig"},{w:"pomang",e:"duster, martian"},{w:"radzhang",e:"reason, motivation"},{w:"raya",e:"beam"},{w:"retnet",e:"network"},{w:"Sabat",e:"Saturday"},{w:"sake",e:"sake"},{w:"sako",e:"bag, sack"},{w:"salta",e:"leap / jump"},{w:"sekang",e:"second"},{w:"sekóch",e:"Scotch"},{w:"sepíng",e:"spin"},{w:"seteráx",e:"fear"},{w:"seva",e:"server"},{w:"sevish",e:"service"},{w:"shapu",e:"hat"},{w:"shoyu",e:"shoyu"},{w:"sodzha",e:"soldier"},{w:"sowngit",e:"music"},{w:"sownte",e:"sound"},{w:"suchok",e:"mess, tangle"},{w:"suku",e:"juice"},{w:"tempe",e:"temperature"},{w:"tensha",e:"attention"},{w:"terásh do",e:"ass-thrust"},{w:"tomak",e:"stomach"},{w:"towchu",e:"slave"},{w:"tumang",e:"dirt-person, Earther"},{w:"vichi",e:"victory"},{w:"voka",e:"vodka"},{w:"volkang",e:"volcano"},{w:"vomit",e:"vomit"},{w:"wamang",e:"Someone, somebody"},{w:"wangu",e:"toy"},{w:"watim",e:"sometime"},{w:"wating",e:"something"},{w:"wawe*",e:"someway, somehow"},{w:"we ship",e:"Flight"},{w:"wedzha",e:"wager, bet"},{w:"welte",e:"welding"},{w:"weting",e:"type, style, kind"},{w:"wowmow",e:"wormhole"},{w:"wupo",e:"witch, sorceress"},{w:"xante",e:"arm, hand"},{w:"xashish",e:"cannabis, ganja"},{w:"xáshiting",e:"pipe, vaporizer, dab-rig,"},{w:"xelep",e:"expletive; What the xelep? Hell"},{w:"xeta",e:"hate"},{w:"xite",e:"hit, strike, blow"},{w:"xitem",e:"item , subject `"},{w:"xitim",e:"now"},{w:"xiya",e:"here"},{w:"xownyat",e:"treachery, betrayal"},{w:"yam seng",e:"cocktail, mixed drink"},{w:"yáterash",e:"yes-thrust"},{w:"yawu",e:"yaw"},{w:"ying ding",e:"Power armor"},{w:"yitim",e:"New Year"},{w:"zakong",e:"law, rule, regulation"}];
-var H_NOUNS_3=[{w:"adewu",e:"song"},{w:"afeta",e:"effect. Possibly also influence"},{w:"ámawala",e:"Boyfriend, girlfriend, lover"},{w:"ánkawala",e:"anchor-person"},{w:"anyiye",e:"year"},{w:"atake",e:"attack, assault"},{w:"bekpelésh",e:"leak; lit. break-place"},{w:"beratna",e:"brother"},{w:"béveting",e:"drink, beverage"},{w:"botiya",e:"bottle, jar"},{w:"burito",e:"burrito"},{w:"da Belte",e:"the Belt"},{w:"da nax de",e:"that night"},{w:"da NOUN de",e:"that NOUN, those NOUNs"},{w:"da weyu",e:"the gravity"},{w:"da weyu",e:"Gravity"},{w:"dedawang",e:"that-one"},{w:"dedeya",e:"that-there"},{w:"dek gova",e:"head-deck"},{w:"delowda",e:"those, that many, that much"},{w:"depelésh",e:"where…, the-place"},{w:"depeshang",e:"depression"},{w:"deradzhang",e:"that-reason"},{w:"deweting",e:"that-kind"},{w:"du ámolof",e:"love , aka do love"},{w:"du ansa",e:"answer"},{w:"du dzhogem",e:"Play"},{w:"du fo wong",e:"“tun on, aka Make to on"},{w:"du meyo",e:"honor"},{w:"du mowteng",e:"need , aka Do necessity"},{w:"du NOUN gut",e:"fix / repair NOUN, Make NOUN right"},{w:"du NOUN xush",e:"make NOUN happy, aka please "},{w:"du owbit",e:"orbit"},{w:"du sevish",e:"serve, do service"},{w:"du sherú",e:"begin"},{w:"du suchok",e:"Mess around, tangle"},{w:"du towsh bik",e:"smile"},{w:"du wang wit",e:"join, unite"},{w:"du wedzha",e:"wager, bet"},{w:"du welte",e:"weld"},{w:"du xeta",e:"hate"},{w:"du xite",e:"hit, strike"},{w:"du xom wit",e:"do home with aka marry"},{w:"du zakong",e:"rule, regulate"},{w:"ényedzhi",e:"energy"},{w:"epinya",e:"back/spine"},{w:"épisot",e:"episode"},{w:"éreluf",e:"air , soul, spirit"},{w:"érete",e:"Earth"},{w:"felota",e:"“Floater”."},{w:"ferádiye",e:"Friday"},{w:"feriting",e:"freedom, liberty"},{w:"feronte",e:"frontier, border, edge. possibly limit"},{w:"fit xitim",e:"live feed"},{w:"fo bodzha",e:"exploded, lit to explosion"},{w:"fo gova",e:"ascending"},{w:"fokaso",e:"focus . possible private?"},{w:"fongi de",e:"outside aka from-here that"},{w:"gang ámolof",e:"Love-trip"},{w:"gelori",e:"glory"},{w:"gif xep fo",e:"give help to"},{w:"gif xop fo",e:"give hope to"},{w:"gova tet",e:"“tight head”."},{w:"imbobo",e:"room, apartment, hole"},{w:"impake",e:"impact, crash"},{w:"kamera",e:"camera"},{w:"kapawu",e:"ship"},{w:"kasinyo",e:"casino"},{w:"kedawang",e:"which"},{w:"kekoku",e:"warning"},{w:"kelowda",e:"which"},{w:"kepelésh",e:"where?"},{w:"keradzhang",e:"Why? what-reason?"},{w:"keweting",e:"what-kind"},{w:"kímechi",e:"kimchi"},{w:"komante",e:"Command, Management"},{w:"kómeting",e:"received, also  inbox"},{w:"koweting*",e:"every-kind,"},{w:"kowpelésh",e:"everywhere"},{w:"kowradzhang*",e:"every-reason"},{w:"kuxaku",e:"space, vacuum"},{w:"lang belta",e:"Belter-language"},{w:"langemang",e:"linguist"},{w:"leyalting",e:"loyalty"},{w:"liperi",e:"library"},{w:"lówkedong",e:"lockdown"},{w:"malimang",e:"child"},{w:"métexeng",e:"girl"},{w:"milowda",e:"we, us"},{w:"Mundiye",e:"monday"},{w:"not fo lek",e:"“descending node aka node for leg"},{w:"ofisha",e:"official"},{w:"ora xush",e:"happy hour"},{w:"papeka",e:"sin, transgression"},{w:"pegunta",e:"question"},{w:"pénsating",e:"thought"},{w:"perepish",e:"periapsis"},{w:"péyeting",e:"payload"},{w:"péyeting",e:"payment."},{w:"pirata",e:"pirate"},{w:"pólisi",e:"policy"},{w:"raya bik",e:"wide beam, big beam"},{w:"redeshang",e:"radiation"},{w:"rédzherosh",e:"rage"},{w:"rísiko",e:"risk"},{w:"rowmwala",e:"bartender"},{w:"rúserux",e:"face"},{w:"saviting",e:"salvage, salvation"},{w:"sedneshang",e:"sedation"},{w:"seleshang",e:"acceleration"},{w:"sempere",e:"eternity"},{w:"senyawu",e:"signal"},{w:"setara",e:"star"},{w:"seteshang",e:"station"},{w:"sévelang",e:"civilain"},{w:"shukumi",e:"fate, destiny."},{w:"tadisong",e:"tradition"},{w:"tekidok",e:"technical document"},{w:"tékimang",e:"geek/engineer"},{w:"tékiting",e:"technology"},{w:"tekiwa",e:"tequila"},{w:"terampa",e:"cheater"},{w:"tolowda",e:"yall"},{w:"tudiye",e:"today"},{w:"tung tung tung",e:"shooting"},{w:"túngeting",e:"gun"},{w:"ubicha",e:"Killer, bladeboy"},{w:"úzilik",e:"Link"},{w:"vediting",e:"monitor"},{w:"vídeyo",e:"video"},{w:"wameku",e:"scream, shout, yell. also cry/weep"},{w:"wapelésh",e:"someplace"},{w:"waradzhang",e:"some-reason"},{w:"waweting*",e:"some-kind"},{w:"we fotet",e:"trade route, route  trade"},{w:"wíseki",e:"whiskey"},{w:"wit náterash",e:"with zero-g"},{w:"wit yáterash",e:"with thrust-gravity"},{w:"xaltewe",e:"status"},{w:"xanteting",e:"handrail"},{w:"xashimang",e:"stoner, weed smoker"},{w:"xétamang",e:"hater"},{w:"xidawang",e:"this-the-one, this-one"},{w:"xilowda",e:"this-many, these"},{w:"zakomang",e:"police officer"}];
-var H_NOUNS_4=[{w:"anyalasi",e:"analysis"},{w:"aseroka",e:"asteroid"},{w:"bap kuxaku",e:"space-door"},{w:"bukipelesh",e:"bookstore"},{w:"condenashang",e:"condemnation"},{w:"da diye de",e:"that day"},{w:"da NOUN xiya",e:"This NOUN"},{w:"diye beref",e:"birth-day"},{w:"du adewu",e:"sing  aka “do song”"},{w:"du afeta",e:"influence, affect"},{w:"du ferí NOUN",e:"liberate, free"},{w:"du gatamang",e:"guard, protect"},{w:"Du gut da we",e:"“set the course aka make good the way"},{w:"du nago NOUN",e:"switch off NOUNS power"},{w:"du NOUN ferí",e:"make NOUN free"},{w:"du NOUN nago",e:"stop NOUN , Make NOUN no-go"},{w:"du pasa tim",e:"wait. aka make pasage  time"},{w:"du pegunta",e:"Ask , aka make question"},{w:"du terampa",e:"cheat"},{w:"du úzilik",e:"link, connect"},{w:"du xom ere",e:"make home at/in aka live"},{w:"dusiwala",e:"sweetie"},{w:"duting xante",e:"hand-terminal"},{w:"edamame",e:"edamame"},{w:"eletisi",e:"electricity"},{w:"éntediye",e:"Wedesday"},{w:"fibafare",e:"Fever"},{w:"fo sémpere",e:"forever, permanent. “For eternity”"},{w:"fo sémpere",e:"for eternity, forever."},{w:"fotowala",e:"photographer, journalist"},{w:"gang kuxaku",e:"spacewalk, EVA"},{w:"gif pasa fo",e:"allow, permit"},{w:"govawala",e:"psychiatrist"},{w:"imalowda",e:"they, them"},{w:"imbobo rowm",e:"rum-hole"},{w:"ipulangi",e:"bed"},{w:"kakamali",e:"little shit"},{w:"kondenashang",e:"condemnation"},{w:"kula buro",e:"donkey ball"},{w:"kula peshi",e:"fish-ball"},{w:"maliwala",e:"kid, kiddo"},{w:"matnawala",e:"tits-person, breast fan"},{w:"mediwala",e:"doctor"},{w:"melodiye",e:"melody"},{w:"navigeshang",e:"navigtion"},{w:"not fo gova",e:"“ascending node aka Node for head"},{w:"okwa kaka",e:"shit-water"},{w:"okwa matna",e:"breast milk ; lit. mother-water"},{w:"onyigiri",e:"onigiri"},{w:"opereshang",e:"operations"},{w:"pansetaro",e:"all-star, superstar"},{w:"pashangimang",e:"fucker"},{w:"pashangwala",e:"fucker"},{w:"paxoniski",e:"shorty"},{w:"paxoníski",e:"Earther/Martian"},{w:"pelésh-pelésh",e:"places, somewhere significant"},{w:"revelushang",e:"revolution"},{w:"sakopinya",e:"back  bag"},{w:"seka-seka,",e:"dryer"},{w:"senyidiye",e:"week, seven-day"},{w:"setóriye",e:"story"},{w:"shetéxeting",e:"knife"},{w:"suku matna",e:"breast milk ; lit. mothers juice"},{w:"takoyaki",e:"takoyaki"},{w:"tatuyingi",e:"tattoo"},{w:"tenyaniye",e:"decade"},{w:"terásh rúserux",e:"face-thrust"},{w:"Tusidiye",e:"Tuesday"},{w:"wa koming gut",e:"welcome"},{w:"wang anyiye",e:"one year"},{w:"we ruserux",e:"straight ahead, face way"},{w:"wéltewala",e:"welder"},{w:"wit afeta",e:"affected, influenced aka with effect"},{w:"wit lowkedong",e:"with lockdown, locked down"},{w:"wit sedneshang",e:"with sedation, aka sedated"},{w:"wit úzilik",e:"linked, connected, with link"},{w:"xantedura",e:"weapons station, hardpoint"},{w:"xashiwala",e:"weed dealer, “budtender”"},{w:"xowmonyiye",e:"harmony"},{w:"xunyampelesh",e:"school, place of study"}];
-var H_NOUNS_5=[{w:"bosmang kapawu",e:"ship-boss"},{w:"but fo kapawu",e:"magnetic boots"},{w:"da NOUN dedeya",e:"that-there NOUN, them-there NOUNs"},{w:"ényedzhi owkwa",e:"water-energy"},{w:"imbobo koyo",e:"dog-hole"},{w:"kaka felota",e:"floater-shit"},{w:"sut fo kuxaku",e:"spacesuit"},{w:"tensha fo pasa",e:"“watch you step"},{w:"xalte ere pash",e:"stay in peace"}];
-var H_VERBS_1=[{w:"bang",e:"steer, navigate"},{w:"bek",e:"break"},{w:"bi",e:"“be"},{w:"chu",e:"choose"},{w:"desh",e:"there-is, there-are."},{w:"du",e:"do, make, compel, create, fabricate, put"},{w:"et",e:"Eat"},{w:"ge",e:"get, acquire"},{w:"gif",e:"give"},{w:"go",e:"go, travel"},{w:"kom",e:"come"},{w:"kush",e:"crash"},{w:"lit",e:"read"},{w:"muf",e:"move"},{w:"sit",e:"sit"},{w:"tek",e:"steal, overtake"}];
-var H_VERBS_2=[{w:"beve",e:"drink"},{w:"dansa",e:"dance"},{w:"decho",e:"die, be destroyed"},{w:"ganya",e:"win"},{w:"gif-go",e:"transfer, send"},{w:"kapa",e:"catch, capture"},{w:"kom-ge*",e:"receive"},{w:"kom-go",e:"arrive"},{w:"leta",e:"take"},{w:"lusa",e:"“lose track of"},{w:"na desh",e:"there isnt/there arent"},{w:"natim",e:"never, no-time"},{w:"openg",e:"open"},{w:"pashang",e:"fuck"},{w:"pensa",e:"think , believe"},{w:"peye",e:"pay, make payment"},{w:"sasa",e:"know"},{w:"sensa",e:"feel , sense"},{w:"sera",e:"close, shut"},{w:"setóp",e:"cease"},{w:"showxa",e:"speak, tell, say"},{w:"tenye",e:"have , also hold as in grip"},{w:"vedi",e:"see, look,"},{w:"vota",e:"vote"},{w:"wanya",e:"want, desire"},{w:"xalte",e:"keep / stay / remain / hold"},{w:"xunyam",e:"learn, study"}];
-var H_VERBS_3=[{w:"avita",e:"avoid"},{w:"du-sensa",e:"apologize . Literally “make feelings”"},{w:"du-showxa",e:"chat, make small talk"},{w:"ékepesh",e:"express"},{w:"leta-go",e:"take-away"},{w:"leta-kom",e:"bring"},{w:"peroba",e:"try, sample, taste"},{w:"pochuye",e:"hear, understand, comprehend"},{w:"rembera",e:"remember"},{w:"riyaka",e:"react"},{w:"sefoka",e:"choke, suffocate"},{w:"shetexe",e:"stab, cut"},{w:"xalte fong",e:"stay away, keep off"},{w:"xalte wit",e:"stay with, hold with"}];
-var H_VERBS_4=[{w:"finyish vedi",e:"have seen; found"},{w:"fo xalte gut",e:"Maintainence"},{w:"tili tenye",e:"own, possess"},{w:"vedi ere",e:"Try, attempt, aka look at"}];
-var H_VERBS_5=[{w:"go fongi fode",e:"leave"}];
-var H_ADJS_1=[{w:"beláng",e:"white"},{w:"bik",e:"big, wide, loud"},{w:"det",e:"dead"},{w:"fash",e:"fast"},{w:"gosh",e:"left"},{w:"gut",e:"good, correct, proper, right"},{w:"kong",e:"next , upcoming"},{w:"kosh",e:"close"},{w:"lok",e:"locked"},{w:"lowng",e:"long, far, tall"},{w:"mal",e:"bad, evil"},{w:"ong",e:"own"},{w:"ret",e:"red"},{w:"tet",e:"tight"},{w:"wowm",e:"warm"},{w:"xox",e:"high, elevated, up"},{w:"xush",e:"happy"}];
-var H_ADJS_2=[{w:"belék",e:"black"},{w:"belú",e:"blue/green, grue"},{w:"dura",e:"Hard. Also, difficult"},{w:"dusi",e:"sweet"},{w:"eka",e:"equivalent, equal"},{w:"fasi",e:"?"},{w:"ferí",e:"free"},{w:"gérowsh",e:"Gross, as in big, large, grand"},{w:"idzhi",e:"easy, simple, uncomplex"},{w:"leyal",e:"loyal"},{w:"mali",e:"little, small, quiet, young"},{w:"mofash",e:"faster"},{w:"mogut",e:"better"},{w:"molowng",e:"longer"},{w:"momal",e:"worse"},{w:"nadzhush",e:"tired"},{w:"nagut",e:"wrong, incorrect, not-good"},{w:"nalik",e:"unlike"},{w:"nalok",e:"unlocked"},{w:"nalush",e:"dark, not-light"},{w:"nasheng",e:"“untrue, false"},{w:"náshowxa",e:"silent, muted,no-speak"},{w:"natet",e:"loose, un-tight"},{w:"nuva",e:"new"},{w:"owte",e:"old"},{w:"pagal",e:"crazy, wild"},{w:"richa",e:"right"},{w:"seka",e:"dry"},{w:"solo",e:"alone, lone, possibly single"},{w:"sunte",e:"Healthy"},{w:"tubik",e:"giant, very big"},{w:"tufash",e:"very fast"},{w:"tugut",e:"Very good"},{w:"tumal",e:"very bad, “too bad”"},{w:"ultim",e:"final, last, ultimate"}];
-var H_ADJS_3=[{w:"defotung",e:"armed"},{w:"eletík",e:"electric, electrical"},{w:"ematim",e:"Soon"},{w:"étera",e:"extra, surplus"},{w:"foriya",e:"True, real, authentic"},{w:"gútegow",e:"ready, prepared, set"},{w:"legawu",e:"legal, legitimate"},{w:"mogut fo",e:"“should aka better for"},{w:"nakángego",e:"stuck, jammed, un able to move/operate"},{w:"nakángekeng",e:"unknowable"},{w:"nasunte",e:"unhealthy, sick"},{w:"owlesi",e:"lazy"},{w:"pikante",e:"spicy"},{w:"séfesowng",e:"safe"},{w:"teristi",e:"sad"},{w:"wamotim",e:"again"},{w:"xélixup",e:"awesome, very good"}];
-var H_ADJS_4=[{w:"bekedabush",e:"delicious"},{w:"gótefodam",e:"goddamned"},{w:"idzhifobék",e:"brittle, weak"},{w:"nalegawu",e:"illegal, illegitimate"}];
-var H_ADJS_5=[{w:"kapadagova",e:"interesting, catches-the-mind"},{w:"nakangepensa",e:"dumb, stupid"},{w:"tugufovedi",e:"too-beautiful"}];
-var H_OTHER_1=[{w:"da",e:"the"},{w:"deng",e:"then, In-that-case"},{w:"et",e:"eight"},{w:"faf",e:"five"},{w:"fing",e:"until,"},{w:"fo",e:"for / to / towards / because"},{w:"fong",e:"from, off. possibly since as well"},{w:"fosh",e:"first"},{w:"fu",e:"four"},{w:"kang",e:"mood: CAPABLE"},{w:"kená",e:"No?"},{w:"keyá",e:"Yes?"},{w:"ko",e:"“ok"},{w:"kowl",e:"all, every"},{w:"lik",e:"like, aka in the manner of"},{w:"mo",e:"more"},{w:"mo-",e:"“more affix , intensifier"},{w:"mosh",e:"most"},{w:"mowsh",e:"mood: must, have to"},{w:"na",e:"no, not, negative"},{w:"na-",e:"“negation affix"},{w:"neng",e:"nine"},{w:"o",e:"or"},{w:"pash",e:"than, beyond, past"},{w:"seng",e:"seven"},{w:"so",e:"so, such"},{w:"soyá",e:"Umm, yeah"},{w:"teng",e:"ten"},{w:"tu",e:"two"},{w:"tu-",e:"“very” affix"},{w:"wa",e:"a / an"},{w:"wa-",e:"“some- affix"},{w:"wang",e:"one"},{w:"wit",e:"with, between"},{w:"ya",e:"yes, affirmative"}];
-var H_OTHER_2=[{w:"amash",e:"but"},{w:"bera",e:"Nothing but aka only, merely, just"},{w:"deng fo",e:"would  aka in-that-case for"},{w:"efa",e:"after,, the opposite of before"},{w:"ere",e:"On, at, in, inside, about, regarding"},{w:"fode",e:"to-there"},{w:"fongi",e:"from-here"},{w:"fore",e:"before, the opposite of after"},{w:"fosho",e:"strong belief"},{w:"gata",e:"gate ? guard ?"},{w:"go go",e:"“Go on”."},{w:"kasi",e:"almost"},{w:"kom kom",e:"come come, come on"},{w:"nada",e:"zero"},{w:"oso",e:"also, additionally"},{w:"owta",e:"other, different"},{w:"oye",e:"hey, hello"},{w:"sekang",e:"second"},{w:"serí",e:"three"},{w:"Setóp!",e:"STOP!"},{w:"síkesh",e:"six"},{w:"teki-",e:"technology-related  prefix"},{w:"tuteng",e:"twenty"},{w:"unte",e:"and"},{w:"wang wit",e:"together, “one with…”"},{w:"Ya fet!",e:"alright!"},{w:"yam seng",e:"cheers"}];
-var H_OTHER_3=[{w:"asilik",e:"Like, “as if it were the case ”"},{w:"erefo",e:"into"},{w:"fodagut",e:"please"},{w:"gútemang",e:"Mr / Ms  / Mx"},{w:"oyedeng",e:"goodbye"},{w:"walowda",e:"some"},{w:"wamali",e:"a few, a little bit"},{w:"Wepera!",e:"Wait!"}];
-var H_OTHER_4=[{w:"da nax xiya",e:"this night"},{w:"fongi fode",e:"away"},{w:"sili... mebi...",e:"if"},{w:"taki taki",e:"thank you"}];
-var H_OTHER_5=[{w:"da diye xiya",e:"this day"}];
-// Haiku line templates - patterns of [part_of_speech, syllables]
-// These create grammatically plausible Belter phrases
-var TEMPLATES_5 = [
-  [["nouns",2],["adjs",1],["verbs",2]],
-  [["nouns",1],["nouns",2],["adjs",2]],
-  [["adjs",2],["nouns",3]],
-  [["nouns",3],["verbs",2]],
-  [["verbs",2],["nouns",3]],
-  [["other",1],["nouns",2],["adjs",2]],
-  [["nouns",2],["other",1],["adjs",2]],
-  [["adjs",1],["nouns",1],["nouns",3]],
-  [["nouns",1],["verbs",1],["nouns",3]],
-  [["nouns",5]],
-  [["nouns",2],["nouns",3]],
-  [["verbs",2],["adjs",1],["nouns",2]],
-  [["other",2],["nouns",1],["verbs",2]],
-  [["adjs",2],["nouns",1],["verbs",2]]
+var HAIKU=[
+{b:["Setara mali","Ere da belék kosmo bik","Milowda felota"],e:["Little star","In the vast black cosmos","We float"],p:"A Belter child gazes out a porthole. In the immensity of space, even the stars look small — but so do we. The final line is both literal (zero-g) and existential: we are all adrift."},
+{b:["Owkwa fo livit","Owkwa fo deting — kowl wan","Owkwa fo milowda"],e:["Water for life","Water for death — all the same","Water for us all"],p:"Water is everything in the Belt. It sustains and drowns. This haiku captures the Belter understanding that their most precious resource is also their deepest vulnerability."},
+{b:["Mi sasa nating","Amash mi sensa kowlting","Da gut unte mal"],e:["I know nothing","But I feel everything","The good and the bad"],p:"A meditation on the difference between knowledge and wisdom. Belters learn through experience, not books. To feel the good and bad equally is the Belter way — no luxury of numbness."},
+{b:["Beratna, pochuye","Da adewu fo milowda","Showxa im gut gut"],e:["Brother, listen","The song that belongs to us","Sing it well"],p:"An invocation to keep the culture alive. Belter songs carry history, identity, and resistance. To sing them well is both art and duty."},
+{b:["Ereluf mali mali","Ere wa aseroka desh","Kowl livit gut gut"],e:["So little air","On an asteroid somewhere","Every life precious"],p:"The fundamental Belter reality compressed into three lines. Air is scarce, home is a rock, and therefore every breath matters. Scarcity creates reverence."},
+{b:["Kopeng mi gonya","Felota ere da belék","Wit mi, sa-sa ke"],e:["My friend, we will","Float through the darkness","With me, you know?"],p:"An invitation disguised as a statement. In the Belt, friendship means sharing the void together. The casual sa-sa ke at the end is pure Belter — turning existential dread into warmth."},
+{b:["Tumang na sasa","Kewe im sensa ere da Belt","Milowda nadzhush"],e:["Earthers dont know","What it feels like in the Belt","We are tired"],p:"The exhaustion of being unseen. Earthers live in gravity and abundance; they cannot understand what perpetual scarcity does to a people. Three lines of quiet fury."},
+{b:["Pashang da pomang","Pashang da bosmang unte kowl","Mi ferí, mi ferí"],e:["Damn the police","Damn the bosses and all of them","I am free, I am free"],p:"A protest haiku. The repetition of mi ferí transforms a curse into a declaration of liberation. This is the haiku you paint on a station wall."},
+{b:["Ámolof im bik","Mogut fo bek wa setara","Mogut fo bek mi"],e:["Love is bigger","It can break a star apart","It can break me too"],p:"A rare Belter love poem. The comparison of love's power to stellar physics is perfectly Belt — they understand destruction at cosmic scale, and recognize love operates there too."},
+{b:["Da diye finyish","Nawit gonya du im kang","Setara showxa"],e:["The day is done","Night will do its work","The stars speak"],p:"A Belter evening prayer. When the station dims its lights and the work cycle ends, the stars become visible through the portholes — and they have something to say."},
+{b:["Maliwala pensa","Kewe im gonya bi bosmang","Livit showxa mal"],e:["A child dreams","Of becoming the boss someday","Life says otherwise"],p:"Belter children dream of power and escape, but the system crushes most aspirations. The quiet cruelty of the final line is devastating — life itself is the antagonist."},
+{b:["Beltalowda kang","Du wa ting fong da nating","Milowda bera"],e:["We Belters can","Make something from nothing","We are real"],p:"The Belter ethos in three lines. Resourcefulness is identity. Creating from scarcity is not just survival — it is proof of existence. The final line is defiance."},
+{b:["Wa bap im klosa","Wa bap im losa fo kowl","Mi bang ere da tu"],e:["One door closes","One door opens for everyone","I steer between the two"],p:"A spacer's proverb about airlocks and choices. The literal meaning (navigating doorways) and the metaphorical meaning (navigating fate) coexist perfectly in Belter culture."},
+{b:["Sabaka inyalowda","Imalowda na pochuye","Milowda adewu"],e:["Damn the Inners","They dont understand","Our song"],p:"Three lines of cultural resistance. The Inners hear noise; Belters hear music. Language itself becomes a weapon of identity — to sing in Belta is to declare independence."},
+{b:["Setara setara","Mi pensa imalowda deting","Fo manting finyish"],e:["Stars upon stars","I think they are the dead","Of humanity finished"],p:"A dark cosmology. Belters who die in space sometimes imagine the stars as departed souls. This haiku wonders if the stars are all that remains when humanity is done."},
+{b:["Da owkwa im sing","Ere da pipes fo Ceres gut","Livit im flowing"],e:["The water sings","Through the pipes of Ceres","Life is flowing"],p:"Finding beauty in infrastructure. On a station, the sound of water in pipes means the recyclers work, the station lives, and another day is possible. Plumbing as poetry."},
+{b:["Mi showxa lang Belta","To na pochuye mi, ke","Gut — da im fo mi"],e:["I speak Belter","You dont understand me, right","Good — this is for me"],p:"Language as private rebellion. When Inners cannot understand, Belta becomes a secret — a space that belongs only to its speakers. Exclusion becomes empowerment."},
+{b:["Dong fo da owkwa","Dong fo da ereluf kowl","Dong fo da livit"],e:["Fight for the water","Fight for all the air","Fight for the life"],p:"A battle chant stripped to essentials. No ideology, no politics — just the three things every Belter needs. The repetition of dong (fight) builds like a drumbeat."},
+{b:["Bosmang im showxa","Du de, du de, du im kang","Milowda du kowl"],e:["The boss says","Do this, do that, do your work","We do everything"],p:"The rhythm of exploitation. The boss commands; the workers comply. The final line carries double meaning — we do everything (we are capable of all things) and also (we are worked to death)."},
+{b:["Ere da nawit bik","Mi sensa wa ting mali","Ámolof im xush"],e:["In the great night","I feel a small thing","Love is warm"],p:"An intimate moment in the cold of space. Against the vast darkness, a small warmth — a touch, a word, a shared breath — becomes the most important thing in the universe."},
+{b:["Dzhush ere da veins","Mi felota ere da void","Setara im spin"],e:["Juice in the veins","I float through the void","The stars are spinning"],p:"The disorientation of high-g recovery. After the Juice wears off and the burn stops, you float — and for a moment, you cannot tell if the stars move or you do."},
+{b:["Pampa showxa mi","Sasa da Belt, sasa livit","Mi gonya sasa"],e:["Uncle told me","Know the Belt, know life","I will learn"],p:"Generational wisdom. A young Belter receives the simplest and most profound advice: to know where you are is to know who you are. The promise to learn is the promise to survive."},
+{b:["Belta na towchu","Belta na inyalowda ting","Belta im Belta"],e:["A Belter is not a slave","A Belter is not an Inners thing","A Belter is a Belter"],p:"Identity as tautology. When others define you by what you lack or what you serve, the most radical statement is simply: I am what I am. Nothing more is needed."},
+{b:["Ámawala mi","To im da setara mali","Ere mi kosmo bik"],e:["My lover","You are my little star","In my vast cosmos"],p:"A love poem that uses the language of space itself. The beloved is not diminished by being small — they are the point of light that makes the darkness navigable."},
+{b:["Felota felota","Nating fo grab ere da void","Milowda im free"],e:["Floating, floating","Nothing to hold onto in the void","We are free"],p:"The paradox of Belt freedom. Having nothing to cling to is terrifying — and also the definition of liberation. Zero-gravity as political metaphor."},
+{b:["Wa anyiye fong","Mi du kang ere da mines","Setara na chang"],e:["Another year gone","I work the mines","The stars dont change"],p:"The grinding monotony of Belt labor. Years pass, work continues, and the stars — indifferent, eternal — remain exactly as they were. Time moves; nothing else does."},
+{b:["Kowl mang deting","Amash milowda sing gut","Fo da manting gonya"],e:["Everyone dies","But we sing well","For the humanity to come"],p:"The Belter version of hope. Death is certain, but song persists. We sing not for ourselves but for those who will follow — the ones who will inherit whatever we leave behind."},
+{b:["Da Wall im bik","Bosmang du im fo kewe","Fo sensa im safe"],e:["The Wall is big","The boss built it for what","To feel safe"],p:"A critique of power that echoes across the Expanse. Walls protect the builder, not the built-upon. The question kewe (what for) is rhetorical — everyone knows the answer."},
+{b:["Mi beratna deting","Im livit ere mi pensa","Finyish na bera"],e:["My brother is dead","He lives inside my thoughts","Never truly gone"],p:"A Belter elegy. In space, the dead are often vented — no graves, no markers. Memory becomes the only memorial. The denial in the final line is both grief and defiance."},
+{b:["Ereluf im ámolof","To na sensa im til gone","Den to sasa bik"],e:["Air is love","You dont feel it until gone","Then you know deeply"],p:"The most Belter metaphor possible. Air — invisible, taken for granted, essential — is compared to love. Both are only fully understood in their absence."},
+{b:["Sesata, pochuye","Da kosmo na care fo mi","Amash mi care bik"],e:["Sister, listen","The cosmos does not care for me","But I care deeply"],p:"Existential defiance addressed to a sister-in-arms. The universe is indifferent, but human caring persists against that indifference. That persistence is the point."},
+{b:["Keting da Belta pensa","Ere nawit kowl ere da spin","Milowda pensa livit"],e:["What does a Belter think","In the night alone on the station","We think about living"],p:"A question and its answer. The answer is deliberately simple — not philosophy, not rebellion, just living. For a people whose survival is never guaranteed, that is enough."},
+{b:["Gut gut da adewu","Mal mal da silence ere","Showxa, beratna, showxa"],e:["So good the song","So bad the silence here","Speak, brother, speak"],p:"An argument against quiet. In the Belt, silence can mean a dead radio, a failed system, a lost ship. Song and speech are proof of life. The imperative is urgent."},
+{b:["Owkwa im klir","Mi sensa im ere da kowl","Da Belt im livit"],e:["The water is clear","I feel it in everything","The Belt is alive"],p:"A moment of gratitude. Clean water, functioning systems, a living station — for a Belter, these are not ordinary things. This haiku is a prayer of thanks."},
+{b:["Da buk im showxa","Ting milowda na sasa","Sasa im danger"],e:["The book speaks","Things we did not know","Knowledge is danger"],p:"A Belter discovers forbidden information. Books — rare in the Belt — contain truths that powerful people want hidden. To read is to become dangerous."},
+{b:["To gonya go far","Amash pochuye mi gut","Mi gonya bi xiya"],e:["You will travel far","But hear me well","I will be here"],p:"A farewell between Belters. One leaves; one stays. The promise to remain is itself an act of courage — staying in the Belt is never safe, only necessary."},
+{b:["Inyalowda im wit gravity","Milowda im wit da void","Kewe im mogut, ke"],e:["Inners have gravity","We have the void","Which is better"],p:"The eternal question. Gravity grounds you but traps you. The void frees you but endangers you. The question mark at the end is genuine — there is no answer."},
+{b:["Lang Belta im ámolof","Kowl word wa ting milowda du","Fong da nating bik"],e:["Belter language is love","Every word a thing we made","From the great nothing"],p:"A love letter to the language itself. Lang Belta was forged from scraps of Earth languages by people who had nothing — and created something beautiful from it."},
+{b:["Aseroka mi","Mali mali ere da Belt","Amash mi im home"],e:["My asteroid","So small in the Belt","But it is home"],p:"Home is not about size. A Belter's rock may be tiny and insignificant on any chart, but it is theirs. The word home carries the weight of the entire poem."},
+{b:["Felota ere blood","Da belówt fo milowda kang","Fo Belta, kowl Belta"],e:["Floating in blood","The blood of our labor","For Belters, all Belters"],p:"A dark meditation on sacrifice. Belters bleed for their work — mining, building, dying in the void — and that blood belongs to the collective. Solidarity in suffering."},
+{b:["Pensa ere da Eart","Da green unte da owkwa bik","Mi na gonya go"],e:["I think about Earth","The green and the great waters","I will never go"],p:"The Belter's impossible dream. Earth is a paradise they hear about but can never visit — their bones would break in full gravity. Longing for a place you can never reach."},
+{b:["Setara im guide","Ere da nawit fo milowda","Bang fo home, beratna"],e:["Stars are the guide","In our night","Steer for home, brother"],p:"A navigator's haiku. Stars are not decoration — they are the map. The final line is both practical instruction and emotional reassurance: we will find our way."},
+{b:["Mi nadzhush nadzhush","Amash da kang na finyish","Gonya du im moro"],e:["I am so tired","But the work is never done","Will do it tomorrow"],p:"The universal worker's lament, spoken in Belter. Exhaustion is constant, rest is temporary, and tomorrow the cycle begins again. The resignation in gonya (will) is heartbreaking."},
+{b:["Da dzhush im hot","Burn gonya finyish mali","Den milowda float"],e:["The Juice is hot","The burn will end soon","Then we float"],p:"The physical experience of high-g travel in three stages: the chemical burn of the Juice, the agony of acceleration, and the blessed release of zero-g. Every spacer knows this rhythm."},
+{b:["Showxa fo kewe","Ere wa kosmo deaf unte klir","Fo sensa im bera"],e:["Why do we speak","In a cosmos deaf and clear","Because feeling is real"],p:"The deepest question a Belter poet can ask. Why make art in a universe that cannot hear you? Because the making is the meaning. The answer validates itself."},
+{b:["Maliwala sensa","Da first felota gut gut","Ámolof fo void"],e:["The child feels","Their first float, so wonderful","Love for the void"],p:"A Belter child's first experience of zero gravity — not terror but joy. Where Earthers would panic, Belter children find wonder. They are born for this."},
+{b:["Milowda im old","Da Belt im mogut old","Amash setara im wit"],e:["We are old","The Belt is even older","But the stars are patient"],p:"A meditation on time scales. Belter civilization is young; the asteroids are ancient; the stars are eternal. Patience — the stars' defining quality — is what Belters aspire to."},
+{b:["Wa Belta im die","Milowda sing da adewu","Im na gonya finyish"],e:["When a Belter dies","We sing the song","It never ends"],p:"A funeral haiku. Belters have no ground to bury their dead, so they sing instead. The song — and therefore the person — continues as long as someone remembers."},
+{b:["Da ereluf im thin","Da owkwa im mali mali","Amash mi im xiya"],e:["The air is thin","The water is so little","But I am here"],p:"Survival as triumph. Three lines of scarcity followed by one word of defiance: here. Existence itself is the victory. The simplest and most powerful Belter statement."},
+{b:["To sasa lang Belta","To sasa milowda kowl","To im Beltalowda"],e:["You know Belter tongue","You know all of us","You are one of us"],p:"The ultimate compliment in Belter culture. To learn the language is to join the family. This haiku is a welcome, an embrace, and a declaration of belonging."}
 ];
 
-var TEMPLATES_7 = [
-  [["nouns",2],["verbs",2],["nouns",3]],
-  [["nouns",3],["adjs",2],["verbs",2]],
-  [["adjs",2],["nouns",2],["verbs",3]],
-  [["other",1],["nouns",3],["adjs",3]],
-  [["nouns",2],["nouns",2],["adjs",3]],
-  [["verbs",2],["nouns",2],["adjs",3]],
-  [["other",2],["nouns",3],["verbs",2]],
-  [["nouns",3],["verbs",2],["other",2]],
-  [["nouns",1],["adjs",2],["nouns",2],["verbs",2]],
-  [["nouns",4],["adjs",3]],
-  [["adjs",3],["nouns",4]],
-  [["nouns",2],["adjs",2],["nouns",3]],
-  [["verbs",3],["nouns",2],["adjs",2]],
-  [["nouns",3],["other",1],["nouns",3]]
-];
 
-function pick(arr){return arr[Math.floor(Math.random()*arr.length)]}
+var seen = [];
+var currentIdx = -1;
+var saved = [];
+var generated = 0;
 
-function getWordPool(cat, syls){
-  var name='H_'+cat.toUpperCase()+'_'+syls;
-  var pool=window[name];
-  if(!pool||pool.length===0){
-    // Fallback: try nouns of same syllable count
-    pool=window['H_NOUNS_'+syls];
-  }
-  if(!pool||pool.length===0){
-    // Last resort: any 1-syllable noun
-    pool=window['H_NOUNS_1']||[{w:'da',e:'the'}];
-  }
-  return pool;
-}
-
-function buildLine(templates){
-  var tmpl=pick(templates);
-  var words=[];
-  var engs=[];
-  var used={};
-  for(var i=0;i<tmpl.length;i++){
-    var cat=tmpl[i][0];
-    var syls=tmpl[i][1];
-    var pool=getWordPool(cat,syls);
-    // Avoid repeats
-    var attempts=0;
-    var w;
-    do{
-      w=pick(pool);
-      attempts++;
-    }while(used[w.w]&&attempts<10);
-    used[w.w]=true;
-    words.push(w.w);
-    engs.push(w.e);
-  }
-  return {belta:words.join(' '),eng:engs.join(' / ')};
-}
-
-var currentHaiku=null;
-var saved=[];
-var generated=0;
-
-function generateHaiku(){
-  var l1=buildLine(TEMPLATES_5);
-  var l2=buildLine(TEMPLATES_7);
-  var l3=buildLine(TEMPLATES_5);
+function generateHaiku() {
+  // If we've seen all, reset
+  if (seen.length >= HAIKU.length) seen = [];
   
-  currentHaiku={l1:l1,l2:l2,l3:l3};
+  // Pick a random unseen haiku
+  var available = [];
+  for (var i = 0; i < HAIKU.length; i++) {
+    if (seen.indexOf(i) < 0) available.push(i);
+  }
+  var pick = available[Math.floor(Math.random() * available.length)];
+  seen.push(pick);
+  currentIdx = pick;
   generated++;
   
+  var h = HAIKU[pick];
+  
   // Animate in
-  var lines=['line1','line2','line3'];
-  var trans=['trans1','trans2','trans3'];
-  lines.forEach(function(id){document.getElementById(id).style.opacity=0});
-  trans.forEach(function(id){document.getElementById(id).style.opacity=0});
+  var lineIds = ['line1', 'line2', 'line3'];
+  var transIds = ['trans1', 'trans2', 'trans3'];
+  lineIds.forEach(function(id) { document.getElementById(id).style.opacity = 0; });
+  transIds.forEach(function(id) { document.getElementById(id).style.opacity = 0; });
+  document.getElementById('analysisText').style.opacity = 0;
   
-  setTimeout(function(){
-    document.getElementById('line1').textContent=l1.belta;
-    document.getElementById('line2').textContent=l2.belta;
-    document.getElementById('line3').textContent=l3.belta;
-    document.getElementById('trans1').textContent=l1.eng;
-    document.getElementById('trans2').textContent=l2.eng;
-    document.getElementById('trans3').textContent=l3.eng;
-    document.getElementById('sylCount').textContent='5 · 7 · 5';
+  setTimeout(function() {
+    // Set Belter lines
+    for (var i = 0; i < 3; i++) {
+      document.getElementById(lineIds[i]).textContent = h.b[i];
+      document.getElementById(transIds[i]).textContent = h.e[i];
+    }
+    document.getElementById('sylCount').textContent = (seen.length) + ' of ' + HAIKU.length + ' haiku seen';
+    document.getElementById('analysisText').textContent = h.p;
     
-    lines.forEach(function(id,i){
-      setTimeout(function(){document.getElementById(id).style.opacity=1},i*200);
+    // Staggered fade in
+    lineIds.forEach(function(id, i) {
+      setTimeout(function() { document.getElementById(id).style.opacity = 1; }, i * 200);
     });
-    trans.forEach(function(id,i){
-      setTimeout(function(){document.getElementById(id).style.opacity=1},600+i*150);
+    transIds.forEach(function(id, i) {
+      setTimeout(function() { document.getElementById(id).style.opacity = 1; }, 600 + i * 150);
     });
-  },150);
+    setTimeout(function() { document.getElementById('analysisText').style.opacity = 1; }, 1100);
+  }, 150);
   
-  document.getElementById('saveBtn').style.display='inline-block';
-  document.getElementById('counter').textContent=generated+' haiku generated';
+  document.getElementById('saveBtn').style.display = 'inline-block';
+  document.getElementById('counter').textContent = generated + ' haiku generated';
 }
 
-function saveHaiku(){
-  if(!currentHaiku) return;
-  saved.push({...currentHaiku});
+function saveHaiku() {
+  if (currentIdx < 0) return;
+  var h = HAIKU[currentIdx];
+  saved.push({b: h.b, e: h.e, p: h.p});
   renderSaved();
 }
 
-function deleteSaved(i){
-  saved.splice(i,1);
+function deleteSaved(i) {
+  saved.splice(i, 1);
   renderSaved();
 }
 
-function renderSaved(){
-  var el=document.getElementById('savedList');
-  var col=document.getElementById('collection');
-  if(saved.length===0){col.style.display='none';return}
-  col.style.display='block';
-  var html='';
-  saved.forEach(function(h,i){
-    html+='<div class="saved-haiku"><button class="sh-del" onclick="deleteSaved('+i+')">✕</button>';
-    html+='<div class="sh-belta">'+h.l1.belta+'<br>'+h.l2.belta+'<br>'+h.l3.belta+'</div>';
-    html+='<div class="sh-eng">'+h.l1.eng+' / '+h.l2.eng+' / '+h.l3.eng+'</div></div>';
+function renderSaved() {
+  var el = document.getElementById('savedList');
+  var col = document.getElementById('collection');
+  if (saved.length === 0) { col.style.display = 'none'; return; }
+  col.style.display = 'block';
+  var html = '';
+  saved.forEach(function(h, i) {
+    html += '<div class="saved-haiku"><button class="sh-del" onclick="deleteSaved(' + i + ')">✕</button>';
+    html += '<div class="sh-belta">' + h.b.join('<br>') + '</div>';
+    html += '<div class="sh-eng">' + h.e.join(' / ') + '</div>';
+    html += '<div class="sh-analysis">' + h.p + '</div></div>';
   });
-  el.innerHTML=html;
+  el.innerHTML = html;
 }
 
 // Generate one on load
