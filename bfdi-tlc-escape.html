@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Escape from the TLC | Fan Cannon</title>
+<meta name="description" content="A BFDI Choose Your Own Adventure. You've been eliminated and trapped in the Tiny Loser Chamber. Can you escape before morning?">
+<link href="https://fonts.googleapis.com/css2?family=Chewy&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Nunito',sans-serif;overflow-x:hidden;min-height:100vh;}
+.world{min-height:100vh;background:linear-gradient(180deg,#1a1a3e 0%,#2d2d5e 30%,#1a1a3e 60%,#1a3d1a 60%,#0f2d0f 100%);position:relative;}
+/* Stars */
+.star{position:fixed;background:white;border-radius:50%;z-index:0;animation:twinkle 3s ease-in-out infinite;}
+.s1{width:2px;height:2px;top:5%;left:15%;animation-delay:0s;}
+.s2{width:3px;height:3px;top:12%;left:45%;animation-delay:1s;}
+.s3{width:2px;height:2px;top:8%;left:72%;animation-delay:0.5s;}
+.s4{width:1px;height:1px;top:18%;left:30%;animation-delay:2s;}
+.s5{width:2px;height:2px;top:3%;left:85%;animation-delay:1.5s;}
+.s6{width:3px;height:3px;top:15%;left:58%;animation-delay:0.8s;}
+.s7{width:1px;height:1px;top:22%;left:10%;animation-delay:2.5s;}
+.s8{width:2px;height:2px;top:7%;left:38%;animation-delay:1.2s;}
+@keyframes twinkle{0%,100%{opacity:.3;}50%{opacity:1;}}
+.gc{position:relative;z-index:1;max-width:640px;margin:0 auto;padding:20px 16px;min-height:100vh;display:flex;flex-direction:column;}
+.card{background:#1a1a2e;border-radius:4px;border:3px solid #444;padding:24px 20px;box-shadow:4px 4px 0 rgba(0,0,0,.4);margin-bottom:14px;animation:cardIn .4s ease;color:#ddd;}
+@keyframes cardIn{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+.title{font-family:'Chewy',cursive;font-size:36px;color:#FF6B6B;line-height:1.1;text-align:center;margin-bottom:4px;}
+.title .small{font-size:20px;color:#FFAB91;display:block;}
+.story{font-size:16px;line-height:1.65;color:#ccc;margin-bottom:20px;white-space:pre-line;}
+.story em{color:#999;font-style:italic;}
+.choices{display:flex;flex-direction:column;gap:8px;}
+.choice{padding:14px 18px;border:3px solid #555;border-radius:4px;background:#252545;font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;color:#ddd;cursor:pointer;transition:all .15s;text-align:left;line-height:1.35;}
+.choice:hover{background:#353565;border-color:#FF6B6B;transform:translate(-2px,-2px);box-shadow:4px 4px 0 rgba(255,107,107,.2);}
+.choice:active{transform:translate(0,0);box-shadow:none;}
+.choice .arrow{color:#FF6B6B;margin-right:6px;font-weight:900;}
+.ending-card{text-align:center;padding:28px 24px;}
+.ending-icon{font-size:64px;margin-bottom:8px;}
+.ending-title{font-family:'Chewy',cursive;font-size:28px;margin-bottom:4px;}
+.ending-title.good{color:#4ecdc4;}.ending-title.neutral{color:#FFAB91;}.ending-title.bad{color:#FF6B6B;}
+.ending-type{font-size:13px;color:#888;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;}
+.bb{display:block;width:100%;padding:14px 20px;border:3px solid #555;border-radius:4px;font-family:'Nunito',sans-serif;font-size:16px;font-weight:800;cursor:pointer;transition:all .15s;margin-bottom:8px;text-align:center;background:#252545;color:#ddd;}
+.bb:hover{transform:translate(-2px,-2px);box-shadow:4px 4px 0 rgba(0,0,0,.3);border-color:#FF6B6B;}
+.bb:active{transform:translate(0,0);box-shadow:none;}
+.bb.start{background:#2d4a2d;border-color:#4ecdc4;color:#4ecdc4;font-family:'Chewy',cursive;font-size:22px;}
+.path-tag{display:inline-block;padding:3px 10px;border-radius:3px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;}
+.path-tag.tlc{background:rgba(255,107,107,.15);color:#FF6B6B;}
+.path-tag.crawl{background:rgba(255,171,145,.15);color:#FFAB91;}
+.path-tag.vents{background:rgba(69,170,242,.15);color:#45aaf2;}
+.path-tag.panel{background:rgba(255,217,61,.15);color:#ffd93d;}
+.path-tag.escape{background:rgba(78,205,196,.15);color:#4ecdc4;}
+.stats-row{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
+.stat{flex:1;min-width:calc(50% - 4px);background:rgba(255,255,255,.05);border:2px solid #444;border-radius:4px;padding:10px 8px;text-align:center;}
+.stat .n{font-family:'Chewy',cursive;font-size:24px;color:#4ecdc4;}
+.stat .l{font-size:11px;color:#888;font-weight:800;text-transform:uppercase;}
+@media(max-width:500px){.title{font-size:28px;}.title .small{font-size:17px;}.story{font-size:15px;}.choice{font-size:14px;padding:12px 14px;}}
+</style>
+</head>
+<body>
+<div style="position:sticky;top:0;z-index:100;background:rgba(26,26,62,0.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.06);padding:8px 16px;display:flex;align-items:center;gap:10px;font-family:'Nunito',sans-serif">
+  <a href="bfdi-universe.html" style="display:flex;align-items:center;gap:6px;text-decoration:none;color:#ccc;font-size:13px;font-weight:700;transition:color 0.2s" onmouseover="this.style.color='#FF6B6B'" onmouseout="this.style.color='#ccc'">← BFDI Universe</a>
+  <span style="color:rgba(255,255,255,0.15);font-size:18px">|</span>
+  <span style="font-size:13px;font-weight:600;color:rgba(255,255,255,0.4)">Escape from the TLC</span>
+</div>
+<div class="world">
+<div class="star s1"></div><div class="star s2"></div><div class="star s3"></div><div class="star s4"></div>
+<div class="star s5"></div><div class="star s6"></div><div class="star s7"></div><div class="star s8"></div>
+<div class="gc"><div id="game"></div></div>
+</div>
+<script>
+const ADVENTURE = {
+  title: "Escape from the TLC",
+  subtitle: "A BFDI Choose Your Own Adventure",
+  intro: "You've been eliminated. Flung into the Tiny Loser Chamber — dark, cramped, and packed with other losers.\n\nBut you're not staying. The Announcer is permanently sealing the TLC at dawn. You have one night to get out.\n\nOne night. One chance.",
+  startNode: "start",
+  actThemes: {
+    tlc: { label: "The Tiny Loser Chamber", css: "tlc" },
+    crawl: { label: "The Crawlspace", css: "crawl" },
+    vents: { label: "The Ventilation System", css: "vents" },
+    panel: { label: "Flower's Plan", css: "panel" },
+    escape: { label: "The Escape", css: "escape" }
+  },
+  nodes: {
+"start":{act:"tlc",text:"Dark. Cramped. Something squishy is pressed against your face.\n\n\"Sorry,\" says Spongy.\n\nYour eyes adjust slowly. You're in the Tiny Loser Chamber. Five other eliminated contestants are crammed in here with you. The air smells like old pizza and regret.\n\nFlower is pacing in tight, furious circles. Woody whimpers in a corner, hugging himself. Match is running her fingers along the walls, examining every seam. David sits against the wall, staring at nothing.\n\nSpongy leans close and whispers: \"The Announcer is sealing this place permanently tomorrow morning. Some kind of upgraded lock. If you want out, tonight's the only chance.\"",choices:[{text:"\"Who here has tried to escape before?\"",next:"ask_attempts"},{text:"Start examining the TLC walls yourself",next:"examine_walls"},{text:"Talk to Flower — she looks like she has a plan",next:"talk_flower"}]},
+
+"ask_attempts":{act:"tlc",text:"Spongy sighs heavily, which in an enclosed space is quite an experience. \"I've tried three times. The front hatch is locked from outside — heavy-duty electromagnetic seal. The walls are thick metal. But...\"\n\nHe lowers his voice. \"There's a crack in the floor. Near the back corner. I'm way too big to fit through it, but someone smaller might. I think it leads to the underside of the LOL.\"\n\nMatch overhears and slides over. \"I know something better. The TLC is inside the LOL now, right? The LOL has a ventilation system to keep us alive in here. If we could reach the vents, we could crawl out. I know the LOL layout from when FreeSmart was scoping it.\"\n\nTwo possible escape routes. Limited time.",choices:[{text:"Investigate the floor crack",next:"floor_crack"},{text:"Look for the ventilation system",next:"find_vents"},{text:"Ask if anyone else has ideas",next:"other_ideas"}]},
+
+"examine_walls":{act:"tlc",text:"You run your hands along the TLC walls. Cold metal — solid, no give. The surface is featureless and slightly damp from condensation.\n\nBut near the ceiling, you notice something: a tiny seam where two panels don't quite meet. Air is flowing through it — faint, but definitely there. Where there's airflow, there's a gap to the outside.\n\nThe seam is way too high to reach alone. You'd need someone to boost you, or something to stand on.\n\nSpongy notices you looking up. \"Found something?\"",choices:[{text:"Ask Spongy if you can stand on him to reach the seam",next:"stand_spongy"},{text:"Stack whatever objects you can find",next:"stack_objects"},{text:"Look for another way — the ceiling feels too risky",next:"talk_flower"}]},
+
+"stand_spongy":{act:"tlc",text:"\"Spongy, can I... stand on you?\"\n\nHe looks hurt for exactly one second, then sighs. \"Everyone always wants to stand on me. Fine. But be gentle.\"\n\nYou climb onto Spongy. He's surprisingly stable — squishy but wide. From up here, you can see the seam clearly. It's not just an air gap — it's a full panel seam. With the right tool, you could pry it open.\n\n\"I see a vent grate up here!\" you call down. \"If we can get it open, we're into the ventilation system!\"\n\nMatch's ears perk up. \"The vents? I know where those lead. Get me up there!\"",choices:[{text:"Let Match up to help you with the vent",next:"find_vents"},{text:"Ask Flower for her metal tool to pry it open",next:"tool_screws"}]},
+
+"stack_objects":{act:"tlc",text:"You look around for anything to stack. There isn't much — the TLC is bare. But David has been sitting on what appears to be a small crate this whole time.\n\n\"David, can I use that crate?\"\n\n\"Aw, seriously...\" He stands up reluctantly.\n\nYou stack the crate in the corner. It's enough to reach the ceiling seam, but barely. Standing on your tiptoes on a wobbly crate in the dark — not ideal.\n\nFrom up here you can see it's a vent grate. Screwed in tight.",choices:[{text:"Try to work the screws loose with your fingers",next:"force_grate"},{text:"Ask if anyone has something to use as a screwdriver",next:"coin_screws"}]},
+
+"talk_flower":{act:"panel",text:"Flower stops pacing and fixes you with intense eyes. \"You want out? Good. Because I have a plan and I need help.\"\n\nShe pulls something from behind her back: a small, sharp piece of metal. \"I found this wedged in the wall. I think it's a piece of the Announcer's speaker box that broke off. It's sharp enough to pry things.\"\n\nShe points to a spot near the floor. \"See that panel? It's looser than the others. I've been watching it shift when Spongy moves around. Help me pry it open and we can get into the space between the TLC wall and the LOL wall.\"",choices:[{text:"Help Flower pry the panel",next:"help_flower"},{text:"That sounds risky — examine the tool more closely first",next:"examine_tool"},{text:"Suggest combining her tool with Spongy's floor crack knowledge",next:"combine_plans"}]},
+
+"other_ideas":{act:"tlc",text:"You look around the room. \"Anyone else have ideas?\"\n\nWoody shakes his head violently. David says \"Aw, seriously...\" which could mean anything.\n\nBut then Woody surprises everyone. \"I-I-I... I once saw the Announcer open the hatch. He uses a k-key. A physical key. Not just the electronic lock.\"\n\nMatch leans forward. \"A KEY? That means even if we hacked the electronics, we'd still need the physical key. Or...\" she thinks. \"Or we'd need to find the Announcer's control room.\"\n\nFlower holds up her metal tool. \"Or we just don't use the hatch at all.\"",choices:[{text:"Focus on finding the control room and the key",next:"find_vents"},{text:"Forget the hatch — try Flower's alternate exit",next:"talk_flower"},{text:"Use the floor crack — avoid the Announcer entirely",next:"floor_crack"}]},
+
+"floor_crack":{act:"crawl",text:"Spongy leads you to the back corner. Sure enough, there's a jagged crack in the floor — maybe eight inches wide. Darkness below. Cold air drifts up from it.\n\n\"I think it leads to the underside of the LOL,\" Spongy says. \"But I've never been able to see what's down there.\"\n\nWoody, overhearing from across the room, shakes violently. \"D-d-don't go down there!\"\n\n\"Why not?\"\n\n\"Because I dropped a marble down there once. And it never. Stopped. Rolling.\"",choices:[{text:"You're small-ish. Try to squeeze through.",next:"squeeze_crack"},{text:"Send Woody — he's the smallest",next:"send_woody"},{text:"Widen the crack first using Flower's tool",next:"widen_crack"}]},
+
+"squeeze_crack":{act:"crawl",text:"You press yourself flat and inch through the crack. It's tight — painfully tight — but you fit. Your shirt tears on a jagged edge and the metal scrapes your skin, but you push through.\n\nBelow the TLC floor there's a crawlspace about two feet high. Dusty, dark, cables running in every direction like mechanical vines. The air is stale and warm.\n\nYou can move in two directions: toward a faint light (something electronic?) or toward a low humming sound (machinery?).",choices:[{text:"Move toward the light",next:"crawl_light"},{text:"Move toward the humming",next:"crawl_hum"}]},
+
+"send_woody":{act:"crawl",text:"You look at Woody. \"Woody, you're the only one small enough to fit easily. You could scout it out.\"\n\nWoody's eyes go enormous. \"M-m-me?? Down THERE??\"\n\nYou try to be encouraging. \"You'd be a hero, Woody. The contestant who escaped the TLC. Everyone would know YOUR name.\"\n\nWoody's fear visibly fights his desire to be brave. His whole body trembles.",choices:[{text:"Promise to go right after him — he won't be alone",next:"woody_goes"},{text:"Don't pressure him — go yourself instead",next:"squeeze_crack"},{text:"Ask Match to convince him — she's persuasive",next:"match_convinces_woody"}]},
+
+"woody_goes":{act:"crawl",text:"\"I'll be right behind you,\" you promise. \"The second you're through, I'm coming.\"\n\nWoody takes a shaky breath, closes his eyes, and pushes himself through the crack. He fits easily — barely has to squeeze. You hear a tiny thud as he lands below.\n\n\"W-Woody? Are you okay?\"\n\n\"I'm... I'm okay!\" His voice sounds amazed. \"There's space down here! Cables and stuff! And — oh! I see a light!\"\n\nYou squeeze through after him. Together in the crawlspace, Woody is actually calmer. Having someone to be brave FOR seems to help.\n\n\"Which way?\" he whispers. The light is to the left. A humming is to the right.",choices:[{text:"Follow Woody toward the light",next:"crawl_light"},{text:"Go toward the humming — you'll investigate the machinery",next:"crawl_hum"}]},
+
+"match_convinces_woody":{act:"crawl",text:"Match crouches down next to Woody. \"Hey. Woody. Look at me.\"\n\nHe peeks through his fingers.\n\n\"I know you're scared. But like, you're literally the perfect size for this. And if you do it? You're not Woody the scared one anymore. You're Woody the one who escaped the TLC. That's, like, legendary.\"\n\nWoody stares at her. Then, incredibly, he nods. \"O-okay. Okay. I'll do it.\"\n\nHe slides through the crack with ease. You hear him land softly below. \"There's stuff down here! Cables and... and a light!\"\n\nYou squeeze through after him.",choices:[{text:"Follow the light together",next:"crawl_light"},{text:"Head toward a humming sound instead",next:"crawl_hum"}]},
+
+"widen_crack":{act:"crawl",text:"You get Flower's tool and start working on the crack. Metal scrapes against metal — a hideous sound in the silence.\n\n\"Quieter!\" Match hisses. \"The Announcer has microphones in here!\"\n\nYou slow down, working the tool carefully along the crack's edge. Flower takes over when your hands cramp. Then Spongy sits on one side, and his weight bends the metal just enough.\n\nAfter twenty agonizing minutes, the crack is wide enough for anyone to fit through — even Spongy, barely. But the noise may have been heard.",choices:[{text:"Everyone go through quickly before someone comes",next:"wide_crack_rush"},{text:"Send a scout down first to check if it's safe",next:"wide_crack_scout"}]},
+
+"wide_crack_rush":{act:"crawl",text:"\"Go go go!\" Flower commands. One by one, everyone drops through. David lands gracefully. Match slides through like she's done this before. Woody needs a gentle push. Spongy gets stuck — Flower shoves him with terrifying force and he pops through like a cork.\n\nYou're last. You drop into the crawlspace. It's bigger than expected — almost big enough to stand in some spots.\n\nThe whole group is here. Six eliminated contestants, free of the TLC for the first time.\n\nAhead, two paths. One heads toward machinery. The other toward what sounds like... running water?",choices:[{text:"Lead everyone toward the machinery",next:"crawl_hum_group"},{text:"Head toward the water sound",next:"crawl_water"}]},
+
+"wide_crack_scout":{act:"crawl",text:"\"I'll go first,\" you say. You drop through the widened crack and land in the crawlspace below. Dusty, warm, full of cables.\n\nIt seems safe. No alarms. No signs of surveillance down here. You call up: \"It's clear!\"\n\nOne by one, the others follow. Soon all six of you are in the crawlspace.\n\nMatch looks around with recognition. \"I think I know where we are. The LOL's maintenance level. If we head that way\" — she points into the darkness — \"we should reach the outer wall.\"",choices:[{text:"Follow Match's lead",next:"match_leads"},{text:"Suggest splitting up to cover more ground",next:"crawl_split"}]},
+
+"crawl_light":{act:"crawl",text:"The light turns out to be a small LED on a circuit board mounted to the underside of the TLC floor. Not an exit — but interesting.\n\nYou examine it more closely. This circuit board is connected to the TLC's locking mechanism. You can see the electromagnetic coil, the relay switch, the wiring.\n\nYou realize: you could short-circuit this and unlock the front hatch from down here. Pull two wires simultaneously and the lock would disengage.\n\nThe problem: two wires, two hands, and both are just far enough apart that you can't reach both alone.",choices:[{text:"Call up to someone through the crack for help",next:"spongy_helps_circuit"},{text:"Try to rig something to pull both wires yourself",next:"diy_circuit"}]},
+
+"crawl_hum":{act:"crawl",text:"The humming grows louder as you crawl toward it. The air gets warmer. You round a corner of cables and find the source: the LOL's power generator. A big grey box with a constant vibrating hum, warm to the touch.\n\nA generator means power. Power means the electromagnetic locks. If you shut this down, ALL the locks in the LOL would fail simultaneously. Every door, every hatch — including the TLC.\n\nBut it would also kill every light. Total darkness. And the Announcer would know immediately.",choices:[{text:"Shut it down — chaos is your best friend",next:"generator_off"},{text:"Leave it and head back toward the light instead",next:"crawl_light"},{text:"Look for a way to partially disable it — just kill the locks",next:"selective_disable"}]},
+
+"selective_disable":{act:"crawl",text:"You study the generator more carefully. There are multiple output cables — each one probably feeding a different system. If you could identify which cable powers the locks and pull JUST that one...\n\nYou trace the cables with your fingers. One is thick and warm — probably main power. One is thinner with a red stripe. One has a label, but it's too dark to read.\n\nYou need light. If only Firey were here.",choices:[{text:"Pull the red-striped cable — it feels like a secondary system",next:"pull_red_cable"},{text:"Just shut the whole thing down — no time to be surgical",next:"generator_off"}]},
+
+"pull_red_cable":{act:"crawl",text:"You grip the red-striped cable and pull. It resists, then pops free with a spark that makes you flinch.\n\nFrom above — faintly — you hear a CLICK. Then another. Then Spongy's muffled voice: \"THE HATCH! IT JUST UNLOCKED!\"\n\nYou did it. You killed just the lock power without triggering any alarms. The main lights are still on. The Announcer shouldn't notice anything unusual.\n\nYou scramble back toward the crack.",choices:[{text:"Rush back up and tell everyone to go NOW",next:"quiet_escape"},{text:"Wait and listen — make sure no alarm triggers",next:"careful_escape"}]},
+
+"quiet_escape":{act:"escape",text:"You pull yourself back through the crack. The TLC hatch is ajar — the electromagnetic lock dead. Everyone is staring at it in disbelief.\n\n\"How did you...\" Match starts.\n\n\"Explain later. Move now.\"\n\nOne by one, you slip through the hatch. The LOL corridor beyond is dim and quiet. Emergency lighting casts everything in pale blue.\n\nMatch leads the way. \"The exit is two corridors down. Left, then right, then there's a door with a manual handle.\"\n\nYou're halfway to freedom.",choices:[{text:"Follow Match's route quickly and quietly",next:"match_route_exit"},{text:"Check if the Announcer's control room is nearby — grab the key as insurance",next:"detour_control"}]},
+
+"careful_escape":{act:"escape",text:"You wait. One minute. Two. No alarm. No sound of the Announcer stirring.\n\nYou climb back up. \"The lock is dead but the alarms aren't triggered. We need to move quietly.\"\n\nFlower nods. \"Everyone. Single file. No. Noise.\"\n\nThe group moves through the open hatch like ghosts. The LOL corridor stretches ahead. Match knows the way.",choices:[{text:"Follow Match to the exit",next:"match_route_exit"}]},
+
+"match_route_exit":{act:"escape",text:"Match leads you through the LOL's corridors. Left turn. Right turn. Past a door labeled \"STORAGE.\" Past another labeled \"CAKE SUPPLIES\" (Flower's eyes linger on that one).\n\nThen: the exit door. Manual handle, just like Match said. No electronic lock.\n\nMatch grabs the handle. Pauses. Looks back at everyone.\n\n\"Ready?\"\n\nShe pushes the door open. Night air rushes in. Cool, sweet, impossibly fresh. Stars fill the sky above Goiky.",choices:[{text:"Step outside. Everyone together.",next:"ending_breakout"}]},
+
+"detour_control":{act:"escape",text:"\"Wait,\" you whisper. \"If the Announcer discovers the lock is dead, he'll come after us. I want to grab the physical key — then he can't re-lock anything.\"\n\nMatch hesitates. \"The control room is one corridor over. But the Announcer might be IN there.\"\n\n\"I'll be fast.\"\n\nYou split from the group and creep down the adjacent corridor. There it is — a door with a speaker box symbol on it. You press your ear against it.\n\nSilence. Is the Announcer asleep? Do speaker boxes sleep?",choices:[{text:"Slip inside and grab the keys",next:"steal_keys"},{text:"Too risky — rejoin the group and just leave",next:"match_route_exit"}]},
+
+"crawl_hum_group":{act:"crawl",text:"With all six of you, the crawlspace feels crowded. You lead the group toward the humming generator.\n\nSpongy immediately recognizes it. \"That's the main power unit. If we killed it, every lock in the building would fail.\"\n\nFlower grins dangerously. \"Do it.\"\n\n\"But the alarms—\" Match starts.\n\n\"I don't CARE about alarms,\" Flower snaps. \"I care about getting OUT.\"",choices:[{text:"Kill the generator — full chaos mode",next:"generator_off"},{text:"Look for a way to just disable the locks",next:"selective_disable"},{text:"Forget the generator — find a physical exit from down here",next:"crawl_water"}]},
+
+"crawl_water":{act:"crawl",text:"You follow the sound of water. The crawlspace opens into a wider drainage tunnel. A thin stream of water trickles along the bottom — runoff from somewhere above.\n\nThe tunnel slopes downward. The water gets deeper — ankle height. The air smells like mud and metal.\n\nThen you see it: moonlight. A drainage grate at the end of the tunnel, leading outside. You can see grass through the bars.\n\nThe grate is old and rusty. It might give way with enough force.",choices:[{text:"Kick the grate with everything you've got",next:"kick_drain_grate"},{text:"Use Flower's tool to work the bolts loose",next:"pry_drain_grate"}]},
+
+"kick_drain_grate":{act:"escape",text:"You rear back and kick. The grate shudders. CLANG. Again. CLANG. Rust flakes off. One more —\n\nThe grate breaks free and tumbles onto the grass outside. Moonlight floods the tunnel.\n\n\"GO!\" you shout. Everyone scrambles through. Spongy gets stuck — of course — but Flower and Match push from behind while you and Woody pull from outside.\n\nWith a wet POP, Spongy comes free. All six of you are standing on Goiky grass under the stars.\n\nDavid looks at the sky. \"Aw, seriously...\" But he's smiling.",choices:[{text:"Run before the Announcer notices",next:"ending_breakout"}]},
+
+"pry_drain_grate":{act:"escape",text:"Flower's tool makes quick work of the rusty bolts. One by one they give way — quietly, carefully. You ease the grate free instead of kicking it.\n\nNo noise. No alarms. You step through into the night. Wet grass under your feet. Stars above.\n\nYou help the others through one at a time. Even Spongy manages — the drainage opening is wider than the TLC crack.\n\nSix escaped contestants stand in the moonlight. Flower takes a deep breath. \"I am NEVER going back in there.\"",choices:[{text:"Decide where to go from here",next:"choose_destination"}]},
+
+"crawl_split":{act:"crawl",text:"\"We should split up,\" you suggest. \"Cover more ground. Find multiple exits.\"\n\nMatch nods. \"I'll take David toward where I think the outer wall is.\" Flower says \"Spongy and Woody, with me — I want to find the generator.\" That leaves you alone.\n\nYou head into the unexplored section of the crawlspace. It gets colder. Darker. Then you hear something — dripping water. And beyond the dripping... moonlight?",choices:[{text:"Follow the water toward the moonlight",next:"crawl_water"},{text:"Go back — being alone down here is too dangerous",next:"match_leads"}]},
+
+"match_leads":{act:"crawl",text:"Match takes the lead confidently. \"I memorized the LOL blueprints when FreeSmart was planning operations. The outer wall should be... this way.\"\n\nShe navigates the crawlspace like she's done it before. After five minutes of crawling, she stops. \"Here. Feel this?\" She presses her hand against a wall panel. It's cold — exterior cold.\n\n\"The outside is right behind this panel. One layer of metal between us and freedom.\"\n\nFlower holds up her tool. \"Say no more.\"",choices:[{text:"Let Flower pry the panel",next:"flower_pries_outer"},{text:"Look for a weaker spot — a seam or bolt to target",next:"find_weak_spot"}]},
+
+"flower_pries_outer":{act:"escape",text:"Flower attacks the panel with barely contained fury. Metal screeches against metal. It's LOUD — but she doesn't care.\n\nThe panel buckles. Bends. A corner peels back and you see stars through the gap. Flower doubles down, prying harder.\n\nWith a final wrenching SCREECH, the panel tears free. Cold night air blasts through the hole.\n\n\"FREEDOM!\" Flower screams, and the whole LOL probably heard her. But it doesn't matter. She's already through the gap, standing in the grass, laughing.",choices:[{text:"Climb through after her — run!",next:"choose_destination"}]},
+
+"find_weak_spot":{act:"escape",text:"You run your hands along the panel and find a line of rivets. One of them is missing — there's a tiny hole where it should be. Through the hole: moonlight.\n\nYou use Flower's tool to pop the adjacent rivets one by one. Quietly. Methodically. Match helps, holding each rivet so it doesn't clatter.\n\nThe panel loosens. You ease it away from the wall silently and slide it aside.\n\nA rectangle of night sky appears. Stars. Trees. Freedom.\n\nAnd not a single alarm triggered.",choices:[{text:"Slip out into the night",next:"choose_destination"}]},
+
+"spongy_helps_circuit":{act:"crawl",text:"You call up through the crack. \"Spongy! I need help! There are two wires I need pulled at the same time!\"\n\nSpongy's face appears above. \"I can reach one from up here if you tell me which.\"\n\nYou describe the wire positions. Spongy reaches his arm down through the crack — it barely fits, but his fingers find the wire.\n\n\"On three. One... two... THREE!\"\n\nYou both pull. There's a spark, a buzz, and from above: a CLICK.\n\n\"The hatch!\" Match shouts. \"IT'S OPEN!\"",choices:[{text:"Scramble up and get everyone out",next:"quiet_escape"}]},
+
+"diy_circuit":{act:"crawl",text:"You look around the crawlspace for anything to use. There's a stray cable — long enough to loop around one wire while you pull the other.\n\nYou rig it carefully, heart pounding. If this goes wrong, you could fry the whole circuit and make the lock PERMANENT.\n\nYou take a breath. Pull the cable. Reach for the second wire. Pull both.\n\nSPARK. Buzz. Click.\n\nFrom above: stunned silence. Then Spongy: \"Did... did the hatch just open?\"\n\nYou did it. Solo.",choices:[{text:"Climb back up — time to go",next:"quiet_escape"}]},
+
+"generator_off":{act:"escape",text:"You flip the generator switch. Everything goes dark. EVERYTHING.\n\nThe hum dies. The crawlspace goes black. From above, you hear shouts of confusion.\n\nThen: the TLC lock clicks open. Every electromagnetic lock in the LOL just died.\n\nBut something else: the Announcer's backup alarm. A siren wails, red emergency lights flickering to life.\n\nYou have maybe two minutes before backup power restores the locks.",choices:[{text:"Rush up and tell everyone to RUN",next:"dark_escape"},{text:"Stay hidden in the crawlspace until things calm down",next:"ending_still_trapped"}]},
+
+"dark_escape":{act:"escape",text:"You scramble back up through the crack. \"THE LOCKS ARE DOWN! GO! GO! GO!\"\n\nChaos. Everyone stumbling in the darkness. Spongy gets stuck in the hatch — Flower shoves him through with terrifying strength.\n\nYou burst out of the LOL into the night. Stars above. Grass below. Cold air on your face.\n\nBehind you, the siren wails. The Announcer's voice echoes: \"CONTAINMENT BREACH. ALL CONTESTANTS WILL BE RECAPTURED.\"\n\nYou have seconds to decide where to run.",choices:[{text:"Sprint for the Goiky Canal — put water between you and the LOL",next:"ending_canal"},{text:"Run for the forest — hide in the trees",next:"ending_forest"},{text:"Head for Yoyle Mountain — far, but they'd never look there",next:"ending_mountain"}]},
+
+"find_vents":{act:"vents",text:"Match leads you to the upper corner of the TLC. \"See that grate? That's the vent intake. The LOL has to circulate air or we'd suffocate. The ducts connect to the outside.\"\n\nThe grate is screwed in tight. \"Does anyone have anything we could use as a screwdriver?\"\n\nDavid, of all people, speaks up: \"Aw, seriously...\" He holds up a coin he's been clutching. \"I found this. Would it work?\"",choices:[{text:"Use David's coin on the screws",next:"coin_screws"},{text:"Ask Flower for her metal tool instead",next:"tool_screws"},{text:"Try to pull the grate off by force",next:"force_grate"}]},
+
+"coin_screws":{act:"vents",text:"David's coin fits the screws perfectly. He's surprisingly good at this — careful, methodical, patient. One by one, the screws come out.\n\n\"Aw, seriously... I used to take things apart at home,\" David says. It's the most coherent sentence you've ever heard from him.\n\nThe grate comes off. The vent opening is just big enough to crawl into. Cool air flows from inside — it definitely leads somewhere.\n\nDavid looks at the opening. \"Aw, seriously, I'm going in.\" He starts climbing before anyone can stop him.",choices:[{text:"Follow David into the vents",next:"david_vents"},{text:"Go in yourself — you don't know if David knows where he's going",next:"vent_crawl"},{text:"Send Match — she knows the LOL layout",next:"match_vents"}]},
+
+"tool_screws":{act:"vents",text:"Flower reluctantly lends you her tool. \"If you lose that, I lose my best weapon,\" she warns.\n\nThe tool works even better than a coin — the screws practically fly out. The grate comes off in under a minute.\n\nCool air flows from the vent opening. This is a real escape route.",choices:[{text:"Crawl in yourself",next:"vent_crawl"},{text:"Send Match — she knows the LOL",next:"match_vents"}]},
+
+"force_grate":{act:"vents",text:"You grab the grate with both hands and PULL. The metal bites into your fingers. You pull harder. Something gives — one corner pops free.\n\nYou wrench the grate sideways. Two screws shear off. The grate bends and comes loose, but the noise is significant. Everyone freezes.\n\nTen seconds. Twenty. No alarm.\n\n\"Let's not do that again,\" Match whispers.",choices:[{text:"Climb into the vent quickly",next:"vent_crawl"}]},
+
+"vent_crawl":{act:"vents",text:"The vents are tight, dusty, and surprisingly loud — every movement echoes through the metal ducts like a drum. You crawl forward carefully.\n\nThe duct branches in three directions. One goes UP (toward the LOL roof). One goes LEFT (you hear faint voices — is that the Announcer?). One goes RIGHT (silence, but a draft of fresh air).",choices:[{text:"Go up toward the roof",next:"vent_roof"},{text:"Go left toward the voices",next:"vent_voices"},{text:"Go right toward the fresh air",next:"vent_fresh_air"}]},
+
+"david_vents":{act:"vents",text:"You follow David through the vents. He moves with surprising confidence, testing each section before putting his weight on it.\n\n\"Aw, seriously, left here,\" he mutters at a junction. You follow. Then right. Then up a slight incline.\n\nYou reach a vent grate looking down into a corridor. David peers through. \"Aw, seriously... that's the front door.\" He points. Through the grate, you can see the LOL's main entrance — and beyond it, the night sky through a window.\n\nThe grate has two screws. David produces his coin.",choices:[{text:"Let David open it — he's earned this",next:"david_opens_exit"},{text:"Check for alarms first — look around the vent for sensors",next:"check_vent_sensors"}]},
+
+"david_opens_exit":{act:"escape",text:"David works the screws with practiced ease. The grate comes free. He holds it so it doesn't clatter.\n\nYou both drop down into the corridor. The LOL's front door is ten feet away. It has a manual push bar — no electronic lock.\n\nDavid walks up to it. Puts both hands on the bar. Looks back at you.\n\n\"Aw, seriously... let's go.\"\n\nHe pushes. The door opens. Night air. Stars. Freedom.\n\nDavid steps outside and looks up at the sky. And for the first time, he doesn't say \"aw, seriously.\" He just smiles.",choices:[{text:"Step outside with David",next:"ending_david_escape"}]},
+
+"check_vent_sensors":{act:"vents",text:"You scan the area around the vent for sensors. Smart — there's a thin wire running along the duct edge. A motion sensor, probably. If you'd just kicked the grate out, it would have triggered.\n\nYou carefully disconnect the wire before removing the grate. No alarm.\n\nDavid nods appreciatively. \"Aw, seriously, good catch.\"",choices:[{text:"Drop down and head for the exit",next:"david_opens_exit"}]},
+
+"match_vents":{act:"vents",text:"Match climbs into the vent and you follow. She moves fast and confident.\n\n\"Left, right, second left, up...\" she mutters the LOL layout from memory. You emerge at a junction and she pauses.\n\n\"Okay. The roof exit is straight up — easy out but it's a long drop outside. The Announcer's control room is to the left — risky but the keys are there. And the main corridor is down and to the right.\"\n\nShe looks at you. \"Your call, new kid.\"",choices:[{text:"Go for the roof — clean exit",next:"vent_roof"},{text:"Hit the control room — get those keys",next:"vent_voices"},{text:"Take the main corridor — simplest path out",next:"vent_fresh_air"}]},
+
+"vent_roof":{act:"escape",text:"You climb the vertical shaft, bracing against both walls. Your arms shake. Sweat runs into your eyes.\n\nAt the top, there's a grate. Through it: STARS. The night sky. Freedom.\n\nThe grate is rusty but loose. One good kick should do it. But you're very high up. If the kick destabilizes you...",choices:[{text:"Kick it open and climb out onto the roof",next:"roof_escape"},{text:"Go back — too dangerous alone",next:"vent_crawl"}]},
+
+"vent_voices":{act:"vents",text:"You crawl toward the voices. Through a vent grate, you peer down into a small room. The Announcer's control room.\n\nThe Announcer himself sits facing a bank of monitors. One shows the TLC interior — your friends. Another shows the exterior. And there, on the desk below you, is a ring of keys.\n\nThe Announcer is muttering about tomorrow's ceremony. He seems distracted.",choices:[{text:"Try to sneak down and grab the keys",next:"steal_keys"},{text:"Memorize the layout and go back to the group with intel",next:"plan_with_intel"},{text:"Create a distraction from the vent to draw him away",next:"vent_distraction"}]},
+
+"vent_fresh_air":{act:"escape",text:"The fresh air leads to an exterior vent on the side of the LOL. Through the grate, you can see the night sky, trees, grass. Freedom is RIGHT THERE.\n\nBut the grate is bolted from the outside. You push — it doesn't budge.",choices:[{text:"Force it — you're so close",next:"force_exit_vent"},{text:"Go back and try a different route",next:"vent_crawl"}]},
+
+"force_exit_vent":{act:"escape",text:"You brace yourself against the duct walls and KICK. The grate shudders. Again. BANG. The bolts strain. One more massive kick —\n\nThe grate flies off and clatters onto the ground outside. Night air floods in. You're four feet off the ground — an easy drop.\n\nBut the noise. Oh, the noise.\n\nFrom inside the LOL: \"What was THAT?\" The Announcer's voice, alert.\n\nYou have seconds.",choices:[{text:"Jump and RUN — don't look back",next:"ending_solo_run"},{text:"Go back for the others first",next:"back_for_others"}]},
+
+"back_for_others":{act:"escape",text:"You can't leave them. You crawl back through the vents as fast as you can, dropping into the TLC.\n\n\"I found an exit! Exterior vent, east side! But the Announcer heard the noise — we have to go NOW!\"\n\nEveryone scrambles for the vent opening. Match goes first, then Woody, then David. Flower and Spongy are too big for the vents.\n\nFlower grabs her tool. \"We'll go through my panel. Meet us outside.\"\n\nYou and the small contestants crawl to the exterior vent. Behind you, you hear Flower's metal screeching. She's making her own exit.",choices:[{text:"Jump out and wait for Flower's group",next:"ending_breakout"}]},
+
+"steal_keys":{act:"escape",text:"You carefully remove the vent grate and lower yourself into the control room. The Announcer is RIGHT THERE, three feet away, facing his monitors.\n\nYour hand reaches for the key ring. Your fingers close around it. The metal clinks. Softly. But in this silent room, it sounds like a gunshot.\n\nThe Announcer pauses his muttering.",choices:[{text:"Freeze. Don't breathe.",next:"freeze_keys"},{text:"Grab and RUN",next:"grab_and_run"}]},
+
+"freeze_keys":{act:"escape",text:"You freeze. Every muscle locked. The keys in your fist, gripped so tight they can't clink again.\n\nThe Announcer is still. Then: \"Probably a mouse.\" He turns back to his monitors.\n\nYou are NOT a mouse. You are an escaping contestant holding his keys. Very slowly, one millimeter at a time, you back toward the vent.\n\nUp. Into the duct. Away. The keys are in your hand. The Announcer never turned around.\n\nYour hands are shaking so badly you can barely crawl.",choices:[{text:"Get back to the TLC and unlock the front hatch",next:"key_unlock"}]},
+
+"grab_and_run":{act:"escape",text:"You GRAB the keys and BOLT for the door. The Announcer spins around. \"HEY! STOP!\"\n\nYou're faster than a speaker box. You slam through the control room door into the corridor. The TLC hatch is fifty feet ahead. You jam the key in. Turn. CLICK.\n\nThe hatch swings open. \"EVERYONE OUT! I HAVE THE KEY! GO!\"\n\nBehind you, the Announcer's alarm triggers. Siren. Red lights. But everyone is already moving.",choices:[{text:"Lead the charge outside",next:"ending_breakout"}]},
+
+"key_unlock":{act:"escape",text:"You crawl back to the TLC vent, drop in, and hold up the key ring. Everyone stares.\n\n\"Is that...\" Match breathes.\n\n\"The Announcer's keys. Including the TLC key.\" You walk to the hatch, insert the key, and turn it.\n\nCLICK.\n\nThe hatch swings open silently. No alarms. No chaos. Just an open door and the LOL corridor beyond.\n\nFlower starts laughing. Quietly at first, then louder. \"You absolute LEGEND.\"",choices:[{text:"Lead everyone out — quietly, carefully, free",next:"ending_breakout"}]},
+
+"plan_with_intel":{act:"vents",text:"You memorize every detail: monitor positions, key location, the Announcer's blind spots. Then you crawl back to the group.\n\n\"Okay. The keys are in the control room. The Announcer is distracted. I know the layout. But we need a distraction — something to get him out of that room for thirty seconds.\"\n\nMatch grins. \"I can do distractions.\" Flower cracks her knuckles. \"What kind of distraction?\"\n\nDavid raises his hand. \"Aw, seriously... what if I just knock on the door?\"",choices:[{text:"Use David as a decoy — he knocks, Announcer investigates, you grab the keys",next:"david_decoy"},{text:"Have Flower bang on the TLC walls — make the Announcer think there's a problem inside",next:"flower_decoy"}]},
+
+"david_decoy":{act:"escape",text:"The plan is simple. David crawls through the vents to the control room door. He knocks.\n\nFrom inside: \"Who's there?\" The Announcer opens the door. David is standing in the hallway. \"Aw, seriously.\"\n\n\"How did you get out?!\" The Announcer chases David down the corridor.\n\nYou drop from the vent into the empty control room. Grab the keys. Disappear back into the duct.\n\nDavid, for his part, leads the Announcer on a thirty-second chase before \"getting caught\" and being put back in the TLC. By then, you're already unlocking the hatch from outside.\n\nDavid winks at you as the hatch opens. \"Aw, seriously... took you long enough.\"",choices:[{text:"Get everyone out — including David this time",next:"ending_breakout"}]},
+
+"flower_decoy":{act:"escape",text:"Flower SLAMS her fists against the TLC wall. BANG. BANG. BANG.\n\nFrom the control room monitor, the Announcer sees the commotion. \"What are they DOING in there?\" He leaves to investigate.\n\nYou drop from the vent. Grab the keys. Back into the duct. Gone.\n\nWhen the Announcer reaches the TLC, Flower is sitting innocently. \"What? I was exercising.\"\n\nBy the time he returns to the control room, you've already unlocked the hatch and everyone is in the corridor.",choices:[{text:"Head for the exit — together",next:"ending_breakout"}]},
+
+"vent_distraction":{act:"vents",text:"You look around the vent for something to drop or throw. There's a loose screw from the grate. You flick it through the vent grate — it clinks off a far wall in the control room.\n\nThe Announcer turns toward the sound. \"Hmm.\"\n\nHe rolls toward the far wall to investigate. The keys are right below you, unguarded for maybe ten seconds.",choices:[{text:"Drop down and grab them — NOW",next:"steal_keys"},{text:"Wait for a better moment",next:"vent_voices"}]},
+
+"roof_escape":{act:"escape",text:"You kick the grate free. Cold night air hits your face. You pull yourself out onto the LOL's roof.\n\nGoiky stretches out below in the moonlight. The canal glitters. Yoyle Mountain is a dark silhouette against the stars.\n\nYou're free. But you're on a roof.",choices:[{text:"Look for a drainpipe or way to climb down",next:"roof_climb_down"},{text:"Jump — it can't be that high",next:"roof_jump"},{text:"Signal your friends inside from up here",next:"roof_signal"}]},
+
+"roof_climb_down":{act:"escape",text:"You find a drainpipe on the east side. It's old but seems sturdy enough. You grip it and start climbing down.\n\nHandhold. Foothold. Handhold. The metal groans but holds. Halfway down, you slip — your heart lurches — but you catch yourself.\n\nYour feet touch grass. You're on the ground. Outside. Free.\n\nThe night is quiet. The LOL hums behind you. The siren hasn't sounded. Nobody knows you're gone.",choices:[{text:"Walk into the night — alone and free",next:"ending_rooftop"}]},
+
+"roof_jump":{act:"escape",text:"You look down. It's maybe twelve feet. You've jumped from higher... probably.\n\nYou leap. The ground comes up fast. You hit the grass and roll — ankles stinging but intact.\n\nYou're outside. On the ground. Under the stars. A little bruised, but FREE.",choices:[{text:"Pick a direction and run",next:"choose_destination"}]},
+
+"roof_signal":{act:"escape",text:"You lean over the edge and tap on a window. No response. You tap harder.\n\nA face appears in the window below — Match. Her eyes go wide when she sees you ON THE ROOF.\n\nYou mime \"I found a way out!\" She nods frantically and disappears. A minute later, you hear noise from the vent shaft — she's sending people up.\n\nOne by one, your fellow contestants emerge onto the LOL roof. Even Woody makes it, shaking but determined. Spongy... does not fit through the vent. He gives you a sad wave from below.\n\n\"We'll come back for you!\" you promise.\n\nFive contestants on the roof. Drainpipe down. Freedom below.",choices:[{text:"Climb down together",next:"ending_rooftop_group"}]},
+
+"help_flower":{act:"panel",text:"You and Flower work the loose panel together. The metal tool bites into the seam. Flower is surprisingly strong — or maybe just surprisingly angry.\n\nThe panel pops free with a CLANG that echoes through the TLC. Everyone freezes.\n\n\"Did the Announcer hear that?\" Match whispers.\n\nBehind the panel: a gap between the TLC's inner wall and the LOL's outer wall. Narrow but passable. Cables, pipes, total darkness in both directions.",choices:[{text:"Go left (you hear faint mechanical clicking)",next:"panel_left"},{text:"Go right (you feel a slight breeze)",next:"panel_right"},{text:"Bring Flower with you",next:"flower_joins"}]},
+
+"examine_tool":{act:"panel",text:"You look at Flower's tool closely. It IS a piece of the Announcer's speaker box — you can see tiny circuit traces on one side. A chunk of the Announcer himself.\n\nWait. If this piece broke off... does that mean the Announcer is damaged? Operating at less than full power?\n\nThat could mean weaker locks. Weaker surveillance. Weaker everything.",choices:[{text:"Tell Flower — the Announcer might be weakened",next:"announcer_weak"},{text:"Keep the info to yourself and help with the panel",next:"help_flower"}]},
+
+"combine_plans":{act:"panel",text:"\"What if we attack this from two angles? Use the tool on the floor crack AND check the vents. Two escape routes — if one fails, we have backup.\"\n\nSpongy nods approvingly. \"Smart thinking. I'll work the crack with Flower. You and Match handle the vents.\"\n\nThe team splits into two squads. For the first time, everyone has a purpose. Even Woody is holding Flower's spare tools. Even David is helping Spongy push the floor crack wider.\n\nYou feel like an actual leader.",choices:[{text:"Go with Match to the vents",next:"find_vents"},{text:"Stay with Spongy and Flower on the floor crack",next:"widen_crack"}]},
+
+"panel_left":{act:"panel",text:"You squeeze into the gap between the walls and head left. The clicking grows louder. You find the source: a relay switch, clicking on and off rhythmically. Part of the lock system.\n\nIf you jammed this relay, the locks would cycle indefinitely — open, closed, open, closed. Enough time to slip through during an \"open\" cycle.\n\nBut the relay is hot. Literally. Touching it would burn.",choices:[{text:"Use Flower's metal tool to jam the relay",next:"jam_relay"},{text:"Go back and try the right path instead",next:"panel_right"}]},
+
+"panel_right":{act:"panel",text:"You head right, toward the breeze. The gap narrows. You have to turn sideways. Then the gap opens up into what feels like a larger space.\n\nYour feet hit something different — not metal. Concrete? And the breeze is stronger here. You're near the LOL's foundation.\n\nIn the darkness, your foot finds an edge. A gap in the concrete. And below it: dirt. Actual dirt. You're at ground level.\n\nYou could dig.",choices:[{text:"Start digging — escape under the LOL wall",next:"dig_escape"},{text:"Go back for help — this needs more hands",next:"flower_joins"}]},
+
+"flower_joins":{act:"panel",text:"\"I'm coming with you,\" Flower says. She doesn't ask. She announces.\n\nThe two of you squeeze through the gap in the TLC wall. It's tight for Flower — she's not small — but fury is a powerful motivator.\n\nTogether you explore the space between the walls. Flower spots something you missed: a maintenance hatch, low on the LOL's outer wall. Locked, but with a simple latch — not electronic.\n\n\"Stand back,\" Flower says. She kicks the latch. Once. Twice. It breaks.\n\nNight air pours in.",choices:[{text:"Climb through with Flower",next:"choose_destination"}]},
+
+"announcer_weak":{act:"panel",text:"You tell Flower about the circuit traces on the tool. Her eyes go wide, then narrow dangerously.\n\n\"If the Announcer is damaged, the front hatch lock might not be at full strength. What if we all just... PUSH?\"\n\nEveryone looks at each other. Spongy alone is basically a small car in terms of mass. Flower is fueled by pure rage. Together?\n\n\"On three?\" Flower says.",choices:[{text:"Do it. Everyone pushes on three.",next:"brute_force"},{text:"Wait — let's have a backup plan first",next:"combine_plans"}]},
+
+"brute_force":{act:"escape",text:"\"ONE! TWO! THREE!\"\n\nSix contestants throw everything they have at the TLC hatch. Spongy's mass. Flower's fury. Your determination. Woody adds a tiny scream. David pushes with surprising strength. Match throws her whole body weight.\n\nThe metal GROANS. The weakened lock STRAINS.\n\n\"AGAIN!\"\n\nBANG. The hatch FLIES open. Cool night air floods in. For a moment, everyone just stands there, breathing. Actually breathing.\n\nFlower breaks the silence: \"RUN.\"",choices:[{text:"Run together as a group",next:"ending_breakout"},{text:"Split up to make it harder to catch everyone",next:"choose_destination"}]},
+
+"jam_relay":{act:"escape",text:"You wedge Flower's metal tool into the relay. It sparks. The clicking becomes erratic — on-off-on-on-off-on —\n\nYou hear the TLC lock cycling. Click-clack-click-clack. Each \"clack\" is an open moment.\n\nYou race back. \"The lock is cycling! When you hear the CLACK, push the hatch!\"\n\nEveryone gathers. Click. Click. CLACK — \"PUSH!\" The hatch swings open.\n\nClack. It starts to close. Everyone DIVES through. Match. Woody. David. You.\n\nFlower holds it open for Spongy. The lock fights her. She's fighting back. With a scream of effort, she shoves Spongy through and throws herself after him.\n\nThe hatch slams shut behind you. But you're on the other side.",choices:[{text:"Head for the exit",next:"match_route_exit"}]},
+
+"dig_escape":{act:"escape",text:"You claw at the dirt with your hands. It's soft — this part of the LOL foundation wasn't poured deep. You dig frantically.\n\nFlower appears behind you. \"Digging? I'm in.\" Her tool makes fast work of the compact soil.\n\nFifteen minutes later, you've carved a tunnel just wide enough to crawl through. It emerges on the other side of the LOL wall.\n\nYou push through the last layer of dirt and emerge outside. Grass. Moonlight. Freedom.\n\nYou're covered in dirt, your nails are broken, and you've never been happier.",choices:[{text:"Go back and lead everyone through the tunnel",next:"ending_breakout"}]},
+
+"choose_destination":{act:"escape",text:"You're outside. Free. The Goiky night stretches out in every direction. The LOL is behind you — and it can STAY behind you.\n\nBut where do you go? You can't just stand here.",choices:[{text:"Sprint for the Goiky Canal — put water between you and them",next:"ending_canal"},{text:"Disappear into the forest",next:"ending_forest"},{text:"Head for Yoyle Mountain — they'd never look there",next:"ending_mountain"}]},
+
+"ending_breakout":{act:"escape",ending:{title:"The Great TLC Breakout",type:"good",icon:"🔓",desc:"Every single contestant makes it out. Six eliminated losers, free under the stars.\n\nFlower laughs — really laughs, maybe for the first time since being eliminated. Spongy lies on the grass and stares at the sky. Woody is crying, but happy crying. Match is already planning what to do next. David says \"Aw, seriously...\" but he's grinning.\n\nThe Announcer will discover the empty TLC in the morning. By then, you'll all be long gone.\n\nThis is the biggest jailbreak in BFDI history. And you led it."}},
+
+"ending_canal":{act:"escape",ending:{title:"Across the Canal",type:"good",icon:"🌊",desc:"You swim across the Goiky Canal, the cold water shocking you awake. You emerge on the far shore, dripping wet but free.\n\nThe LOL is a dark shape on the other side of the water. The Announcer can't follow — he's a speaker box. He can't swim.\n\nYou wring out your clothes, catch your breath, and start walking. Ahead of you: Goiky at night, beautiful and wild and entirely yours.\n\nYou're nobody's loser."}},
+
+"ending_forest":{act:"escape",ending:{title:"Lost in Goiky",type:"neutral",icon:"🌲",desc:"You vanish into the forest. The trees close around you like a dark curtain.\n\nYou're safe — but alone. You can hear others scattering in different directions behind you. Twigs snapping. Footsteps fading.\n\nSomewhere in the darkness, a familiar voice: \"Aw, seriously...\"\n\nDavid. He made it out too. The two of you walk through the forest together in silence. You don't know where you're going. But you're going there free."}},
+
+"ending_mountain":{act:"escape",ending:{title:"The Long Walk to Freedom",type:"good",icon:"🗻",desc:"You hike through the night toward Yoyle Mountain. It's far — hours of walking — but with every step, the LOL gets smaller behind you.\n\nBy dawn, the LOL is a tiny speck. Yoyle Mountain rises ahead, purple-tinged and ancient.\n\nHalfway up, you find something impossible: a gap in the rocks that glows faintly purple. A portal. The rumors were true.\n\nYou step through into Yoyleland. You never go back."}},
+
+"ending_still_trapped":{act:"escape",ending:{title:"Still Trapped",type:"bad",icon:"📦",desc:"You hide in the crawlspace as the backup power kicks in. The siren stops. The locks re-engage. The lights come back on.\n\nAbove you, the TLC hatch is sealed again. Your friends are still inside. And you're underneath, alone in the dark.\n\nThe Announcer's voice crackles through the LOL: \"False alarm. All containment secure.\"\n\nYou curl up in the crawlspace. It's warm from the generator, at least. But it's still a cage.\n\nYou should have run when you had the chance."}},
+
+"ending_rooftop":{act:"escape",ending:{title:"Rooftop Freedom",type:"good",icon:"🌙",desc:"You walk away from the LOL under a sky full of stars. Nobody sees you leave. Nobody chases you.\n\nIt's the quietest escape imaginable. No sirens. No drama. Just you, the night, and the open world.\n\nSomewhere behind you, the others are still in the TLC. You feel a pang of guilt. But you'll come back for them. Tomorrow, with a plan.\n\nFor now, you breathe. Really breathe. And you keep walking."}},
+
+"ending_rooftop_group":{act:"escape",ending:{title:"Rooftop Runaways",type:"good",icon:"🌟",desc:"Five contestants climb down the drainpipe and touch grass. Free.\n\nYou feel bad about Spongy — he's still inside. But Match promises she'll come back with a bigger escape plan. \"FreeSmart Protocol,\" she calls it.\n\nThe five of you walk into the Goiky night together. Woody is brave. David is coherent. Match is scheming. Flower is smiling.\n\nAnd you? You're the one who found the way out. They'll remember that."}},
+
+"ending_david_escape":{act:"escape",ending:{title:"Aw, Seriously... Freedom",type:"good",icon:"🪙",desc:"You and David walk away from the LOL together. He's quiet for a long time — but it's a different quiet than before. Not empty. Thoughtful.\n\n\"Aw, seriously,\" he says finally. \"Nobody ever let me go first before.\"\n\n\"You earned it. You got us out.\"\n\nHe holds up his coin — the one that unscrewed the vents. \"Aw, seriously... I'm keeping this.\"\n\nYou walk through Goiky under the stars. Two escaped losers who aren't losers anymore."}},
+
+"ending_solo_run":{act:"escape",ending:{title:"The Lone Escapee",type:"neutral",icon:"🏃",desc:"You jump from the vent and hit the ground running. Behind you, the Announcer's voice echoes: \"CONTAINMENT BREACH!\"\n\nBut you're fast and the night is dark. You run until the LOL is a distant glow behind you and the only sound is your own breathing.\n\nYou're free. But you're alone. The others are still inside.\n\nThe guilt will fade. Probably. Eventually.\n\n...Maybe you'll go back for them tomorrow."}}
+  }
+};
+
+// ============================================================
+//  ENGINE (identical to Adventure 1)
+// ============================================================
+let state = { node: null, history: [], startTime: null };
+function render() {
+  const el = document.getElementById('game');
+  if (!state.node) { renderTitle(el); return; }
+  const node = ADVENTURE.nodes[state.node];
+  if (!node) { renderTitle(el); return; }
+  if (node.ending) { renderEnding(el, node); return; }
+  renderNode(el, node);
+}
+function renderTitle(el) {
+  el.innerHTML = `<div style="flex:1;display:flex;flex-direction:column;justify-content:center;">
+    <div class="card" style="text-align:center;padding:32px 24px;">
+      <div style="font-size:56px;margin-bottom:8px;">📦</div>
+      <div class="title">${ADVENTURE.title}<span class="small">${ADVENTURE.subtitle}</span></div>
+    </div>
+    <div class="card"><div class="story">${ADVENTURE.intro}</div>
+      <button class="bb start" onclick="startGame()">Begin Your Escape</button>
+    </div></div>`;
+}
+function renderNode(el, node) {
+  const act = ADVENTURE.actThemes[node.act];
+  const tagCss = act ? act.css : '';
+  const tagLabel = act ? act.label : '';
+  const choicesHtml = node.choices.map(c =>
+    `<button class="choice" onclick="choose('${c.next}')"><span class="arrow">▸</span>${c.text}</button>`
+  ).join('');
+  el.innerHTML = `${tagLabel ? `<span class="path-tag ${tagCss}">${tagLabel}</span>` : ''}
+    <div class="card"><div class="story">${fmt(node.text)}</div>
+      <div class="choices">${choicesHtml}</div></div>
+    ${state.history.length > 0 ? `<div style="text-align:center;margin-top:4px;"><button class="bb" style="max-width:200px;margin:0 auto;font-size:13px;padding:8px 16px;" onclick="goBack()">← Go Back</button></div>` : ''}`;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+function renderEnding(el, node) {
+  const e = node.ending;
+  const dur = Math.round((Date.now() - state.startTime) / 60000);
+  const dec = state.history.length;
+  const tc = e.type === 'good' ? 'good' : e.type === 'bad' ? 'bad' : 'neutral';
+  el.innerHTML = `<span class="path-tag escape">Ending</span>
+    <div class="card ending-card"><div class="ending-icon">${e.icon}</div>
+      <div class="ending-title ${tc}">${e.title}</div>
+      <div class="ending-type">${e.type === 'good' ? '★ Good Ending' : e.type === 'bad' ? '✗ Bad Ending' : '◆ Neutral Ending'}</div>
+      <div class="story" style="text-align:left;">${fmt(e.desc)}</div></div>
+    <div class="card"><div class="stats-row">
+        <div class="stat"><div class="n">${dec}</div><div class="l">Decisions</div></div>
+        <div class="stat"><div class="n">${dur}m</div><div class="l">Time</div></div></div>
+      <div class="ending-type" style="margin-bottom:12px;">There are ${countEndings()} endings to discover. Try different escape routes!</div>
+      <button class="bb start" onclick="startGame()">Escape Again</button>
+      <button class="bb" onclick="bt()">Back to Title</button></div>`;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+function fmt(t) { t = t.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>'); t = t.replace(/"([^"]+)"/g, '"<em>$1</em>"'); return t; }
+function countEndings() { return Object.values(ADVENTURE.nodes).filter(n => n.ending).length; }
+function startGame() { state = { node: ADVENTURE.startNode, history: [], startTime: Date.now() }; render(); }
+function choose(id) { state.history.push(state.node); state.node = id; render(); }
+function goBack() { if (state.history.length) { state.node = state.history.pop(); render(); } }
+function bt() { state = { node: null, history: [], startTime: null }; render(); }
+render();
+</script>
+</body>
+</html>
