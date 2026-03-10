@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cake at Stake Quiz | Fan Cannon</title>
+<meta name="description" content="Test your BFDI knowledge in this Cake at Stake themed trivia quiz! Survive elimination across all seasons of Battle for Dream Island.">
+<link href="https://fonts.googleapis.com/css2?family=Chewy&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Nunito', sans-serif; overflow-x: hidden; min-height: 100vh; }
+  .bfdi-world {
+    min-height: 100vh;
+    background: linear-gradient(180deg, #7EC8E3 0%, #A8E0F0 40%, #C5ECF7 70%, #8BC34A 70%, #6DAA2C 100%);
+    position: relative;
+  }
+  .cloud { position: fixed; background: white; border-radius: 50px; opacity: 0.85; z-index: 0; }
+  .cloud::before, .cloud::after { content: ''; position: absolute; background: white; border-radius: 50%; }
+  .cloud-1 { width: 120px; height: 40px; top: 8%; left: 10%; animation: cd 45s linear infinite; }
+  .cloud-1::before { width: 50px; height: 50px; top: -25px; left: 20px; }
+  .cloud-1::after { width: 70px; height: 55px; top: -30px; left: 50px; }
+  .cloud-2 { width: 90px; height: 30px; top: 15%; left: 65%; animation: cd 60s linear infinite reverse; }
+  .cloud-2::before { width: 40px; height: 40px; top: -20px; left: 15px; }
+  .cloud-2::after { width: 55px; height: 45px; top: -25px; left: 35px; }
+  .cloud-3 { width: 100px; height: 35px; top: 5%; left: 40%; animation: cd 50s linear infinite; }
+  .cloud-3::before { width: 45px; height: 45px; top: -22px; left: 18px; }
+  .cloud-3::after { width: 60px; height: 50px; top: -28px; left: 42px; }
+  @keyframes cd { 0% { transform: translateX(-200px); } 100% { transform: translateX(calc(100vw + 200px)); } }
+  .gc { position: relative; z-index: 1; max-width: 640px; margin: 0 auto; padding: 20px 16px; }
+  .screen { display: none; } .screen.active { display: block; }
+  .stage-svg { width: 100%; max-width: 500px; margin: 0 auto; display: block; }
+  .card { background: white; border-radius: 4px; border: 3px solid #222; padding: 24px 20px; box-shadow: 4px 4px 0 rgba(0,0,0,0.15); margin-bottom: 14px; }
+  .cas-title { font-family: 'Chewy', cursive; font-size: 48px; color: #E74C3C; line-height: 1; text-align: center; }
+  .cas-title .at { color: #E91E8C; font-size: 36px; }
+  .cas-sub { text-align: center; font-size: 14px; color: #666; font-weight: 700; margin-bottom: 20px; }
+  .bb { display: block; width: 100%; padding: 14px 20px; border: 3px solid #222; border-radius: 4px; font-family: 'Nunito', sans-serif; font-size: 16px; font-weight: 800; cursor: pointer; transition: all 0.15s; margin-bottom: 8px; text-align: left; background: white; color: #222; }
+  .bb:hover { transform: translate(-2px, -2px); box-shadow: 4px 4px 0 rgba(0,0,0,0.2); }
+  .bb:active { transform: translate(0,0); box-shadow: none; }
+  .bb .bi { display: inline-block; width: 32px; text-align: center; margin-right: 8px; }
+  .bb .bs { display: block; font-size: 12px; font-weight: 600; color: #888; margin-left: 40px; margin-top: 2px; }
+  .bb.surv { border-color: #E74C3C; } .bb.surv:hover { background: #FFF0F0; }
+  .bb.scor { border-color: #3498DB; } .bb.scor:hover { background: #F0F8FF; }
+  .sl { font-weight: 800; font-size: 13px; color: #555; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+  .sc { display: flex; gap: 6px; flex-wrap: wrap; }
+  .sc label { display: flex; align-items: center; gap: 5px; padding: 5px 12px; border: 2px solid #ddd; border-radius: 4px; cursor: pointer; font-weight: 700; font-size: 13px; color: #555; transition: all 0.15s; user-select: none; }
+  .sc label.a { border-color: #222; background: #FFFDE7; color: #222; }
+  .sc input { display: none; }
+  .abub { background: white; border: 3px solid #222; border-radius: 4px; padding: 20px; position: relative; box-shadow: 4px 4px 0 rgba(0,0,0,0.15); margin-bottom: 16px; }
+  .abub::after { content: ''; position: absolute; bottom: -14px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 14px solid transparent; border-right: 14px solid transparent; border-top: 14px solid #222; }
+  .abub::before { content: ''; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 11px solid transparent; border-right: 11px solid transparent; border-top: 11px solid white; z-index: 1; }
+  .hud { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 13px; font-weight: 800; color: #888; }
+  .hud span { color: #222; }
+  .qt { display: inline-block; padding: 2px 8px; border-radius: 3px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+  .qt-bfdi{background:#E8F5E9;color:#2E7D32;} .qt-bfdia{background:#FFF3E0;color:#E65100;} .qt-bfb{background:#FCE4EC;color:#C62828;} .qt-tpot{background:#E3F2FD;color:#1565C0;} .qt-general{background:#FFFDE7;color:#F57F17;}
+  .qq { font-size: 19px; font-weight: 800; color: #222; line-height: 1.4; margin-bottom: 20px; }
+  .ag { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .ab { padding: 14px 12px; border: 3px solid #222; border-radius: 4px; background: white; font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 700; color: #222; cursor: pointer; transition: all 0.15s; text-align: center; line-height: 1.3; }
+  .ab:hover:not(:disabled) { background: #FFFDE7; transform: translate(-2px, -2px); box-shadow: 3px 3px 0 rgba(0,0,0,0.15); }
+  .ab:disabled { cursor: default; }
+  .ab.ok { background: #C8E6C9; border-color: #2E7D32; color: #1B5E20; }
+  .ab.no { background: #FFCDD2; border-color: #C62828; color: #B71C1C; }
+  .ab.rv { background: #C8E6C9; border-color: #2E7D32; color: #1B5E20; }
+  .fb { background: white; border: 3px solid #222; border-radius: 4px; padding: 16px; text-align: center; font-weight: 800; margin-top: 12px; box-shadow: 4px 4px 0 rgba(0,0,0,0.15); animation: pi 0.25s ease; }
+  @keyframes pi { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .fb.sf { border-color: #2E7D32; } .fb.el { border-color: #C62828; }
+  .fb .t1 { font-size: 18px; } .fb .t1.g { color: #2E7D32; } .fb .t1.r { color: #C62828; }
+  .fb .t2 { font-size: 13px; color: #888; font-weight: 600; margin-top: 4px; }
+  .nb { display: block; width: 100%; margin-top: 12px; padding: 12px; border: 3px solid #222; border-radius: 4px; background: #FFFDE7; font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 800; color: #222; cursor: pointer; transition: all 0.15s; }
+  .nb:hover { background: #FFF9C4; transform: translate(-2px,-2px); box-shadow: 3px 3px 0 rgba(0,0,0,0.15); }
+  .eo { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 100; justify-content: center; align-items: center; flex-direction: column; background: linear-gradient(180deg, #3D0000 0%, #8B0000 50%, #3D0000 100%); }
+  .eo.show { display: flex; animation: fi 0.4s ease; }
+  @keyframes fi { from { opacity: 0; } to { opacity: 1; } }
+  .tlc { width: 200px; height: 160px; background: #555; border: 4px solid #333; border-radius: 6px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; position: relative; box-shadow: 0 8px 30px rgba(0,0,0,0.5); }
+  .tlc::before { content: 'TINY LOSER CHAMBER'; position: absolute; top: -32px; left: 50%; transform: translateX(-50%); font-family: 'Chewy', cursive; font-size: 16px; color: #FF6B6B; text-shadow: 2px 2px 0 rgba(0,0,0,0.5); white-space: nowrap; }
+  .tlc span { font-size: 48px; animation: tb 1s ease infinite; }
+  @keyframes tb { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+  .et { font-family: 'Chewy', cursive; font-size: 46px; color: #FF6B6B; text-shadow: 3px 3px 0 rgba(0,0,0,0.4); margin-bottom: 8px; animation: es 0.6s ease; }
+  @keyframes es { 0%,100%{transform:rotate(0);} 20%{transform:rotate(-3deg);} 40%{transform:rotate(3deg);} 60%{transform:rotate(-2deg);} 80%{transform:rotate(2deg);} }
+  .esub { color: #FFAB91; font-size: 16px; font-weight: 700; margin-bottom: 24px; text-align: center; padding: 0 20px; }
+  .eo .bb { width: auto; padding: 14px 40px; text-align: center; background: #FF6B6B; color: white; border-color: #B71C1C; }
+  .eo .bb:hover { background: #FF8A80; }
+  .ri { font-size: 64px; margin-bottom: 8px; text-align: center; }
+  .rh { font-family: 'Chewy', cursive; font-size: 32px; text-align: center; margin-bottom: 4px; }
+  .rh.w{color:#F9A825;} .rh.g{color:#2E7D32;} .rh.m{color:#E65100;} .rh.b{color:#C62828;}
+  .rs { font-size: 14px; color: #777; font-weight: 600; margin-bottom: 20px; text-align: center; }
+  .sr { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+  .sx { flex: 1; min-width: calc(50% - 4px); background: #F5F5F5; border: 2px solid #ddd; border-radius: 4px; padding: 12px 8px; text-align: center; }
+  .sx .n { font-family: 'Chewy', cursive; font-size: 28px; color: #222; }
+  .sx .l { font-size: 11px; color: #888; font-weight: 800; text-transform: uppercase; }
+  .br { display: flex; gap: 8px; }
+  .br .bb { flex: 1; text-align: center; }
+  @media (max-width: 500px) {
+    .cas-title { font-size: 36px; } .cas-title .at { font-size: 26px; }
+    .ag { grid-template-columns: 1fr; }
+    .qq { font-size: 17px; }
+    .br { flex-direction: column; }
+    .stage-svg { max-width: 320px; }
+  }
+</style>
+</head>
+<body>
+<div class="bfdi-world">
+  <div class="cloud cloud-1"></div>
+  <div class="cloud cloud-2"></div>
+  <div class="cloud cloud-3"></div>
+
+  <div class="gc">
+    <!-- TITLE -->
+    <div id="s-title" class="screen active">
+      <div style="text-align:center;margin-bottom:14px">
+        <svg class="stage-svg" viewBox="0 0 500 260" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="250" cy="220" rx="220" ry="35" fill="#E8DCC8" stroke="#222" stroke-width="2.5"/>
+          <rect x="30" y="185" width="440" height="35" fill="#E8DCC8"/>
+          <ellipse cx="250" cy="185" rx="220" ry="35" fill="#F5EEE0" stroke="#222" stroke-width="2.5"/>
+          <rect x="225" y="120" width="50" height="65" fill="#D4C9B5" stroke="#222" stroke-width="2"/>
+          <ellipse cx="250" cy="120" rx="28" ry="10" fill="#E8DCC8" stroke="#222" stroke-width="2"/>
+          <rect x="228" y="80" width="44" height="35" rx="3" fill="#FFF8E1" stroke="#222" stroke-width="2"/>
+          <rect x="228" y="95" width="44" height="3" fill="#F48FB1"/>
+          <rect x="228" y="105" width="44" height="3" fill="#F48FB1"/>
+          <ellipse cx="250" cy="80" rx="24" ry="8" fill="#F8BBD0" stroke="#222" stroke-width="2"/>
+          <circle cx="250" cy="68" r="6" fill="#E53935" stroke="#222" stroke-width="1.5"/>
+          <line x1="250" y1="62" x2="250" y2="55" stroke="#4CAF50" stroke-width="2"/>
+          <circle cx="253" cy="54" r="3" fill="#66BB6A"/>
+          <rect x="60" y="158" width="28" height="24" rx="3" fill="#EF5350" stroke="#222" stroke-width="1.5"/>
+          <rect x="105" y="148" width="28" height="24" rx="3" fill="#EF5350" stroke="#222" stroke-width="1.5"/>
+          <rect x="155" y="142" width="28" height="24" rx="3" fill="#EF5350" stroke="#222" stroke-width="1.5"/>
+          <rect x="317" y="142" width="28" height="24" rx="3" fill="#EF5350" stroke="#222" stroke-width="1.5"/>
+          <rect x="367" y="148" width="28" height="24" rx="3" fill="#EF5350" stroke="#222" stroke-width="1.5"/>
+          <rect x="412" y="158" width="28" height="24" rx="3" fill="#EF5350" stroke="#222" stroke-width="1.5"/>
+          <rect x="195" y="200" width="110" height="12" rx="2" fill="#D4C9B5" stroke="#222" stroke-width="1.5"/>
+          <rect x="180" y="212" width="140" height="12" rx="2" fill="#C8BBA8" stroke="#222" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <div class="card">
+        <div class="cas-title">CAKE <span class="at">at</span> STAKE</div>
+        <div class="cas-sub">The BFDI Trivia Quiz</div>
+        <button class="bb surv" onclick="go('survival')"><span class="bi">💀</span>Survival Mode<span class="bs">One wrong answer and you're ELIMINATED!</span></button>
+        <button class="bb scor" onclick="go('score')"><span class="bi">🏆</span>Score Attack<span class="bs">Answer them all. Streaks earn bonus points.</span></button>
+      </div>
+      <div class="card">
+        <div class="sl">Filter Seasons</div>
+        <div class="sc" id="sc">
+          <label class="a" data-s="bfdi" onclick="ts(this)"><input type="checkbox" checked>BFDI</label>
+          <label class="a" data-s="bfdia" onclick="ts(this)"><input type="checkbox" checked>BFDIA</label>
+          <label class="a" data-s="bfb" onclick="ts(this)"><input type="checkbox" checked>BFB</label>
+          <label class="a" data-s="tpot" onclick="ts(this)"><input type="checkbox" checked>TPOT</label>
+          <label class="a" data-s="general" onclick="ts(this)"><input type="checkbox" checked>General</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- GAME -->
+    <div id="s-game" class="screen">
+      <div style="text-align:center;margin-bottom:10px" id="gs"></div>
+      <div class="abub">
+        <div class="hud">
+          <div>Q: <span id="hq">1/20</span></div>
+          <div id="hl">🍰 <span id="hls">ALIVE</span></div>
+          <div>Score: <span id="hs">0</span></div>
+          <div>Streak: <span id="hk">0🔥</span></div>
+        </div>
+        <div class="qt" id="qt">BFDI</div>
+        <div class="qq" id="qq">Loading...</div>
+        <div class="ag" id="ag"></div>
+      </div>
+      <div id="fd"></div>
+      <button class="nb" id="nb" style="display:none" onclick="nq()">Next Question →</button>
+    </div>
+
+    <!-- RESULTS -->
+    <div id="s-results" class="screen">
+      <div style="text-align:center;margin-bottom:10px">
+        <svg class="stage-svg" viewBox="0 0 500 180" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="250" cy="160" rx="220" ry="20" fill="#E8DCC8" stroke="#222" stroke-width="2"/>
+          <rect x="30" y="140" width="440" height="20" fill="#E8DCC8"/>
+          <ellipse cx="250" cy="140" rx="220" ry="20" fill="#F5EEE0" stroke="#222" stroke-width="2"/>
+          <rect x="230" y="85" width="40" height="55" fill="#D4C9B5" stroke="#222" stroke-width="1.5"/>
+          <ellipse cx="250" cy="85" rx="22" ry="8" fill="#E8DCC8" stroke="#222" stroke-width="1.5"/>
+          <text x="250" y="72" text-anchor="middle" font-size="45" id="rsi">🏆</text>
+        </svg>
+      </div>
+      <div class="card">
+        <div class="ri" id="re"></div>
+        <div class="rh" id="rh">Dream Island Winner!</div>
+        <div class="rs" id="rss">You survived every Cake at Stake!</div>
+        <div class="sr">
+          <div class="sx"><div class="n" id="rc">0</div><div class="l">Correct</div></div>
+          <div class="sx"><div class="n" id="rt">0</div><div class="l">Total</div></div>
+          <div class="sx"><div class="n" id="rb">0</div><div class="l">Best Streak</div></div>
+          <div class="sx" id="rsc"><div class="n" id="rv">0</div><div class="l">Score</div></div>
+        </div>
+        <div class="br">
+          <button class="bb" onclick="gt()"><span class="bi">◀</span>Menu</button>
+          <button class="bb" style="border-color:#2E7D32;" onclick="rp()"><span class="bi">🔄</span>Play Again</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ELIMINATION -->
+<div class="eo" id="eo">
+  <div class="tlc"><span>😵</span></div>
+  <div class="et">ELIMINATED!</div>
+  <div class="esub" id="esub">You've been flung to the Tiny Loser Chamber!</div>
+  <button class="bb" onclick="sr()"><span class="bi">📊</span>See Results</button>
+</div>
+
+<script>
+const Q=[
+{s:"bfdi",q:"Who was the very first contestant eliminated in BFDI?",a:["Flower","Spongy","Woody","Golf Ball"],c:0},
+{s:"bfdi",q:"Who won Dream Island at the end of BFDI Season 1?",a:["Leafy","Firey","Bubble","Pin"],c:1},
+{s:"bfdi",q:"What are the two original teams in BFDI?",a:["Squashy Grapes & Squishy Cherries","Dream Team & Nightmare Crew","Team Leafy & Team Pin","Goiky Grapes & Yoyle Berries"],c:0},
+{s:"bfdi",q:"Who is the host of BFDI Season 1?",a:["Four","Two","Announcer","Firey Speaker Box"],c:2},
+{s:"bfdi",q:"Which team was created when the Squashy Grapes split?",a:["FreeSmart","Another Name","W.O.A.H. Bunch","Team No-Name"],c:1},
+{s:"bfdi",q:"What prizes are given at Cake at Stake?",a:["Always cake","Always pie","Varies — cake, knives, nickels, fish...","Win Tokens"],c:2},
+{s:"bfdi",q:"Who picked the Squashy Grapes team members?",a:["Pin","Leafy","Golf Ball","Announcer"],c:1},
+{s:"bfdi",q:"Where do eliminated contestants get sent in BFDI?",a:["The EXIT","The TLC","The BRB","Yoyle City"],c:1},
+{s:"bfdi",q:"Which contestant rejoined the game in Episode 9?",a:["Flower","Spongy","Blocky","David"],c:2},
+{s:"bfdi",q:"What is Firey's weakness?",a:["Wind","Earth","Water","Ice"],c:2},
+{s:"bfdi",q:"Which recommended character debuted in BFDI Season 1?",a:["Roboty","Yellow Face","David","Dora"],c:2},
+{s:"bfdi",q:"Who were the final three contestants in BFDI?",a:["Firey, Leafy, Bubble","Firey, Pin, Coiny","Leafy, Pencil, Bubble","Firey, Leafy, Pencil"],c:0},
+{s:"bfdi",q:"What do Win Tokens do at elimination?",a:["Give immunity","Double your votes","Halve your votes","Eliminate someone else"],c:2},
+{s:"bfdi",q:"Pen says Golf Ball 'sounds like a boy' in which episode?",a:["Take the Plunge","Lofty","Barriers and Pitfalls","The Reveal"],c:1},
+{s:"bfdia",q:"Who was the first contestant eliminated in BFDIA?",a:["Donut","Match","Dora","Puffball"],c:0},
+{s:"bfdia",q:"How did voting work in BFDIA?",a:["Commenting on YouTube","Liking/disliking separate videos","Texting a number","Website polls"],c:1},
+{s:"bfdia",q:"What is the name of Pencil's alliance in BFDIA?",a:["The Losers","Death P.A.C.T.","FreeSmart","iance"],c:2},
+{s:"bfdia",q:"What are the two starting teams in BFDIA?",a:["Team No-Name & W.O.A.H. Bunch","FreeSmart & Another Name","Have Cots & Have Nots","Squashy Grapes & Squishy Cherries"],c:0},
+{s:"bfdia",q:"The most-liked contestant in BFDIA's Cake at Stake gets to do what?",a:["Get immunity","Spin a wheel for a prize","Choose who's eliminated","Get Dream Island"],c:1},
+{s:"bfdia",q:"BFDIA was initially cancelled after which episode?",a:["Episode 3","Episode 5","Episode 8","Episode 10"],c:1},
+{s:"bfdia",q:"What is unique about BFDIA Episode 5b?",a:["It's a musical","It's a Flash game","It's live-action","It was never released"],c:1},
+{s:"bfdia",q:"Which contestant had Pencil's 'elimination prevention plan'?",a:["Bubble","Match","Ruby","Book"],c:1},
+{s:"bfdia",q:"What is Yoyleland?",a:["The prize for winning","A distant land with Yoyleberries","Another name for Dream Island","Where eliminated contestants go"],c:1},
+{s:"bfb",q:"Who are the main hosts of BFB?",a:["Announcer & Firey Speaker Box","Four & X","Two & Announcer","Puffball Speaker Box & Four"],c:1},
+{s:"bfb",q:"How many starting teams are there in BFB?",a:["2","4","8","10"],c:2},
+{s:"bfb",q:"What does Death P.A.C.T. stand for?",a:["Death Prevention and Creating Trust","Destroy Everything and Cause Trouble","Don't Panic and Calmly Think","Death Penalty and Criminal Tribunal"],c:0},
+{s:"bfb",q:"How did the team 'iance' get its name?",a:["It's an anagram","They removed 'all' from 'alliance'","It was randomly generated","Bubble suggested it"],c:1},
+{s:"bfb",q:"Who won Battle for BFB?",a:["Firey","Leafy","Flower","Gelatin"],c:2},
+{s:"bfb",q:"Where do eliminated contestants go before BFB 18?",a:["The TLC","The EXIT","The BRB","Yoyle City"],c:1},
+{s:"bfb",q:"What is the EXIT?",a:["A spaceship","Eternal Algebra Class With Four","An elevator","The exit door of Dream Island"],c:1},
+{s:"bfb",q:"In BFB 16, how many contestants left for Two's show?",a:["14","26","40","50"],c:2},
+{s:"bfb",q:"What prize do post-split BFB contestants fight for?",a:["Dream Island","A BFDI","The Grand Cake and A BFB","A million dollars"],c:2},
+{s:"bfb",q:"Which team did Golf Ball lead in BFB?",a:["Free Food","A Better Name Than That","The Losers!","Death P.A.C.T."],c:1},
+{s:"bfb",q:"Why is the team called 'Free Food'?",a:["Eraser was hungry","Yellow Face screamed it about Fries","Marker made a joke","Puffball likes food"],c:1},
+{s:"bfb",q:"Which contestant debuted AND was eliminated in the same episode?",a:["David","Roboty","Profily","Purple Face"],c:2},
+{s:"bfb",q:"After BFB 17, what changed about voting?",a:["Votes became saves, not eliminations","Only eliminated contestants vote","Contestants vote instead","Win Tokens returned"],c:0},
+{s:"bfb",q:"How were the post-split BFB teams divided?",a:["Alphabetically","By height","By color similarity to Four or X","Randomly by Announcer"],c:2},
+{s:"bfb",q:"Which team is Woody on in BFB?",a:["iance","BEEP","The Losers!","Free Food"],c:1},
+{s:"tpot",q:"What does TPOT stand for?",a:["The Power of Two","The Path of Triumph","Two's Personal Object Tournament","The Price of Teamwork"],c:0},
+{s:"tpot",q:"Who is the host of TPOT?",a:["Four","X","Two","Announcer"],c:2},
+{s:"tpot",q:"How many contestants compete in TPOT?",a:["14","26","40","64"],c:2},
+{s:"tpot",q:"Which contestant was eliminated with a record 22,845 votes?",a:["Leafy","Spongy","Flower","Woody"],c:1},
+{s:"tpot",q:"What are TPOT contestants competing to win?",a:["Dream Island","A BFDI","The Power of Two","A BFB"],c:1},
+{s:"tpot",q:"Which season reuses the original Cake at Stake intro from BFDI?",a:["BFDIA","BFB","TPOT","None"],c:2},
+{s:"tpot",q:"Which contestants have NEVER been in the bottom two?",a:["Firey and Leafy","Black Hole, Price Tag, and Winner","Four and X","Golf Ball and Tennis Ball"],c:1},
+{s:"general",q:"Who created Battle for Dream Island?",a:["Cary and Michael Huang","Cartoon Network","Adam and Max Green","The BFDI Community"],c:0},
+{s:"general",q:"When was the first BFDI episode uploaded?",a:["January 1, 2008","January 1, 2010","June 15, 2011","March 3, 2009"],c:1},
+{s:"general",q:"What is the distance between Goiky and Yoyleland?",a:["1,000 miles","2,763 miles","500 miles","10,000 miles"],c:1},
+{s:"general",q:"What happens if you call Needle 'Needy'?",a:["She cries","She slaps you","She leaves the game","Nothing"],c:1},
+{s:"general",q:"How many original contestants competed in BFDI Season 1?",a:["15","20","25","30"],c:1},
+{s:"general",q:"Which character only speaks in Morse code?",a:["TV","Remote","Roboty","Robot Flower"],c:2},
+{s:"general",q:"What is Four's main power in BFB?",a:["Super strength","Screeching and zapping","Time travel","Mind reading"],c:1},
+{s:"general",q:"What is the name of the channel that produces BFDI?",a:["jacknjellify","AnimationEpic","ObjectShowFanatic","HuangBrothers"],c:0},
+{s:"general",q:"Which two contestants are always fighting?",a:["Pen and Eraser","Firey and Coiny","Match and Pencil","Blocky and Woody"],c:1},
+{s:"general",q:"Flower was eliminated first in BFDI. What happened in BFB?",a:["Eliminated first again","She won","She quit","She never competed"],c:1},
+{s:"general",q:"How many seasons does BFDI have as of 2026?",a:["4","5","6","7"],c:2},
+];
+
+const SM=["You're safe! Have some cake!","Safe! The Announcer tosses you a slice!","You survived this round!","Not eliminated... yet!","Safe! Here's your prize!","The votes say... SAFE!"];
+const EM=["The most votes go to... YOU!","You've been flung to the TLC!","Four screeches — you're GONE!","ELIMINATED!","Sorry, contestant. Time to go.","The Announcer has spoken. Goodbye!"];
+const PR=["a slice of cake","key lime pie","cupcakes","ice cream cake","a fish","fruitcake","nickels","modeling clay","an explosive pie","knives","crackers","a shovel"];
+const TL={bfdi:'BFDI',bfdia:'BFDIA',bfb:'BFB',tpot:'TPOT',general:'GENERAL'};
+
+let G={m:'s',sn:new Set(['bfdi','bfdia','bfb','tpot','general']),qs:[],i:0,sc:0,st:0,bs:0,co:0,d:false};
+
+function ss(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
+function gt(){document.getElementById('eo').classList.remove('show');ss('s-title');}
+function ts(el){const s=el.dataset.s;if(el.classList.contains('a')){if(G.sn.size>1){G.sn.delete(s);el.classList.remove('a');}}else{G.sn.add(s);el.classList.add('a');}}
+
+function go(m){
+  G.m=m;
+  let p=Q.filter(q=>G.sn.has(q.s));p=sh(p);
+  if(m==='survival')p=p.slice(0,Math.min(p.length,25));
+  G.qs=p;G.i=0;G.sc=0;G.st=0;G.bs=0;G.co=0;G.d=false;
+  document.getElementById('hl').style.display=m==='survival'?'':'none';
+  document.getElementById('eo').classList.remove('show');
+  document.getElementById('gs').innerHTML=gsvg();
+  ss('s-game');rq();
+}
+function rp(){go(G.m);}
+
+function gsvg(){return `<svg class="stage-svg" viewBox="0 0 500 140" xmlns="http://www.w3.org/2000/svg"><ellipse cx="250" cy="120" rx="220" ry="20" fill="#E8DCC8" stroke="#222" stroke-width="2"/><rect x="30" y="100" width="440" height="20" fill="#E8DCC8"/><ellipse cx="250" cy="100" rx="220" ry="20" fill="#F5EEE0" stroke="#222" stroke-width="2"/><rect x="230" y="55" width="40" height="45" fill="#D4C9B5" stroke="#222" stroke-width="1.5"/><ellipse cx="250" cy="55" rx="22" ry="8" fill="#E8DCC8" stroke="#222" stroke-width="1.5"/><rect x="234" y="28" width="32" height="24" rx="2" fill="#FFF8E1" stroke="#222" stroke-width="1.5"/><rect x="234" y="38" width="32" height="2" fill="#F48FB1"/><rect x="234" y="45" width="32" height="2" fill="#F48FB1"/><ellipse cx="250" cy="28" rx="18" ry="6" fill="#F8BBD0" stroke="#222" stroke-width="1.5"/><circle cx="250" cy="18" r="4" fill="#E53935" stroke="#222" stroke-width="1"/><rect x="65" y="82" width="20" height="16" rx="2" fill="#EF5350" stroke="#222" stroke-width="1"/><rect x="100" y="76" width="20" height="16" rx="2" fill="#EF5350" stroke="#222" stroke-width="1"/><rect x="140" y="72" width="20" height="16" rx="2" fill="#EF5350" stroke="#222" stroke-width="1"/><rect x="340" y="72" width="20" height="16" rx="2" fill="#EF5350" stroke="#222" stroke-width="1"/><rect x="380" y="76" width="20" height="16" rx="2" fill="#EF5350" stroke="#222" stroke-width="1"/><rect x="415" y="82" width="20" height="16" rx="2" fill="#EF5350" stroke="#222" stroke-width="1"/></svg>`;}
+
+function rq(){
+  if(G.i>=G.qs.length){sr();return;}
+  const q=G.qs[G.i];G.d=false;
+  document.getElementById('hq').textContent=`${G.i+1}/${G.qs.length}`;
+  document.getElementById('hs').textContent=G.sc;
+  document.getElementById('hk').textContent=G.st+'🔥';
+  if(G.m==='survival')document.getElementById('hls').textContent='ALIVE';
+  const t=document.getElementById('qt');t.textContent=TL[q.s];t.className='qt qt-'+q.s;
+  document.getElementById('qq').textContent=q.q;
+  const ix=sh([0,1,2,3]);
+  document.getElementById('ag').innerHTML=ix.map(i=>`<button class="ab" data-i="${i}" onclick="pk(${i})">${q.a[i]}</button>`).join('');
+  document.getElementById('fd').innerHTML='';
+  document.getElementById('nb').style.display='none';
+}
+
+function pk(i){
+  if(G.d)return;G.d=true;
+  const q=G.qs[G.i],ok=i===q.c;
+  document.querySelectorAll('.ab').forEach(b=>{b.disabled=true;const bi=+b.dataset.i;if(bi===q.c)b.classList.add(ok?'ok':'rv');if(bi===i&&!ok)b.classList.add('no');});
+  if(ok){
+    G.st++;G.co++;if(G.st>G.bs)G.bs=G.st;
+    const bn=Math.min(G.st-1,5)*25,pts=100+bn;G.sc+=pts;
+    const pr=PR[~~(Math.random()*PR.length)],msg=SM[~~(Math.random()*SM.length)];
+    document.getElementById('fd').innerHTML=`<div class="fb sf"><div class="t1 g">✅ ${msg}</div><div class="t2">+${pts} pts${bn?' (streak +'+bn+')':''} — Prize: ${pr}</div></div>`;
+    document.getElementById('hs').textContent=G.sc;document.getElementById('hk').textContent=G.st+'🔥';
+  } else {
+    G.st=0;document.getElementById('hk').textContent='0🔥';
+    if(G.m==='survival'){
+      const msg=EM[~~(Math.random()*EM.length)];
+      document.getElementById('fd').innerHTML=`<div class="fb el"><div class="t1 r">❌ ${msg}</div><div class="t2">Correct answer: ${q.a[q.c]}</div></div>`;
+      setTimeout(()=>{document.getElementById('eo').classList.add('show');document.getElementById('esub').textContent=`You survived ${G.co} question${G.co!==1?'s':''} before being flung to the Tiny Loser Chamber!`;},1400);
+      return;
+    }
+    document.getElementById('fd').innerHTML=`<div class="fb el"><div class="t1 r">❌ Wrong!</div><div class="t2">Correct answer: ${q.a[q.c]}</div></div>`;
+  }
+  const last=G.i>=G.qs.length-1,nb=document.getElementById('nb');
+  nb.style.display='block';nb.textContent=last?'🏆 See Results':'Next Question →';nb.onclick=last?sr:nq;
+}
+
+function nq(){G.i++;rq();}
+
+function sr(){
+  document.getElementById('eo').classList.remove('show');
+  const tot=G.m==='survival'?G.i+1:G.qs.length,pct=tot?Math.round(G.co/tot*100):0;
+  let h,hc,sub;
+  if(G.m==='survival'){
+    if(G.co===G.qs.length){h='Dream Island Winner!';hc='w';sub='You survived every Cake at Stake!';}
+    else if(G.co>G.qs.length*0.5){h='Almost!';hc='g';sub=`Lasted ${G.co} rounds. Solid!`;}
+    else{h='Flung to the TLC!';hc='b';sub='Time for a rewatch!';}
+  }else{
+    if(pct>=90){h='Dream Island Winner!';hc='w';sub='Incredible BFDI knowledge!';}
+    else if(pct>=70){h='Safe with Cake!';hc='g';sub='Great job, contestant!';}
+    else if(pct>=50){h='Barely Safe';hc='m';sub='Survived... just barely!';}
+    else{h='Eliminated!';hc='b';sub='TLC awaits. Rewatch time!';}
+  }
+  document.getElementById('rsi').textContent=hc==='w'?'🏆':hc==='b'?'📦':'⭐';
+  document.getElementById('rh').textContent=h;document.getElementById('rh').className='rh '+hc;
+  document.getElementById('rss').textContent=sub;
+  document.getElementById('rc').textContent=G.co;document.getElementById('rt').textContent=tot;
+  document.getElementById('rb').textContent=G.bs;document.getElementById('rv').textContent=G.sc;
+  ss('s-results');
+}
+
+function sh(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=~~(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+</script>
+</body>
+</html>
