@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BFDI Mad Libs | Fan Cannon</title>
+<meta name="description" content="Fill in the blanks and create hilarious BFDI stories! 20 Mad Libs stories themed around Battle for Dream Island.">
+<link href="https://fonts.googleapis.com/css2?family=Chewy&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Nunito',sans-serif;overflow-x:hidden;min-height:100vh;}
+.world{min-height:100vh;background:linear-gradient(180deg,#7EC8E3 0%,#A8E0F0 40%,#C5ECF7 70%,#8BC34A 70%,#6DAA2C 100%);position:relative;}
+.cloud{position:fixed;background:white;border-radius:50px;opacity:.85;z-index:0;}
+.cloud::before,.cloud::after{content:'';position:absolute;background:white;border-radius:50%;}
+.c1{width:120px;height:40px;top:8%;left:10%;animation:cd 45s linear infinite;}
+.c1::before{width:50px;height:50px;top:-25px;left:20px;}.c1::after{width:70px;height:55px;top:-30px;left:50px;}
+.c2{width:90px;height:30px;top:15%;left:65%;animation:cd 60s linear infinite reverse;}
+.c2::before{width:40px;height:40px;top:-20px;left:15px;}.c2::after{width:55px;height:45px;top:-25px;left:35px;}
+.c3{width:100px;height:35px;top:5%;left:40%;animation:cd 50s linear infinite;}
+.c3::before{width:45px;height:45px;top:-22px;left:18px;}.c3::after{width:60px;height:50px;top:-28px;left:42px;}
+@keyframes cd{0%{transform:translateX(-200px);}100%{transform:translateX(calc(100vw + 200px));}}
+.gc{position:relative;z-index:1;max-width:680px;margin:0 auto;padding:20px 16px;}
+.card{background:white;border-radius:4px;border:3px solid #222;padding:24px 20px;box-shadow:4px 4px 0 rgba(0,0,0,.15);margin-bottom:14px;animation:ci .4s ease;}
+@keyframes ci{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+.title{font-family:'Chewy',cursive;font-size:36px;color:#E74C3C;line-height:1.1;text-align:center;margin-bottom:4px;}
+.title .sm{font-size:20px;color:#E91E8C;display:block;}
+.sub{text-align:center;font-size:14px;color:#666;font-weight:700;margin-bottom:20px;}
+
+/* Story grid */
+.story-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px;margin-bottom:8px;}
+.story-card{padding:14px;border:3px solid #222;border-radius:4px;background:white;cursor:pointer;transition:all .15s;text-align:center;}
+.story-card:hover{background:#FFFDE7;transform:translate(-2px,-2px);box-shadow:4px 4px 0 rgba(0,0,0,.15);}
+.story-card:active{transform:translate(0,0);box-shadow:none;}
+.story-card .icon{font-size:28px;margin-bottom:4px;}
+.story-card .name{font-family:'Chewy',cursive;font-size:16px;color:#222;line-height:1.2;}
+.story-card .tease{font-size:11px;color:#888;font-weight:600;margin-top:2px;}
+
+/* Input form */
+.prompt-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.prompt-item{display:flex;flex-direction:column;gap:4px;}
+.prompt-item label{font-size:12px;font-weight:800;color:#555;text-transform:uppercase;letter-spacing:.5px;}
+.prompt-item input{padding:10px 12px;border:3px solid #ddd;border-radius:4px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;color:#222;transition:border-color .2s;background:#FAFAFA;}
+.prompt-item input:focus{outline:none;border-color:#E74C3C;background:white;}
+.prompt-item input::placeholder{color:#bbb;font-weight:600;}
+
+/* Buttons */
+.bb{display:block;width:100%;padding:14px 20px;border:3px solid #222;border-radius:4px;font-family:'Nunito',sans-serif;font-size:16px;font-weight:800;cursor:pointer;transition:all .15s;margin-bottom:8px;text-align:center;background:white;color:#222;}
+.bb:hover{transform:translate(-2px,-2px);box-shadow:4px 4px 0 rgba(0,0,0,.2);}
+.bb:active{transform:translate(0,0);box-shadow:none;}
+.bb.go{background:#E8F5E9;border-color:#2E7D32;font-family:'Chewy',cursive;font-size:22px;color:#2E7D32;}
+.bb.go:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none;}
+.bb.pick{background:#FFFDE7;border-color:#F9A825;color:#F9A825;font-family:'Chewy',cursive;font-size:18px;}
+
+/* Story display */
+.story-text{font-size:17px;line-height:1.8;color:#333;white-space:pre-line;}
+.story-text .blank{font-weight:900;color:#E74C3C;background:rgba(232,93,42,.08);padding:1px 6px;border-radius:4px;border-bottom:2px solid #E74C3C;}
+.story-title-display{font-family:'Chewy',cursive;font-size:28px;color:#E74C3C;text-align:center;margin-bottom:16px;}
+
+/* Random button */
+.random-btn{display:inline-block;padding:8px 16px;border:2px solid #ddd;border-radius:4px;font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;cursor:pointer;background:white;color:#888;transition:all .15s;margin-bottom:12px;}
+.random-btn:hover{border-color:#E74C3C;color:#E74C3C;background:#FFF5F0;}
+
+/* Nav bar */
+.nav{position:sticky;top:0;z-index:100;background:rgba(126,200,227,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(0,0,0,.1);padding:8px 16px;display:flex;align-items:center;gap:10px;font-family:'Nunito',sans-serif;}
+.nav a{display:flex;align-items:center;gap:6px;text-decoration:none;color:#222;font-size:13px;font-weight:700;transition:color .2s;}
+.nav a:hover{color:#E74C3C;}
+.nav .sep{color:rgba(0,0,0,.15);font-size:18px;}
+.nav .pg{font-size:13px;font-weight:600;color:rgba(0,0,0,.4);}
+
+@media(max-width:500px){
+  .title{font-size:28px;}.title .sm{font-size:17px;}
+  .story-grid{grid-template-columns:1fr 1fr;}
+  .prompt-grid{grid-template-columns:1fr;}
+  .story-card .name{font-size:14px;}
+}
+</style>
+</head>
+<body>
+<div class="nav">
+  <a href="bfdi-universe.html">← BFDI Universe</a>
+  <span class="sep">|</span>
+  <span class="pg">BFDI Mad Libs</span>
+</div>
+<div class="world">
+<div class="cloud c1"></div><div class="cloud c2"></div><div class="cloud c3"></div>
+<div class="gc"><div id="app"></div></div>
+</div>
+
+<script>
+// ============================================================
+//  PROMPTS (shared across all stories)
+// ============================================================
+const PROMPTS = [
+  { id:"noun", label:"A Noun", placeholder:"e.g. banana" },
+  { id:"plural_noun", label:"Plural Noun", placeholder:"e.g. pickles" },
+  { id:"adjective", label:"An Adjective", placeholder:"e.g. squishy" },
+  { id:"adjective2", label:"Another Adjective", placeholder:"e.g. sparkly" },
+  { id:"verb_past", label:"Verb (Past Tense)", placeholder:"e.g. exploded" },
+  { id:"verb_ing", label:"Verb (-ing)", placeholder:"e.g. screaming" },
+  { id:"body_part", label:"Body Part", placeholder:"e.g. elbow" },
+  { id:"number", label:"A Number", placeholder:"e.g. 47" },
+  { id:"color", label:"A Color", placeholder:"e.g. purple" },
+  { id:"food", label:"A Food", placeholder:"e.g. spaghetti" },
+  { id:"animal", label:"An Animal", placeholder:"e.g. llama" },
+  { id:"exclamation", label:"An Exclamation", placeholder:"e.g. YIKES" },
+];
+
+// ============================================================
+//  20 STORIES
+// ============================================================
+const STORIES = [
+{icon:"🎂",title:"Cake at Stake Gone Wrong",tease:"The ceremony takes a turn...",
+text:`It was time for Cake at Stake. The Announcer rolled out a giant {food} instead of the usual cake. "Today's prize is a {adjective} {food}," he droned.
+
+Firey looked horrified. "That's not cake! That's a {noun}!"
+
+The Announcer ignored him and started reading the votes. "{exclamation}! With {number} votes, the contestant eliminated is... Bubble."
+
+Bubble started {verb_ing} uncontrollably. "Noio! Not the {noun}!" she cried. Then she popped, as usual.
+
+Blocky laughed so hard his {body_part} fell off. Leafy tried to catch it but accidentally {verb_past} into the Goiky Canal.
+
+The Announcer sighed. "This is why I wanted to host a show about {plural_noun} instead."`},
+
+{icon:"🏝️",title:"Dream Island Disaster",tease:"The island isn't what you expected...",
+text:`You finally won Dream Island! You stepped onto the sandy shore and immediately noticed something wrong. The palm trees were made of {plural_noun}. The house was painted {color}. And the pool was filled with {food}.
+
+"Welcome to Dream Island!" said a {adjective} parrot sitting on a {noun}. "I'm your host now. The Announcer retired and moved to {color} Mountain."
+
+You tried to relax, but {number} {animal}s kept running across the beach, {verb_ing} at full speed.
+
+"{exclamation}!" you shouted. "This is NOT what the brochure promised!"
+
+The parrot shrugged. "At least you're not in the TLC. Spongy {verb_past} the entire {body_part} rest area in there."
+
+Fair point.`},
+
+{icon:"📦",title:"Life Inside the TLC",tease:"Spongy has a story to tell...",
+text:`Day {number} in the Tiny Loser Chamber. Spongy had eaten the last {food} three days ago. Flower was using a {noun} as a pillow. Woody was hiding behind his own {body_part}.
+
+"I have an idea," said Flower. "What if we build a {adjective} escape pod out of {plural_noun}?"
+
+Everyone stared at her. "That's the most {adjective2} thing I've ever heard," said Match. "Let's do it."
+
+They spent hours {verb_ing} and stacking {plural_noun} into a pile. When they were done, it looked like a giant {animal}.
+
+"{exclamation}!" Woody screamed. "It's alive!"
+
+The {animal} {verb_past} through the TLC wall and everyone escaped. The Announcer found the hole the next morning and said, "I should have used {color} reinforced steel."`},
+
+{icon:"⚡",title:"Four's Bad Day",tease:"Even hosts have off days...",
+text:`Four woke up feeling {adjective}. His screech came out sounding like a {animal} gargling {food}. X tried to help by offering a {noun}, but Four just {verb_past} it across Goiky.
+
+"CONTESTANTS!" Four attempted to shout, but it came out as a whisper. "{exclamation}... my voice is gone."
+
+The contestants couldn't believe it. {number} of them immediately started {verb_ing}. Golf Ball seized the opportunity: "Without Four's powers, I hereby declare myself the {adjective2} supreme leader!"
+
+"Over my {body_part}!" Flower screamed.
+
+The resulting chaos destroyed the Cake at Stake platform, three {plural_noun}, and Golf Ball's self-esteem.
+
+Four's voice came back just in time to say: "This is why I prefer working with {color} {animal}s."`},
+
+{icon:"🗳️",title:"The Voting Disaster",tease:"The votes don't add up...",
+text:`"I've counted the votes," the Announcer said. "And something is wrong. We received {number} votes, and they're all for... a {noun}."
+
+"A {noun} can't be eliminated!" Golf Ball protested. "It's not even a contestant!"
+
+"Nevertheless, the {noun} has received {number} votes. Rules are rules."
+
+Firey and Coiny both started {verb_ing} at the same time. Leafy tried to calm everyone down by offering {food}, but nobody wanted {adjective} {food} during a crisis.
+
+The {noun} was ceremonially flung to the TLC. It landed on Spongy's {body_part}.
+
+"{exclamation}!" Spongy yelled.
+
+"Well," said the Announcer, "that was the most {adjective2} Cake at Stake in history. And we've had ones with {plural_noun} as prizes."`},
+
+{icon:"🏔️",title:"The Yoyle Mountain Incident",tease:"Something weird at the summit...",
+text:`Halfway up Yoyle Mountain, the team found a cave filled with {adjective} {plural_noun}. "Don't touch those!" Leafy warned. "They could be {adjective2}!"
+
+Too late. Blocky had already picked one up and licked it. His entire {body_part} turned {color}.
+
+"{exclamation}!" he screamed. "{number} percent of my body is now {color}!"
+
+"That's what you get for licking random {plural_noun}!" Golf Ball scolded, furiously scribbling calculations. "According to my data, you need to eat exactly one {food} to reverse the effect."
+
+Woody, trying to help, brought a {noun} instead. Blocky ate it anyway. Now his {body_part} was {color} AND he could speak fluent {animal}.
+
+"This mountain is cursed," Firey muttered, {verb_ing} behind a rock.`},
+
+{icon:"🤖",title:"The Announcer Malfunction",tease:"Error 404: host not found...",
+text:`The Announcer glitched during Cake at Stake. Instead of reading votes, he started announcing: "Today's weather in Goiky: {adjective} with a chance of {plural_noun}. Temperature: {number} degrees of {color}."
+
+"That's not weather!" Pin shouted.
+
+"RECIPE MODE ACTIVATED," the Announcer droned. "To make a {adjective2} {food}, you'll need: one {noun}, two cups of {verb_ing}, and a tablespoon of {animal} extract."
+
+Contestants started panicking. Bubble {verb_past} immediately. Woody fainted on his own {body_part}. Firey tried to reboot the Announcer by throwing {food} at him.
+
+"{exclamation}!" the Announcer suddenly shouted. "Normal mode restored. Now, as I was saying... the contestant eliminated is everyone. All of you. Go to the TLC."
+
+"WHAT?!" screamed {number} contestants simultaneously.`},
+
+{icon:"💜",title:"Yoyleland Adventures",tease:"Everything is purple here...",
+text:`You stepped through the portal into Yoyleland. Everything was {color}. The trees, the sky, even the {plural_noun} growing on the ground.
+
+A Yoyleberry bush offered you a berry. You ate it. Your {body_part} immediately turned {color}.
+
+"Huh," you said. "That's {adjective}."
+
+A {animal} made entirely of Yoyleberries walked up to you. It was {verb_ing} and carrying a {noun}. On its back was a sign that read: "WELCOME TO YOYLELAND. Population: {number}. Main export: {food}. Please don't feed the {adjective2} {plural_noun}."
+
+You looked around. {number} other {plural_noun} were watching you from behind the crystal trees.
+
+"{exclamation}!" you whispered. You had a feeling you'd be here a while.`},
+
+{icon:"🔥",title:"Firey and Coiny's Truce",tease:"Could they actually get along?",
+text:`After {number} seasons of slapping each other, Firey and Coiny decided to call a truce. They sealed it by sharing a plate of {food}.
+
+"This is actually {adjective}," Coiny admitted. "Why didn't we do this sooner?"
+
+"Because you called my {body_part} a {noun}," Firey reminded him.
+
+"Oh. Right."
+
+They sat in silence, {verb_ing} together peacefully. Then a {animal} ran between them, knocking over the {food} and covering everything in {color} sauce.
+
+"{exclamation}!" they both yelled, then looked at each other and burst out laughing.
+
+The truce lasted exactly {number} more minutes before Coiny called Firey a "{adjective2} {noun}" and the slapping resumed.
+
+Leafy watched from a distance. "Some things never change," she sighed, eating {plural_noun}.`},
+
+{icon:"⭐",title:"The New Contestant",tease:"They weren't ready for you...",
+text:`A new contestant appeared in Goiky. They were a giant, {adjective} {noun} with a {color} stripe down the middle.
+
+"What ARE you?" asked Golf Ball.
+
+"I'm a {noun}. Obviously."
+
+"You can't be a contestant," the Announcer said. "You're too {adjective2}."
+
+"{exclamation}! That's discrimination!" the {noun} protested. It started {verb_ing} in protest, which knocked over {number} other contestants.
+
+Bubble popped. Woody screamed. A {animal} appeared out of nowhere and ate everyone's {food}.
+
+"Fine," the Announcer sighed. "You can join. But if your {body_part} causes any more problems, you're going straight to the TLC."
+
+The {noun} smiled. "You won't regret this."
+
+Everyone regretted this.`},
+
+{icon:"🎪",title:"The Challenge Nobody Wanted",tease:"Worst. Challenge. Ever.",
+text:`"Today's challenge," the Announcer declared, "is to see who can hold a {adjective} {animal} the longest."
+
+{number} contestants immediately quit. Golf Ball called it "scientifically {adjective2}." Flower said she'd rather eat {food} off the floor.
+
+But Woody, somehow, was a natural. He held the {animal} gently, {verb_ing} softly. The {animal} nuzzled his {body_part}.
+
+"{exclamation}! Woody is WINNING!" Leafy cheered.
+
+"This can't be happening," Blocky muttered, throwing a {noun} at a wall. "The most {adjective2} contestant is beating all of us because of a {animal}."
+
+The {animal} looked at Blocky and hissed. Then it laid a {color} egg on his {body_part}.
+
+"Woody wins," the Announcer confirmed. "The rest of you are now covered in {plural_noun}. Cake at Stake tomorrow."`},
+
+{icon:"🎵",title:"The Cake at Stake Song Remix",tease:"Four can't stop singing...",
+text:`Four decided to remix the Cake at Stake song. The new version went:
+
+"♪ Cake at Stake! Cake at Stake!
+Eating {food} was a mistake!
+{number} contestants, feeling {adjective},
+One of you won't see tomorrow's {noun}!
+
+♪ {exclamation}, {exclamation}, hear the sound,
+{verb_ing} {plural_noun} all around!
+Your {body_part} is {color} now,
+Eliminated like a {animal} — POW! ♪"
+
+X stared. "That was... {adjective2}."
+
+"THANK YOU," said Four, beaming.
+
+Every contestant voted to eliminate the song. The Announcer flung the lyrics into the TLC. Spongy used them as a blanket.`},
+
+{icon:"🏀",title:"Goiky Basketball",tease:"This sport wasn't meant for objects...",
+text:`The challenge was basketball. The ball was a {adjective} {noun}. The hoop was {number} feet high.
+
+Firey went first and immediately set the {noun} on fire. "That always happens!" he yelled.
+
+Ice Cube tried, but her shot {verb_past} and hit Blocky's {body_part}. "{exclamation}!" Blocky screamed, {verb_ing} across the court.
+
+Golf Ball analyzed the arc trajectory for twenty minutes. Her shot went backward. Into Pin. Pin was not amused.
+
+Spongy attempted a dunk. He got stuck in the hoop. It took {number} contestants and a {animal} to pull him out.
+
+The only one who scored was Woody, by accident. He tripped on some {food}, bounced off a {color} {noun}, and the ball sailed in perfectly.
+
+"Winner: Woody," the Announcer said. "Again. How does he keep doing this?"
+
+"{adjective2} luck," Golf Ball muttered, covered in {plural_noun}.`},
+
+{icon:"👻",title:"The Haunted Recovery Center",tease:"Something's wrong with the machine...",
+text:`The Recovery Center started making weird noises at midnight. Every time it recovered someone, they came out slightly wrong. Bubble came back {color}. Woody came back speaking in {animal} sounds. And Firey came back as a giant {food}.
+
+"I'm a {food} now?!" Firey screamed. "I can't even burn things! I'm {adjective}!"
+
+The Announcer investigated. Inside the Recovery Center, {number} {plural_noun} had gotten stuck in the machinery. A {animal} had built a nest on the main processor.
+
+"{exclamation}," the Announcer said. "This explains why the last contestant I recovered had a {noun} for a {body_part}."
+
+Golf Ball offered to fix it. She made it worse. Now everyone who got recovered came out {verb_ing} uncontrollably.
+
+"We need a new Recovery Center," Leafy sighed. "Preferably one that's less {adjective2}."`},
+
+{icon:"🌊",title:"The Great Goiky Flood",tease:"Somebody left the canal open...",
+text:`Someone left the Goiky Canal floodgates open overnight. By morning, the entire competition area was under {number} feet of {color} water.
+
+Firey was stuck on top of the Cake at Stake platform, screaming. "{exclamation}! SOMEONE SAVE MY {body_part}!"
+
+Spongy was thriving. He absorbed so much water he grew to the size of a {animal}. "This is the most {adjective} I've ever felt!" he announced, {verb_ing} happily.
+
+Golf Ball floated past on a {noun}, furiously calculating how to drain the flood. "If we use {number} {plural_noun} and one {adjective2} {food}, we can redirect the water to Yoyle Mountain!"
+
+"Or," said Blocky, surfing past on Woody, "we could just enjoy this."
+
+Woody was not enjoying this. Woody was making sounds only a {animal} could understand.
+
+The flood eventually drained. Everything smelled like {food} for a week.`},
+
+{icon:"📝",title:"Golf Ball's Master Plan",tease:"She's calculated everything. EVERYTHING.",
+text:`Golf Ball gathered everyone around. "I've created the PERFECT strategy," she announced, unrolling a scroll that was {number} feet long.
+
+"Step one: build a {adjective} fortress out of {plural_noun}. Step two: assign each contestant a {noun} for self-defense. Step three: train a {animal} to guard the perimeter."
+
+Tennis Ball raised his hand. "What's step four?"
+
+"Step four is classified. Step five is {verb_ing}. Step six is {food}."
+
+"{exclamation}!" Firey said. "That doesn't make any sense!"
+
+"STEP SEVEN," Golf Ball continued, ignoring him, "is painting everyone's {body_part} the color {color} for camouflage."
+
+"We live on GREEN GRASS under a BLUE SKY," Coiny pointed out. "{color} camouflage would make us MORE visible."
+
+Golf Ball paused. Recalculated. Her {body_part} turned red with embarrassment.
+
+"...Step eight is pretending steps one through seven never happened. The plan is now {adjective2}."`},
+
+{icon:"🎁",title:"The Mystery Prize",tease:"Nobody asked for this...",
+text:`At Cake at Stake, instead of the usual prize, the Announcer revealed a giant {color} box. "Today's prize is a mystery," he said. "The safe contestants each get to reach inside."
+
+Leafy went first. She pulled out a {adjective} {noun}. "Oh! That's actually nice!"
+
+Firey went second. He pulled out {number} {plural_noun}. "What am I supposed to do with these?!"
+
+Pin pulled out a {food}. Reasonable. Ice Cube pulled out a {animal}. Less reasonable. The {animal} immediately started {verb_ing}.
+
+"{exclamation}!" screamed Match as the {animal} knocked over the mystery box, spilling its remaining contents: {number} more {plural_noun}, a {adjective2} {noun}, and something that was either a trophy or a {body_part}.
+
+"And THAT," said the Announcer, "is why we usually just give you {food}."`},
+
+{icon:"🌙",title:"Goiky After Dark",tease:"What happens when the cameras stop...",
+text:`After the cameras turned off, Goiky got weird. Firey spent his nights writing {adjective} poetry about {food}. Leafy practiced {verb_ing} under the moonlight. And the Announcer listened to {animal} sounds on repeat.
+
+One night, {number} contestants discovered a secret room under the Cake at Stake platform. Inside: a {color} {noun}, a portrait of the Announcer wearing a {noun} on his {body_part}, and a diary.
+
+The diary entry read: "Day {number}. The contestants don't know about the {plural_noun}. The {adjective2} truth must remain hidden. Also, I need more {food}."
+
+"{exclamation}!" whispered Bubble. "What {plural_noun}?!"
+
+They never found out. The next morning, the secret room was gone. The Announcer acted normal. But Woody swore he saw a {animal} carrying the diary into the forest, {verb_ing} the whole way.`},
+
+{icon:"🎭",title:"The Imposter Challenge",tease:"One of you is NOT who they seem...",
+text:`"Today's challenge," Four announced, "is to figure out who the imposter is. One of you has been replaced by a {adjective} {animal} in disguise."
+
+Everyone looked at each other suspiciously. Blocky accused Woody. Woody accused his own {body_part}. Golf Ball accused math.
+
+"I think it's Spongy," said Pin. "He smells more like {food} than usual."
+
+"I ALWAYS smell like {food}!" Spongy protested.
+
+"{exclamation}!" shouted Match. "Look! {color} footprints!" She pointed to a trail of {color} prints leading from the TLC to the Cake at Stake platform.
+
+Everyone followed the trail. It led to... the Announcer.
+
+"The imposter was the HOST?!" {number} contestants screamed.
+
+The Announcer's disguise fell off, revealing a {adjective2} {animal} wearing a speaker box costume. It had been hosting the show for {number} episodes.
+
+"Honestly," said Leafy, "that explains a lot."
+
+The {animal} {verb_past} into the sunset, never to be seen again. The {plural_noun} it left behind were kept as souvenirs.`},
+
+{icon:"🏆",title:"The Final Final Finale",tease:"One last ceremony to end it all...",
+text:`After {number} seasons, it was time for the FINAL final finale. Every contestant ever — all of them — gathered at the Cake at Stake platform.
+
+The Announcer spoke: "The winner of EVERYTHING is..."
+
+Dramatic pause. {number} seconds of silence.
+
+"...the {noun}."
+
+"{exclamation}!" everyone screamed. "A {noun} CAN'T WIN!"
+
+"It just did. The {noun} received {number} viewer votes. It's the most {adjective} winner in BFDI history."
+
+Firey and Leafy looked at each other. Flower {verb_past}. Golf Ball's brain broke. Coiny started {verb_ing}. A {animal} fell from the sky and landed on Spongy's {body_part}.
+
+Dream Island rose from the ocean. On it was a golden throne shaped like a {food}, painted {color}, surrounded by {adjective2} {plural_noun}.
+
+The {noun} sat on the throne. It looked magnificent.
+
+"I always knew it would be the {noun}," said Woody, the only one who was calm. Everyone stared at him. He shrugged.
+
+"I voted for it."`}
+];
+
+// ============================================================
+//  RANDOM WORD BANKS (for the "Random Fill" button)
+// ============================================================
+const RANDOMS = {
+  noun: ["toilet","saxophone","refrigerator","umbrella","homework","trampoline","mustache","doorknob","spaceship","burrito","chandelier","skateboard","microwave","toenail","catapult"],
+  plural_noun: ["soggy pancakes","angry bees","rubber ducks","flaming saxophones","invisible socks","haunted tacos","screaming potatoes","radioactive pickles","flying couches","exploding muffins"],
+  adjective: ["squishy","radioactive","sparkly","furious","wobbly","soggy","magnificent","haunted","explosive","invisible","screaming","greasy","fluffy","terrifying"],
+  adjective2: ["ridiculous","magnificent","devastating","questionable","legendary","disgusting","breathtaking","chaotic","suspicious","unstoppable","embarrassing"],
+  verb_past: ["exploded","backflipped","evaporated","moonwalked","somersaulted","combusted","disintegrated","yeeted","vibrated","teleported","cartwheeled"],
+  verb_ing: ["screaming","breakdancing","yodeling","vibrating","backflipping","moonwalking","gargling","somersaulting","beatboxing","juggling","tiptoeing"],
+  body_part: ["elbow","kneecap","nostril","eyebrow","bellybutton","armpit","pinky toe","forehead","earlobe","shin","ribcage"],
+  number: ["47","3","999","12","0.5","7,000","69","42","1,000,000","13"],
+  color: ["purple","neon green","hot pink","invisible","plaid","tie-dye","vantablack","glittery gold","radioactive orange","polka-dot"],
+  food: ["spaghetti","raw onion","expired yogurt","a gas station burrito","mystery meat","lukewarm soup","a single grape","deep-fried butter","moldy cheese","chocolate-covered pickles"],
+  animal: ["llama","angry pelican","three-legged raccoon","emotional support alligator","confused penguin","caffeinated squirrel","philosophical goat","dramatic flamingo"],
+  exclamation: ["YIKES","HOLY GUACAMOLE","GREAT GOOGLY MOOGLY","OH SNAP","SWEET MOTHER OF OBJECTS","WHAT THE YOYLE","BY FOUR'S SCREECH","GOOD GRIEF"]
+};
+
+// ============================================================
+//  APP STATE
+// ============================================================
+let words = {};
+let selectedStory = null;
+
+// ============================================================
+//  RENDER
+// ============================================================
+function renderPicker() {
+  const app = document.getElementById('app');
+  let grid = STORIES.map((s,i) =>
+    `<div class="story-card" onclick="pickStory(${i})"><div class="icon">${s.icon}</div><div class="name">${s.title}</div><div class="tease">${s.tease}</div></div>`
+  ).join('');
+
+  app.innerHTML = `
+    <div class="card" style="text-align:center;padding:28px 24px;">
+      <div style="font-size:48px;margin-bottom:6px">📝</div>
+      <div class="title">BFDI Mad Libs<span class="sm">Fill in the blanks, make hilarious stories!</span></div>
+    </div>
+    <div class="card">
+      <div style="font-family:'Chewy',cursive;font-size:22px;color:#222;margin-bottom:4px;text-align:center">Pick a Story</div>
+      <div style="font-size:13px;color:#888;font-weight:600;text-align:center;margin-bottom:16px">Choose one — you won't know what it's about until you fill in the words!</div>
+      <div class="story-grid">${grid}</div>
+    </div>`;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function pickStory(idx) {
+  selectedStory = idx;
+  renderInputs();
+}
+
+function renderInputs() {
+  const app = document.getElementById('app');
+  const s = STORIES[selectedStory];
+
+  let fields = PROMPTS.map(p =>
+    `<div class="prompt-item"><label>${p.label}</label><input type="text" id="w_${p.id}" placeholder="${p.placeholder}" oninput="checkReady()"></div>`
+  ).join('');
+
+  app.innerHTML = `
+    <div class="card" style="text-align:center;">
+      <div style="font-size:32px;margin-bottom:4px">${s.icon}</div>
+      <div style="font-family:'Chewy',cursive;font-size:22px;color:#222;margin-bottom:2px">${s.title}</div>
+      <div style="font-size:13px;color:#888;font-weight:600;margin-bottom:16px">Fill in the words below — no peeking at the story!</div>
+      <button class="random-btn" onclick="randomFill()">🎲 Random Fill (Lazy Mode)</button>
+      <div class="prompt-grid">${fields}</div>
+      <div style="margin-top:16px;">
+        <button class="bb go" id="btn-go" disabled onclick="showStory()">📖 Read My Story!</button>
+        <button class="bb" onclick="renderPicker()">← Pick a Different Story</button>
+      </div>
+    </div>`;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function randomFill() {
+  PROMPTS.forEach(p => {
+    const bank = RANDOMS[p.id];
+    const val = bank[Math.floor(Math.random()*bank.length)];
+    document.getElementById('w_'+p.id).value = val;
+  });
+  checkReady();
+}
+
+function checkReady() {
+  const allFilled = PROMPTS.every(p => document.getElementById('w_'+p.id).value.trim() !== '');
+  document.getElementById('btn-go').disabled = !allFilled;
+}
+
+function showStory() {
+  // Collect words
+  words = {};
+  PROMPTS.forEach(p => { words[p.id] = document.getElementById('w_'+p.id).value.trim(); });
+
+  const s = STORIES[selectedStory];
+
+  // Replace placeholders with highlighted words
+  let html = s.text.replace(/\{(\w+)\}/g, (match, key) => {
+    const w = words[key] || match;
+    return `<span class="blank">${w}</span>`;
+  });
+
+  const app = document.getElementById('app');
+  app.innerHTML = `
+    <div class="card">
+      <div style="font-size:40px;text-align:center;margin-bottom:6px">${s.icon}</div>
+      <div class="story-title-display">${s.title}</div>
+      <div class="story-text">${html}</div>
+    </div>
+    <div class="card" style="text-align:center;">
+      <button class="bb pick" onclick="renderPicker()">📝 Pick Another Story</button>
+      <button class="bb" onclick="renderInputs()">🔄 Same Story, New Words</button>
+      <button class="bb" onclick="readAnother()">📖 Read Another (Same Words)</button>
+    </div>`;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function readAnother() {
+  // Pick a random different story and show it with the same words
+  let idx;
+  do { idx = Math.floor(Math.random()*STORIES.length); } while (idx === selectedStory);
+  selectedStory = idx;
+
+  const s = STORIES[selectedStory];
+  let html = s.text.replace(/\{(\w+)\}/g, (match, key) => {
+    const w = words[key] || match;
+    return `<span class="blank">${w}</span>`;
+  });
+
+  const app = document.getElementById('app');
+  app.innerHTML = `
+    <div class="card">
+      <div style="font-size:40px;text-align:center;margin-bottom:6px">${s.icon}</div>
+      <div class="story-title-display">${s.title}</div>
+      <div class="story-text">${html}</div>
+    </div>
+    <div class="card" style="text-align:center;">
+      <button class="bb pick" onclick="renderPicker()">📝 Pick Another Story</button>
+      <button class="bb" onclick="renderInputs()">🔄 New Words</button>
+      <button class="bb" onclick="readAnother()">📖 Read Another (Same Words)</button>
+    </div>`;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// Init
+renderPicker();
+</script>
+</body>
+</html>
