@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>One Piece Mad Libs | Fan Cannon</title>
+<meta name="description" content="Fill in the blanks and create hilarious One Piece stories! 25 Mad Libs featuring Luffy, the Straw Hats, and the Grand Line.">
+<link href="https://fonts.googleapis.com/css2?family=Chewy&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Nunito',sans-serif;overflow-x:hidden;min-height:100vh;}
+.world{min-height:100vh;background:linear-gradient(180deg,#0a2a4a 0%,#0d3b66 30%,#1a5276 50%,#0a2a4a 70%,#2c1810 70%,#1a0f0a 100%);position:relative;}
+.wave{position:fixed;bottom:28%;left:0;right:0;height:60px;z-index:0;opacity:.15;}
+.wave svg{width:200%;height:100%;animation:drift 12s linear infinite;}
+@keyframes drift{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+.gc{position:relative;z-index:1;max-width:680px;margin:0 auto;padding:20px 16px;}
+.card{background:rgba(20,15,10,0.92);border-radius:4px;border:3px solid #c0392b;padding:24px 20px;box-shadow:0 4px 20px rgba(192,57,43,0.1);margin-bottom:14px;animation:ci .4s ease;color:#e8d5c0;}
+@keyframes ci{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+.title{font-family:'Chewy',cursive;font-size:36px;color:#e74c3c;line-height:1.1;text-align:center;margin-bottom:4px;}
+.title .sm{font-size:20px;color:#f39c12;display:block;}
+.story-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px;margin-bottom:8px;}
+.story-card{padding:14px;border:2px solid #444;border-radius:4px;background:rgba(40,25,15,0.8);cursor:pointer;transition:all .15s;text-align:center;color:#e8d5c0;}
+.story-card:hover{background:rgba(192,57,43,0.12);border-color:#c0392b;transform:translate(-2px,-2px);box-shadow:4px 4px 0 rgba(192,57,43,.2);}
+.story-card .icon{font-size:28px;margin-bottom:4px;}
+.story-card .name{font-family:'Chewy',cursive;font-size:16px;line-height:1.2;}
+.story-card .tease{font-size:11px;color:#997755;font-weight:600;margin-top:2px;}
+.prompt-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.prompt-item{display:flex;flex-direction:column;gap:4px;}
+.prompt-item label{font-size:12px;font-weight:800;color:#997755;text-transform:uppercase;letter-spacing:.5px;}
+.prompt-item input{padding:10px 12px;border:2px solid #444;border-radius:4px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;color:#e8d5c0;background:rgba(40,25,15,0.6);transition:border-color .2s;}
+.prompt-item input:focus{outline:none;border-color:#e74c3c;background:rgba(60,35,20,0.8);}
+.prompt-item input::placeholder{color:#665540;}
+.bb{display:block;width:100%;padding:14px 20px;border:3px solid #555;border-radius:4px;font-family:'Nunito',sans-serif;font-size:16px;font-weight:800;cursor:pointer;transition:all .15s;margin-bottom:8px;text-align:center;background:rgba(40,25,15,0.6);color:#e74c3c;}
+.bb:hover{transform:translate(-2px,-2px);box-shadow:4px 4px 0 rgba(192,57,43,.2);border-color:#c0392b;}
+.bb.go{background:rgba(192,57,43,0.2);border-color:#e74c3c;font-family:'Chewy',cursive;font-size:22px;color:#f39c12;}
+.bb.go:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none;}
+.bb.pick{background:rgba(243,156,18,0.15);border-color:#f39c12;color:#f39c12;font-family:'Chewy',cursive;font-size:18px;}
+.random-btn{display:inline-block;padding:8px 16px;border:2px solid #555;border-radius:4px;font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;cursor:pointer;background:rgba(40,25,15,0.6);color:#997755;transition:all .15s;margin-bottom:12px;}
+.random-btn:hover{border-color:#f39c12;color:#f39c12;}
+.story-text{font-size:17px;line-height:1.8;color:#d0c0a8;white-space:pre-line;}
+.story-text em{color:#997755;}
+.story-text .blank{font-weight:900;color:#f39c12;background:rgba(243,156,18,.08);padding:1px 6px;border-radius:4px;border-bottom:2px solid #f39c12;}
+.story-title-display{font-family:'Chewy',cursive;font-size:28px;color:#e74c3c;text-align:center;margin-bottom:16px;}
+.nav{position:sticky;top:0;z-index:100;background:rgba(10,42,74,.95);backdrop-filter:blur(12px);border-bottom:1px solid rgba(192,57,43,.2);padding:8px 16px;display:flex;align-items:center;gap:10px;font-family:'Nunito',sans-serif;}
+.nav a{text-decoration:none;color:#997755;font-size:13px;font-weight:700;transition:color .2s;}
+.nav a:hover{color:#e74c3c;}
+.nav .sep{color:rgba(255,255,255,.15);font-size:18px;}
+.nav .pg{font-size:13px;font-weight:600;color:rgba(255,255,255,.3);}
+@media(max-width:500px){.title{font-size:28px;}.story-grid{grid-template-columns:1fr 1fr;}.prompt-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="nav"><a href="onepiece-universe.html">← One Piece Universe</a><span class="sep">|</span><span class="pg">One Piece Mad Libs</span></div>
+<div class="world">
+<div class="wave"><svg viewBox="0 0 1200 60" xmlns="http://www.w3.org/2000/svg"><path d="M0,30 Q150,0 300,30 T600,30 T900,30 T1200,30 T1500,30 T1800,30 T2100,30 T2400,30" fill="none" stroke="#1a5276" stroke-width="2"/></svg></div>
+<div class="gc"><div id="app"></div></div>
+</div>
+<script>
+const PROMPTS=[
+  {id:"noun",label:"A Noun",placeholder:"e.g. barrel"},{id:"plural_noun",label:"Plural Noun",placeholder:"e.g. cannonballs"},
+  {id:"adjective",label:"An Adjective",placeholder:"e.g. rubbery"},{id:"adjective2",label:"Another Adjective",placeholder:"e.g. legendary"},
+  {id:"verb_past",label:"Verb (Past Tense)",placeholder:"e.g. rocketed"},{id:"verb_ing",label:"Verb (-ing)",placeholder:"e.g. stretching"},
+  {id:"body_part",label:"Body Part",placeholder:"e.g. fist"},{id:"number",label:"A Number",placeholder:"e.g. 1,000,000"},
+  {id:"color",label:"A Color",placeholder:"e.g. straw-hat yellow"},{id:"food",label:"A Food",placeholder:"e.g. meat"},
+  {id:"animal",label:"An Animal",placeholder:"e.g. sea king"},{id:"place",label:"A Place/Island",placeholder:"e.g. the Grand Line"},
+];
+const STORIES=[
+{icon:"🏴‍☠️",title:"Luffy Finds the One Piece",tease:"The treasure is... what?",
+text:`After {number} years of sailing, the Straw Hats finally reached Laugh Tale. The One Piece was right there, on a pedestal. Luffy ran toward it, his {body_part} stretching with excitement.
+
+"THE ONE PIECE IS... A {adjective} {noun}?!"
+
+The crew stared. Zoro squinted. "That's a {noun}."
+
+"IT'S THE GREATEST {noun} IN THE WORLD!" Luffy shouted, hugging it. His eyes were sparkling.
+
+Nami calculated its value. "{number} berries. We sailed the Grand Line for {number} berries."
+
+"I think it's {adjective2}," Robin said, smiling.
+
+Sanji kicked a rock. "I could have been cooking {food} this whole time."
+
+Luffy put the {noun} on his head, on top of his straw hat. "I'M THE KING OF THE PIRATES!" He started {verb_ing} around the island.
+
+"He's {verb_ing}," Zoro noted.
+
+"He's always {verb_ing}," Nami sighed.
+
+The {noun} turned out to be worth {number} berries after all. Roger had been laughing because it was {adjective2}. Just like Luffy.`},
+
+{icon:"🍖",title:"Sanji's Nightmare Kitchen",tease:"The ingredients are... alive?",
+text:`Sanji opened the Sunny's fridge. Instead of food, he found {number} {adjective} {plural_noun} and a {color} {animal} sleeping on the {food}.
+
+"WHAT HAPPENED TO MY INGREDIENTS?!"
+
+"Luffy ate everything," Nami said. "Last night. At 3 AM. He also ate a {noun}."
+
+"A {noun} ISN'T FOOD!"
+
+"Tell that to Luffy's {body_part}."
+
+Sanji had to improvise. He cooked the {plural_noun} with {food} sauce. He sautéed the {animal}. He made a {adjective2} bisque out of the {noun}.
+
+The crew tasted it. Silence. Then Luffy screamed: "SANJI! THIS IS THE BEST {food} I'VE EVER HAD!"
+
+"It's not {food}. It's a {animal} in {color} sauce."
+
+"I DON'T CARE! MAKE {number} MORE!"
+
+Sanji's {body_part} twitched. He was a chef on a ship of {adjective2} idiots. And somehow, that was exactly where he belonged.`},
+
+{icon:"⚔️",title:"Zoro Gets Lost",tease:"Again. Obviously.",
+text:`"The enemy base is NORTH," Nami said clearly. "NORTH. That way." She pointed north.
+
+Zoro went south. Then east. Then somehow ended up at {place}, which was {number} islands away.
+
+"How did he get to {place}?!" Usopp screamed into the Den Den Mushi.
+
+"I was walking straight," Zoro said, standing in front of a {adjective} {noun}. "This doesn't look like the enemy base."
+
+"It's a {noun}! In {place}! You're on the WRONG ISLAND!"
+
+Zoro drew his swords. "I'll cut my way back."
+
+"YOU CAN'T CUT THE OCEAN!"
+
+He tried. The ocean {verb_past}. A {color} {animal} emerged, terrified. {number} {plural_noun} washed ashore.
+
+By the time Zoro found the crew, they'd already defeated the enemy. Luffy was eating {food} on their ship.
+
+"Where were you?" Luffy asked.
+
+"Shortcut," Zoro said, his {body_part} bleeding from fighting the {animal}. Nobody questioned it. They never did.`},
+
+{icon:"🗺️",title:"Nami Draws a Map",tease:"The world's greatest cartographer vs. chaos...",
+text:`Nami was drawing her most {adjective} map yet — the complete route through the Grand Line. She needed {number} hours of uninterrupted silence.
+
+She got {number} seconds.
+
+"NAMI! CAN WE GO TO {place}?!" Luffy's {body_part} stretched through the window.
+
+"We were JUST there."
+
+"But they have {food}!"
+
+She kicked him out. Literally. His {body_part} {verb_past} across the deck.
+
+She resumed drawing. The {color} ink was perfect. The scale was {adjective2}. Then Chopper spilled {food} on it. Then Zoro got lost IN THE MAP ROOM. Then Usopp started {verb_ing} about the time he fought {number} {animal}s.
+
+Nami snapped. "EVERYONE OUT! THE NEXT PERSON WHO TOUCHES MY {noun} LOSES {number} BERRIES!"
+
+Silence. Finally. She drew for {number} hours. The map was {adjective2}. The most beautiful map in the world.
+
+Then Luffy used it as a plate for his {food}.
+
+Her {body_part} has never recovered.`},
+
+{icon:"💀",title:"Brook's Skull Joke",tease:"Yohohoho!",
+text:`"May I see your {body_part}?" Brook asked a stranger at {place}.
+
+"ABSOLUTELY NOT!"
+
+"Yohohoho! I understand. But I don't have {body_part}s myself... BECAUSE I'M ALL BONES! Skull joke!"
+
+Nobody laughed. {number} people walked away.
+
+"Tough crowd," Brook said, sipping tea through his {adjective} skull. "Perhaps a song will help." He pulled out his {noun} and played a {adjective2} melody.
+
+A {color} {animal} appeared, drawn by the music. It started {verb_ing}. Then {number} more {animal}s appeared. They all started {verb_ing}.
+
+"I've created a {animal} orchestra!" Brook exclaimed. "Though I can't hear very well... BECAUSE I HAVE NO EARS! Yohohoho!"
+
+Franky arrived. "Brook, why are there {number} {animal}s {verb_ing} on the deck?"
+
+"They appreciated my music."
+
+"They're eating the {food}."
+
+"...Ah. That's less {adjective2} than I thought."
+
+Brook played them a farewell song. The {animal}s {verb_past}. All that remained were {plural_noun} and a single {color} {noun}.
+
+"I'm so moved I could cry... BUT I HAVE NO EYES! YOHOHOHO!"`},
+
+{icon:"🤥",title:"Usopp's Greatest Lie",tease:"This one might actually be true...",
+text:`"I once fought {number} {animal}s with nothing but a {adjective} {noun} and my bare {body_part}!" Usopp declared to the children of {place}.
+
+"WOOOW!" they gasped.
+
+"The {animal}s were {number} feet tall! {color}! And they were {verb_ing} so loud the ocean itself {verb_past}!"
+
+Chopper was listening, tears streaming. "Usopp is so brave!"
+
+"And THEN," Usopp continued, "I used my legendary {adjective2} {noun} Star to defeat their king — a {adjective} {animal} the size of {place}!"
+
+Nami leaned over to Robin. "None of this happened, right?"
+
+Robin smiled. "Actually, last week he DID fight a {color} {animal} at {place}. It was quite {adjective2}."
+
+"WAIT, REALLY?!"
+
+"He screamed the entire time and hid behind a {noun}. But technically, he did fight it. The {food} he threw distracted it long enough for Luffy to punch it."
+
+Usopp finished his story. The children cheered. His {body_part} had never been longer — with pride.
+
+"CAPTAIN USOPP!" they chanted.
+
+"{number} warriors!" Usopp added. "I have {number} warriors under my command!"
+
+He had eight.`},
+
+{icon:"🦌",title:"Chopper's Medical Emergency",tease:"Doctor reindeer in action...",
+text:`"DOCTOR! DOCTOR!" Luffy burst into the medical bay. "My {body_part} feels {adjective}!"
+
+Chopper panicked. "LET ME SEE!" He examined Luffy's {body_part}. It was {color}. And it was {verb_ing}.
+
+"This is {adjective2}!" Chopper pulled out every medical book. "{number} possible conditions! Quick — have you eaten anything unusual?"
+
+"I ate a {noun}."
+
+"A {noun}?! Those aren't food!"
+
+"And {number} servings of {food}. And Zoro's {adjective} {noun}."
+
+"YOU ATE ZORO'S {noun}?!"
+
+Zoro appeared in the doorway. His {body_part} was already drawn. "Who. Ate. My. {noun}."
+
+"AHHH!" Chopper transformed into his most {adjective2} point — the tiny form — and hid behind a {plural_noun}. "IT WAS LUFFY! DON'T HURT ME!"
+
+Diagnosis: Luffy's {body_part} was {color} because he'd eaten {number} pounds of {food}. The cure: {verb_ing} it off.
+
+"I prescribe a nap," Chopper said.
+
+"I prescribe a fight," Zoro said.
+
+Luffy chose both. He fought Zoro while napping. His {body_part} stretched in his sleep. It was {adjective2}.`},
+
+{icon:"⭐",title:"Franky's Latest Invention",tease:"SUPER! But also... dangerous.",
+text:`"SUUUUUUPER!" Franky unveiled his latest invention: the {adjective} {noun}-inator 3000.
+
+"What does it do?" Nami asked.
+
+"It turns {food} into {plural_noun}! Powered by {number} barrels of cola and a single {color} {noun}!"
+
+"Why would we need that?"
+
+"BECAUSE IT'S SUUUUPER!"
+
+He demonstrated. He put in {food}. The machine roared, {verb_past}, shot {color} sparks, and produced... a {adjective2} {animal}.
+
+"That's not {plural_noun}," Robin observed.
+
+"MINOR CALIBRATION ERROR!" Franky's {body_part} was sweating cola. He adjusted the {noun}. Tried again.
+
+This time: {number} {plural_noun} flew out and hit Zoro in the {body_part}. Zoro drew all three swords.
+
+"SUUUPER... sorry," Franky said.
+
+Luffy picked up one of the {plural_noun}. "Can I eat this?"
+
+"It used to be {food}, so... technically?"
+
+Luffy ate it. His {body_part} turned {color}. Chopper started screaming.
+
+"Back to the drawing board," Franky sighed. But he was already sketching version 3001.`},
+
+{icon:"📚",title:"Robin Reads a Poneglyph",tease:"The ancient text says WHAT?",
+text:`Robin found a Poneglyph hidden beneath {place}. Her {body_part} trembled with excitement. After {number} years of searching, this could be the key to the Void Century.
+
+She began translating. "It says... 'The {adjective} {noun} of the Ancient Kingdom was located at {place}. Their power came from a {color} {noun} the size of {number} {animal}s.'"
+
+"What else?" Luffy asked, somehow interested for once.
+
+"'Their weapon was a {adjective2} {noun} that could {verb_past} any {body_part} in existence. It was powered by {food} and {number} {plural_noun}.'"
+
+"A weapon powered by {food}?!" Sanji leaned in. "That's MY kind of history."
+
+"'WARNING,'" Robin continued. "'Anyone who reads this while {verb_ing} will be cursed with a {color} {body_part} for {number} days.'"
+
+Everyone looked at Brook. He'd been {verb_ing} the entire time.
+
+"Yohohoho! I can't get a {color} {body_part}... BECAUSE I HAVE NO—"
+
+"WE KNOW!" everyone shouted.
+
+The Poneglyph's final line: "'The One Piece is {adjective2}.'" Robin smiled. She'd keep that secret a little longer.`},
+
+{icon:"🌊",title:"The Grand Line Weather",tease:"Nothing is normal here...",
+text:`Nami checked the weather. "In the next {number} minutes, we'll experience: sunshine, a {color} typhoon, {verb_ing} rain, a snow of {plural_noun}, and something the Log Pose calls a '{adjective} {noun} storm.'"
+
+"What's a {noun} storm?" Chopper asked, hiding.
+
+"Nobody knows. It's only been recorded {number} times."
+
+The sky turned {color}. Then {food} started falling from the sky. Then actual {animal}s.
+
+"I WAS RIGHT!" Nami screamed. "THIS IS THE {noun} STORM!"
+
+Luffy was catching {food} in his mouth. "THIS IS THE BEST STORM EVER!"
+
+Zoro was cutting falling {plural_noun} in half. Sanji was cooking the {food} mid-air. Franky built a {adjective2} shelter in {number} seconds.
+
+"THIS IS THE GRAND LINE!" Luffy screamed, {verb_ing} in the {color} rain, his {body_part} stretched to catch more {food}. "I LOVE THIS OCEAN!"
+
+"WE'RE GOING TO DIE!" Usopp screamed.
+
+"YOHOHOHO!" Brook added.
+
+The storm lasted {number} minutes. The Sunny survived. Barely. The deck was covered in {plural_noun} and confused {animal}s.
+
+"Tuesday," Nami muttered, checking her log.`},
+
+{icon:"🏰",title:"Impel Down Escape",tease:"Prison break pirate style...",
+text:`Level {number} of Impel Down. The guards were {adjective}. The cells were made of {plural_noun}. And the warden's pet {animal} was {verb_ing} outside.
+
+"I'm busting out," Luffy declared, punching the {color} cell bars. His {body_part} stretched through the gap.
+
+"That's not how prisons work!" Buggy screamed from the next cell.
+
+"GUM-GUM {noun}!" Luffy launched himself through {number} walls. Guards {verb_past} everywhere. {food} from the cafeteria went flying.
+
+Mr. 2 appeared, disguised as a {adjective2} {animal}. "Follow me, Straw Boy!"
+
+They ran through Level {number}. Past the {adjective} torture chamber. Past the kitchen that only served {food}. Past {number} prisoners doing {verb_ing} exercises.
+
+"THE EXIT IS THROUGH THAT {color} {noun}!" Mr. 2 pointed.
+
+Luffy burst through. Daylight. Freedom. His {body_part} felt {adjective2}.
+
+Behind him, {number} escaped prisoners cheered. Buggy took credit. Mr. 2 {verb_past} heroically into the sunset.
+
+"That was the worst prison ever," Luffy said. "They didn't even have good {food}."`},
+
+{icon:"👒",title:"Shanks Visits",tease:"The straw hat returns...",
+text:`Shanks appeared on the horizon. His ship was {adjective}. His crew was legendary. His {body_part} was missing (as usual).
+
+"SHANKS!" Luffy waved from the Sunny, his {body_part} stretching {number} meters.
+
+"Luffy." Shanks smiled. "Nice to see you haven't lost the hat."
+
+"I almost lost it {number} times! Once to a {adjective2} {animal} at {place}! And once when Zoro used it to hold {food}!"
+
+"I did NOT," Zoro said.
+
+"You DID."
+
+Shanks laughed. "The New World suits you, kid. I heard you {verb_past} at {place}. Very {adjective}."
+
+They shared {food} and {number} barrels of something strong. Shanks's crew arm-wrestled Zoro. ({number} of them lost.) Usopp told Yasopp {number} lies. Sanji cooked {adjective2} {food} for everyone.
+
+"Time to go," Shanks said at dawn. He looked at Luffy's {body_part}. "Next time we meet, you'll be Pirate King."
+
+"I already am," Luffy grinned. "In here." He pointed to his {body_part}.
+
+Shanks put his remaining hand on Luffy's hat. "Yeah. You are."
+
+He sailed away. The {color} sunrise lit up {place}. Luffy watched until the ship was a speck.
+
+Then: "SANJI! I'M HUNGRY! MAKE {number} PLATES OF {food}!"`},
+
+{icon:"💰",title:"Nami's Treasure",tease:"Money talks. Nami listens.",
+text:`Nami found a treasure map at {place}. "X marks the spot — {number} berries buried under a {adjective} {noun}!"
+
+The crew sailed for {number} days. They arrived at a {color} island covered in {plural_noun}.
+
+"DIG!" Nami commanded. Luffy dug with his {body_part}. Zoro cut the earth. Franky used the {adjective2} Drill.
+
+{number} feet down: a chest. Inside: {number} berries, {plural_noun}, and a note.
+
+"'If you're reading this, you've been tricked. This is a {adjective} trap. Turn around.'"
+
+A {color} {animal} burst from the ground. It was {verb_ing} and wearing a {noun} on its {body_part}.
+
+"THAT'S THE GUARDIAN!" Robin said, somehow calm.
+
+Luffy punched it. The {animal} {verb_past}. The real treasure was underneath: {number} berries.
+
+Nami's eyes turned to berries. Her {body_part} glowed. "THIS IS {adjective2}!"
+
+"We almost died," Usopp muttered.
+
+"But we're RICH!" Nami screamed, {verb_ing} on the gold pile.
+
+"Can I have some for {food}?" Luffy asked.
+
+"ABSOLUTELY NOT."`},
+
+{icon:"🎶",title:"Party on the Sunny",tease:"Pirates know how to celebrate...",
+text:`After defeating the {adjective} {animal} of {place}, the Straw Hats threw a party. Sanji cooked {number} plates of {food}. Luffy ate {number} of them.
+
+Brook played his {noun}. "BINKS' SAKE! {adjective2} VERSION!"
+
+Zoro and Sanji had a {verb_ing} contest. Chopper judged. It was {adjective2}.
+
+Franky built a {color} disco ball out of {plural_noun}. "SUUUUUPER PARTY!" His {body_part} shot cola-powered confetti.
+
+Usopp told a story about fighting {number} {animal}s at {place}. Chopper believed every word. Nami charged {number} berries for dance lessons.
+
+Robin sat in the corner reading, but she was smiling. She was always smiling during parties.
+
+Luffy stood on the figurehead, {food} in one hand, the other stretched toward the stars. "THIS! IS! THE BEST CREW IN THE WORLD!"
+
+"Yohohoho!" Brook played louder.
+
+The music carried across the Grand Line. A Marine ship heard it and turned the other way. Even they knew: you don't interrupt a Straw Hat party.
+
+"Another round!" Luffy shouted.
+
+"WE'RE OUT OF {food}!" Sanji screamed.
+
+"THEN MAKE MORE!"
+
+"WITH WHAT?! YOU ATE THE {noun}!"
+
+The party continued until sunrise. {number} {plural_noun} were destroyed. Nobody cared. This is what pirates live for.`},
+
+{icon:"🦁",title:"Chopper's Bounty",tease:"The most dangerous... pet?",
+text:`Chopper's new bounty poster arrived. Bounty: {number} berries. Description: "{adjective} {animal}. The Straw Hat's pet."
+
+"PET?!" Chopper screamed. "I'M A DOCTOR!"
+
+"To be fair," Nami said, "your last bounty was 100 berries."
+
+"That was {adjective2}!"
+
+"{number} berries is worse. You can't even buy {food} with that."
+
+Chopper's {body_part} drooped. Then he saw Luffy's reaction — Luffy was laughing so hard his {body_part} stretched to the floor.
+
+"IT'S NOT FUNNY!"
+
+"IT'S THE FUNNIEST THING EVER! They drew you as a {adjective} {animal}!"
+
+The poster showed Chopper's tiny form {verb_ing} with a {color} {noun} on his head.
+
+"I will prove my worth," Chopper declared. He transformed into Monster Point. His {body_part} was now {number} feet tall.
+
+"THAT'S the guy worth {number} berries?" A Marine stared.
+
+"TECHNICALLY IT'S {number}!" Chopper screamed, {verb_past} the Marine's ship into {place}.
+
+The World Government issued a correction: "Bounty update: {number} berries. Classification: NOT a pet." It was still {adjective2}ly low.`},
+
+{icon:"⚓",title:"The Thousand Sunny Breaks Down",tease:"Even the best ship has bad days...",
+text:`The Sunny's engine made a {adjective} sound. Then a {color} smoke billowed from the {noun}. Then {number} {plural_noun} fell off the mast.
+
+"NOBODY PANIC!" Franky screamed, panicking. His {body_part} was covered in oil.
+
+"The ship is {verb_ing}!" Usopp wailed.
+
+"Ships don't {verb_ing}! That's the {adjective2} {noun} module malfunctioning!"
+
+Franky dove under the deck. He needed: {number} pounds of {noun}, a {color} {noun}, and {food}. The {food} was for him. He ran on cola and emotional support.
+
+{number} hours later, the ship was fixed. Sort of. The figurehead now faced backward. The kitchen smelled like {animal}. And the helm was stuck {verb_ing} to the left.
+
+"I'll fix it properly at {place}," Franky promised, his {body_part} giving a SUPER thumbs up.
+
+"We're going in circles," Nami noted.
+
+"SUPER CIRCLES!" Franky insisted.
+
+Luffy didn't care. He was sitting on the backward figurehead eating {food}. "THE VIEW IS BETTER THIS WAY! I CAN SEE WHERE WE'VE BEEN!"
+
+"That is the most {adjective2} thing you've ever said," Robin smiled.
+
+"Thank you!"
+
+"It wasn't a compliment."`},
+
+{icon:"🎯",title:"Target Practice with Usopp",tease:"The sniper king trains...",
+text:`"Watch this," Usopp said, loading his slingshot with a {adjective} {noun} Star. His target: a {color} {noun} on a rock {number} meters away.
+
+He fired. The {noun} Star flew through the air, {verb_past} off a seagull, ricocheted off {number} {plural_noun}, and hit... Zoro. In the {body_part}.
+
+"..."
+
+"...That was a WARNING SHOT!" Usopp declared, backing away slowly.
+
+Zoro pulled the {noun} Star out of his {body_part}. "You have {number} seconds to run."
+
+Usopp ran. He ran so fast his {body_part} became a blur. He hid at {place}. He disguised himself as a {adjective2} {animal}.
+
+"I can see you," Zoro said.
+
+"No you can't! I'm a {animal}!"
+
+"You're a liar wearing a {color} {noun}."
+
+From the ship, Luffy watched while eating {food}. "Zoro chasing Usopp is my favorite show," he said.
+
+"It happens every {number} days," Nami added. "Set your watch by it."
+
+Usopp survived. He always survived. It was, he'd argue, his greatest skill. That and his {adjective2} sniping. Which was, to be fair, actually incredible.`},
+
+{icon:"🌸",title:"Robin's Flowers",tease:"Arms everywhere. EVERYWHERE.",
+text:`Robin's Devil Fruit powers were acting up. Instead of arms, she was sprouting {plural_noun} everywhere.
+
+A {noun} grew from the mast. {number} {plural_noun} appeared on Zoro's {body_part}. A {color} one bloomed on Luffy's hat.
+
+"This is {adjective}," Robin said, trying to stop it. More {plural_noun} appeared.
+
+"ROBIN! There's a {noun} growing out of my {food}!" Sanji screamed. But he wasn't angry. He was {verb_ing}. "It's kind of {adjective2}, honestly."
+
+Chopper ran tests. "{number} extra {plural_noun} per minute! Your {body_part} is producing {number}% more than normal!"
+
+"Can you fix it?"
+
+"Eat this {color} {food}. It should stabilize your {body_part}."
+
+Robin ate it. The {plural_noun} stopped. But one remained — a single {adjective2} {noun} growing from the ship's figurehead.
+
+"Leave it," Luffy said. "It's cool."
+
+Robin smiled. She left it. Somehow, even her powers going wrong became something {adjective} about this crew.`},
+
+{icon:"⛵",title:"Becalmed",tease:"No wind. No food. No patience.",
+text:`Day {number} without wind. The Sunny sat motionless on a {color} sea. Nothing moved. Even the {animal}s in the water were {verb_ing} in place.
+
+"I'M BORED!" Luffy yelled. He'd already eaten all the {food}. And the backup {food}. And something Chopper said was definitely a {noun}, not food.
+
+Zoro was napping. His {body_part} twitched in his sleep. He was probably fighting {number} {animal}s in his dreams.
+
+"I could use a Coup de Burst," Franky said. "But we need {number} barrels of cola, and Luffy drank them all."
+
+"They were {adjective}!" Luffy defended.
+
+Nami stared at the sky. Then at her {adjective2} Log Pose. Then back at the sky. "Wind in {number} hours," she declared.
+
+"I WILL DIE IN {number} HOURS!" Luffy screamed.
+
+Sanji tried to cook with what remained: {number} {plural_noun}, a {color} {noun}, and something that used to be {food}.
+
+"I've made a {adjective2} consommé," Sanji announced.
+
+Luffy inhaled it. "MORE!"
+
+"There IS no more. That was literally everything."
+
+Luffy's {body_part} deflated. He lay flat on the deck. "Being a pirate is {adjective}," he moaned.
+
+"BEING YOUR CHEF IS {adjective2}!" Sanji screamed at the {color} sky.`},
+
+{icon:"👑",title:"Pirate King Problems",tease:"The crown is heavy...",
+text:`Luffy became Pirate King. Day one problems:
+
+1. {number} Marines trying to arrest him
+2. Big Mom demanding {food} as tribute  
+3. Shanks sent a gift: a {adjective} {noun}
+4. His {body_part} hurt from yesterday's fight
+5. He was hungry
+
+"SANJI! FOOD!"
+
+"You're the PIRATE KING! ACT LIKE IT!"
+
+"Pirate Kings need to eat {number} meals a day! I read it in a {noun}!"
+
+"You can't READ!"
+
+Zoro walked in with a {color} {animal} on his shoulder. He'd gotten lost going to the bathroom and ended up at {place}.
+
+Nami was counting berries. She had {number} of them and wasn't sharing.
+
+Robin was reading about the Void Century. Franky was building a {adjective2} weapon. Brook was writing a song. Usopp was lying about something. Chopper was trying to cure Luffy's {adjective} {body_part}.
+
+Normal day. Normal crew. The Pirate King sat on the figurehead of the Thousand Sunny, eating {food}, staring at the Grand Line, and grinning.
+
+"Best job ever," Luffy said, his {adjective2} straw hat catching the wind.
+
+It really was.`},
+
+{icon:"🌀",title:"Devil Fruit Swap Day",tease:"A mysterious island switches everyone's powers...",
+text:`A {adjective} island switched everyone's Devil Fruit powers. Luffy's rubber went to Chopper. Robin's flower powers went to Zoro. And Luffy got... nothing.
+
+"MY POWERS!" Luffy screamed, hitting a wall with a normal {body_part}. "OW! THAT HURTS NOW!"
+
+Chopper stretched his {body_part} and cried. "THIS IS {adjective2}! I DON'T WANT TO BE RUBBERY!"
+
+Zoro grew {number} arms. "{noun}... {noun}... {noun}..." He held a sword in each one. "{adjective2} SWORD STYLE!"
+
+"THAT'S NOT A REAL STYLE!" Nami screamed.
+
+Sanji accidentally set {number} {plural_noun} on fire. Franky was {verb_ing} uncontrollably. Brook turned {color} and couldn't stop {verb_ing}.
+
+"We need to find the island's {noun} to reverse this!" Robin said — from Usopp's body. They'd swapped {body_part}s too.
+
+After {number} hours of chaos, they found a {color} {noun} at the center of the island. Luffy punched it — with his normal, non-rubber {body_part}.
+
+"OW! OW OW OW OW!"
+
+Powers restored. Luffy stretched his {body_part} experimentally. "Never again."
+
+"Agreed," said everyone, eating {food} in traumatized silence.`},
+
+{icon:"🎣",title:"Fishing Day",tease:"Luffy vs. the fish. The fish wins.",
+text:`"FISHING DAY!" Luffy declared, holding a {adjective} rod with a {noun} as bait.
+
+Usopp cast his line into the {color} water. "I once caught {number} {animal}s in a single—"
+
+"No you didn't," everyone said.
+
+Luffy's rod bent. "I GOT SOMETHING!" He pulled. His {body_part} stretched. The line went taut.
+
+The "fish" surfaced. It was a {adjective2} {animal} the size of the Sunny. With {number} {body_part}s. And it was {verb_ing}.
+
+"THAT'S NOT A FISH!" Chopper screamed.
+
+"I'M CATCHING IT!" Luffy stretched more. The {animal} pulled. The Sunny started moving.
+
+"IT'S TOWING THE SHIP!" Nami screamed. "TOWARDS {place}!"
+
+Zoro drew his swords. "Let me cut the—"
+
+"NO! I'M CATCHING IT!" Luffy was now {number} meters away, still holding the rod, flying through the air like a {color} kite.
+
+Sanji sighed. "If he catches it, I can make {adjective} {food}."
+
+{number} minutes later, Luffy {verb_past} back onto the deck with the {animal}. It was exhausted. So was Luffy. The rod was destroyed.
+
+"SANJI! COOK THIS!"
+
+"...That's a {animal}."
+
+"COOK IT ANYWAY!"
+
+The {food} that night was, against all odds, {adjective2}.`},
+
+{icon:"🏴",title:"Jolly Roger Redesign",tease:"Luffy draws a new flag...",
+text:`"Our flag needs an update!" Luffy grabbed a {noun} and {color} paint. He drew for {number} minutes.
+
+The result: a skull wearing a straw hat, with a {adjective} {noun} for crossbones, surrounded by {number} {plural_noun}.
+
+"That's {adjective2}," Nami said diplomatically.
+
+"IT'S ART!" Luffy insisted.
+
+"It looks like a {animal} ate {food} and {verb_past}," Zoro said.
+
+"USOPP! Fix it!" Nami commanded.
+
+Usopp took over. His version was {adjective2} — clean lines, {color} accents, the straw hat perfectly rendered. Even Robin applauded.
+
+"I liked mine better," Luffy pouted.
+
+"Yours had a {noun} where the {body_part} should be."
+
+"THAT'S THE STYLE!"
+
+They compromised: Usopp's flag on the main mast, Luffy's on the bathroom door.
+
+"EVERYONE WILL SEE MY ART!" Luffy cheered.
+
+"Everyone who goes to the bathroom," Franky corrected.
+
+"EXACTLY!"
+
+The flag flew over the Sunny. {adjective2}. {color}. Theirs. A crew of {number} idiots, sailing toward the end of the world.
+
+"SET SAIL!" Luffy commanded, his {body_part} stretched toward the horizon. "THE NEXT ISLAND DEFINITELY HAS {food}!"`},
+
+{icon:"🧜",title:"Fishman Island Welcome",tease:"Underwater hospitality...",
+text:`The Straw Hats arrived at Fishman Island. It was {adjective}. {color} coral everywhere. {number} fish-people waving.
+
+"WELCOME, STRAW HATS!" King Neptune boomed. His {body_part} was enormous. His throne was made of {plural_noun}.
+
+"DO YOU HAVE {food}?!" Luffy yelled.
+
+"We have the finest {food} in the ocean! Prepared by {number} {adjective2} chefs!"
+
+Sanji fainted. Not from the food — from the mermaids. His {body_part} erupted in a nosebleed that could fill a {noun}.
+
+"Someone contain the chef," Zoro muttered, {verb_ing} through the palace.
+
+Luffy ate {number} plates. Chopper befriended a {color} {animal}. Franky complimented the architecture: "SUUUPER {adjective2} engineering!"
+
+Brook asked a mermaid to see her {body_part}. She slapped him with a {noun}. "Yohohoho! Worth it!"
+
+Usopp told the fish-children he once fought {number} {animal}s. They believed him. Underwater, his lies traveled faster.
+
+"I love this island," Luffy announced, his {body_part} full of {food}. "Let's never leave."
+
+"We have to leave," Nami said. "We're pirates."
+
+"PIRATES WHO LOVE {food}!"`},
+
+{icon:"🌋",title:"Punk Hazard Disaster",tease:"Half fire, half ice, all chaos...",
+text:`Punk Hazard: one half burning, one half frozen. Luffy immediately ran to the fire side. His {body_part} was immune to heat.
+
+"LUFFY! The {adjective} gas is poisonous!" Chopper screamed.
+
+"But there's a {color} {animal} over there!"
+
+"THAT'S A WEAPON!"
+
+Too late. Luffy befriended it. The {animal} was now {verb_ing} on his head. It weighed {number} pounds and smelled like {food}.
+
+On the ice side, Zoro was fighting {number} {adjective2} soldiers. He cut through them and a {noun}. And a wall. And accidentally carved his name into a glacier.
+
+"Was that necessary?" Robin asked.
+
+"The glacier was in my way."
+
+Law appeared. "You're all {adjective}. This is why I regret this alliance."
+
+"YOU LOVE US!" Luffy insisted, {verb_ing} with the {animal} still on his head.
+
+Law's {body_part} twitched. "I tolerate you. There's a {adjective2} difference."
+
+Sanji cooked {food} on the burning side of the island. Franky built a {noun} from the ice. Nami charged everyone {number} berries for warmth.
+
+"Normal day," Brook said, his bones chattering. "Though I have no {body_part} to feel cold with! YOHOHOHO!"`}
+];
+
+const RANDOMS={noun:["barrel","treasure map","anchor","cannon","log pose","straw hat","wanted poster","jolly roger","sake bottle","den den mushi"],plural_noun:["cannonballs","treasure chests","sea charts","wanted posters","pirate flags","devil fruits","marines","rubber bands","mystery barrels"],adjective:["rubbery","legendary","cursed","stolen","enormous","suspicious","ancient","soggy","flaming","forbidden"],adjective2:["absolutely legendary","cosmically ridiculous","dangerously delicious","historically unprecedented","magnificently chaotic","profoundly weird","strategically useless","hilariously dangerous"],verb_past:["rocketed","catapulted","exploded","somersaulted","combusted","yeeted","bounced","careened","torpedoed","launched"],verb_ing:["stretching","sword-fighting","cooking","navigating","panicking","flexing","lying","bouncing","snoring","monologuing"],body_part:["fist","rubber arm","straw hat","sword hand","entire torso","nose","jaw","forehead","knee","ribcage"],number:["1,000,000","47","3","800","10,000","69","420","7","1 billion","100"],color:["straw-hat yellow","marine blue","blood red","gold","jolly roger black","sea-foam green","pirate crimson","sunset orange"],food:["meat","SEA KING STEAK","takoyaki","rice balls","Sanji's special","a whole fish","mystery soup","cotton candy"],animal:["sea king","News Coo","Laboon","transponder snail","giant goldfish","kung-fu dugong","sky shark","island whale"],place:["the Grand Line","Laugh Tale","Whole Cake Island","Water 7","Wano","Baratie","Impel Down","Fishman Island"]};
+
+let words={},selectedStory=null;
+function renderPicker(){const app=document.getElementById('app');let grid=STORIES.map((s,i)=>`<div class="story-card" onclick="pickStory(${i})"><div class="icon">${s.icon}</div><div class="name">${s.title}</div><div class="tease">${s.tease}</div></div>`).join('');app.innerHTML=`<div class="card" style="text-align:center;padding:28px 24px;"><div style="font-size:48px;margin-bottom:6px">🏴‍☠️</div><div class="title">One Piece Mad Libs<span class="sm">Set sail for hilarious stories!</span></div></div><div class="card"><div style="font-family:'Chewy',cursive;font-size:22px;text-align:center;margin-bottom:4px">Pick a Story</div><div style="font-size:13px;color:#997755;font-weight:600;text-align:center;margin-bottom:16px">25 stories — the Grand Line has never been this funny!</div><div class="story-grid">${grid}</div></div>`;window.scrollTo({top:0,behavior:'smooth'});}
+function pickStory(i){selectedStory=i;renderInputs();}
+function renderInputs(){const s=STORIES[selectedStory];let fields=PROMPTS.map(p=>`<div class="prompt-item"><label>${p.label}</label><input type="text" id="w_${p.id}" placeholder="${p.placeholder}" oninput="checkReady()"></div>`).join('');document.getElementById('app').innerHTML=`<div class="card" style="text-align:center;"><div style="font-size:32px;margin-bottom:4px">${s.icon}</div><div style="font-family:'Chewy',cursive;font-size:22px;margin-bottom:2px">${s.title}</div><div style="font-size:13px;color:#997755;font-weight:600;margin-bottom:16px">Fill in the words — no peeking!</div><button class="random-btn" onclick="randomFill()">🎲 Random Fill</button><div class="prompt-grid">${fields}</div><div style="margin-top:16px;"><button class="bb go" id="btn-go" disabled onclick="showStory()">📖 Read My Story!</button><button class="bb" onclick="renderPicker()">← Pick Different Story</button></div></div>`;window.scrollTo({top:0,behavior:'smooth'});}
+function randomFill(){PROMPTS.forEach(p=>{const b=RANDOMS[p.id];document.getElementById('w_'+p.id).value=b[Math.floor(Math.random()*b.length)];});checkReady();}
+function checkReady(){document.getElementById('btn-go').disabled=!PROMPTS.every(p=>document.getElementById('w_'+p.id).value.trim());}
+function showStory(){words={};PROMPTS.forEach(p=>{words[p.id]=document.getElementById('w_'+p.id).value.trim();});const s=STORIES[selectedStory];let html=s.text.replace(/\{(\w+)\}/g,(m,k)=>`<span class="blank">${words[k]||m}</span>`);document.getElementById('app').innerHTML=`<div class="card"><div style="font-size:40px;text-align:center;margin-bottom:6px">${s.icon}</div><div class="story-title-display">${s.title}</div><div class="story-text">${html}</div></div><div class="card" style="text-align:center;"><button class="bb pick" onclick="renderPicker()">📝 Pick Another Story</button><button class="bb" onclick="renderInputs()">🔄 Same Story, New Words</button><button class="bb" onclick="readAnother()">📖 Read Another (Same Words)</button></div>`;window.scrollTo({top:0,behavior:'smooth'});}
+function readAnother(){let idx;do{idx=Math.floor(Math.random()*STORIES.length);}while(idx===selectedStory);selectedStory=idx;const s=STORIES[selectedStory];let html=s.text.replace(/\{(\w+)\}/g,(m,k)=>`<span class="blank">${words[k]||m}</span>`);document.getElementById('app').innerHTML=`<div class="card"><div style="font-size:40px;text-align:center;margin-bottom:6px">${s.icon}</div><div class="story-title-display">${s.title}</div><div class="story-text">${html}</div></div><div class="card" style="text-align:center;"><button class="bb pick" onclick="renderPicker()">📝 Pick Another Story</button><button class="bb" onclick="renderInputs()">🔄 New Words</button><button class="bb" onclick="readAnother()">📖 Read Another (Same Words)</button></div>`;window.scrollTo({top:0,behavior:'smooth'});}
+renderPicker();
+</script>
+</body>
+</html>

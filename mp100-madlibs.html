@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mob Psycho 100 Mad Libs | Fan Cannon</title>
+<meta name="description" content="Fill in the blanks and create hilarious Mob Psycho 100 stories! 25 Mad Libs stories featuring Mob, Reigen, and the gang.">
+<link href="https://fonts.googleapis.com/css2?family=Chewy&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Nunito',sans-serif;overflow-x:hidden;min-height:100vh;}
+.world{min-height:100vh;background:linear-gradient(180deg,#2d1b69 0%,#1a1145 40%,#0f0a2e 70%,#1a0a3e 100%);position:relative;}
+/* Psychic energy particles */
+.particle{position:fixed;border-radius:50%;z-index:0;animation:float 8s ease-in-out infinite;opacity:0.15;}
+.p1{width:200px;height:200px;background:radial-gradient(circle,#7b2ff7,transparent);top:10%;left:5%;animation-delay:0s;}
+.p2{width:150px;height:150px;background:radial-gradient(circle,#e040a0,transparent);top:60%;right:5%;animation-delay:2s;}
+.p3{width:180px;height:180px;background:radial-gradient(circle,#40c0ff,transparent);top:30%;left:60%;animation-delay:4s;}
+@keyframes float{0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(-30px) scale(1.1);}}
+.gc{position:relative;z-index:1;max-width:680px;margin:0 auto;padding:20px 16px;}
+.card{background:rgba(30,20,60,0.9);border-radius:4px;border:3px solid #7b2ff7;padding:24px 20px;box-shadow:0 4px 20px rgba(123,47,247,0.15);margin-bottom:14px;animation:ci .4s ease;color:#e0d0f0;}
+@keyframes ci{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+.title{font-family:'Chewy',cursive;font-size:36px;color:#c77dff;line-height:1.1;text-align:center;margin-bottom:4px;}
+.title .sm{font-size:20px;color:#e040a0;display:block;}
+.story-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px;margin-bottom:8px;}
+.story-card{padding:14px;border:2px solid #444;border-radius:4px;background:rgba(40,25,80,0.8);cursor:pointer;transition:all .15s;text-align:center;color:#e0d0f0;}
+.story-card:hover{background:rgba(123,47,247,0.15);border-color:#7b2ff7;transform:translate(-2px,-2px);box-shadow:4px 4px 0 rgba(123,47,247,.2);}
+.story-card .icon{font-size:28px;margin-bottom:4px;}
+.story-card .name{font-family:'Chewy',cursive;font-size:16px;line-height:1.2;}
+.story-card .tease{font-size:11px;color:#9980c0;font-weight:600;margin-top:2px;}
+.prompt-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.prompt-item{display:flex;flex-direction:column;gap:4px;}
+.prompt-item label{font-size:12px;font-weight:800;color:#9980c0;text-transform:uppercase;letter-spacing:.5px;}
+.prompt-item input{padding:10px 12px;border:2px solid #444;border-radius:4px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;color:#e0d0f0;background:rgba(40,25,80,0.6);transition:border-color .2s;}
+.prompt-item input:focus{outline:none;border-color:#7b2ff7;background:rgba(60,35,100,0.8);}
+.prompt-item input::placeholder{color:#665599;}
+.bb{display:block;width:100%;padding:14px 20px;border:3px solid #555;border-radius:4px;font-family:'Nunito',sans-serif;font-size:16px;font-weight:800;cursor:pointer;transition:all .15s;margin-bottom:8px;text-align:center;background:rgba(40,25,80,0.6);color:#c77dff;}
+.bb:hover{transform:translate(-2px,-2px);box-shadow:4px 4px 0 rgba(123,47,247,.2);border-color:#7b2ff7;}
+.bb.go{background:rgba(123,47,247,0.2);border-color:#7b2ff7;font-family:'Chewy',cursive;font-size:22px;color:#c77dff;}
+.bb.go:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none;}
+.bb.pick{background:rgba(224,64,160,0.15);border-color:#e040a0;color:#e040a0;font-family:'Chewy',cursive;font-size:18px;}
+.random-btn{display:inline-block;padding:8px 16px;border:2px solid #555;border-radius:4px;font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;cursor:pointer;background:rgba(40,25,80,0.6);color:#9980c0;transition:all .15s;margin-bottom:12px;}
+.random-btn:hover{border-color:#e040a0;color:#e040a0;}
+.story-text{font-size:17px;line-height:1.8;color:#d0c0e0;white-space:pre-line;}
+.story-text em{color:#9980c0;}
+.story-text .blank{font-weight:900;color:#e040a0;background:rgba(224,64,160,.1);padding:1px 6px;border-radius:4px;border-bottom:2px solid #e040a0;}
+.story-title-display{font-family:'Chewy',cursive;font-size:28px;color:#c77dff;text-align:center;margin-bottom:16px;}
+.ending-type{font-size:13px;color:#665599;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;text-align:center;}
+.stats-row{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
+.stat{flex:1;min-width:calc(50% - 4px);background:rgba(123,47,247,.08);border:2px solid #444;border-radius:4px;padding:10px 8px;text-align:center;}
+.stat .n{font-family:'Chewy',cursive;font-size:24px;color:#c77dff;}
+.stat .l{font-size:11px;color:#665599;font-weight:800;text-transform:uppercase;}
+.nav{position:sticky;top:0;z-index:100;background:rgba(26,17,69,.95);backdrop-filter:blur(12px);border-bottom:1px solid rgba(123,47,247,.2);padding:8px 16px;display:flex;align-items:center;gap:10px;font-family:'Nunito',sans-serif;}
+.nav a{text-decoration:none;color:#9980c0;font-size:13px;font-weight:700;transition:color .2s;}
+.nav a:hover{color:#c77dff;}
+.nav .sep{color:rgba(255,255,255,.15);font-size:18px;}
+.nav .pg{font-size:13px;font-weight:600;color:rgba(255,255,255,.3);}
+@media(max-width:500px){.title{font-size:28px;}.story-grid{grid-template-columns:1fr 1fr;}.prompt-grid{grid-template-columns:1fr;}.story-card .name{font-size:14px;}}
+</style>
+</head>
+<body>
+<div class="nav"><a href="mobpsycho-universe.html">← MP100 Universe</a><span class="sep">|</span><span class="pg">Mob Psycho 100 Mad Libs</span></div>
+<div class="world">
+<div class="particle p1"></div><div class="particle p2"></div><div class="particle p3"></div>
+<div class="gc"><div id="app"></div></div>
+</div>
+<script>
+const PROMPTS = [
+  {id:"noun",label:"A Noun",placeholder:"e.g. toaster"},
+  {id:"plural_noun",label:"Plural Noun",placeholder:"e.g. socks"},
+  {id:"adjective",label:"An Adjective",placeholder:"e.g. sweaty"},
+  {id:"adjective2",label:"Another Adjective",placeholder:"e.g. enormous"},
+  {id:"verb_past",label:"Verb (Past Tense)",placeholder:"e.g. somersaulted"},
+  {id:"verb_ing",label:"Verb (-ing)",placeholder:"e.g. dabbing"},
+  {id:"body_part",label:"Body Part",placeholder:"e.g. kneecap"},
+  {id:"number",label:"A Number",placeholder:"e.g. 42"},
+  {id:"color",label:"A Color",placeholder:"e.g. neon pink"},
+  {id:"food",label:"A Food",placeholder:"e.g. nachos"},
+  {id:"emotion",label:"An Emotion",placeholder:"e.g. confused"},
+  {id:"place",label:"A Place",placeholder:"e.g. the grocery store"},
+];
+
+const STORIES = [
+{icon:"💯",title:"Mob Hits 100%",tease:"The explosion counter reaches max...",
+text:`Mob's emotion meter hit 100% — but instead of the usual explosion, something unexpected happened. His {body_part} started glowing {color} and he began {verb_ing} uncontrollably.
+
+"Master Reigen!" Mob called out, feeling {emotion}. "I think I'm going to {verb_past}!"
+
+Reigen, without missing a beat, said: "This is perfectly normal, Mob. It's called the {adjective} Spirit Technique. I invented it. That'll be {number} yen."
+
+{number} {plural_noun} materialized around Mob, floating in the air. Dimple stared. "Kid, that's not psychic power. That's just {food}."
+
+Mob looked down. He was surrounded by floating {food}. His emotion counter reset to 0%.
+
+"I feel {emotion} now," Mob said quietly. And honestly? That was probably for the best.`},
+
+{icon:"🧅",title:"Reigen's New Technique",tease:"He's making it up. Again.",
+text:`Reigen stood before his client with absolute confidence. "Your house isn't haunted," he declared. "It's being possessed by a {adjective} {noun}. Very common."
+
+The client looked terrified. "What do we do?!"
+
+"Fortunately, I've mastered the {adjective2} Exorcism Method." Reigen pulled out a {noun}, held it above his head, and began {verb_ing} in a circle.
+
+Mob watched from the doorway, feeling {emotion}.
+
+"SPIRIT BEGONE!" Reigen shouted, throwing {food} at the wall. A picture frame fell. "See? Exorcised."
+
+The client paid {number} yen. As they left, Mob said quietly, "Master, there WAS a spirit in there."
+
+"I know," Reigen whispered. "It {verb_past} when I started {verb_ing}. Spirits hate that."
+
+Dimple appeared. "He's not wrong. I also wanted to leave."
+
+Reigen's {body_part} swelled with pride. "Another satisfied customer. Let's get {food}."`},
+
+{icon:"💪",title:"Body Improvement Club",tease:"Muscle training gets weird...",
+text:`"TODAY'S WORKOUT," the Body Improvement Club captain announced, "IS {number} REPS OF {verb_ing}!"
+
+Mob looked {emotion}. The other members were already {verb_ing} enthusiastically, their {body_part}s glistening with sweat.
+
+"Mob! You can do this!" they chanted. "We believe in your {adjective} potential!"
+
+Mob attempted one rep. A {noun} fell out of his gym bag. Then {number} {plural_noun} flew across the room — psychic energy leaking again.
+
+"INCREDIBLE!" the captain screamed. "MOB JUST INVENTED A NEW EXERCISE! THE {adjective2} {noun} LIFT!"
+
+Everyone tried to copy Mob by throwing {plural_noun} around the gym. The gym teacher walked in, saw the chaos, and walked right back out.
+
+"I just wanted to do normal exercises," Mob said, feeling {emotion}.
+
+"MOB! YOUR {body_part} IS LOOKING {adjective2}!" the captain shouted. "KEEP IT UP!"
+
+Mob's emotion meter: 45%.`},
+
+{icon:"👻",title:"Dimple's Grand Plan",tease:"World domination, take 47...",
+text:`"Listen, Shigeo," Dimple floated in front of Mob. "I have a plan to become the greatest spirit in the world."
+
+"I'm not interested," Mob said, eating {food}.
+
+"HEAR ME OUT. Step one: possess {number} {plural_noun}. Step two: build a {adjective} army. Step three: take over {place}."
+
+"That sounds {adjective2}."
+
+"Step four: make everyone worship a giant {color} {noun}. Step five: profit."
+
+Mob's {body_part} twitched. "Dimple, last time you tried this, you {verb_past} and Reigen had to save you by {verb_ing}."
+
+Dimple went quiet. "...That was different. I was feeling {emotion}."
+
+A pause. Then: "What if the {noun} was really big though?"
+
+"No, Dimple."
+
+"What if it was {adjective2}?"
+
+"Still no."
+
+Dimple sighed and floated through a wall. Mob went back to his {food}. Another crisis averted.`},
+
+{icon:"🏫",title:"Salt Middle School Incident",tease:"Homeroom gets complicated...",
+text:`The teacher was explaining {adjective} mathematics when Mob accidentally made {number} {plural_noun} levitate.
+
+"Kageyama! Stop that!"
+
+"Sorry," Mob whispered, feeling {emotion}. The {plural_noun} dropped. One landed on Tsubomi's {body_part}. She didn't notice. She never noticed anything Mob did.
+
+Meanwhile, Ritsu was in the student council room, organizing {plural_noun} by color. He'd arranged {number} perfectly when Shou burst through the window.
+
+"RITSU! There's a {adjective2} {noun} in the gymnasium and it's {verb_ing}!"
+
+They ran to the gym. Inside, a spirit shaped like a giant {food} was hovering over the volleyball net.
+
+"I'm the Spirit of {place}!" it announced. "Fear my {color} power!"
+
+Mob walked in, felt {emotion}, and exorcised it in three seconds.
+
+"That was the most {adjective2} thing I've ever seen," Shou said.
+
+"I missed math class for this," Mob replied.`},
+
+{icon:"🎭",title:"The Psycho Helmet Cult",tease:"New recruitment methods...",
+text:`The Psycho Helmet cult was trying new recruitment tactics. Their latest pamphlet read:
+
+"JOIN US! Benefits include:
+- A free {adjective} {noun}
+- {number} servings of {food} per week  
+- Your {body_part} will feel {adjective2}
+- Complimentary {verb_ing} sessions"
+
+Dimple, possessing the cult's giant broccoli mascot, was handing these out at {place}. {number} people had already signed up.
+
+"This is wrong," Mob said, feeling {emotion}.
+
+"It's called MARKETING, Shigeo!" Dimple protested, {verb_ing} in the broccoli suit. "Everyone gets a free {noun}! What's wrong with that?"
+
+Reigen grabbed a pamphlet. "This is terrible. The font is {adjective2}. Let me redesign it. That'll be {number} yen."
+
+"You're ALL missing the point," Mob said. His emotion meter crept to 73%.
+
+The broccoli suit {verb_past}. Dimple floated out looking {emotion}. "Fine. No more cult."`},
+
+{icon:"🔮",title:"The Fake Psychic Convention",tease:"Reigen fits right in...",
+text:`Reigen signed up for the Annual Psychic Convention. His booth read: "GREATEST PSYCHIC OF THE 21ST CENTURY — CONSULTATIONS {number} YEN."
+
+Next to him, an actual psychic was levitating {plural_noun}. On the other side, someone was turning a {noun} {color} with their mind.
+
+Reigen was offering massages and calling them "{adjective} Spirit Cleansing."
+
+"How is that psychic?" a customer asked.
+
+"My {body_part} has spiritual sensitivity," Reigen explained, completely serious. "When I touch your {body_part}, I can feel the {adjective2} energy leaving your body."
+
+"That's just a massage."
+
+"A PSYCHIC massage. There's a difference. It costs {number} yen more."
+
+Mob stood behind the booth, feeling {emotion}. A real spirit was {verb_ing} directly above Reigen's head.
+
+"Master, there's a spirit—"
+
+"Not now, Mob, I'm with a client."
+
+Mob exorcised it silently. The client's {food} flew off the table.
+
+"SEE?" Reigen pointed triumphantly. "SPIRITS. That'll be double."`},
+
+{icon:"⚡",title:"Mob vs. Claw",tease:"The evil organization wasn't ready...",
+text:`The Claw boss stood atop his {adjective} fortress. "BEHOLD! My {adjective2} plan is complete! With this {color} {noun}, I will control every {body_part} on Earth!"
+
+"That seems excessive," said Mob, who had been standing there for {number} minutes waiting for the monologue to end.
+
+"SILENCE! My army of {number} espers will crush you!"
+
+The army appeared. They were all {verb_ing}. One was eating {food}.
+
+Mob felt {emotion}. His counter hit 89%. Then 95%. Then...
+
+"I don't want to fight," Mob said.
+
+The Claw boss blinked. "What?"
+
+"Fighting is {adjective2}. Can we just talk about this over {food}?"
+
+Long pause. "...Nobody's ever asked me that before."
+
+They went to {place} and shared {plural_noun}. The Claw boss cried into his {food}. Mob listened.
+
+"I just wanted friends," the boss admitted.
+
+"You could have just said that," Mob replied, feeling {emotion}.
+
+Reigen showed up with the bill. "Emotional counseling. {number} yen. You're welcome."`},
+
+{icon:"🥦",title:"The Broccoli Incident",tease:"Never trust sentient vegetables...",
+text:`A {adjective} broccoli appeared in Seasoning City. It was {number} feet tall and {verb_ing}.
+
+"This is CLEARLY a spiritual manifestation," Reigen declared, holding a {noun} like a weapon.
+
+"It's a broccoli," Mob said.
+
+"A SPIRITUAL broccoli."
+
+The broccoli picked up a {noun} and threw it at {place}. {number} people ran screaming. Someone's {food} went flying.
+
+Dimple emerged from the broccoli. "SURPRISE! This is my new body! Isn't it {adjective2}?"
+
+"Dimple, you can't just become a giant broccoli in the middle of the city."
+
+"Why not? My {body_part} feels amazing in here! I can feel every {color} molecule!"
+
+Mob sighed, feeling {emotion}. He gently exorcised Dimple from the broccoli, which collapsed into {number} {plural_noun}.
+
+A news reporter arrived. Reigen stepped in front of the camera. "I, Reigen Arataka, have defeated the {adjective2} Broccoli Spirit using my legendary technique. Consultations available at—"
+
+Mob {verb_past} home.`},
+
+{icon:"😊",title:"Mob Tries to Smile",tease:"Social skills are hard...",
+text:`Mob was practicing smiling in the mirror. Attempt #{number}: his face looked like a {adjective} {noun}.
+
+"You look {emotion}," Ritsu said from the doorway.
+
+"I'm trying to be approachable. Tsubomi said I always look like I'm {verb_ing}."
+
+Ritsu sat down. "Try thinking of something {adjective2}."
+
+Mob thought of {food}. His expression didn't change.
+
+"Try {plural_noun}."
+
+Nothing.
+
+"Try thinking about Reigen falling off a {noun}."
+
+The tiniest smile appeared. His {body_part} relaxed. For exactly 0.3 seconds, Mob looked genuinely happy.
+
+Then his psychic powers activated and every {noun} in the house started floating.
+
+"Smiling is dangerous," Mob concluded, feeling {emotion}.
+
+"Maybe just wave instead," Ritsu suggested, picking {color} {plural_noun} out of his hair.`},
+
+{icon:"🏃",title:"The Marathon Race",tease:"Mob runs with the club...",
+text:`The Body Improvement Club entered Mob in the Seasoning City Marathon. His number was {number}.
+
+"MOB! YOU CAN DO THIS!" they cheered, {verb_ing} alongside him.
+
+Mob was in last place. His {body_part} hurt. He felt {emotion}. But he kept running.
+
+At mile 3, he passed a {adjective} {noun} on the side of the road. At mile 5, he accidentally levitated {number} {plural_noun}. By mile 8, a {color} aura was leaking from his body.
+
+"Is that kid GLOWING?" someone asked.
+
+"It's called DETERMINATION," the club captain screamed, carrying Mob's {food} in a bag.
+
+Mob crossed the finish line in {number}th place. Dead last. But the Body Improvement Club lifted him on their shoulders like he'd won.
+
+"THAT WAS THE MOST {adjective2} THING EVER!" they shouted.
+
+Mob felt {emotion}. His counter read: 98%. But instead of exploding, he just... smiled.
+
+Then every {noun} in a two-block radius floated three feet in the air. Still counts.`},
+
+{icon:"🎹",title:"Mob Joins a Band",tease:"His rhythm is... psychic...",
+text:`The school talent show needed acts. Mob signed up to play the {noun}.
+
+"Can you play the {noun}?" the teacher asked.
+
+"No," Mob replied. "But I thought I should try new things."
+
+Practice was {adjective}. Every time Mob hit a note, {plural_noun} vibrated across the room. His {body_part} glowed {color} when he played the chorus.
+
+"That's... not music," Ritsu said, feeling {emotion}.
+
+On show night, Mob walked on stage. {number} people in the audience. Tsubomi was in row 3.
+
+He played. It was terrible. But his psychic energy filled the room with {adjective2} floating lights. {color} particles danced above the audience. {plural_noun} orbited the ceiling.
+
+Nobody could hear the {noun} over the gasps. It was the most beautiful disaster anyone had seen.
+
+"What was THAT?" the teacher asked.
+
+"I {verb_past}," Mob said.
+
+He got a standing ovation. Reigen immediately printed business cards: "MOB'S {adjective2} LIGHT SHOW — bookings through Spirits & Such. {number} yen."`},
+
+{icon:"🏠",title:"Haunted House Job",tease:"A routine exorcism... right?",
+text:`"It's a simple job," Reigen told Mob. "The client says their {noun} is haunted. We go in, look {adjective}, charge {number} yen."
+
+They arrived at {place}. The house was {color}. The door opened by itself.
+
+"Totally normal," Reigen said, sweating from his {body_part}.
+
+Inside, every {noun} was floating. The {food} in the fridge was {verb_ing}. A voice whispered: "LEAVE THIS {adjective2} PLACE."
+
+"Ha! A level 2 spirit at most," Reigen said, pulling out a {noun}. He threw salt at the wall. Nothing happened.
+
+Mob walked to the center of the room. "There are actually {number} spirits in here. They're feeling {emotion}."
+
+"Feeling... {emotion}?"
+
+"They're {adjective2} ghosts who just wanted someone to bring them {food}. They've been alone for {number} years."
+
+Mob exorcised them gently. As they faded, one whispered: "Thank you. We just wanted {plural_noun}."
+
+Reigen sniffled. "That was beautiful. I'm adding a surcharge for emotional labor."`},
+
+{icon:"🌪️",title:"???% Takes a Walk",tease:"Mob isn't home right now...",
+text:`Mob blacked out. When ???% took over, things got {adjective}.
+
+???% walked down the street. Every {noun} within {number} meters floated into the air. Cars. {plural_noun}. Someone's {food}. A {color} cat.
+
+"Excuse me," said a police officer, "you can't just levitate {plural_noun} in public—"
+
+???% looked at him. The officer's {body_part} felt {emotion}. He backed away.
+
+Reigen found ???% at {place}, sitting on a pile of floating {plural_noun}, looking {adjective2}.
+
+"Mob! Snap out of it!"
+
+No response.
+
+"MOB! I'll give you {number} yen!"
+
+Nothing.
+
+Reigen sighed and did the one thing that always worked. He walked up and put his hand on Mob's {body_part}. "Hey, kid. It's okay. You're {adjective}. But you're also good. Come back."
+
+The {plural_noun} slowly lowered. Mob blinked. "...Master?"
+
+"Welcome back. You owe me for emotional counseling. {number} yen."
+
+Mob felt {emotion}. But he was home.`},
+
+{icon:"🧹",title:"Cleaning Day at Spirits & Such",tease:"The office needs work...",
+text:`Reigen's office hadn't been cleaned in {number} weeks. The desk was covered in {plural_noun}. Someone's {food} had been sitting on the shelf so long it had turned {color}.
+
+"Mob. Today we clean."
+
+Mob could have used psychic powers to clean in 3 seconds. Instead, Reigen handed him a {noun} and a bucket of {adjective} water.
+
+"Why can't I use my powers?" Mob asked, feeling {emotion}.
+
+"Because, Mob, using psychic powers for everything makes you {adjective2}. Manual labor builds character. Now scrub that {body_part} — I mean, scrub that floor."
+
+Mob scrubbed. After {number} hours, the office looked worse. He'd found {number} {plural_noun} behind the couch, a {adjective2} {noun} under the desk, and something that was either {food} or a spirit.
+
+"I think that {noun} just moved," Mob said.
+
+"Ignore it. If we can't see its {body_part}, it's not a real spirit."
+
+"That's not how spirits work, Master."
+
+"That's EXACTLY how spirits work. I wrote the book."
+
+"You didn't write any book."
+
+"I'm writing one now. '{adjective} Exorcism for Beginners.' Chapter one: deny everything."
+
+Mob continued scrubbing. His emotion meter: 15%. Stable. Just a normal day at {place}.`},
+
+{icon:"🎓",title:"Ritsu's Student Council",tease:"Running the school his way...",
+text:`Ritsu's student council meeting agenda:
+1. Budget for {number} new {plural_noun}
+2. Ban {verb_ing} in hallways  
+3. Address the {adjective} {noun} that appeared in the science lab
+4. Brother's psychic powers (ongoing concern)
+
+"Item three," Ritsu announced. "The {noun} in the science lab is now {color} and has grown a {body_part}."
+
+"Should we call your brother?" someone asked.
+
+Ritsu's eye twitched. "We can handle this WITHOUT my brother."
+
+They tried. Ritsu poked the {noun} with a {adjective2} stick. It {verb_past}. {number} {plural_noun} fell from the ceiling.
+
+"Fine. Call Mob."
+
+Mob arrived, feeling {emotion}. He looked at the {noun}. It looked back.
+
+"It's just {emotion}," Mob said. "It wants {food}."
+
+They gave it {food}. It stopped being {adjective2} immediately.
+
+"This is why I run the student council," Ritsu muttered. "Because THIS SCHOOL needs someone {adjective} in charge."
+
+The {noun} ate his notes. Ritsu's {body_part} turned {color} with frustration.`},
+
+{icon:"🎮",title:"Mob Plays Video Games",tease:"The console didn't survive...",
+text:`Ritsu convinced Mob to play video games. "It'll be fun. Normal kids do this."
+
+Mob held the controller. His character walked into a wall for {number} seconds.
+
+"Press the {adjective} button," Ritsu said.
+
+Mob pressed it. His character {verb_past}. Then every {noun} on screen turned {color}. Then the TV started floating.
+
+"Mob. Let go of the controller."
+
+"I can't. I'm feeling {emotion}." His {body_part} was glowing. The controller cracked.
+
+Ritsu grabbed a {noun} and tried to ground the TV. It didn't work. {number} {plural_noun} in the room started orbiting Mob's head.
+
+"THIS IS WHY I SAID BOARD GAMES!" Ritsu shouted.
+
+The TV {verb_past}. The game console made a {adjective2} sound and died. The screen displayed: "HIGH SCORE: {number}."
+
+"Did I win?" Mob asked, feeling {emotion}.
+
+"You destroyed {number} yen worth of electronics."
+
+Mob went back to reading. Safer for everyone.`},
+
+{icon:"🍜",title:"Ramen Night",tease:"Even dinner is an event...",
+text:`Mob, Ritsu, and Reigen went to a ramen shop at {place}. Mob ordered the {adjective} Special. Reigen ordered {number} bowls because "a client is paying."
+
+"No client is paying," Mob said.
+
+"A FUTURE client."
+
+The ramen arrived. It was {color}. The broth smelled like {food} mixed with {plural_noun}.
+
+"This is {adjective2}," Ritsu said, {verb_ing} his noodles suspiciously.
+
+Mob took one bite. The ramen was so {adjective} that his emotion meter spiked to 67%. Chopsticks across the restaurant floated. Someone's {noun} levitated off their {body_part}.
+
+"KID! CALM DOWN!" the chef shouted. "It's just ramen!"
+
+"It's REALLY good ramen," Mob said, feeling {emotion}.
+
+Reigen was already on his {number}th bowl. "Mob, tip well. We need this place to stay open."
+
+Dimple appeared and tried to possess the ramen. The broth exorcised HIM. He floated away looking {adjective2}.
+
+"Even the soup is powerful here," Mob whispered.`},
+
+{icon:"🎪",title:"The School Festival",tease:"Mob's class is doomed...",
+text:`Mob's class voted on their school festival booth: a {adjective} haunted house. Mob was put in charge of "special effects."
+
+"Just use your powers," his classmate said.
+
+Mob felt {emotion}. He didn't want to use powers for entertainment. But {number} people were counting on him.
+
+On festival day, the haunted house was {adjective2}. Mob made {plural_noun} float, turned the lights {color}, and created a wind that blew everyone's {food} out of their hands.
+
+One kid walked in, saw a floating {noun}, screamed, and {verb_past} out the emergency exit.
+
+Tsubomi walked through. She wasn't scared. "The floating {plural_noun} are a nice touch," she said, and Mob's {body_part} nearly exploded.
+
+Emotion meter: 94%.
+
+"EVERYONE OUT!" Ritsu screamed, seeing the counter on Mob's face. The haunted house was evacuated.
+
+Final result: Best Booth Award. Also: {number} yen in property damage.
+
+"Worth it," the class agreed. Mob was feeling {emotion}.`},
+
+{icon:"🌙",title:"Late Night Exorcism",tease:"3 AM calls are the worst...",
+text:`Reigen's phone rang at 3 AM. "Spirits and Such, we're {adjective}ly open 24/7."
+
+"THERE'S A {noun} IN MY {body_part}— I MEAN IN MY HOUSE!"
+
+Reigen woke up Mob. They drove to {place}. The house was vibrating. {number} {plural_noun} were spinning in the yard.
+
+"Standard haunting," Reigen yawned. "Mob, do the thing."
+
+Mob walked in. The spirit was massive — {color}, shaped like a {adjective2} {animal if applicable, otherwise noun}, and it was {verb_ing} on the ceiling.
+
+Wait — it wasn't a spirit. It was just Dimple, sleep-haunting.
+
+"DIMPLE! WAKE UP!"
+
+Dimple opened one eye. "Huh? Where... why am I at {place}?"
+
+"You possessed someone's house in your SLEEP."
+
+"Oh." Dimple looked at the terrified homeowner. "...My bad."
+
+Reigen charged them {number} yen anyway. "Dream exorcism. Very rare. Very {adjective2}."`},
+
+{icon:"📚",title:"Mob's Homework",tease:"Even studying is dangerous...",
+text:`Mob sat down to do homework. The assignment: write {number} sentences about {adjective} {plural_noun}.
+
+He concentrated. His pencil started moving. Then it moved TOO fast — psychic auto-writing kicked in.
+
+The paper filled with sentences like: "The {noun} {verb_past} across {place} while feeling {emotion}" and "{number} {color} {plural_noun} are more {adjective2} than anyone realizes."
+
+"This isn't what the teacher asked for," Ritsu pointed out.
+
+"I know. But my {body_part} won't stop writing."
+
+The pencil broke. Mob grabbed another. It also broke. He went through {number} pencils before Ritsu tackled his hand.
+
+"USE A COMPUTER."
+
+Mob touched the keyboard. Every file on the computer opened simultaneously. The screen turned {color}. A spirit that had been living in the hard drive {verb_past} out and hid in the {noun}.
+
+"I'll just ask Reigen for help," Mob said.
+
+"Reigen failed middle school."
+
+"...I'll ask the Body Improvement Club."
+
+"THEY failed middle school HARDER."
+
+Mob felt {emotion} and submitted the psychic essay. He got a C+. The teacher's comment: "{adjective2}, but I don't think this is what I asked for."`},
+
+{icon:"🎂",title:"Mob's Birthday",tease:"Surprise! Kind of...",
+text:`It was Mob's birthday. Reigen organized a "surprise" party at Spirits and Such.
+
+"SURPRISE!" shouted Reigen, Dimple, and {number} clients who'd been promised a discount.
+
+Mob wasn't surprised. He'd sensed {number} auras hiding in the office. "Thank you," he said, feeling {emotion}.
+
+The cake was {color} and shaped like a {noun}. Reigen had ordered it from {place}. It tasted like {food} mixed with {adjective} frosting.
+
+"Make a wish, Mob!" everyone chanted.
+
+Mob closed his eyes. He wished for something {adjective2}. When he blew out the candles, every {noun} in the room gently floated six inches up, hovered for a moment, then settled back down.
+
+"That was {adjective}," Dimple said.
+
+The Body Improvement Club burst through the door. "MOB! HAPPY BIRTHDAY!" They'd brought {number} {plural_noun} as gifts.
+
+Ritsu gave him a {color} scarf. Tsubomi sent a text that just said "HBD." Mob stared at it for {number} minutes.
+
+"Best birthday," Mob said, his {body_part} warm with something that wasn't psychic power. Just happiness.
+
+Emotion meter: 99%. But the good kind.`},
+
+{icon:"🏢",title:"Spirits & Such Reviews",tease:"The internet has opinions...",
+text:`Reigen checked the online reviews for Spirits and Such Consultation Office:
+
+⭐⭐⭐⭐⭐ "Reigen-sensei cured my {adjective} {body_part}! Only {number} yen!" 
+⭐ "He just threw {food} at my wall and called it an exorcism."
+⭐⭐⭐⭐⭐ "The kid with him is {adjective2}. Definitely the real deal."
+⭐⭐ "I saw {number} {plural_noun} float but Reigen took all the credit."
+⭐⭐⭐ "He called my haunting a '{adjective2} {noun}' and charged me for emotional labor."
+
+"These reviews are mixed," Mob observed.
+
+"MIXED?! We have a 4.2 average!" Reigen pointed at his {body_part} proudly. "That's practically {adjective}!"
+
+"One review says you {verb_past} during an exorcism and blamed it on spirits."
+
+"I was CHANNELING. There's a difference."
+
+Dimple read one aloud: "'{color} ghost tried to sell me supplements.' THAT WAS ME! I was diversifying our revenue!"
+
+"We need to be more professional," Mob suggested, feeling {emotion}.
+
+"Professional costs extra," Reigen replied. "But I'll consider it. For {number} yen."`},
+
+{icon:"⛈️",title:"The Big Storm",tease:"Weather + psychic powers = chaos...",
+text:`A massive storm hit Seasoning City. Lightning struck {number} {plural_noun}. The rain was so heavy it turned {place} into a {adjective} swimming pool.
+
+Mob was walking home when a {color} bolt hit a {noun} next to him. His powers activated defensively — a psychic barrier made of {adjective2} energy surrounded him.
+
+"Cool," said Teru, landing next to him. "I can do that too. Mine's bigger."
+
+"It's not a competition," Mob said, feeling {emotion}.
+
+"EVERYTHING is a competition." Teru's barrier was, admittedly, {adjective2}er. And {color}. And had {plural_noun} orbiting it.
+
+The storm intensified. A {noun} flew through the air. Then {number} more. Someone's {food} splattered against Mob's barrier.
+
+"We should help people," Mob said.
+
+"Fine. But I'm helping BETTER."
+
+They spent {number} hours rescuing citizens, redirecting {plural_noun}, and drying people's {body_part}s with psychic warmth.
+
+"Thanks, kids," a grateful citizen said. "Here's {number} yen."
+
+Teru took it. "My barrier was bigger."
+
+"It really wasn't," Mob said.`},
+
+{icon:"🎯",title:"Mob's Self-Improvement",tease:"Progress is progress...",
+text:`Mob's self-improvement list for the week:
+1. Talk to {number} new people ✗
+2. Be more {adjective} ✗
+3. Don't accidentally levitate {plural_noun} ✗
+4. Smile at Tsubomi ✗ (she wasn't at school)
+5. Eat more {food} ✓ (the only success)
+
+"This list is {adjective2}," Mob told Reigen.
+
+"Mob, self-improvement isn't about checking boxes. It's about the journey."
+
+"You're reading that off a {noun}."
+
+"It's a {adjective2} {noun}. Very inspirational." Reigen put his hand on Mob's {body_part}. "Look. You saved {number} people this week. You exorcised a {color} spirit. You ran {number} laps with the Body Improvement Club."
+
+"Those aren't on my list."
+
+"Then your list is wrong. You're already {adjective}, kid. You just don't see it."
+
+Mob felt {emotion}. His counter hit 80%. But instead of exploding, {number} tiny {color} lights appeared around them. Beautiful. Calm.
+
+"What's happening?" Reigen asked.
+
+"I think I'm feeling {emotion}," Mob said.
+
+The lights faded. Mob updated his list:
+6. Feel {emotion} ✓`}
+];
+
+const RANDOMS = {
+  noun:["toilet","saxophone","refrigerator","umbrella","trampoline","doorknob","cactus","skateboard","microwave","catapult","fire hydrant","traffic cone"],
+  plural_noun:["soggy pancakes","rubber ducks","flaming saxophones","invisible socks","haunted tacos","screaming potatoes","radioactive pickles","flying couches","aggressive pigeons"],
+  adjective:["squishy","radioactive","sparkly","wobbly","soggy","magnificent","explosive","invisible","greasy","fluffy","suspicious","lukewarm"],
+  adjective2:["ridiculous","devastating","questionable","legendary","disgusting","breathtaking","chaotic","unstoppable","embarrassing","incomprehensible"],
+  verb_past:["exploded","backflipped","evaporated","moonwalked","combusted","disintegrated","yeeted","vibrated","teleported","cartwheeled","sneezed"],
+  verb_ing:["screaming","breakdancing","yodeling","vibrating","moonwalking","gargling","beatboxing","juggling","tiptoeing","sneezing","dabbing"],
+  body_part:["elbow","kneecap","nostril","eyebrow","bellybutton","armpit","pinky toe","forehead","earlobe","shin","ribcage","left ankle"],
+  number:["47","3","999","12","7,000","42","1,000,000","13","86","4.5"],
+  color:["purple","neon green","hot pink","invisible","plaid","tie-dye","vantablack","glittery gold","radioactive orange","polka-dot"],
+  food:["spaghetti","raw onion","expired yogurt","a gas station burrito","mystery meat","lukewarm soup","a single grape","deep-fried butter","instant ramen"],
+  emotion:["confused","aggressively calm","mildly terrified","existentially bored","suspiciously happy","profoundly whelmed","cautiously optimistic","vaguely concerned"],
+  place:["the grocery store","a haunted Denny's","the moon","behind the school dumpster","a very small closet","the bottom of the ocean","Reigen's office","a parking garage"]
+};
+
+// ENGINE (identical pattern)
+let words={},selectedStory=null;
+
+function renderPicker(){
+  const app=document.getElementById('app');
+  let grid=STORIES.map((s,i)=>`<div class="story-card" onclick="pickStory(${i})"><div class="icon">${s.icon}</div><div class="name">${s.title}</div><div class="tease">${s.tease}</div></div>`).join('');
+  app.innerHTML=`<div class="card" style="text-align:center;padding:28px 24px;"><div style="font-size:48px;margin-bottom:6px">📝</div><div class="title">MP100 Mad Libs<span class="sm">Fill in the blanks, unleash psychic chaos!</span></div></div><div class="card"><div style="font-family:'Chewy',cursive;font-size:22px;text-align:center;margin-bottom:4px">Pick a Story</div><div style="font-size:13px;color:#665599;font-weight:600;text-align:center;margin-bottom:16px">25 stories — you won't know what happens until you fill in the words!</div><div class="story-grid">${grid}</div></div>`;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function pickStory(i){selectedStory=i;renderInputs();}
+function renderInputs(){
+  const s=STORIES[selectedStory];
+  let fields=PROMPTS.map(p=>`<div class="prompt-item"><label>${p.label}</label><input type="text" id="w_${p.id}" placeholder="${p.placeholder}" oninput="checkReady()"></div>`).join('');
+  const app=document.getElementById('app');
+  app.innerHTML=`<div class="card" style="text-align:center;"><div style="font-size:32px;margin-bottom:4px">${s.icon}</div><div style="font-family:'Chewy',cursive;font-size:22px;margin-bottom:2px">${s.title}</div><div style="font-size:13px;color:#665599;font-weight:600;margin-bottom:16px">Fill in the words — no peeking at the story!</div><button class="random-btn" onclick="randomFill()">🎲 Random Fill</button><div class="prompt-grid">${fields}</div><div style="margin-top:16px;"><button class="bb go" id="btn-go" disabled onclick="showStory()">📖 Read My Story!</button><button class="bb" onclick="renderPicker()">← Pick Different Story</button></div></div>`;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function randomFill(){PROMPTS.forEach(p=>{const b=RANDOMS[p.id];document.getElementById('w_'+p.id).value=b[Math.floor(Math.random()*b.length)];});checkReady();}
+function checkReady(){document.getElementById('btn-go').disabled=!PROMPTS.every(p=>document.getElementById('w_'+p.id).value.trim());}
+function showStory(){
+  words={};PROMPTS.forEach(p=>{words[p.id]=document.getElementById('w_'+p.id).value.trim();});
+  const s=STORIES[selectedStory];
+  let html=s.text.replace(/\{(\w+)\}/g,(m,k)=>`<span class="blank">${words[k]||m}</span>`);
+  document.getElementById('app').innerHTML=`<div class="card"><div style="font-size:40px;text-align:center;margin-bottom:6px">${s.icon}</div><div class="story-title-display">${s.title}</div><div class="story-text">${html}</div></div><div class="card" style="text-align:center;"><button class="bb pick" onclick="renderPicker()">📝 Pick Another Story</button><button class="bb" onclick="renderInputs()">🔄 Same Story, New Words</button><button class="bb" onclick="readAnother()">📖 Read Another (Same Words)</button></div>`;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function readAnother(){
+  let idx;do{idx=Math.floor(Math.random()*STORIES.length);}while(idx===selectedStory);selectedStory=idx;
+  const s=STORIES[selectedStory];
+  let html=s.text.replace(/\{(\w+)\}/g,(m,k)=>`<span class="blank">${words[k]||m}</span>`);
+  document.getElementById('app').innerHTML=`<div class="card"><div style="font-size:40px;text-align:center;margin-bottom:6px">${s.icon}</div><div class="story-title-display">${s.title}</div><div class="story-text">${html}</div></div><div class="card" style="text-align:center;"><button class="bb pick" onclick="renderPicker()">📝 Pick Another Story</button><button class="bb" onclick="renderInputs()">🔄 New Words</button><button class="bb" onclick="readAnother()">📖 Read Another (Same Words)</button></div>`;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+renderPicker();
+</script>
+</body>
+</html>

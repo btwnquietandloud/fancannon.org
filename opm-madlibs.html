@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>One Punch Man Mad Libs | Fan Cannon</title>
+<meta name="description" content="Fill in the blanks and create hilarious One Punch Man stories! 25 Mad Libs featuring Saitama, Genos, and the Hero Association.">
+<link href="https://fonts.googleapis.com/css2?family=Chewy&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Nunito',sans-serif;overflow-x:hidden;min-height:100vh;}
+.world{min-height:100vh;background:linear-gradient(180deg,#1a1a1a 0%,#2d2020 30%,#1a1a1a 60%,#3d3520 100%);position:relative;}
+.burst{position:fixed;border-radius:50%;z-index:0;animation:pulse 4s ease-in-out infinite;opacity:.08;}
+.b1{width:300px;height:300px;background:radial-gradient(circle,#ffd700,transparent);top:5%;left:10%;animation-delay:0s;}
+.b2{width:250px;height:250px;background:radial-gradient(circle,#ff4444,transparent);bottom:20%;right:5%;animation-delay:1.5s;}
+.b3{width:200px;height:200px;background:radial-gradient(circle,#ffd700,transparent);top:50%;left:50%;animation-delay:3s;}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:.08;}50%{transform:scale(1.3);opacity:.15;}}
+.gc{position:relative;z-index:1;max-width:680px;margin:0 auto;padding:20px 16px;}
+.card{background:rgba(30,25,20,0.95);border-radius:4px;border:3px solid #b8860b;padding:24px 20px;box-shadow:0 4px 20px rgba(184,134,11,0.1);margin-bottom:14px;animation:ci .4s ease;color:#e8dcc0;}
+@keyframes ci{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+.title{font-family:'Chewy',cursive;font-size:36px;color:#ffd700;line-height:1.1;text-align:center;margin-bottom:4px;}
+.title .sm{font-size:20px;color:#ff6b6b;display:block;}
+.story-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px;margin-bottom:8px;}
+.story-card{padding:14px;border:2px solid #444;border-radius:4px;background:rgba(50,40,30,0.8);cursor:pointer;transition:all .15s;text-align:center;color:#e8dcc0;}
+.story-card:hover{background:rgba(184,134,11,0.15);border-color:#b8860b;transform:translate(-2px,-2px);box-shadow:4px 4px 0 rgba(184,134,11,.2);}
+.story-card .icon{font-size:28px;margin-bottom:4px;}
+.story-card .name{font-family:'Chewy',cursive;font-size:16px;line-height:1.2;}
+.story-card .tease{font-size:11px;color:#998866;font-weight:600;margin-top:2px;}
+.prompt-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.prompt-item{display:flex;flex-direction:column;gap:4px;}
+.prompt-item label{font-size:12px;font-weight:800;color:#998866;text-transform:uppercase;letter-spacing:.5px;}
+.prompt-item input{padding:10px 12px;border:2px solid #444;border-radius:4px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;color:#e8dcc0;background:rgba(50,40,30,0.6);transition:border-color .2s;}
+.prompt-item input:focus{outline:none;border-color:#ffd700;background:rgba(70,55,35,0.8);}
+.prompt-item input::placeholder{color:#665540;}
+.bb{display:block;width:100%;padding:14px 20px;border:3px solid #555;border-radius:4px;font-family:'Nunito',sans-serif;font-size:16px;font-weight:800;cursor:pointer;transition:all .15s;margin-bottom:8px;text-align:center;background:rgba(50,40,30,0.6);color:#ffd700;}
+.bb:hover{transform:translate(-2px,-2px);box-shadow:4px 4px 0 rgba(184,134,11,.2);border-color:#b8860b;}
+.bb.go{background:rgba(184,134,11,0.2);border-color:#ffd700;font-family:'Chewy',cursive;font-size:22px;}
+.bb.go:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none;}
+.bb.pick{background:rgba(255,68,68,0.15);border-color:#ff4444;color:#ff6b6b;font-family:'Chewy',cursive;font-size:18px;}
+.random-btn{display:inline-block;padding:8px 16px;border:2px solid #555;border-radius:4px;font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;cursor:pointer;background:rgba(50,40,30,0.6);color:#998866;transition:all .15s;margin-bottom:12px;}
+.random-btn:hover{border-color:#ffd700;color:#ffd700;}
+.story-text{font-size:17px;line-height:1.8;color:#d0c8b0;white-space:pre-line;}
+.story-text em{color:#998866;}
+.story-text .blank{font-weight:900;color:#ffd700;background:rgba(255,215,0,.08);padding:1px 6px;border-radius:4px;border-bottom:2px solid #ffd700;}
+.story-title-display{font-family:'Chewy',cursive;font-size:28px;color:#ffd700;text-align:center;margin-bottom:16px;}
+.nav{position:sticky;top:0;z-index:100;background:rgba(26,26,26,.95);backdrop-filter:blur(12px);border-bottom:1px solid rgba(184,134,11,.2);padding:8px 16px;display:flex;align-items:center;gap:10px;font-family:'Nunito',sans-serif;}
+.nav a{text-decoration:none;color:#998866;font-size:13px;font-weight:700;transition:color .2s;}
+.nav a:hover{color:#ffd700;}
+.nav .sep{color:rgba(255,255,255,.15);font-size:18px;}
+.nav .pg{font-size:13px;font-weight:600;color:rgba(255,255,255,.3);}
+@media(max-width:500px){.title{font-size:28px;}.story-grid{grid-template-columns:1fr 1fr;}.prompt-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="nav"><a href="opm-universe.html">← OPM Universe</a><span class="sep">|</span><span class="pg">One Punch Man Mad Libs</span></div>
+<div class="world">
+<div class="burst b1"></div><div class="burst b2"></div><div class="burst b3"></div>
+<div class="gc"><div id="app"></div></div>
+</div>
+<script>
+const PROMPTS=[
+  {id:"noun",label:"A Noun",placeholder:"e.g. shopping bag"},{id:"plural_noun",label:"Plural Noun",placeholder:"e.g. coupons"},
+  {id:"adjective",label:"An Adjective",placeholder:"e.g. bald"},{id:"adjective2",label:"Another Adjective",placeholder:"e.g. overwhelming"},
+  {id:"verb_past",label:"Verb (Past Tense)",placeholder:"e.g. obliterated"},{id:"verb_ing",label:"Verb (-ing)",placeholder:"e.g. shopping"},
+  {id:"body_part",label:"Body Part",placeholder:"e.g. fist"},{id:"number",label:"A Number",placeholder:"e.g. 100"},
+  {id:"color",label:"A Color",placeholder:"e.g. yellow"},{id:"food",label:"A Food",placeholder:"e.g. udon noodles"},
+  {id:"animal",label:"An Animal",placeholder:"e.g. crab"},{id:"place",label:"A Place",placeholder:"e.g. the supermarket"},
+];
+const STORIES=[
+{icon:"👊",title:"One Punch Grocery Run",tease:"The real battle is bargain hunting...",
+text:`Saitama sprinted through {place}. Not because of a monster. Because of the Saturday sale — {food} was {number}% off.
+
+"SENSEI!" Genos flew alongside him, rockets blazing. "Let me handle the {food} acquisition! My incineration cannons can clear a path through the crowd!"
+
+"Don't blow up the grocery store again." Saitama grabbed a cart. His {body_part} was laser-focused.
+
+Aisle 3: {plural_noun}, half price. Aisle 7: a {adjective} {noun} on clearance. Aisle 12: a mysterious Threat Level Tiger monster eating all the {food}.
+
+"ONE PUUUNCH!" the monster screamed.
+
+Saitama punched it. The monster, {number} shelves of {plural_noun}, and the entire deli section {verb_past}.
+
+"Sensei, you destroyed the store."
+
+"...The sale is ruined." Saitama stared at the crater. He felt nothing. As usual. But this emptiness was {adjective2}.
+
+"There's another sale at {place}," Genos offered.
+
+Saitama was already running.`},
+
+{icon:"🤖",title:"Genos Upgrades Gone Wrong",tease:"Dr. Kuseno outdid himself...",
+text:`Dr. Kuseno installed Genos's latest upgrade: a {adjective} {noun} Module. "This will increase your {body_part} power by {number}%," the doctor explained.
+
+"INCREDIBLE!" Genos flexed. His arm turned {color}. Then his other arm. Then his entire body started {verb_ing}.
+
+"Is it supposed to do that?" Saitama asked, eating {food} on the couch.
+
+"SENSEI! My {body_part} is now capable of the {adjective2} Incineration Cannon! I will use this power to protect—"
+
+His arm fell off. It landed in Saitama's {food}.
+
+"..."
+
+"...I'll call Dr. Kuseno."
+
+"Your arm is in my {food}."
+
+"I AM SO SORRY SENSEI." Genos {verb_past} trying to retrieve it, knocking over {number} {plural_noun} in the process.
+
+Saitama picked up the arm, looked at it, and used it as chopsticks. "It works better as a {noun}," he said.
+
+Genos wrote that down. He wrote EVERYTHING down.`},
+
+{icon:"🏆",title:"Hero Ranking Disaster",tease:"The rankings make no sense...",
+text:`The Hero Association released new rankings. Saitama: Class B, Rank {number}. Below a hero called "{adjective} {animal} Man."
+
+"WHO IS {adjective} {animal} MAN?!" Genos demanded at HQ.
+
+"He saved {number} {plural_noun} from a burning {noun}," the clerk said. "Very {adjective2}."
+
+"SENSEI DESTROYED A METEOR WITH HIS {body_part}!"
+
+"Not enough paperwork filed."
+
+Saitama didn't care. He was at {place}, buying {food}. A Threat Level Demon monster appeared. Saitama punched it without looking up from his {food}.
+
+"Did anyone see that?!" Genos shouted.
+
+Nobody saw it. {number} S-Class heroes arrived five minutes later and took credit.
+
+"The ranking system is {adjective2}," Genos muttered, {verb_ing} with rage.
+
+"Hey," Saitama said. "The {food} here is pretty good."
+
+Genos immediately rated the {food} in his notes: "Sensei's preferred {food} — {adjective}. Must protect at all costs. Location: {place}."`},
+
+{icon:"👨‍🦲",title:"Saitama's Day Off",tease:"No monsters. No heroes. Just vibes.",
+text:`For the first time in {number} days, no monsters attacked. Saitama lay on his apartment floor staring at the ceiling.
+
+"I'm bored," he told the {noun} next to him. The {noun} did not respond.
+
+He tried {verb_ing}. Boring. He tried eating {food}. Boring. He tried reading a manga about a {adjective} {animal}. Slightly less boring.
+
+Genos arrived. "SENSEI! I've prepared a training regimen! {number} push-ups, {number} sit-ups, {number} squats, and a {number}-kilometer run!"
+
+"That's just my normal routine."
+
+"EXACTLY! Shall we begin?"
+
+"Genos, it's my day OFF." Saitama's {body_part} twitched. "Go fight a monster or something."
+
+"There ARE no monsters today."
+
+Long silence. They both stared at the ceiling. For {number} minutes, nothing happened. It was the most {adjective2} day of their lives.
+
+Then King showed up with video games. Saitama lost {number} times in a row. His {body_part} had never known such defeat.
+
+"I can destroy any monster with one punch," Saitama whispered, "but I can't beat King at {adjective} Fighter {number}."
+
+"{adjective2}," said Genos, writing it down.`},
+
+{icon:"🦀",title:"The Monster Association Meeting",tease:"Villains have meetings too...",
+text:`The Monster Association held their quarterly meeting at {place}. On the agenda: why they kept losing.
+
+"Item one," said Gouketsu. "Every plan fails because of the {adjective} bald hero."
+
+"He's just a Class B!" someone shouted. "He punched my {body_part} off in ONE HIT."
+
+"My {adjective2} {noun} technique was useless!" another monster cried. "He just... stood there. Then I {verb_past}."
+
+"I brought {number} {plural_noun} to the fight," said a {color} {animal} monster. "He didn't even NOTICE. He was {verb_ing} the whole time."
+
+"What was he {verb_ing} about?"
+
+"A SALE ON {food} AT {place}!"
+
+Silence. The monsters exchanged {emotion... wait, no} — exchanged glances.
+
+"Proposal," said the chairman. "We stop attacking on Saturdays. That's when the sales happen."
+
+"AGREED," said {number} monsters simultaneously.
+
+The meeting ended. They served {food}. It was {adjective2}. Even monsters appreciate good catering.`},
+
+{icon:"⚡",title:"Speed-o'-Sound Sonic's Revenge",tease:"Attempt #47...",
+text:`Sonic appeared in front of Saitama. "TODAY IS THE DAY I DEFEAT YOU!"
+
+"Who are you again?" Saitama asked, carrying {plural_noun} from {place}.
+
+Sonic's {body_part} twitched. "I am Speed-o'-Sound SONIC! Your RIVAL!"
+
+"Oh, the {adjective} ninja guy."
+
+"{adjective}?! I am the most {adjective2} assassin alive! I've trained for {number} years! My {noun} technique can—"
+
+Saitama flicked Sonic's {body_part}. Sonic flew {number} meters and landed in a pile of {food}.
+
+"My {plural_noun}!" a vendor screamed.
+
+Sonic emerged, covered in {food}, {verb_ing} with rage. "NEXT TIME! NEXT TIME I WILL—"
+
+"Hey, are you going to buy those {plural_noun}?" the vendor asked. "You ruined {number} of them."
+
+Sonic paid. It cost him everything he'd earned from his last {number} assassination contracts.
+
+"Being my rival is expensive," Saitama observed, walking away.
+
+Sonic {verb_past} dramatically into the sunset. He'd be back. He was ALWAYS back.`},
+
+{icon:"🎮",title:"King's Secret",tease:"The strongest man... at gaming...",
+text:`King sat in Saitama's apartment, dominating at video games. His record: {number} wins, 0 losses.
+
+"HOW?!" Saitama screamed, mashing buttons with his {body_part}. "I can punch through ANYTHING but I can't beat your {adjective} {noun} combo!"
+
+"It's about timing, Saitama." King picked a {color} character and performed the {adjective2} Ultra Finish.
+
+K.O. Again.
+
+Meanwhile, a Threat Level Dragon monster appeared outside. It saw King through the window. King's heart was pounding — not from the monster, from the game.
+
+The monster heard King's heartbeat. THE KING ENGINE. The most {adjective2} sound in the world.
+
+The monster {verb_past} and ran. {number} other monsters followed.
+
+"Did something happen outside?" King asked.
+
+"Nah," said Saitama. "One more round. I'm going to use the {adjective} {animal} character."
+
+"That character is terrible."
+
+Saitama lost {number} more times. His {body_part} had never known such {adjective2} defeat. And he loved every second of it. This was harder than fighting monsters.
+
+"King," Saitama said solemnly. "You are truly the strongest."
+
+King did not correct him.`},
+
+{icon:"💎",title:"Fubuki's Recruitment Drive",tease:"Join the Blizzard Group. Or else.",
+text:`Fubuki appeared at Saitama's door. "Join the Blizzard Group. We have {number} members, {adjective} benefits, and a dental plan."
+
+"I don't need dental." Saitama's {body_part} was invulnerable.
+
+"We have {food} at every meeting."
+
+"...What kind of {food}?"
+
+"The {adjective2} kind. From {place}."
+
+Saitama considered this. Genos activated his arm cannons. "SENSEI WILL NOT JOIN YOUR {adjective} FACTION!"
+
+"Relax," Saitama said. "Free {food} is free {food}."
+
+He attended one meeting. The Blizzard Group was {verb_ing} in formation. Someone presented a {color} {noun}. {number} members saluted.
+
+"This is {adjective2}," Saitama said, eating his {food}.
+
+"That's our training exercise," Fubuki said, her {body_part} twitching.
+
+"It looks like {verb_ing}."
+
+"It IS {verb_ing}. But HEROIC {verb_ing}."
+
+Saitama left. He took {number} {plural_noun} of {food} with him. Fubuki counted it as a recruitment success.`},
+
+{icon:"🌋",title:"Threat Level God",tease:"This time it's serious... right?",
+text:`The alarm blared: THREAT LEVEL GOD. A monster the size of a {adjective} mountain appeared over City Z. It had {number} {body_part}s and was colored {color}.
+
+"FINALLY!" Saitama's eyes lit up. "A REAL fight!"
+
+Every S-Class hero mobilized. Atomic Samurai drew his {noun}. Tatsumaki levitated {number} {plural_noun}. Bang prepared his {adjective2} Fist technique.
+
+The battle was {adjective}. Buildings crumbled. The earth shook. {number} {plural_noun} were destroyed.
+
+Then Saitama arrived. "Sorry, I was at {place} buying {food}."
+
+He looked at the monster. The monster looked at him.
+
+One punch.
+
+The monster {verb_past}. The shockwave blew away every cloud in the sky. {color} light filled the horizon.
+
+"...Oh," Saitama said. "It was just one punch again."
+
+Every S-Class hero stared. Sweet Mask's {body_part} dropped. Tatsumaki {verb_past} with frustration.
+
+"How was the {food}?" Genos asked.
+
+"Pretty {adjective2} actually."`},
+
+{icon:"🥊",title:"S-Class Meeting",tease:"Earth's mightiest... arguing...",
+text:`The S-Class heroes gathered at HQ. The topic: who was the strongest.
+
+"Obviously ME," said Tatsumaki, floating {number} inches off her chair.
+
+"I could cut your {noun} in half," said Atomic Samurai, polishing a {color} blade.
+
+"My {adjective} {body_part} could crush both of you," said Superalloy Darkshine, flexing.
+
+"Ahem," said Child Emperor, age {number}. "According to my {adjective2} analysis, the strongest hero is..." He pulled up a chart. "Caped Baldy."
+
+Silence. "WHO?"
+
+"Class B hero. Bald. Yellow suit. Defeated every monster in one—"
+
+"NEVER HEARD OF HIM," everyone said simultaneously.
+
+Meanwhile, Saitama was at {place}, trying to decide between {food} and {plural_noun} for dinner. A Threat Level Tiger appeared. He {verb_past} it without looking.
+
+"Did you hear something?" asked Genos.
+
+"Nah. Hey, which {food} looks more {adjective}?"
+
+Back at HQ, the argument continued for {number} hours. Nobody mentioned Saitama again.`},
+
+{icon:"🏠",title:"Saitama's Apartment",tease:"The rent is cheap for a reason...",
+text:`Saitama's apartment in City Z survived every monster attack because nothing in City Z was worth destroying. Rent: {number} yen. Amenities: a {noun}, some {plural_noun}, and Genos.
+
+"SENSEI!" Genos was {verb_ing} the kitchen. "I've upgraded your {noun} with {adjective} technology! It now heats {food} {number}% faster!"
+
+"You replaced my microwave with a plasma cannon."
+
+"A {adjective2} plasma cannon. Very efficient."
+
+A monster crashed through the wall. "I AM THE {color} {animal}! FEAR MY—"
+
+Saitama punched it. The monster, the wall, and Genos's plasma cannon were gone.
+
+"My upgrade..." Genos whispered, his {body_part} trembling.
+
+"I need a new wall." Saitama looked at the hole. Through it, he could see {place}. "Actually, the ventilation is better now."
+
+They sat in the apartment with a giant hole in the wall, eating {food}. Wind blew {plural_noun} through the living room.
+
+"This is {adjective}," Saitama said.
+
+"SENSEI IS SO WISE," Genos wrote in his journal. "Even apartment destruction is a lesson in {adjective2} living."`},
+
+{icon:"💀",title:"Boros's Invasion",tease:"He traveled the universe for this...",
+text:`Boros traveled across the universe for {number} years to find a worthy opponent. His ship destroyed {place} on arrival.
+
+"I AM LORD BOROS! THE MOST {adjective} BEING IN THE COSMOS! I HAVE {number} {plural_noun} OF POWER!"
+
+Saitama walked up the ship's ramp. "Hey, you're destroying my city. I had a coupon for {food} at {place}. Now that's gone."
+
+"YOU DARE ADDRESS ME?! MY {body_part} ALONE COULD—"
+
+Saitama punched. Boros's armor shattered.
+
+"...Interesting." Boros transformed. His skin turned {color}. Energy crackled around his {noun}. "FINAL FORM! {adjective2} COLLAPSING STAR—"
+
+Saitama punched again. Boros {verb_past} across the ship.
+
+"Is... is that all you've got?" Boros gasped.
+
+"I haven't even been {verb_ing}."
+
+Boros laughed. Actually laughed. "You're {adjective2}. Even at the end... you're holding back."
+
+"Yeah," Saitama admitted, looking at his {body_part}. "I am."
+
+"Was this fight fun for you?"
+
+Long pause. "...No. It never is."
+
+Boros smiled. "What a {adjective} lie." Then he was gone.
+
+Saitama walked home. The coupon was expired anyway.`},
+
+{icon:"🧹",title:"Hero Chores",tease:"Even heroes need to clean...",
+text:`Hero Association Chore Assignments for the week:
+
+Saitama: Clean {place} — Status: punched the mess. Technically clean.
+Genos: Cook dinner — Status: incinerated {number} {plural_noun}. Kitchen is now {color}.
+Tatsumaki: Organize storage — Status: levitated everything to the ceiling. "Organized."
+King: Fix the {noun} — Status: stared at it. It fixed itself. (Coincidence.)
+Fubuki: Lead team {verb_ing} — Status: {number} members quit.
+
+"This is {adjective}," Saitama said, looking at the chore chart.
+
+"SENSEI! I WILL COMPLETE YOUR CHORES!" Genos activated his cleaning mode. His {body_part} transformed into a vacuum. He sucked up {number} {plural_noun}, a {noun}, and someone's {food}.
+
+"That was my lunch," said Sweet Mask, {verb_ing} in the doorway.
+
+"Collateral {adjective2} damage," Genos stated.
+
+Saitama sat down and ate {food}. Being a hero was {adjective2}. But at least the rent was cheap.`},
+
+{icon:"🎯",title:"The Hero Test",tease:"Physical and written...",
+text:`Saitama took the hero entrance exam. Physical test results:
+
+Punching Power: broke the machine.
+Speed: {number} times faster than sound.
+Endurance: unlimited.
+{body_part} flexibility: surprisingly {adjective}.
+
+Written test results: {number} out of 100.
+
+"How did you FAIL the written test?!" Genos demanded.
+
+"Question 7 asked about the {adjective2} {noun} protocol. I don't know protocols."
+
+"QUESTION 7 WAS 'WHAT COLOR IS A {color} {animal}?'"
+
+"...Trick question?"
+
+"THE ANSWER IS {color}! IT'S IN THE QUESTION!"
+
+Saitama thought about this. His {body_part} hurt from thinking.
+
+Final hero rank: Class C, Rank {number}. Below a hero whose power was "{verb_ing} really hard."
+
+"The system is {adjective2}," Genos said.
+
+"At least I passed," Saitama shrugged, eating {food}. "Now I get a discount at {place}."
+
+That was genuinely the main reason he became a hero.`},
+
+{icon:"🌊",title:"Sea King's Attack",tease:"It's raining and everything is wet...",
+text:`The Deep Sea King emerged from the ocean, {number} feet tall and dripping. "I AM THE SEA KING! MY {body_part} WILL DROWN THIS CITY!"
+
+Puri-Puri Prisoner attacked first. His {adjective} Love Technique bounced off. He {verb_past} into a wall.
+
+Genos attacked. His incineration cannon was {adjective2}. The Sea King didn't care. He punched Genos's {body_part} clean off.
+
+"Sensei will avenge me," Genos whispered, sparking on the ground.
+
+Rain fell. The Sea King powered up. {number} citizens cowered in {place}. A child held a {noun} and cried.
+
+Saitama walked in. "Hey."
+
+One punch. The clouds parted. The rain stopped. The Sea King {verb_past} so hard the ocean got a new {color} wave.
+
+Nobody saw the punch. They thought the other heroes did it.
+
+"That's not fair," Saitama said. But he didn't correct anyone. He just walked to {place} and bought {food}.
+
+Genos's severed arm gave a thumbs up. "Sensei is {adjective2}."`},
+
+{icon:"💅",title:"Saitama Gets a Costume",tease:"The yellow suit needs an upgrade...",
+text:`"SENSEI!" Genos presented a new costume. "I had this made. {color} body armor, reinforced {body_part} plating, {adjective} cape."
+
+Saitama looked at it. "My suit is fine."
+
+"It's a yellow onesie with a white cape and {adjective2} red gloves."
+
+"Exactly. Fine."
+
+"It has a ZIPPER, sensei. Real heroes don't have ZIPPERS."
+
+Saitama considered. He tried on the new suit. His {body_part} felt {adjective}. He looked in the mirror.
+
+"I look like a {color} {animal}."
+
+"You look {adjective2}!"
+
+"That's not a compliment." He took it off and put the yellow suit back on. "This suit survived {number} {plural_noun} of monster fights. It went to {place} with me. It's got {food} stains from last Tuesday."
+
+"That's... not a selling point."
+
+"It's MY selling point." Saitama punched the air. The shockwave destroyed {number} {plural_noun}.
+
+"The suit survived THAT," he pointed out.
+
+Genos threw the new costume away and wrote in his journal: "Sensei's bond with his {adjective} suit is {adjective2}. I must study this further."`},
+
+{icon:"🏥",title:"Hero Hospital",tease:"Recovery is boring...",
+text:`After a battle, {number} heroes were in the hospital. The injuries:
+
+Genos: lost {number} {body_part}s. Again. Status: {verb_ing} about Saitama.
+Mumen Rider: broken {body_part}. Status: already planning next patrol.
+Tank-Top Master: {adjective} bruising. Status: flexing through the pain.
+Saitama: unhurt. Status: bored. Eating hospital {food}.
+
+"This {food} is {adjective2}," Saitama complained.
+
+"SENSEI! Even your critique of {food} is profound!" Genos had a notebook in his remaining hand.
+
+A monster crashed through the hospital wall. "I AM THE {color} {animal} OF DESTRUCTION! FEAR MY {noun}!"
+
+Every injured hero tried to stand. Mumen Rider grabbed his {noun}. Tank-Top Master flexed his {adjective2} {body_part}.
+
+Saitama punched the monster without getting out of bed. It {verb_past} through {number} walls.
+
+"Visiting hours are over," the nurse said, staring at the hole.
+
+"I need more {food}," Saitama said.
+
+Genos, with one arm, wrote: "Sensei defeated a monster while reclining. {adjective} power level: immeasurable. {food} consumption: ongoing."`},
+
+{icon:"🌃",title:"Night Patrol",tease:"Monsters don't sleep...",
+text:`Saitama couldn't sleep. He went for a walk through City Z. It was {number} AM.
+
+A monster appeared. Small one. Threat Level Wolf. Shaped like a {adjective} {animal}. "I RULE THE NIGHT!"
+
+Saitama flicked it. It {verb_past}.
+
+He kept walking. Another monster. Threat Level Tiger. Had a {color} {noun} for a {body_part}. "TREMBLE BEFORE—"
+
+Saitama punched it. Gone.
+
+He walked past {place}. A Threat Level Demon was {verb_ing} on the roof. Saitama jumped up, punched it, and landed back on the sidewalk without breaking stride.
+
+"These night monsters are {adjective2}," he muttered.
+
+By the time he got home, he'd defeated {number} monsters. Nobody reported any of them. The Hero Association's morning report said: "Quiet night. No incidents."
+
+Genos was waiting at the apartment. "Sensei! How was your walk?"
+
+"Boring." Saitama heated up {food}. "Nothing ever happens at night."
+
+"Remarkable," Genos wrote. "Sensei's {adjective2} humility is an inspiration."`},
+
+{icon:"🎪",title:"The Hero Festival",tease:"Heroes and fans don't mix well...",
+text:`The annual Hero Festival attracted {number} fans. Each S-Class hero had a booth. Tatsumaki was levitating {plural_noun} for kids. Atomic Samurai was cutting {food} into {adjective} shapes.
+
+Saitama's booth: "Caped Baldy — Photos {number} yen."
+
+Nobody came. His {body_part} sagged.
+
+Then a kid walked up. "Are you a real hero?"
+
+"Yeah."
+
+"What's your power?"
+
+"I punch things."
+
+"That's {adjective}." The kid held up a {noun}. "Can you sign this?"
+
+Saitama signed it. The kid's {body_part} lit up with joy.
+
+{number} more kids appeared. Then {number} more. Suddenly a line formed. Not because anyone recognized him — because the kids wanted the {adjective2} {color} {noun}s he was giving away (leftover merch nobody wanted).
+
+"THIS IS MY BOOTH NOW!" a villain screamed, crashing through the ceiling, riding a giant {animal}.
+
+Saitama punched the villain. The {animal} landed on Tatsumaki's booth. She {verb_past} with fury.
+
+"The festival was {adjective2}," Genos reported. "Sensei interacted with {number} civilians. He was happy. I could tell because his {body_part} was slightly less expressionless than usual."`},
+
+{icon:"🥚",title:"Saitama's Origin Story",tease:"He just wanted to be a hero...",
+text:`{number} years ago, Saitama had hair. And a job. And a {adjective} apartment at {place}. He was {adjective2}ly ordinary.
+
+Then a {color} {animal} monster attacked. It was going to destroy a child's {noun}. Saitama stepped in.
+
+He couldn't punch hard enough. His {body_part} hurt. He got {verb_past} across the street. But he kept getting up.
+
+"Why?" the monster asked. "You're just a {adjective} human."
+
+"Because," Saitama said, blood running from his {body_part}, "I want to be a hero."
+
+He trained. {number} push-ups. {number} sit-ups. {number} squats. {number}-km run. Every. Single. Day. He ate {food} for every meal. He never used the {noun}.
+
+His hair fell out. His {body_part} became invincible. He became the strongest being alive.
+
+And the most {emotion... wait} — the most {adjective2}.
+
+Because when you can beat anyone with one punch, every fight ends the same way. Victory tastes like {food}. And it's always a little cold.
+
+"Are you okay, Sensei?" Genos asked.
+
+"Yeah," Saitama said. "I'm just {adjective}."`},
+
+{icon:"🏢",title:"City Z Real Estate",tease:"Nobody wants to live here...",
+text:`City Z real estate listing:
+
+"Charming {adjective} apartment. {number} rooms. Walking distance to {place}. Great views of monster destruction. Rent: {number} yen/month.
+
+Pros: very cheap. {adjective2} neighbors (there are none). Free {food} sometimes falls from defeated monsters.
+
+Cons: monsters attack {number} times per week. A {color} {animal} lives in the abandoned building next door. The local hero punches hard enough to create wind that blows {plural_noun} through your window.
+
+Current tenant: bald hero in yellow, very {adjective}. His cyborg friend {verb_past} the kitchen. Their {noun} blocks the hallway."
+
+{number} people viewed the listing. All of them {verb_past} when a monster appeared during the open house.
+
+Saitama punched it. "See?" he told the realtor. "Built-in security."
+
+"Your {body_part} just went through the wall."
+
+"That's... ventilation."
+
+The apartment remained vacant. Rent dropped to {number} yen. Saitama was thrilled. "{adjective2} deal," he said.`},
+
+{icon:"📱",title:"Hero Association App",tease:"Technology meets punching...",
+text:`The Hero Association launched a new app. Features:
+- Monster alerts (sorted by {adjective}ness)  
+- Hero rankings (updated every {number} minutes)
+- {food} delivery (heroes get {number}% discount)
+
+Saitama downloaded it. His profile:
+Name: Caped Baldy
+Class: B, Rank {number}
+Special Move: {adjective} Punch
+Reviews: ⭐⭐ "showed up late" / ⭐⭐⭐⭐⭐ "destroyed monster with {body_part}" / ⭐ "broke my {noun}"
+
+"These reviews are {adjective2}!" Genos raged, {verb_ing}. "SENSEI IS S-CLASS!"
+
+"Hey, the {food} delivery works," Saitama said, ordering from {place}.
+
+A monster alert popped up. Threat Level: Demon. Location: right behind Saitama.
+
+He punched backward without looking. The monster {verb_past}. His phone showed: "+1 hero point."
+
+"I need {number} more to rank up," Saitama said.
+
+"SENSEI! I WILL DEFEAT {number} MONSTERS FOR YOU!"
+
+"You can't transfer points, Genos."
+
+Genos's {body_part} visibly deflated. He ordered {food} to cope. It was {adjective2}.`},
+
+{icon:"🎭",title:"The Monster Costume Contest",tease:"Is it a costume? Is it real?",
+text:`City A held a monster costume contest. First prize: {number} yen and a {adjective} {noun}.
+
+Saitama entered. His costume: himself. Just standing there in his yellow suit.
+
+"What are you supposed to be?" the judge asked.
+
+"A hero."
+
+"That's not a monster costume."
+
+"I'm the monster heroes are afraid of."
+
+Dead silence. The judge's {body_part} went {color}.
+
+Meanwhile, an ACTUAL monster entered the contest thinking it was a meeting. It was a {adjective2} {animal} with {number} {body_part}s.
+
+"GREAT COSTUME!" the judges said. First place.
+
+The monster was confused. "I'm... actually a monster."
+
+"HA! Method acting! {adjective2}!"
+
+Saitama punched it. "It was a real monster."
+
+"DISQUALIFIED FOR DESTROYING THE WINNER!" the judges screamed.
+
+Saitama lost the contest. {number} yen, gone. "This is worse than the hero test," he said, {verb_ing} home.
+
+Genos was waiting with {food}. "How was the contest, Sensei?"
+
+"The {food} better be warm."
+
+It was. Some things work out.`},
+
+{icon:"💪",title:"Saitama Trains a Student",tease:"His teaching method is simple...",
+text:`A young hero found Saitama. "PLEASE TRAIN ME! I want to be {adjective} like you!"
+
+"Sure. Do {number} push-ups."
+
+"Done! What's next?"
+
+"{number} sit-ups."
+
+"Done! Next?"
+
+"{number} squats."
+
+"DONE! What's the SECRET technique?"
+
+"A {number}-kilometer run."
+
+"That's... that's just normal exercise."
+
+"Every day. For {number} years. No {noun}. No {food}. Just training."
+
+The student's {body_part} went pale. "But... what about the {adjective2} Ancient {noun} Technique I read about?"
+
+"Made up."
+
+"The {color} Energy {body_part} Strike?"
+
+"Not real."
+
+"The Secret of the {adjective} {plural_noun}?"
+
+"Definitely not real."
+
+The student {verb_past}. Then sat down. Then got back up. "I'll do it. {number} push-ups. Starting now."
+
+Saitama watched him do three push-ups and collapse. "You'll get there," he said.
+
+"SENSEI!" Genos appeared. "IS THAT A NEW STUDENT?! I WILL NOT BE REPLACED!"
+
+"Genos, he did three push-ups and fainted."
+
+"...I see no threat." Genos relaxed his {body_part} and went back to {verb_ing} dinner.`},
+
+{icon:"🌍",title:"Heroes Save the World",tease:"All of them. At once.",
+text:`Every hero in the world assembled. The threat: a {color} monster from space, {number} miles tall, with a {noun} for a {body_part}.
+
+S-Class mobilized. A-Class supported. B-Class... also showed up.
+
+"THE PLAN," Tatsumaki announced, "is to use our combined {adjective} power to—"
+
+Saitama walked past everyone. He looked up at the monster. The monster looked down.
+
+"Hey," Saitama said. "You're blocking {place}. I need to buy {food}."
+
+"I AM THE DESTROYER OF—"
+
+One punch. The monster {verb_past}. The explosion was {color}. {number} {plural_noun} rained from the sky. The shockwave blew off every hero's {body_part} — figuratively.
+
+Silence. Then, from the crowd: "WHO DID THAT?!"
+
+"Probably Blast," someone said.
+
+"DEFINITELY Tatsumaki," said another.
+
+Saitama walked through the parting crowd, carrying {food}. Nobody noticed. Nobody ever noticed.
+
+Genos noticed. He always noticed. He wrote in his journal:
+
+"Today Sensei saved the world in one punch. Approximate force: {number} megatons. Sensei's expression: {adjective}. {food} purchased: yes. Sensei is {adjective2}. End of entry."`}
+];
+const RANDOMS={noun:["shopping bag","parking meter","fire extinguisher","traffic cone","ceiling fan","office chair","lava lamp","rubber duck","toaster oven","trash can lid"],plural_noun:["expired coupons","angry pigeons","melted ice pops","abandoned shopping carts","burnt noodle cups","suspicious leftovers","deflated basketballs","broken umbrellas"],adjective:["bald","overwhelming","lukewarm","catastrophic","suspicious","unremarkable","devastating","mediocre","unstoppable","deeply average"],adjective2:["absolutely devastating","profoundly boring","cosmically unfair","hilariously tragic","unreasonably powerful","painfully ordinary","existentially concerning","monumentally pointless"],verb_past:["obliterated","vaporized","suplex'd","yeeted","liquefied","atomized","disintegrated","launched","folded","deleted"],verb_ing:["bargain-hunting","monologuing","flexing","brooding","complaining","power-walking","stress-eating","overthinking","staring blankly","journaling"],body_part:["fist","entire head","left pec","chin","forearm","ribcage","index finger","bald head","shoulder","knee"],number:["100","3","10,000","47","999","7","1,000,000","86","12","420"],color:["yellow","blood red","chrome","pitch black","neon gold","translucent","impossibly bright","dark purple"],food:["udon noodles","discount sushi","convenience store onigiri","instant ramen","leftover hot pot","bargain bin bento","day-old tempura","sale sashimi"],animal:["crab","deep sea king shrimp","mutant mosquito","evolved crow","psychic octopus","giant cicada","radioactive lobster","prehistoric roach"],place:["the supermarket","City Z","a 100-yen store","the bargain bin","a vending machine","the Hero Association lobby","the abandoned district","King's apartment"]};
+
+let words={},selectedStory=null;
+function renderPicker(){const app=document.getElementById('app');let grid=STORIES.map((s,i)=>`<div class="story-card" onclick="pickStory(${i})"><div class="icon">${s.icon}</div><div class="name">${s.title}</div><div class="tease">${s.tease}</div></div>`).join('');app.innerHTML=`<div class="card" style="text-align:center;padding:28px 24px;"><div style="font-size:48px;margin-bottom:6px">👊</div><div class="title">OPM Mad Libs<span class="sm">One Punch. Infinite laughs.</span></div></div><div class="card"><div style="font-family:'Chewy',cursive;font-size:22px;text-align:center;margin-bottom:4px">Pick a Story</div><div style="font-size:13px;color:#998866;font-weight:600;text-align:center;margin-bottom:16px">25 stories — fill in the blanks and watch the chaos unfold!</div><div class="story-grid">${grid}</div></div>`;window.scrollTo({top:0,behavior:'smooth'});}
+function pickStory(i){selectedStory=i;renderInputs();}
+function renderInputs(){const s=STORIES[selectedStory];let fields=PROMPTS.map(p=>`<div class="prompt-item"><label>${p.label}</label><input type="text" id="w_${p.id}" placeholder="${p.placeholder}" oninput="checkReady()"></div>`).join('');document.getElementById('app').innerHTML=`<div class="card" style="text-align:center;"><div style="font-size:32px;margin-bottom:4px">${s.icon}</div><div style="font-family:'Chewy',cursive;font-size:22px;margin-bottom:2px">${s.title}</div><div style="font-size:13px;color:#998866;font-weight:600;margin-bottom:16px">Fill in the words — no peeking!</div><button class="random-btn" onclick="randomFill()">🎲 Random Fill</button><div class="prompt-grid">${fields}</div><div style="margin-top:16px;"><button class="bb go" id="btn-go" disabled onclick="showStory()">📖 Read My Story!</button><button class="bb" onclick="renderPicker()">← Pick Different Story</button></div></div>`;window.scrollTo({top:0,behavior:'smooth'});}
+function randomFill(){PROMPTS.forEach(p=>{const b=RANDOMS[p.id];document.getElementById('w_'+p.id).value=b[Math.floor(Math.random()*b.length)];});checkReady();}
+function checkReady(){document.getElementById('btn-go').disabled=!PROMPTS.every(p=>document.getElementById('w_'+p.id).value.trim());}
+function showStory(){words={};PROMPTS.forEach(p=>{words[p.id]=document.getElementById('w_'+p.id).value.trim();});const s=STORIES[selectedStory];let html=s.text.replace(/\{(\w+)\}/g,(m,k)=>`<span class="blank">${words[k]||m}</span>`);document.getElementById('app').innerHTML=`<div class="card"><div style="font-size:40px;text-align:center;margin-bottom:6px">${s.icon}</div><div class="story-title-display">${s.title}</div><div class="story-text">${html}</div></div><div class="card" style="text-align:center;"><button class="bb pick" onclick="renderPicker()">📝 Pick Another Story</button><button class="bb" onclick="renderInputs()">🔄 Same Story, New Words</button><button class="bb" onclick="readAnother()">📖 Read Another (Same Words)</button></div>`;window.scrollTo({top:0,behavior:'smooth'});}
+function readAnother(){let idx;do{idx=Math.floor(Math.random()*STORIES.length);}while(idx===selectedStory);selectedStory=idx;const s=STORIES[selectedStory];let html=s.text.replace(/\{(\w+)\}/g,(m,k)=>`<span class="blank">${words[k]||m}</span>`);document.getElementById('app').innerHTML=`<div class="card"><div style="font-size:40px;text-align:center;margin-bottom:6px">${s.icon}</div><div class="story-title-display">${s.title}</div><div class="story-text">${html}</div></div><div class="card" style="text-align:center;"><button class="bb pick" onclick="renderPicker()">📝 Pick Another Story</button><button class="bb" onclick="renderInputs()">🔄 New Words</button><button class="bb" onclick="readAnother()">📖 Read Another (Same Words)</button></div>`;window.scrollTo({top:0,behavior:'smooth'});}
+renderPicker();
+</script>
+</body>
+</html>
