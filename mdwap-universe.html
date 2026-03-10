@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>Belinda Blinked — The Universe Guide</title>
+<meta name="description" content="My Dad Wrote a Porno universe guide — characters, timeline, Rocky's writing quirks, and 50 trivia questions from the world of Belinda Blinked.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Chewy&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0a10;
+    --bg-card: #1a1220;
+    --bg-card-hover: #241a30;
+    --accent: #d4577a;
+    --accent2: #d4a04a;
+    --accent3: #c084d8;
+    --accent4: #e8a0b8;
+    --text: #ede4f0;
+    --text-muted: #9888a8;
+    --text-dim: #685878;
+    --border: #302040;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Nunito', sans-serif;
+    overflow-x: hidden;
+  }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes floatObj {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    25% { transform: translateY(-30px) rotate(5deg); }
+    50% { transform: translateY(-10px) rotate(-3deg); }
+    75% { transform: translateY(-40px) rotate(3deg); }
+  }
+  @keyframes pulseGlow {
+    0%, 100% { filter: drop-shadow(0 0 8px rgba(212,87,122,0.3)); }
+    50% { filter: drop-shadow(0 0 20px rgba(212,87,122,0.5)); }
+  }
+
+  .fade-in { animation: fadeUp 0.5s ease both; }
+  .fade-in-delay { animation: fadeUp 0.4s ease both; }
+
+  /* ── Floating BG ── */
+  #floating-bg {
+    position: fixed; inset: 0; overflow: hidden;
+    pointer-events: none; z-index: 0;
+  }
+  .float-obj {
+    position: absolute;
+    animation: floatObj var(--dur) ease-in-out infinite;
+    animation-delay: var(--delay);
+    opacity: var(--opa);
+    font-size: var(--size);
+    left: var(--x);
+    top: var(--y);
+  }
+
+  /* ── Layout ── */
+  .container {
+    position: relative; z-index: 1;
+    max-width: 900px; margin: 0 auto;
+    padding: 24px 16px 64px;
+  }
+
+  /* ── Nav ── */
+  .tab-nav {
+    display: flex; gap: 4px; padding: 6px;
+    background: var(--bg-card); border-radius: 16px;
+    border: 1px solid var(--border);
+    margin-bottom: 32px;
+    flex-wrap: wrap; justify-content: center;
+  }
+  .tab-btn {
+    padding: 10px 20px; border: none; border-radius: 12px;
+    cursor: pointer; font-family: 'Nunito', sans-serif;
+    font-size: 15px; font-weight: 600;
+    background: transparent; color: var(--text-muted);
+    transition: all 0.25s ease;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .tab-btn.active {
+    background: var(--accent); color: #fff;
+  }
+  .tab-btn:hover:not(.active) { color: var(--text); }
+  .tab-btn .icon { font-size: 18px; }
+
+  /* ── Section ── */
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* ── Hero ── */
+  .hero {
+    text-align: center; padding: 48px 24px; margin-bottom: 32px;
+    background: linear-gradient(135deg, var(--bg-card) 0%, rgba(212,87,122,0.08) 50%, var(--bg-card) 100%);
+    border-radius: 24px; border: 1px solid var(--border);
+    position: relative; overflow: hidden;
+  }
+  .hero-pattern {
+    position: absolute; inset: 0; opacity: 0.04;
+    background: repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(212,160,74,0.4) 20px, rgba(212,160,74,0.4) 22px);
+  }
+  .hero-content { position: relative; z-index: 1; }
+  .hero-mascot {
+    width: 120px; height: 120px; border-radius: 50%; object-fit: contain;
+    margin-bottom: 16px;
+    animation: pulseGlow 3s ease-in-out infinite;
+  }
+  .hero-emoji {
+    font-size: 64px; margin-bottom: 16px;
+    animation: pulseGlow 3s ease-in-out infinite;
+  }
+  .hero h1 {
+    font-family: 'Chewy', sans-serif;
+    font-size: clamp(26px, 5vw, 44px);
+    color: var(--accent); margin: 0 0 4px; line-height: 1.2;
+    text-shadow: 0 0 40px rgba(212,87,122,0.3);
+  }
+  .hero .subtitle {
+    font-family: 'Nunito', sans-serif; font-size: 17px;
+    color: var(--accent2); margin: 0 0 8px; font-weight: 700;
+    letter-spacing: 0.3px;
+  }
+  .hero .meta {
+    font-size: 14px; color: var(--text-muted); margin: 0 0 24px;
+  }
+  .stats-row {
+    display: flex; flex-wrap: wrap; gap: 16px;
+    justify-content: center; margin-top: 24px;
+  }
+  .stat-box {
+    background: rgba(255,255,255,0.03); border-radius: 16px;
+    padding: 16px 24px; border: 1px solid var(--border); min-width: 100px;
+  }
+  .stat-box .num {
+    font-family: 'Chewy', sans-serif; font-size: 24px;
+  }
+  .stat-box .label {
+    font-size: 12px; color: var(--text-muted);
+  }
+
+  .about-card {
+    background: var(--bg-card); border-radius: 20px; padding: 32px;
+    border: 1px solid var(--border); margin-bottom: 24px;
+  }
+  .about-card h2 {
+    font-family: 'Nunito', sans-serif; font-size: 22px; font-weight: 800;
+    color: var(--text); margin: 0 0 16px;
+  }
+  .about-card p {
+    font-size: 15px; line-height: 1.8; color: var(--text-muted);
+  }
+  .about-card strong { color: var(--text); }
+  .about-card .hl-pink { color: var(--accent); }
+  .about-card .hl-gold { color: var(--accent2); }
+  .about-card .hl-purple { color: var(--accent3); }
+
+  .rocky-quote {
+    font-family: 'Nunito', sans-serif; font-weight: 700;
+    font-size: 16px; color: var(--accent2); line-height: 1.7;
+    padding: 16px 24px; margin: 16px 0;
+    border-left: 3px solid var(--accent2);
+    background: rgba(212,160,74,0.04); border-radius: 0 12px 12px 0;
+  }
+
+  .quick-links {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px;
+  }
+  .quick-card {
+    background: var(--bg-card); border-radius: 16px; padding: 20px;
+    border: 1px solid var(--border); cursor: pointer;
+    text-align: left; transition: all 0.2s ease;
+    font-family: inherit; color: inherit; width: 100%;
+  }
+  .quick-card:hover { transform: translateY(-2px); }
+  .quick-card .title {
+    font-family: 'Nunito', sans-serif; font-size: 16px; font-weight: 800; margin-bottom: 6px;
+  }
+  .quick-card .desc {
+    font-size: 13px; color: var(--text-muted);
+  }
+
+  /* ── Timeline ── */
+  .section-heading {
+    font-family: 'Chewy', sans-serif;
+    font-size: clamp(22px, 4vw, 32px);
+    margin: 0 0 8px; text-align: center;
+  }
+  .section-sub {
+    font-size: 14px; color: var(--text-muted);
+    text-align: center; margin-bottom: 32px;
+  }
+
+  .timeline-wrap {
+    position: relative; max-width: 700px; margin: 0 auto;
+  }
+  .timeline-line {
+    position: absolute; left: 24px; top: 0; bottom: 0; width: 3px;
+    background: linear-gradient(to bottom, var(--accent), var(--accent2), var(--accent3));
+    border-radius: 2px; opacity: 0.3;
+  }
+  .timeline-item {
+    position: relative; margin-bottom: 16px; padding-left: 60px; cursor: pointer;
+  }
+  .timeline-dot {
+    position: absolute; left: 14px; top: 18px; width: 22px; height: 22px;
+    border-radius: 50%; border: 3px solid var(--bg); z-index: 1;
+  }
+  .tl-card {
+    background: var(--bg-card); border-radius: 16px; padding: 20px;
+    border: 1px solid var(--border); transition: all 0.25s ease;
+  }
+  .tl-card:hover, .tl-card.expanded { border-color: var(--tl-color, var(--accent)); }
+  .tl-card.expanded { background: var(--bg-card-hover); }
+  .tl-header { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; flex-wrap: wrap; }
+  .tl-icon { font-size: 22px; }
+  .tl-year {
+    font-family: 'Chewy', sans-serif; font-size: 13px;
+    padding: 2px 10px; border-radius: 8px;
+  }
+  .tl-season-tag {
+    font-size: 11px; font-weight: 800;
+    color: var(--text-dim); background: rgba(104,88,120,0.15);
+    padding: 2px 8px; border-radius: 6px;
+  }
+  .tl-title {
+    font-family: 'Nunito', sans-serif; font-size: 17px; font-weight: 800;
+    color: var(--text); margin: 0 0 4px;
+  }
+  .tl-desc {
+    font-size: 14px; color: var(--text-muted); line-height: 1.6;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+    overflow: hidden; max-height: 2.8em; transition: max-height 0.4s ease;
+  }
+  .tl-card.expanded .tl-desc {
+    -webkit-line-clamp: unset; max-height: 500px;
+  }
+  .tl-toggle { font-size: 12px; margin-top: 6px; display: inline-block; cursor: pointer; opacity: 0.8; }
+  .tl-toggle:hover { opacity: 1; }
+
+  /* ── Characters ── */
+  .char-filters { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; margin-bottom: 18px; }
+  .char-filter {
+    padding: 6px 14px; border-radius: 99px; border: 1px solid var(--border);
+    cursor: pointer; font-family: 'Nunito', sans-serif;
+    font-size: 12px; font-weight: 700;
+    background: var(--bg-card); color: var(--text-muted);
+    transition: all 0.2s ease;
+  }
+  .char-filter.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .char-filter:hover:not(.active) { border-color: var(--accent); color: var(--text); }
+
+  .char-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 10px; margin-bottom: 24px;
+  }
+  .char-btn {
+    background: var(--bg-card); border-radius: 16px; padding: 20px 12px;
+    border: 2px solid var(--border); cursor: pointer;
+    transition: all 0.25s ease;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    font-family: inherit; color: inherit; width: 100%;
+  }
+  .char-btn:hover { transform: translateY(-3px); }
+  .char-btn.selected { transform: scale(1.03); }
+  .char-emoji { font-size: 36px; transition: filter 0.25s ease; }
+  .char-btn.selected .char-emoji { filter: drop-shadow(0 0 10px var(--char-color)); }
+  .char-name {
+    font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 700;
+  }
+  .char-role { font-size: 10px; color: var(--text-dim); text-align: center; }
+
+  .char-detail {
+    background: var(--bg-card); border-radius: 20px; padding: 28px;
+    border: 2px solid rgba(255,255,255,0.1);
+    animation: fadeUp 0.3s ease both;
+    display: none;
+  }
+  .char-detail.visible { display: block; }
+  .char-detail-header {
+    display: flex; align-items: center; gap: 16px; margin-bottom: 16px; flex-wrap: wrap;
+  }
+  .char-detail-emoji { font-size: 48px; }
+  .char-detail-name {
+    font-family: 'Chewy', sans-serif; font-size: 24px; margin: 0;
+  }
+  .char-detail-role {
+    font-size: 14px; font-weight: 700;
+    color: var(--text-muted); margin: 2px 0 0;
+  }
+  .char-detail-desc {
+    font-size: 15px; line-height: 1.8; margin: 0 0 16px; color: var(--text-muted);
+  }
+  .char-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+  .char-tag {
+    font-size: 12px; font-weight: 700;
+    padding: 4px 12px; border-radius: 8px;
+  }
+  .char-trivia-list { display: flex; flex-direction: column; gap: 8px; }
+  .char-trivia {
+    border-radius: 12px; padding: 14px 18px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .char-trivia span:first-child { font-size: 18px; }
+  .char-trivia span:last-child {
+    font-size: 13px; color: var(--accent2); font-style: italic;
+  }
+
+  /* ── Fun Facts ── */
+  .filter-row {
+    display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; margin-bottom: 24px;
+  }
+  .filter-btn {
+    padding: 6px 16px; border-radius: 10px; border: none; cursor: pointer;
+    font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 700;
+    background: var(--bg-card); color: var(--text-muted);
+    transition: all 0.2s ease;
+  }
+  .filter-btn.active {
+    background: var(--accent2); color: var(--bg);
+  }
+  .facts-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px;
+  }
+  .fact-card {
+    background: var(--bg-card); border-radius: 16px; padding: 22px;
+    border: 1px solid var(--border); transition: all 0.25s ease;
+  }
+  .fact-card:hover { border-color: rgba(212,160,74,0.4); transform: translateY(-2px); }
+  .fact-inner { display: flex; gap: 14px; align-items: flex-start; }
+  .fact-icon {
+    font-size: 28px; flex-shrink: 0;
+    background: rgba(212,160,74,0.07); border-radius: 12px;
+    width: 48px; height: 48px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .fact-cat {
+    font-size: 10px; font-weight: 700;
+    color: var(--accent2); text-transform: uppercase; letter-spacing: 1px;
+  }
+  .fact-text { font-size: 14px; color: var(--text); margin: 4px 0 0; line-height: 1.6; }
+
+  /* ── Trivia ── */
+  .trivia-start-screen {
+    text-align: center; padding: 60px 24px;
+    background: var(--bg-card); border-radius: 24px;
+    border: 1px solid var(--border);
+  }
+  .trivia-start-icon { font-size: 72px; margin-bottom: 20px; animation: pulseGlow 3s ease-in-out infinite; }
+  .trivia-start-title {
+    font-family: 'Nunito', sans-serif; font-size: 24px; font-weight: 800;
+    color: var(--text); margin: 0 0 12px;
+  }
+  .trivia-start-desc {
+    font-size: 15px; color: var(--text-muted); margin: 0 0 28px;
+    max-width: 420px; margin-left: auto; margin-right: auto; line-height: 1.6;
+  }
+  .trivia-action-btn {
+    font-family: 'Nunito', sans-serif; font-size: 16px; font-weight: 800;
+    padding: 14px 36px; border: none; border-radius: 14px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff;
+    cursor: pointer; transition: all 0.25s ease;
+    box-shadow: 0 4px 20px rgba(212,87,122,0.3);
+  }
+  .trivia-action-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 28px rgba(212,87,122,0.4); }
+  .trivia-hud {
+    display: flex; justify-content: center; gap: 16px;
+    margin-bottom: 16px; flex-wrap: wrap;
+  }
+  .trivia-hud-item {
+    background: var(--bg-card); border-radius: 14px; padding: 12px 20px;
+    border: 1px solid var(--border); text-align: center; min-width: 90px;
+  }
+  .trivia-hud-label { display: block; font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
+  .trivia-hud-value { display: block; font-family: 'Chewy', sans-serif; font-size: 18px; color: var(--text); margin-top: 4px; }
+  .trivia-progress-bar {
+    width: 100%; height: 6px; background: var(--border); border-radius: 3px;
+    margin-bottom: 24px; overflow: hidden;
+  }
+  .trivia-progress-fill {
+    height: 100%; border-radius: 3px; transition: width 0.4s ease;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    width: 0%;
+  }
+  .trivia-card {
+    background: var(--bg-card); border-radius: 20px; padding: 32px;
+    border: 1px solid var(--border); max-width: 680px; margin: 0 auto;
+  }
+  .trivia-category {
+    font-size: 11px; font-weight: 800;
+    color: var(--accent); text-transform: uppercase; letter-spacing: 1.5px;
+    margin-bottom: 12px;
+  }
+  .trivia-question {
+    font-family: 'Nunito', sans-serif; font-size: 20px; font-weight: 700;
+    color: var(--text); margin: 0 0 24px; line-height: 1.5;
+  }
+  .trivia-options { display: flex; flex-direction: column; gap: 10px; }
+  .trivia-option {
+    width: 100%; text-align: left; padding: 16px 20px;
+    background: rgba(255,255,255,0.03); border: 2px solid var(--border);
+    border-radius: 14px; cursor: pointer;
+    font-family: 'Nunito', sans-serif; font-size: 15px; color: var(--text);
+    transition: all 0.2s ease; display: flex; align-items: center; gap: 12px;
+  }
+  .trivia-option:hover:not(.disabled) { border-color: rgba(212,87,122,0.4); background: rgba(212,87,122,0.05); transform: translateX(4px); }
+  .trivia-option .opt-letter {
+    font-family: 'Chewy', sans-serif; font-size: 14px; color: var(--text-dim);
+    width: 32px; height: 32px; border-radius: 10px; display: flex;
+    align-items: center; justify-content: center; flex-shrink: 0;
+    background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+    transition: all 0.2s ease;
+  }
+  .trivia-option:hover:not(.disabled) .opt-letter { border-color: rgba(212,87,122,0.4); color: var(--accent); }
+  .trivia-option.correct {
+    border-color: #40c890; background: rgba(64,200,144,0.1);
+    animation: fadeUp 0.3s ease;
+  }
+  .trivia-option.correct .opt-letter { background: #40c890; color: #fff; border-color: #40c890; }
+  .trivia-option.wrong {
+    border-color: #ff4757; background: rgba(255,71,87,0.1);
+    animation: fadeUp 0.3s ease;
+  }
+  .trivia-option.wrong .opt-letter { background: #ff4757; color: #fff; border-color: #ff4757; }
+  .trivia-option.disabled { cursor: default; opacity: 0.5; pointer-events: none; }
+  .trivia-option.disabled.correct { opacity: 1; }
+  .trivia-option.disabled.wrong { opacity: 1; }
+  .trivia-feedback {
+    margin-top: 20px; padding: 16px 20px; border-radius: 14px;
+    font-size: 14px; line-height: 1.6;
+  }
+  .trivia-feedback.correct-fb { background: rgba(64,200,144,0.08); border: 1px solid rgba(64,200,144,0.2); color: #40c890; }
+  .trivia-feedback.wrong-fb { background: rgba(255,71,87,0.08); border: 1px solid rgba(255,71,87,0.2); color: #ff8090; }
+  .trivia-next-btn {
+    margin-top: 20px; width: 100%; font-size: 15px; padding: 14px;
+  }
+  @keyframes shakeWrong {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-6px); }
+    40%, 80% { transform: translateX(6px); }
+  }
+  .shake { animation: shakeWrong 0.4s ease; }
+
+  /* ── Stats ── */
+  .book-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px;
+    margin-bottom: 24px;
+  }
+  .book-card {
+    background: var(--bg-card); border-radius: 16px; padding: 22px;
+    border: 1px solid var(--border); transition: all 0.25s ease;
+  }
+  .book-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .book-num {
+    font-family: 'Chewy', sans-serif; font-size: 28px;
+    color: var(--accent); margin-bottom: 4px;
+  }
+  .book-title {
+    font-family: 'Nunito', sans-serif; font-size: 16px; font-weight: 800;
+    color: var(--text); margin-bottom: 6px;
+  }
+  .book-date { font-size: 12px; color: var(--text-dim); font-weight: 700; margin-bottom: 8px; }
+  .book-tagline {
+    font-family: 'Nunito', sans-serif; font-weight: 600;
+    font-size: 13px; color: var(--accent2); line-height: 1.6;
+  }
+
+  .celeb-grid {
+    display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px;
+  }
+  .celeb-tag {
+    font-size: 12px; font-weight: 700; padding: 5px 12px;
+    border-radius: 8px; background: rgba(212,87,122,0.08);
+    color: var(--accent4); border: 1px solid rgba(212,87,122,0.15);
+  }
+
+  /* ── Footer ── */
+  footer {
+    text-align: center; margin-top: 48px; padding: 20px;
+    border-top: 1px solid var(--border);
+  }
+  footer p { font-size: 12px; color: var(--text-dim); }
+
+  .fc-brand-bar{position:sticky;top:0;z-index:100;background:rgba(14,10,16,0.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.06);padding:8px 16px;display:flex;align-items:center;gap:10px}
+  .fc-brand-bar a{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit}
+  .fc-brand-bar img{width:32px;height:32px;border-radius:50%}
+  .fc-brand-bar span{font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;color:#c9a44a;letter-spacing:0.5px}
+  .fc-brand-bar .fc-sep{color:rgba(255,255,255,0.15);font-size:18px;font-weight:300}
+  .fc-brand-bar .fc-page-name{font-size:13px;font-weight:600;color:rgba(255,255,255,0.4)}
+
+  @media(max-width:640px){
+    .tab-nav{gap:2px;padding:4px}
+    .tab-btn{padding:8px 12px;font-size:13px}
+    .tab-btn .icon{font-size:15px}
+    .hero{padding:32px 16px}
+    .about-card{padding:24px 20px}
+    .char-grid{grid-template-columns:repeat(auto-fill,minmax(100px,1fr))}
+    .facts-grid{grid-template-columns:1fr}
+    .book-grid{grid-template-columns:1fr}
+    .trivia-card{padding:20px}
+  }
+</style>
+</head>
+<body>
+<div class="fc-brand-bar"><a href="index.html"><img src="fancannonlogo.png" alt="Fan Cannon"><span>Fan Cannon</span></a><span class="fc-sep">|</span><span class="fc-page-name">Belinda Blinked Universe</span></div>
+
+<!-- Floating Background -->
+<div id="floating-bg"></div>
+
+<div class="container">
+  <!-- Navigation -->
+  <nav class="tab-nav" id="tabNav">
+    <button class="tab-btn active" data-tab="home"><span class="icon">🏠</span> Home</button>
+    <button class="tab-btn" data-tab="timeline"><span class="icon">📜</span> Timeline</button>
+    <button class="tab-btn" data-tab="characters"><span class="icon">👥</span> Characters</button>
+    <button class="tab-btn" data-tab="facts"><span class="icon">🎲</span> Fun Facts</button>
+    <button class="tab-btn" data-tab="stats"><span class="icon">📊</span> Stats</button>
+    <button class="tab-btn" data-tab="trivia"><span class="icon">🧠</span> Trivia</button>
+    <a href="mdwap-greatest-hits.html" class="tab-btn" style="text-decoration:none"><span class="icon">🏆</span> Greatest Hits</a>
+    <a href="mdwap-madlibs.html" class="tab-btn" style="text-decoration:none"><span class="icon">📝</span> Mad Libs</a>
+  </nav>
+
+  <!-- ════════════ HOME ════════════ -->
+  <div class="section active fade-in" id="sec-home">
+    <div class="hero">
+      <div class="hero-pattern"></div>
+      <div class="hero-content">
+        <div class="hero-emoji">🍳</div>
+        <h1>My Dad Wrote a Porno</h1>
+        <p class="subtitle">"A modern story of sex, erotica and passion"</p>
+        <p class="meta">by Jamie Morton, James Cooper &amp; Alice Levine · 2015–2022</p>
+        <div class="stats-row">
+          <div class="stat-box"><div class="num" style="color:var(--accent)">430M+</div><div class="label">Downloads</div></div>
+          <div class="stat-box"><div class="num" style="color:var(--accent2)">6</div><div class="label">Books / Series</div></div>
+          <div class="stat-box"><div class="num" style="color:var(--accent3)">25+</div><div class="label">Characters</div></div>
+          <div class="stat-box"><div class="num" style="color:var(--accent4)">1</div><div class="label">HBO Special</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="about-card">
+      <h2>🎙️ What Is This?</h2>
+      <p>
+        <strong class="hl-pink">My Dad Wrote a Porno</strong> is a comedy podcast in which <strong>Jamie Morton</strong>
+        reads aloud the self-published erotic novels written by his actual father, known by his pen name
+        <strong class="hl-gold">Rocky Flintstone</strong>. Joined by friends <strong>James Cooper</strong>
+        and <strong>Alice Levine</strong> (collectively "Team Porno"), Jamie attempts to narrate the 
+        adventures of sales executive <strong class="hl-pink">Belinda Blumenthal</strong> while the three of them 
+        try not to die laughing. Rocky writes in his garden shed because his wife won't let him write in the house.
+        Before Belinda Blinked, he self-published books on Brazil tourism, mineral identification, and gardening.
+      </p>
+      <div class="rocky-quote">"How the sexiest sales girl in business earns her huge bonus by being the best at removing her high heels."<br>— Rocky Flintstone, Book 1 tagline</div>
+      <p style="margin-top:16px">
+        The podcast launched on <strong class="hl-gold">October 4, 2015</strong> after Jamie's dad handed him
+        chapters at a family birthday party. Jamie shared them at a Christmas lunch, and Alice suggested turning 
+        it into a podcast. The show ran for <strong>6 series</strong> through <strong>December 12, 2022</strong>,
+        amassing over <strong class="hl-pink">430 million downloads</strong> worldwide, an <strong class="hl-purple">HBO special</strong>
+        filmed at the Roundhouse in London (May 2019), world tours, an annotated book, and celebrity fans 
+        ranging from Elijah Wood to Lin-Manuel Miranda.
+      </p>
+    </div>
+
+    <div class="about-card">
+      <h2>📚 The Belinda Blinked Books</h2>
+      <p style="margin-bottom:16px">Rocky's six-book magnum opus, self-published on Amazon. The first four were written <em>before</em> the podcast started. Book 5 was the first written after Rocky became famous.</p>
+      <img src="belinda-books.png" alt="The Belinda Blinked book series" style="width:100%;border-radius:14px;display:block;margin-bottom:20px">
+      <div class="book-grid" id="book-grid"></div>
+      <p style="font-size:13px;color:var(--text-dim)"><strong style="color:var(--text-muted)">Spin-offs:</strong> Lockdown 69, Christmas specials, business tips, wine diet book, sweet treats recipe book, Spanish translation.</p>
+    </div>
+
+    <div class="about-card">
+      <h2>⭐ Celebrity Fans</h2>
+      <p>Over the years, these celebrities appeared on Footnotes episodes or publicly declared their love for the podcast:</p>
+      <div class="celeb-grid" id="celeb-grid"></div>
+    </div>
+
+    <!-- Companion Pages -->
+    <div style="margin-bottom:24px">
+      <div style="font-family:Chewy,cursive;font-size:24px;color:var(--accent2);margin-bottom:6px;text-align:center">🎭 Explore More</div>
+      <p style="font-size:14px;color:var(--text-dim);text-align:center;margin-bottom:16px">Interactive companion pages for the Belinda Blinked universe</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px">
+        <a href="mdwap-greatest-hits.html" style="text-decoration:none;color:inherit;background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:20px;text-align:center;transition:all 0.25s;display:block">
+          <div style="font-size:32px;margin-bottom:6px">🏆</div>
+          <div style="font-family:Chewy,cursive;font-size:18px;color:var(--accent);margin-bottom:4px">Rocky's Greatest Hits</div>
+          <p style="font-size:13px;color:var(--text-muted);margin:0;line-height:1.4">The most absurd moments from all 6 books — vaginal lids, disappearing characters, and geography crimes.</p>
+        </a>
+        <a href="mdwap-madlibs.html" style="text-decoration:none;color:inherit;background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:20px;text-align:center;transition:all 0.25s;display:block">
+          <div style="font-size:32px;margin-bottom:6px">📝</div>
+          <div style="font-family:Chewy,cursive;font-size:18px;color:var(--accent2);margin-bottom:4px">Belinda Blinked Mad Libs</div>
+          <p style="font-size:13px;color:var(--text-muted);margin:0;line-height:1.4">Write your own chapters of Rocky's masterwork. 20 stories. Pots, pans, and passion.</p>
+        </a>
+      </div>
+    </div>
+
+    <div class="quick-links">
+      <button class="quick-card" data-nav="timeline" style="--qc:var(--accent)">
+        <div class="title" style="color:var(--accent)">6 Books + Podcast</div>
+        <div class="desc">From garden shed to HBO special</div>
+      </button>
+      <button class="quick-card" data-nav="characters" style="--qc:var(--accent3)">
+        <div class="title" style="color:var(--accent3)">25+ Characters</div>
+        <div class="desc">From Belinda to Bill (remember Bill?)</div>
+      </button>
+      <button class="quick-card" data-nav="facts" style="--qc:var(--accent2)">
+        <div class="title" style="color:var(--accent2)">Rocky's Quirks</div>
+        <div class="desc">Vaginal lids, black thongs, and geography crimes</div>
+      </button>
+    </div>
+  </div>
+
+  <!-- ════════════ TIMELINE ════════════ -->
+  <div class="section" id="sec-timeline">
+    <h2 class="section-heading" style="color:var(--accent)">📜 The Belinda Blinked Timeline</h2>
+    <p class="section-sub">Six books, six podcast series, one HBO special, and a lot of pots and pans</p>
+    <div class="timeline-wrap">
+      <div class="timeline-line"></div>
+      <div id="timeline-items"></div>
+    </div>
+  </div>
+
+  <!-- ════════════ CHARACTERS ════════════ -->
+  <div class="section" id="sec-characters">
+    <h2 class="section-heading" style="color:var(--accent3)">👥 The Cast of Belinda Blinked</h2>
+    <p class="section-sub">Tap a character to learn more (if Rocky remembers they exist)</p>
+    <div class="about-card" style="margin-bottom:24px;padding:20px">
+      <h2 style="text-align:center;margin-bottom:12px">🏢 Steele's Pots &amp; Pans — Org Chart</h2>
+      <img src="steele-org-chart.png" alt="Steele's Pots and Pans organizational chart" style="width:100%;border-radius:14px;display:block">
+    </div>
+    <div class="char-filters" id="char-filters"></div>
+    <div class="char-grid" id="char-grid"></div>
+    <div class="char-detail" id="char-detail"></div>
+  </div>
+
+  <!-- ════════════ FUN FACTS ════════════ -->
+  <div class="section" id="sec-facts">
+    <h2 class="section-heading" style="color:var(--accent2)">🎲 Rocky's Writing Quirks &amp; Fun Facts</h2>
+    <p class="section-sub">The things that make Belinda Blinked a true literary masterpiece</p>
+    <div class="filter-row" id="filter-row"></div>
+    <div class="facts-grid" id="facts-grid"></div>
+  </div>
+
+  <!-- ════════════ STATS ════════════ -->
+  <div class="section fade-in" id="sec-stats">
+    <h2 class="section-heading" style="color:var(--accent4)">📊 Podcast Stats &amp; Milestones</h2>
+    <p class="section-sub">From a Christmas lunch to 430 million downloads</p>
+
+    <div class="about-card" style="margin-bottom:20px">
+      <h2>🏆 Key Milestones</h2>
+      <div id="milestones-list"></div>
+    </div>
+
+    <div class="about-card" style="margin-bottom:20px">
+      <h2>🏢 Key Organizations</h2>
+      <div id="orgs-list"></div>
+    </div>
+
+    <div class="about-card" style="margin-bottom:20px">
+      <h2>📍 Key Locations</h2>
+      <p style="font-size:14px;color:var(--text-muted);margin-bottom:16px;line-height:1.6">Rocky's geography is... creative. Here's where the Belinda Blinked universe actually takes place.</p>
+      <img src="belinda-map.png" alt="Map of Belinda Blinked locations across Europe" style="width:100%;border-radius:16px;display:block;border:1px solid var(--border)">
+    </div>
+
+    <div class="about-card">
+      <h2>⚡ Quick Stats</h2>
+      <div id="quick-stats" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px"></div>
+    </div>
+  </div>
+
+  <!-- ════════════ TRIVIA ════════════ -->
+  <div class="section" id="sec-trivia">
+    <h2 class="section-heading" style="color:var(--accent)">🧠 Belinda Blinked Trivia Challenge</h2>
+    <p class="section-sub">Test your knowledge of the greatest literary universe of our time</p>
+    <div id="trivia-container">
+      <div id="trivia-start" class="trivia-start-screen">
+        <div class="trivia-start-icon">🍳</div>
+        <h3 class="trivia-start-title">Ready to Test Your Belinda Blinked Knowledge?</h3>
+        <p class="trivia-start-desc">50 questions covering characters, plot points, Rocky's quirks, and podcast history. How many can you get right?</p>
+        <button id="trivia-start-btn" class="trivia-action-btn">Start Trivia</button>
+      </div>
+      <div id="trivia-game" style="display:none;">
+        <div class="trivia-hud">
+          <div class="trivia-hud-item"><span class="trivia-hud-label">Question</span><span class="trivia-hud-value" id="trivia-qnum">1 / 50</span></div>
+          <div class="trivia-hud-item"><span class="trivia-hud-label">Score</span><span class="trivia-hud-value" id="trivia-score">0</span></div>
+          <div class="trivia-hud-item"><span class="trivia-hud-label">Streak</span><span class="trivia-hud-value" id="trivia-streak">🔥 0</span></div>
+        </div>
+        <div class="trivia-progress-bar"><div class="trivia-progress-fill" id="trivia-progress"></div></div>
+        <div class="trivia-card" id="trivia-card">
+          <div class="trivia-category" id="trivia-category">Characters</div>
+          <p class="trivia-question" id="trivia-question">Loading...</p>
+          <div class="trivia-options" id="trivia-options"></div>
+          <div class="trivia-feedback" id="trivia-feedback" style="display:none;"></div>
+          <button class="trivia-action-btn trivia-next-btn" id="trivia-next" style="display:none;">Next Question →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>Fan-made guide · My Dad Wrote a Porno is by Jamie Morton, James Cooper &amp; Alice Levine<br>Belinda Blinked is written by Rocky Flintstone · All properties belong to their respective creators</p>
+  </footer>
+</div>
+
+<script>
+// ═══════════ DATA ═══════════
+
+const celebrities = [
+  "Elijah Wood","Daisy Ridley","Lin-Manuel Miranda","Josh Groban","Emma Thompson",
+  "Michael Sheen","Rachel Bloom","Ben Barnes","Dan Levy","Joe Lycett",
+  "Mara Wilson","Thomas Middleditch","George Ezra","Hayley Atwell",
+  "Charlotte Crosby","Stephen Mangan","Samara Weaving","Nicholas Hoult"
+];
+
+const books = [
+  {num:1,title:"Belinda Blinked 1",date:"March 2015",tagline:"A modern story of sex, erotica and passion. How the sexiest sales girl in business earns her huge bonus by being the best at removing her high heels."},
+  {num:2,title:"Belinda Blinked 2",date:"July 2016",tagline:"The continuing story of dripping sex, passion and big business deals."},
+  {num:3,title:"Belinda Blinked 3",date:"May 2017",tagline:"The continuing erotic story of sexual activity, dripping action and even bigger business deals."},
+  {num:4,title:"Belinda Blinked 4",date:"November 2018",tagline:"An erotic story of sexual prowess, sexy characters and even bigger business deals whilst the darkness increases."},
+  {num:5,title:"Belinda Blinked 5",date:"December 2019",tagline:"Belinda is in big trouble. Can the sexiest girl in sales continue to remove her brassiere whilst the evil grows."},
+  {num:6,title:"Belinda Blinked 6",date:"August 2021",tagline:"Belinda is finding her new role tough. Can this sexy salesgirl reassert herself in a new world of hate & intrigue."},
+];
+
+const characters = [
+  // Steele's Head Office
+  {name:"Belinda Blumenthal",emoji:"👩‍💼",color:"#d4577a",role:"International Sales Director",group:"Steele's",description:"The protagonist. Full name: Belinda Bounty Blumenthal. Previously worked at Typhoid Crockery Holdings. Considers herself 'the greatest boss in British kitchenware.' Swears by 'the Norse gods.' Her main sales tools are sex and Australian chardonnay. Founder of C.O.C.K. — the Confidential Order of Cookware Knights.",trivia:["Her full name is Belinda Bounty Blumenthal","Rocky's marketing keywords for Book 1 include 'lesbian, erotica and business and leadership'","She once had a near-death experience in which she met Dick Van Dyke in heaven"]},
+  {name:"Tony Sylvester",emoji:"👔",color:"#5078c0",role:"Managing Director",group:"Steele's",description:"Belinda's boss at Steele's Pots and Pans. Has a military background. Implied to be a deeply unsatisfying lover. Marries Giselle in Book 3, seemingly unbothered by any of the chaos that follows.",trivia:["Implied to be terrible in bed","Marries Giselle despite everything","Has a military background that never actually comes up"]},
+  {name:"Giselle Sylvester",emoji:"🕵️‍♀️",color:"#c04080",role:"Key Account Manager / Spy",group:"Steele's",description:"Née Maarschalkerweerd de Klotz. Starts as Tony's PA, joins the 'Glee Team' with Belinda and Bella. Promoted to Key Account Manager (Russian Interests). REVEALED as The Special One — Bisch's spy — at the end of Book 4. Betrayed Steele's to pay for her mother's treatment for 'conchakkutitus-detritus.' Has a condition where her hair falls out during sex. Eventually forgiven.",trivia:["Her maiden name is Maarschalkerweerd de Klotz","Betrayed Steele's to fund her mother's treatment for 'conchakkutitus-detritus'","Has a 'genital disease' where her hair falls out during intimate moments"]},
+  {name:"Bella Ridley",emoji:"💁‍♀️",color:"#e8a040",role:"Key Account Manager",group:"Steele's",description:"Starts as receptionist, promoted to Key Account Manager, and eventually Sales Director when Belinda is presumed dead. One-third of the Glee Team. Characterized by extreme stupidity and a thick Essex accent. Promoted largely because of her physical attributes. Put in a coma by the Book 4 bombing, awakened by Dr. Stud's 'sexual therapy.'",trivia:["Rocky accidentally calls her 'Donna' in Chapter 3 of Book 1","Put in a coma by a car bomb, awakened through sexual therapy","Takes over as Sales Director when Belinda is presumed dead in Book 6"]},
+  {name:"Sir James Godwin",emoji:"🎩",color:"#d4a04a",role:"CEO / Chairman",group:"Steele's",description:"The big boss of Steele's. Patron of the Asses and Donkeys Trust. Has had three wives — the third died in a parachuting 'accident.' Rocky has said he relates to Sir James the most, which the hosts found deeply concerning.",trivia:["Patron of the Asses and Donkeys Trust","His third wife died in a suspicious parachuting 'accident'","Rocky says he relates to Sir James the most — alarming the hosts"]},
+  {name:"Bill",emoji:"👻",color:"#888888",role:"HR Director",group:"Steele's",description:"Present at Belinda's job interview in Chapter 1. Then NEVER MENTIONED AGAIN in the entire six-book series. The hosts' absolute favorite running joke. What happened to Bill? Nobody knows. Rocky seemingly forgot he exists.",trivia:["Appears once, in Belinda's interview, then vanishes forever","The hosts ask about Bill constantly — Rocky offers no explanation","Perhaps the greatest literary mystery of the 21st century"]},
+  {name:"Jim Thompson",emoji:"🔧",color:"#6888a0",role:"Sales Admin Manager",group:"Steele's",description:"The dependable 'Mr. Fix-it' of Steele's Pots and Pans. Handles all the administrative details so Belinda can focus on her more... creative sales techniques.",trivia:["Known as 'Mr. Fix-it'","One of the few competent employees at Steele's","Somehow keeps the organization running"]},
+  {name:"Des Martin",emoji:"🎵",color:"#70a880",role:"Employee",group:"Steele's",description:"A Steele's employee notable primarily for playing the ocarina. Leads Belinda's farewell song, because of course someone plays the ocarina at a corporate farewell.",trivia:["Plays the ocarina","Leads Belinda's farewell song","One of Rocky's more inexplicable character choices"]},
+  {name:"Maeve",emoji:"💐",color:"#c87098",role:"Receptionist / Glee Team",group:"Steele's",description:"The new receptionist who replaces Giselle after the betrayal. Joins the Glee Team in Book 5 and begins dating Tony. A rare case of a Rocky character with an actual story arc.",trivia:["Replaces Giselle as Steele's receptionist","Joins the reconstituted Glee Team","Dates Tony after Giselle's betrayal is revealed"]},
+  {name:"Professor Slinz",emoji:"🧪",color:"#40a8c0",role:"German Scientist",group:"Steele's",description:"Inventor of the revolutionary Tri-Oxy Brillo Range — pans that can allegedly boil water in 3 seconds. Kidnapped by Giselle at the end of Book 4. Later revealed to have killed himself with a cyanide pill rather than give up his secrets. Commitment to kitchenware: unmatched.",trivia:["Invented pans that boil water in 3 seconds","Kidnapped by Giselle for Bisch","Took a cyanide pill rather than betray his pan blueprints"]},
+  // RSMs
+  {name:"Patrick O'Hamlyn",emoji:"🏴󠁧󠁢󠁳󠁣󠁴󠁿",color:"#50a068",role:"RSM: Scotland & Ireland",group:"RSMs",description:"Regional Sales Manager for Scotland and Ireland. One of Belinda's team of RSMs managing the Steele's territory across the UK.",trivia:["Covers Scotland and Ireland for Steele's","One of the few characters Rocky didn't forget about","Manages to actually do his job occasionally"]},
+  {name:"Ken Dewsbury",emoji:"🏭",color:"#7080a0",role:"RSM: Central & Northern England",group:"RSMs",description:"Regional Sales Manager for Central and Northern England. Part of Belinda's sales team. Does roughly what you'd expect an RSM to do, which makes him one of the more grounded characters by default.",trivia:["Covers the Midlands and North for Steele's","Relatively normal by Rocky's standards","His name sounds exactly like a character in a middle-management novel"]},
+  {name:"Dave Wilcox",emoji:"❓",color:"#888888",role:"RSM: Western England",group:"RSMs",description:"Regional Sales Manager for Western England. Introduced and then COMPLETELY FORGOTTEN. A spiritual sibling to Bill from HR in the 'characters Rocky abandoned' support group.",trivia:["Introduced as RSM for Western England","Then completely forgotten by Rocky","A kindred spirit to Bill from HR"]},
+  // Clients & Contacts
+  {name:"Peter Rouse",emoji:"🧘",color:"#a07048",role:"European Distributor",group:"Clients",description:"Belinda's European distributor and eventual love interest. Has a deep spiritual and ritualistic connection with Belinda involving mud painting. Eventually proposes marriage in Book 6. The hosts consider him the closest thing Belinda has to a genuine relationship.",trivia:["Their relationship involves ritualistic mud painting","He eventually proposes to Belinda in Book 6","The hosts see him as Belinda's most genuine connection"]},
+  {name:"Jim Stirling",emoji:"🤠",color:"#c88040",role:"CEO, Sterling Corp",group:"Clients",description:"CEO of Sterling Corp in Texas. Infamous for his micropenis, which the hosts nicknamed 'the vole.' Later gets a 'giant cock transplant' which goes horribly wrong — the replacement skin sloughs off. One of the most horrifying subplots in literary history.",trivia:["Known for his micropenis, nicknamed 'the vole' by the hosts","Gets a transplant that goes catastrophically wrong","The replacement skin sloughs off — the hosts were genuinely distressed"]},
+  {name:"Alfonse Stirbacker",emoji:"🏰",color:"#9070a0",role:"Distributor",group:"Clients",description:"Another of Belinda's business contacts, met in Sir James's maze. Because of course there's a maze, and of course business deals happen in it.",trivia:["Met in a hedge maze during a charity event","Another European distributor in Belinda's network","His scenes are peak Rocky absurdism"]},
+  // Villains
+  {name:"Herr Wolfgang Bisch",emoji:"🦹",color:"#c03040",role:"Main Villain",group:"Villains",description:"CEO of Bisch-Herstellung Enterprises, Steele's biggest competitor. A former East German spy who wants to steal the Tri-Oxy Brillo blueprints. His headquarters are described as being in 'East Berlin' except Rocky puts it 704 miles from Heathrow, which is actually Poland.",trivia:["A former East German spy turned kitchenware villain","His 'East Berlin' HQ is actually in Poland based on Rocky's distances","His company name roughly translates to 'Bisch Manufacturing'"]},
+  {name:"George Sylvester",emoji:"🔪",color:"#804040",role:"Tony's Brother / Villain",group:"Villains",description:"Tony's brother with a military background. Works with Giselle and Bisch as part of the conspiracy against Steele's. Kills James Spooner in Book 5, which is treated as a much bigger deal than you'd expect in a book about kitchenware sales.",trivia:["Tony's villainous brother","Kills James Spooner in Book 5","Has a military background like Tony, but chose evil"]},
+  // Intelligence & Aristocracy
+  {name:"James Spooner",emoji:"🔫",color:"#4060a0",role:"MI5/MI6 Agent",group:"Intelligence",description:"A spy who is an extremely obvious James Bond parody. Rocky can't decide if he works for MI5 or MI6. Has gadgets including a clothes-destroying laser cufflink and a leather charm bracelet that turns into binoculars with wet wipes inside. KILLED by George in Book 5. Given a state funeral at Westminster Abbey.",trivia:["Rocky can't decide if he's MI5 or MI6","His gadgets include binoculars with built-in wet wipes","Gets a full state funeral at Westminster Abbey"]},
+  {name:"The Duchess of Epsom",emoji:"👑",color:"#a06890",role:"Aristocrat / 'M'",group:"Intelligence",description:"An aristocrat with an equestrian lifestyle who rides her horse Toffee Apple Chew everywhere — including to business meetings. REVEALED to be 'M,' the head of all British Intelligence. Has a room entirely covered in intimate accessories. Rocky somehow makes the horse the most normal part of her character.",trivia:["Rides her horse to business meetings","Revealed to be 'M' — head of all British Intelligence","Has an entire room decorated with adult accessories"]},
+  {name:"Toffee Apple Chew",emoji:"🐴",color:"#c09060",role:"The Duchess's Horse",group:"Intelligence",description:"The Duchess's horse, described as a 'soul sister stallion' — except stallions are male. Pulls Spooner's funeral carriage at Westminster Abbey. Possibly the most dignified character in the entire series.",trivia:["Called a 'soul sister stallion' — stallions are male","Pulls Spooner's funeral carriage at Westminster Abbey","Attends more meetings than most Steele's employees"]},
+  // Others
+  {name:"Sam",emoji:"🛎️",color:"#6898b0",role:"The Youngish Man",group:"Others",description:"Known only as 'the youngish man.' Manager of The Ritz, having worked his way up from night receptionist at The Horse and Jockey. Rocky never gives his age, just 'youngish.' The hosts are haunted by this description.",trivia:["Rocky only ever describes him as 'youngish'","Worked his way up from The Horse and Jockey to The Ritz","His actual age remains one of the great mysteries"]},
+  {name:"Cosmo Macaroon",emoji:"👨‍🍳",color:"#d06060",role:"Celebrity TV Chef",group:"Others",description:"A celebrity chef whose show 'Cooking with Cosmo' features the Tri-Oxy Brillo range. Because in Rocky's world, pans that boil water in 3 seconds are the kind of thing that gets you on television.",trivia:["His show is called 'Cooking with Cosmo'","Features the Tri-Oxy Brillo range on TV","His name is peak Rocky character naming"]},
+  {name:"Dr. Veronica Stud",emoji:"🩺",color:"#c070a0",role:"Doctor / Specialist",group:"Others",description:"A doctor specializing in 'comas and sex.' Awakens Bella from her coma through 'sexual therapy.' The hosts could not believe this was a real plot point. It was. Rocky committed to it fully.",trivia:["Specializes in 'comas and sex' simultaneously","Wakes Bella from a coma through sexual therapy","The hosts were genuinely speechless at this subplot"]},
+];
+
+const timeline = [
+  {year:"Mar 2015",title:"Belinda Blinked 1 Published",desc:"Rocky Flintstone self-publishes his first erotic novel on Amazon. Belinda Blumenthal joins Steele's Pots and Pans, meets Jim Stirling ('the vole'), visits The Duchess's estate, encounters Peter Rouse in the maze/tombola, and begins her legendary career in kitchenware sales. Jamie's dad hands him the chapters at a family birthday party.",season:"Book 1",icon:"📖"},
+  {year:"Oct 2015",title:"Podcast Launches",desc:"Jamie Morton, James Cooper, and Alice Levine launch 'My Dad Wrote a Porno' as a podcast, reading Belinda Blinked chapter by chapter. Jamie reads; James and Alice react. The show is an immediate hit, with listeners unable to believe it's real.",season:"Podcast",icon:"🎙️"},
+  {year:"Jul 2016",title:"Belinda Blinked 2 Published",desc:"Rocky's second book arrives. Bella gets promoted, the team heads to Yorkshire, and Belinda's relationship with The Duchess deepens. The podcast audience explodes. An annotated edition of Book 1 is published by Quercus (UK) / Gallery Books (US) with commentary from the hosts.",season:"Book 2",icon:"📖"},
+  {year:"May 2017",title:"Belinda Blinked 3 + World Tour",desc:"Book 3 brings Giselle and Tony's engagement and wedding, a hen party in Torremolinos featuring Butch the Sunburnt Kid, and escalating absurdity. The podcast begins its first world tour, selling out venues across the globe.",season:"Book 3",icon:"🌍"},
+  {year:"Nov 2018",title:"Belinda Blinked 4 — The Darkness Increases",desc:"The mole hunt begins. James Spooner arrives as a Bond-parody spy. Professor Slinz reveals the Tri-Oxy Brillo Range. Giselle is exposed as The Special One — Bisch's spy inside Steele's. A car bomb rocks the company. Belinda forms C.O.C.K. (the Confidential Order of Cookware Knights) to fight back. This is the book where Rocky decided he was writing a thriller.",season:"Book 4",icon:"💣"},
+  {year:"May 2019",title:"HBO Special",desc:"'My Dad Wrote a Porno' is filmed as an HBO special at the Roundhouse in London. The hosts perform live readings to a sold-out crowd. It airs on May 11, 2019, introducing Rocky's masterwork to an even wider audience.",season:"Podcast",icon:"📺"},
+  {year:"Dec 2019",title:"Belinda Blinked 5 — Spooner Falls",desc:"The first book written after Rocky became famous. Bella is in a coma (awakened by Dr. Stud's sexual therapy). James Spooner is killed by George Sylvester. Belinda escapes in a hot air balloon. Giselle begins her redemption arc. The stakes in the kitchenware industry have never been higher.",season:"Book 5",icon:"🎈"},
+  {year:"Aug 2021",title:"Belinda Blinked 6 — The Final Chapter",desc:"Belinda is presumed dead. Bella takes over as Sales Director. The action moves to Australia. Belinda returns triumphant. Spooner gets a state funeral at Westminster Abbey (pulled by Toffee Apple Chew). Peter Rouse proposes to Belinda. Rocky brings his saga to a close.",season:"Book 6",icon:"💍"},
+  {year:"Oct 2025",title:"Board Game Published",desc:"'Belinda's Big Bonus,' a board game based on the Belinda Blinked universe, is published by Hollandspiele. Players can now experience the world of Steele's Pots and Pans in tabletop form.",season:"Legacy",icon:"🎲"},
+  {year:"Dec 2022",title:"Final Episode",desc:"The podcast airs its final episode on December 12, 2022. Rocky gives an interview reflecting on his literary career. After 6 series, Team Porno says goodbye to Belinda, to Steele's, and to the most unlikely podcast phenomenon in history.",season:"Podcast",icon:"🎬"},
+];
+
+const seasonColors = {"Book 1":"#d4577a","Book 2":"#d4a04a","Book 3":"#c084d8","Book 4":"#c03040","Book 5":"#40a8c0","Book 6":"#e8a0b8","Podcast":"#d4a04a","Legacy":"#888888"};
+
+const funFacts = [
+  {fact:"'Vaginal lids' — Rocky's anatomical term that appears multiple times. Nobody — not the hosts, not medical science — knows what this means.",icon:"🤔",category:"Anatomy"},
+  {fact:"Every single character wears a black thong. Everyone. All the time. Men, women, aristocrats, spies. It's Rocky's default undergarment for all of humanity.",icon:"🩲",category:"Fashion"},
+  {fact:"Rocky gets brand names slightly wrong: Special K becomes 'Special Jay,' Kit Kat Chunky becomes 'Tit Tat Crunchy.' These are not jokes. He genuinely thinks these are the names.",icon:"🏷️",category:"Writing"},
+  {fact:"Bella is accidentally called 'Donna' in Chapter 3 of Book 1. Rocky simply forgot her name three chapters in.",icon:"📝",category:"Writing"},
+  {fact:"Characters appear once and are never mentioned again. Bill from HR vanishes after Belinda's interview. Dave Wilcox, RSM for Western England, is introduced and immediately forgotten.",icon:"👻",category:"Writing"},
+  {fact:"Rocky's geography is impossible. Bisch's headquarters is described as being in 'East Berlin,' but the distance given (704 miles from Heathrow) actually places it in Poland.",icon:"🗺️",category:"Geography"},
+  {fact:"The Duchess's horse Toffee Apple Chew is called a 'soul sister stallion.' Stallions are male horses.",icon:"🐴",category:"Writing"},
+  {fact:"Rocky uses the word 'bareback' when he means 'going commando' (not wearing underwear). These are very different things.",icon:"💬",category:"Vocabulary"},
+  {fact:"Rocky describes the rivets on the Titanic as being 3 inches long. Actual Titanic rivets were roughly the size of a kitchen table leg.",icon:"🚢",category:"History"},
+  {fact:"Dick Van Dyke appears in heaven during Belinda's near-death experience. This is never explained or referenced again.",icon:"👼",category:"Plot"},
+  {fact:"Rocky's actual marketing keywords for Book 1 on Amazon were 'lesbian, erotica and business and leadership.' He wanted to cover all bases.",icon:"🔍",category:"Meta"},
+  {fact:"Giselle's maiden name is Maarschalkerweerd de Klotz. Rocky typed this out deliberately. Multiple times.",icon:"📛",category:"Characters"},
+  {fact:"The show is set ostensibly in the 1980s but references the O2 Arena, which Rocky calls the 'Millennium Dome Building.' The O2 opened in 2007.",icon:"📅",category:"Geography"},
+  {fact:"Steele's Pots and Pans headquarters is located at Heathrow Airport. Not near it — at it. Rocky just put a kitchenware company at an international airport.",icon:"✈️",category:"Geography"},
+  {fact:"Rocky writes in his garden shed because his wife won't let him write in the house. This is perhaps the most reasonable decision anyone in this story has made.",icon:"🏡",category:"Meta"},
+  {fact:"Before writing erotica, Rocky self-published books on Brazil tourism, mineral identification, and gardening. The career trajectory is remarkable.",icon:"📚",category:"Meta"},
+  {fact:"Jim Stirling's micropenis is nicknamed 'the vole' by the hosts. He later gets a transplant where the replacement skin sloughs off. The hosts needed therapy.",icon:"🐭",category:"Characters"},
+  {fact:"James Spooner's spy gadgets include a leather charm bracelet that turns into binoculars with wet wipes inside. Q Branch is shaking.",icon:"🔧",category:"Characters"},
+  {fact:"C.O.C.K. stands for the Confidential Order of Cookware Knights. Rocky insists the acronym is a coincidence. Nobody believes him.",icon:"⚔️",category:"Organizations"},
+  {fact:"Dr. Veronica Stud specializes in 'comas and sex' and wakes Bella from her coma through sexual therapy. Rocky presents this as completely normal medical practice.",icon:"🏥",category:"Plot"},
+  {fact:"The podcast accumulated over 430 million downloads worldwide, making Rocky Flintstone one of the most listened-to authors on Earth.",icon:"📊",category:"Podcast"},
+  {fact:"The HBO special was filmed at the Roundhouse in London in 2019 and introduced Rocky's work to an entirely new audience of horrified viewers.",icon:"📺",category:"Podcast"},
+  {fact:"Celebrity fans include Elijah Wood, Lin-Manuel Miranda, and Emma Thompson, proving that literary taste is subjective.",icon:"⭐",category:"Podcast"},
+  {fact:"Rocky claims the first four books were written before the podcast, meaning the full Belinda Blinked vision was untainted by fame or feedback.",icon:"✍️",category:"Meta"},
+  {fact:"Professor Slinz killed himself with a cyanide pill rather than reveal the Tri-Oxy Brillo blueprints. He died for pans. Revolutionary pans, but still pans.",icon:"🧪",category:"Plot"},
+  {fact:"Spooner receives a state funeral at Westminster Abbey, complete with his coffin being pulled by Toffee Apple Chew. Rocky apparently felt a kitchenware spy deserved the same send-off as Churchill.",icon:"⚰️",category:"Plot"},
+  {fact:"Peter Rouse and Belinda's relationship involves ritualistic mud painting. This is presented as deeply romantic rather than deeply confusing.",icon:"🎨",category:"Characters"},
+  {fact:"'Belinda's Big Bonus,' a board game based on the series, was published by Hollandspiele in October 2025, allowing fans to roleplay kitchenware sales drama.",icon:"🎲",category:"Legacy"},
+];
+
+const triviaDB = [
+  // Characters (1-15)
+  {q:"What is Belinda Blumenthal's full name?",a:"Belinda Bounty Blumenthal",d:["Belinda Beverly Blumenthal","Belinda Beatrice Blumenthal","Belinda Brenda Blumenthal"],cat:"Characters"},
+  {q:"What company does Belinda work for?",a:"Steele's Pots and Pans",d:["Bisch-Herstellung Enterprises","Typhoid Crockery Holdings","Sterling Corp"],cat:"Characters"},
+  {q:"What is Rocky Flintstone's HR Director named?",a:"Bill",d:["Bob","Bernard","Barry"],cat:"Characters"},
+  {q:"What happens to Bill after Belinda's interview?",a:"He is never mentioned again",d:["He gets promoted","He betrays Steele's","He marries Bella"],cat:"Characters"},
+  {q:"What is Giselle's maiden name?",a:"Maarschalkerweerd de Klotz",d:["Van der Humperdinck","Schnitzelbaum","Wafflestein-Krüger"],cat:"Characters"},
+  {q:"Who is revealed as 'The Special One' at the end of Book 4?",a:"Giselle",d:["Bella","Maeve","The Duchess"],cat:"Characters"},
+  {q:"What is Jim Stirling's micropenis nicknamed by the hosts?",a:"The vole",d:["The mouse","The hamster","The shrew"],cat:"Characters"},
+  {q:"What instrument does Des Martin play?",a:"The ocarina",d:["The kazoo","The recorder","The triangle"],cat:"Characters"},
+  {q:"What is the name of The Duchess's horse?",a:"Toffee Apple Chew",d:["Butterscotch Crumble","Candy Floss Mane","Treacle Tart Gallop"],cat:"Characters"},
+  {q:"Who is the main villain of the Belinda Blinked series?",a:"Herr Wolfgang Bisch",d:["George Sylvester","Professor Slinz","Jim Stirling"],cat:"Characters"},
+  {q:"What does Dr. Veronica Stud specialize in?",a:"Comas and sex",d:["Kitchenware injuries","Spy rehabilitation","Equestrian therapy"],cat:"Characters"},
+  {q:"What name does Rocky accidentally call Bella in Book 1?",a:"Donna",d:["Diana","Debra","Denise"],cat:"Characters"},
+  {q:"Who kills James Spooner?",a:"George Sylvester",d:["Herr Bisch","Giselle","Tony Sylvester"],cat:"Characters"},
+  {q:"What does Sam the hotel manager get described as?",a:"The Youngish Man",d:["The Tallish Fellow","The Handsomish Chap","The Oldish Boy"],cat:"Characters"},
+  {q:"Who proposes to Belinda in Book 6?",a:"Peter Rouse",d:["Tony Sylvester","Jim Stirling","Sir James Godwin"],cat:"Characters"},
+  // Plot (16-25)
+  {q:"What organization does Belinda found to fight Bisch?",a:"C.O.C.K.",d:["P.A.N.S.","S.T.E.E.L.","F.R.Y."],cat:"Plot"},
+  {q:"What does C.O.C.K. stand for?",a:"Confidential Order of Cookware Knights",d:["Coalition of Corporate Kitchenware","Committee of Culinary Knowledge","Council of Cookware Kings"],cat:"Plot"},
+  {q:"How does Belinda escape in Book 5?",a:"In a hot air balloon",d:["On Toffee Apple Chew","In a submarine","On a helicopter"],cat:"Plot"},
+  {q:"What happens at James Spooner's funeral?",a:"A state funeral at Westminster Abbey",d:["A quiet ceremony at sea","A Viking funeral","A memorial at Steele's HQ"],cat:"Plot"},
+  {q:"Why did Giselle betray Steele's?",a:"To pay for her mother's medical treatment",d:["For money from Bisch","Because she hated Belinda","She was a spy from birth"],cat:"Plot"},
+  {q:"What disease does Giselle's mother have?",a:"Conchakkutitus-detritus",d:["Bischmalarial fever","Steele's syndrome","Kitchenwariosis"],cat:"Plot"},
+  {q:"What revolutionary product does Professor Slinz invent?",a:"The Tri-Oxy Brillo Range",d:["The Mega-Pan 3000","The Steele's Infinity Lid","The Zero-Stick Pro"],cat:"Plot"},
+  {q:"What is special about the Tri-Oxy Brillo pans?",a:"They boil water in 3 seconds",d:["They cook without heat","They never need washing","They float"],cat:"Plot"},
+  {q:"How does Professor Slinz die?",a:"He takes a cyanide pill",d:["Bisch's henchmen kill him","He falls off a building","A pan explodes"],cat:"Plot"},
+  {q:"Where is the hen party in Book 3 held?",a:"Torremolinos",d:["Ibiza","Mallorca","Benidorm"],cat:"Plot"},
+  // Writing Quirks (26-35)
+  {q:"What is 'vaginal lids' according to Rocky?",a:"Nobody knows — it's never been explained",d:["A type of pan lid","A medical term","A British slang phrase"],cat:"Quirks"},
+  {q:"What does everyone in the Belinda Blinked universe wear?",a:"Black thongs",d:["Red suspenders","White gloves","Gold cufflinks"],cat:"Quirks"},
+  {q:"What does Rocky call 'Special K' cereal?",a:"Special Jay",d:["Special B","Special Oats","Specialty K"],cat:"Quirks"},
+  {q:"What does Rocky call Kit Kat Chunky?",a:"Tit Tat Crunchy",d:["Kit Kat Clunky","Bit Bar Chunky","Nit Nat Crunchy"],cat:"Quirks"},
+  {q:"Where does Rocky place Bisch's 'East Berlin' headquarters?",a:"Roughly in Poland (704 miles from Heathrow)",d:["Actually in Paris","In central Germany","Somewhere in Russia"],cat:"Quirks"},
+  {q:"What word does Rocky use when he means 'going commando'?",a:"Bareback",d:["Freestyle","Natural","Commando"],cat:"Quirks"},
+  {q:"What is Toffee Apple Chew incorrectly called?",a:"A 'soul sister stallion' (stallions are male)",d:["A 'brother mare'","A 'lady gelding'","A 'princess colt'"],cat:"Quirks"},
+  {q:"Who appears in Belinda's near-death experience in heaven?",a:"Dick Van Dyke",d:["Elvis Presley","Winston Churchill","Princess Diana"],cat:"Quirks"},
+  {q:"Where is Steele's Pots and Pans headquartered?",a:"Heathrow Airport",d:["Canary Wharf","Birmingham","Manchester"],cat:"Quirks"},
+  {q:"Where does Rocky write his books?",a:"In his garden shed",d:["At the local library","In his home office","At a coffee shop"],cat:"Quirks"},
+  // Podcast (36-45)
+  {q:"When did the MDWAP podcast launch?",a:"October 4, 2015",d:["March 1, 2016","January 2015","December 2014"],cat:"Podcast"},
+  {q:"Who are the three hosts of My Dad Wrote a Porno?",a:"Jamie Morton, James Cooper, Alice Levine",d:["Jamie Morton, James Cooper, Alice Roberts","Jamie Morton, Jon Cooper, Alice Levine","Jamie Morton, James Cooper, Ali Levine"],cat:"Podcast"},
+  {q:"Whose father wrote the Belinda Blinked books?",a:"Jamie Morton's",d:["James Cooper's","Alice Levine's","A random listener's"],cat:"Podcast"},
+  {q:"How many downloads has the podcast accumulated?",a:"Over 430 million",d:["100 million","50 million","1 billion"],cat:"Podcast"},
+  {q:"What venue was the HBO special filmed at?",a:"The Roundhouse in London",d:["The O2 Arena","The Royal Albert Hall","Shakespeare's Globe"],cat:"Podcast"},
+  {q:"When did the HBO special air?",a:"May 11, 2019",d:["December 2018","January 2020","March 2019"],cat:"Podcast"},
+  {q:"When did the podcast air its final episode?",a:"December 12, 2022",d:["October 2023","June 2022","January 2023"],cat:"Podcast"},
+  {q:"How many series did the podcast run for?",a:"6 series",d:["4 series","8 series","5 series"],cat:"Podcast"},
+  {q:"Which Hamilton creator is a celebrity fan of the podcast?",a:"Lin-Manuel Miranda",d:["Jonathan Groff","Daveed Diggs","Leslie Odom Jr."],cat:"Podcast"},
+  {q:"What is the board game based on Belinda Blinked called?",a:"Belinda's Big Bonus",d:["Pots, Pans & Passion","Steele's: The Game","Blinked!"],cat:"Podcast"},
+  // Deep Cuts (46-50)
+  {q:"What charity is Sir James Godwin patron of?",a:"The Asses and Donkeys Trust",d:["The Pots and Pans Foundation","The Kitchenware Alliance","The British Horse Society"],cat:"Deep Cuts"},
+  {q:"What did Rocky publish before Belinda Blinked?",a:"Books on Brazil tourism, minerals, and gardening",d:["Spy thrillers","Children's books","Cookbooks"],cat:"Deep Cuts"},
+  {q:"What is the name of the trio formed by Belinda, Giselle, and Bella?",a:"The Glee Team",d:["The Power Three","The Sales Sisters","The Steele's Angels"],cat:"Deep Cuts"},
+  {q:"What spy agency does James Spooner work for?",a:"Rocky can't decide — he switches between MI5 and MI6",d:["Definitely MI5","Definitely MI6","CIA"],cat:"Deep Cuts"},
+  {q:"What is the name of Cosmo Macaroon's TV show?",a:"Cooking with Cosmo",d:["The Cosmo Kitchen","Macaroon's Menu","Pan-tastic with Cosmo"],cat:"Deep Cuts"},
+];
+
+// ═══════════ FLOATING BACKGROUND ═══════════
+(function initFloating() {
+  var objects = ["🍳","🥂","💋","✨","🌹","👠","🍾","💎","🔪","📖","🐴","🎙️"];
+  var container = document.getElementById('floating-bg');
+  objects.forEach(function(obj) {
+    var el = document.createElement('div');
+    el.className = 'float-obj';
+    el.textContent = obj;
+    el.style.setProperty('--dur', (20 + Math.random() * 30) + 's');
+    el.style.setProperty('--delay', (-Math.random() * 20) + 's');
+    el.style.setProperty('--opa', (0.06 + Math.random() * 0.06).toString());
+    el.style.setProperty('--size', (14 + Math.random() * 16) + 'px');
+    el.style.setProperty('--x', (Math.random() * 100) + '%');
+    el.style.setProperty('--y', (Math.random() * 100) + '%');
+    container.appendChild(el);
+  });
+})();
+
+// ═══════════ TAB NAVIGATION ═══════════
+var activeTab = 'home';
+
+function switchTab(tab) {
+  activeTab = tab;
+  document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.toggle('active', b.dataset.tab === tab); });
+  document.querySelectorAll('.section').forEach(function(s) {
+    s.classList.remove('active');
+    if (s.id === 'sec-' + tab) {
+      s.classList.add('active');
+      s.classList.remove('fade-in');
+      void s.offsetWidth;
+      s.classList.add('fade-in');
+    }
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.getElementById('tabNav').addEventListener('click', function(e) {
+  var btn = e.target.closest('.tab-btn');
+  if (btn) switchTab(btn.dataset.tab);
+});
+
+document.querySelectorAll('.quick-card[data-nav]').forEach(function(card) {
+  card.addEventListener('click', function() { switchTab(card.dataset.nav); });
+  var color = card.querySelector('.title').style.color;
+  card.addEventListener('mouseenter', function() { card.style.borderColor = color; });
+  card.addEventListener('mouseleave', function() { card.style.borderColor = ''; });
+});
+
+// ═══════════ RENDER BOOKS ═══════════
+(function renderBooks() {
+  var grid = document.getElementById('book-grid');
+  books.forEach(function(b) {
+    var card = document.createElement('div');
+    card.className = 'book-card';
+    var numEl = document.createElement('div');
+    numEl.className = 'book-num';
+    numEl.textContent = 'Book ' + b.num;
+    var titleEl = document.createElement('div');
+    titleEl.className = 'book-title';
+    titleEl.textContent = b.title;
+    var dateEl = document.createElement('div');
+    dateEl.className = 'book-date';
+    dateEl.textContent = b.date;
+    var tagEl = document.createElement('div');
+    tagEl.className = 'book-tagline';
+    tagEl.textContent = '"' + b.tagline + '"';
+    card.appendChild(numEl);
+    card.appendChild(titleEl);
+    card.appendChild(dateEl);
+    card.appendChild(tagEl);
+    grid.appendChild(card);
+  });
+})();
+
+// ═══════════ RENDER CELEBRITIES ═══════════
+(function renderCelebs() {
+  var grid = document.getElementById('celeb-grid');
+  celebrities.forEach(function(name) {
+    var tag = document.createElement('span');
+    tag.className = 'celeb-tag';
+    tag.textContent = name;
+    grid.appendChild(tag);
+  });
+})();
+
+// ═══════════ RENDER TIMELINE ═══════════
+(function renderTimeline() {
+  var wrap = document.getElementById('timeline-items');
+  var expandedIdx = -1;
+
+  timeline.forEach(function(item, i) {
+    var color = seasonColors[item.season] || '#d4577a';
+    var div = document.createElement('div');
+    div.className = 'timeline-item';
+    div.style.setProperty('--tl-color', color);
+    div.innerHTML =
+      '<div class="timeline-dot" style="background:'+color+';box-shadow:0 0 12px '+color+'44"></div>'+
+      '<div class="tl-card" data-idx="'+i+'">'+
+        '<div class="tl-header">'+
+          '<span class="tl-icon">'+item.icon+'</span>'+
+          '<span class="tl-year" style="color:'+color+';background:'+color+'18">'+item.year+'</span>'+
+          '<span class="tl-season-tag">'+item.season+'</span>'+
+        '</div>'+
+        '<h3 class="tl-title">'+item.title+'</h3>'+
+        '<p class="tl-desc">'+item.desc+'</p>'+
+        (item.desc.length > 80 ? '<span class="tl-toggle" style="color:'+color+'">▼ More</span>' : '')+
+      '</div>';
+    div.addEventListener('click', function() {
+      var card = div.querySelector('.tl-card');
+      var toggle = div.querySelector('.tl-toggle');
+      if (expandedIdx === i) {
+        card.classList.remove('expanded');
+        if (toggle) toggle.textContent = '▼ More';
+        expandedIdx = -1;
+      } else {
+        wrap.querySelectorAll('.tl-card.expanded').forEach(function(c) {
+          c.classList.remove('expanded');
+          var t = c.parentElement.querySelector('.tl-toggle');
+          if (t) t.textContent = '▼ More';
+        });
+        card.classList.add('expanded');
+        if (toggle) toggle.textContent = '▲ Less';
+        expandedIdx = i;
+      }
+    });
+    wrap.appendChild(div);
+  });
+})();
+
+// ═══════════ RENDER CHARACTERS ═══════════
+(function renderCharacters() {
+  var grid = document.getElementById('char-grid');
+  var detail = document.getElementById('char-detail');
+  var filtersEl = document.getElementById('char-filters');
+  var selectedIdx = -1;
+  var activeGroup = 'All';
+
+  var groups = ['All'];
+  var seen = {};
+  characters.forEach(function(c) { if (!seen[c.group]) { seen[c.group] = true; groups.push(c.group); } });
+
+  function renderFilters() {
+    filtersEl.innerHTML = '';
+    groups.forEach(function(g) {
+      var btn = document.createElement('button');
+      btn.className = 'char-filter' + (g === activeGroup ? ' active' : '');
+      btn.textContent = g;
+      btn.addEventListener('click', function() {
+        activeGroup = g;
+        renderFilters();
+        renderGrid();
+        detail.classList.remove('visible');
+        selectedIdx = -1;
+      });
+      filtersEl.appendChild(btn);
+    });
+  }
+
+  function renderGrid() {
+    grid.innerHTML = '';
+    var filtered = activeGroup === 'All' ? characters : characters.filter(function(c) { return c.group === activeGroup; });
+    filtered.forEach(function(c) {
+      var realIdx = characters.indexOf(c);
+      var btn = document.createElement('button');
+      btn.className = 'char-btn';
+      btn.dataset.idx = realIdx;
+      btn.style.setProperty('--char-color', c.color);
+
+      var emojiSpan = document.createElement('span');
+      emojiSpan.className = 'char-emoji';
+      emojiSpan.textContent = c.emoji;
+      var nameSpan = document.createElement('span');
+      nameSpan.className = 'char-name';
+      nameSpan.textContent = c.name;
+      var roleSpan = document.createElement('span');
+      roleSpan.className = 'char-role';
+      roleSpan.textContent = c.role;
+      btn.appendChild(emojiSpan);
+      btn.appendChild(nameSpan);
+      btn.appendChild(roleSpan);
+
+      btn.addEventListener('mouseenter', function() {
+        if (selectedIdx !== realIdx) btn.style.borderColor = c.color + '66';
+      });
+      btn.addEventListener('mouseleave', function() {
+        if (selectedIdx !== realIdx) btn.style.borderColor = '';
+      });
+      btn.addEventListener('click', function() {
+        if (selectedIdx === realIdx) {
+          selectedIdx = -1;
+          btn.classList.remove('selected');
+          btn.style.borderColor = '';
+          detail.classList.remove('visible');
+          return;
+        }
+        grid.querySelectorAll('.char-btn').forEach(function(b) {
+          b.classList.remove('selected');
+          b.style.borderColor = '';
+          b.style.background = '';
+        });
+        selectedIdx = realIdx;
+        btn.classList.add('selected');
+        btn.style.borderColor = c.color;
+        btn.style.background = c.color + '18';
+
+        var tagsHTML = '<span class="char-tag" style="background:'+c.color+'18;color:'+c.color+'">'+c.group+'</span>';
+        var triviaHTML = c.trivia.map(function(t) {
+          return '<div class="char-trivia" style="background:'+c.color+'0a;border:1px solid '+c.color+'22"><span>💡</span><span>'+t+'</span></div>';
+        }).join('');
+
+        detail.innerHTML =
+          '<div class="char-detail-header">'+
+            '<span class="char-detail-emoji" style="filter:drop-shadow(0 0 15px '+c.color+'88)">'+c.emoji+'</span>'+
+            '<div><h3 class="char-detail-name" style="color:'+c.color+'">'+c.name+'</h3>'+
+            '<p class="char-detail-role">'+c.role+'</p></div>'+
+          '</div>'+
+          '<p class="char-detail-desc">'+c.description+'</p>'+
+          '<div class="char-tags">'+tagsHTML+'</div>'+
+          '<div class="char-trivia-list">'+triviaHTML+'</div>';
+        detail.style.borderColor = c.color + '44';
+        detail.style.boxShadow = '0 0 40px ' + c.color + '10';
+        detail.classList.remove('visible');
+        void detail.offsetWidth;
+        detail.classList.add('visible');
+        detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      });
+      grid.appendChild(btn);
+    });
+  }
+
+  renderFilters();
+  renderGrid();
+})();
+
+// ═══════════ RENDER FUN FACTS ═══════════
+(function renderFacts() {
+  var filterRow = document.getElementById('filter-row');
+  var factsGrid = document.getElementById('facts-grid');
+  var catSet = {};
+  funFacts.forEach(function(f) { catSet[f.category] = true; });
+  var categories = ['All'].concat(Object.keys(catSet));
+  var activeFilter = 'All';
+
+  function renderCards(filter) {
+    var filtered = filter === 'All' ? funFacts : funFacts.filter(function(f) { return f.category === filter; });
+    factsGrid.innerHTML = '';
+    filtered.forEach(function(f, i) {
+      var card = document.createElement('div');
+      card.className = 'fact-card fade-in-delay';
+      card.style.animationDelay = (i * 0.05) + 's';
+      card.innerHTML =
+        '<div class="fact-inner">'+
+          '<span class="fact-icon">'+f.icon+'</span>'+
+          '<div><div class="fact-cat">'+f.category+'</div>'+
+          '<p class="fact-text">'+f.fact+'</p></div>'+
+        '</div>';
+      factsGrid.appendChild(card);
+    });
+  }
+
+  categories.forEach(function(cat) {
+    var btn = document.createElement('button');
+    btn.className = 'filter-btn' + (cat === 'All' ? ' active' : '');
+    btn.textContent = cat;
+    btn.addEventListener('click', function() {
+      activeFilter = cat;
+      filterRow.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.toggle('active', b.textContent === cat); });
+      renderCards(cat);
+    });
+    filterRow.appendChild(btn);
+  });
+
+  renderCards('All');
+})();
+
+// ═══════════ STATS ═══════════
+(function renderStats() {
+  // Milestones
+  var milestones = [
+    {year:'2015',color:'var(--accent)',text:'Rocky self-publishes Belinda Blinked 1 on Amazon. The podcast launches in October — an instant comedy hit.'},
+    {year:'2016',color:'var(--accent2)',text:'Book 2 published. Annotated edition of Book 1 released with host commentary. Downloads surge past 50 million.'},
+    {year:'2017',color:'var(--accent3)',text:'Book 3 published. The podcast begins a world tour, selling out venues internationally.'},
+    {year:'2018',color:'var(--accent)',text:'Book 4 published — Rocky goes full thriller. Giselle revealed as The Special One. C.O.C.K. is founded.'},
+    {year:'2019',color:'var(--accent2)',text:'HBO special filmed at the Roundhouse, London. Airs May 11. Book 5 published — the first written post-fame.'},
+    {year:'2021',color:'var(--accent3)',text:'Book 6, the final Belinda Blinked novel, is published. Peter proposes. Spooner gets a state funeral.'},
+    {year:'2022',color:'var(--accent4)',text:'Final podcast episode airs December 12. Rocky gives a retrospective interview. Team Porno says goodbye after 6 series.'},
+    {year:'2025',color:'var(--accent2)',text:'"Belinda\'s Big Bonus" board game published by Hollandspiele.'},
+  ];
+  var ml = document.getElementById('milestones-list');
+  milestones.forEach(function(m) {
+    var row = document.createElement('div');
+    row.style.cssText = 'display:flex;gap:12px;align-items:flex-start;margin-bottom:14px';
+    row.innerHTML = '<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:'+m.color+';flex-shrink:0;margin-top:6px"></span><div><strong style="color:'+m.color+'">'+m.year+'</strong> — '+m.text+'</div>';
+    ml.appendChild(row);
+  });
+
+  // Organizations
+  var orgs = [
+    {name:"Steele's Pots and Pans",desc:"Second-largest distributor of pots and pans in Europe. Based at Heathrow Airport. Has a 'Leather Room' that doubles as a meeting room and sex dungeon.",color:"var(--accent)"},
+    {name:"Bisch-Herstellung Enterprises",desc:"Steele's main competitor. Run by Herr Bisch from 'East Berlin' (actually Poland).",color:"var(--accent2)"},
+    {name:"C.O.C.K.",desc:"The Confidential Order of Cookware Knights. Founded by Belinda to counter Bisch. Rocky insists the acronym is a coincidence.",color:"var(--accent3)"},
+    {name:"The Glee Team",desc:"Belinda, Giselle, and Bella's name for their trio. Later reformed with Maeve replacing Giselle.",color:"var(--accent4)"},
+  ];
+  var ol = document.getElementById('orgs-list');
+  orgs.forEach(function(o) {
+    var row = document.createElement('div');
+    row.style.cssText = 'background:rgba(255,255,255,0.02);border-radius:12px;padding:14px 18px;margin-bottom:10px;border:1px solid var(--border)';
+    row.innerHTML = '<div style="font-weight:800;color:'+o.color+';margin-bottom:4px">'+o.name+'</div><div style="font-size:14px;color:var(--text-muted);line-height:1.6">'+o.desc+'</div>';
+    ol.appendChild(row);
+  });
+
+
+  // Quick stats
+  var qstats = [
+    {label:'Total Downloads',val:'430M+',color:'var(--accent)'},
+    {label:'Podcast Series',val:'6',color:'var(--accent2)'},
+    {label:'Books',val:'6 + spin-offs',color:'var(--accent3)'},
+    {label:'Podcast Run',val:'2015–2022',color:'var(--accent4)'},
+    {label:'HBO Special',val:'May 11, 2019',color:'var(--accent)'},
+    {label:'Celebrity Guests',val:'18+',color:'var(--accent2)'},
+    {label:'Board Game',val:'Belinda\'s Big Bonus',color:'var(--accent3)'},
+    {label:'Characters',val:'25+',color:'var(--accent4)'},
+  ];
+  var qs = document.getElementById('quick-stats');
+  qstats.forEach(function(s) {
+    var div = document.createElement('div');
+    div.style.cssText = 'background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:14px 16px';
+    div.innerHTML = '<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-dim);margin-bottom:4px">'+s.label+'</div><div style="font-size:18px;font-weight:800;color:'+s.color+'">'+s.val+'</div>';
+    qs.appendChild(div);
+  });
+})();
+
+// ═══════════ TRIVIA ENGINE ═══════════
+(function initTrivia() {
+  function shuffle(arr) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var temp = a[i]; a[i] = a[j]; a[j] = temp;
+    }
+    return a;
+  }
+
+  var queue = [];
+  var currentQ = null;
+  var questionNum = 0;
+  var score = 0;
+  var streak = 0;
+  var bestStreak = 0;
+  var answered = false;
+  var totalQ = triviaDB.length;
+
+  var els = {
+    startScreen: document.getElementById('trivia-start'),
+    game: document.getElementById('trivia-game'),
+    startBtn: document.getElementById('trivia-start-btn'),
+    qnum: document.getElementById('trivia-qnum'),
+    score: document.getElementById('trivia-score'),
+    streak: document.getElementById('trivia-streak'),
+    progress: document.getElementById('trivia-progress'),
+    category: document.getElementById('trivia-category'),
+    question: document.getElementById('trivia-question'),
+    options: document.getElementById('trivia-options'),
+    feedback: document.getElementById('trivia-feedback'),
+    next: document.getElementById('trivia-next'),
+  };
+
+  function startGame() {
+    els.startScreen.style.display = 'none';
+    els.game.style.display = 'block';
+    queue = shuffle(triviaDB);
+    questionNum = 0; score = 0; streak = 0; bestStreak = 0;
+    loadQuestion();
+  }
+
+  function loadQuestion() {
+    if (queue.length === 0) queue = shuffle(triviaDB);
+    currentQ = queue.pop();
+    questionNum++;
+    answered = false;
+
+    var displayNum = ((questionNum - 1) % totalQ) + 1;
+    els.qnum.textContent = displayNum + ' / ' + totalQ;
+    els.score.textContent = score;
+    els.streak.textContent = '🔥 ' + streak;
+    els.progress.style.width = (displayNum / totalQ * 100) + '%';
+
+    els.category.textContent = currentQ.cat;
+    els.question.textContent = currentQ.q;
+
+    var options = shuffle([currentQ.a].concat(currentQ.d));
+    var letters = ['A', 'B', 'C', 'D'];
+    els.options.innerHTML = '';
+    options.forEach(function(opt, i) {
+      var btn = document.createElement('button');
+      btn.className = 'trivia-option';
+      var letterSpan = document.createElement('span');
+      letterSpan.className = 'opt-letter';
+      letterSpan.textContent = letters[i];
+      var textSpan = document.createElement('span');
+      textSpan.textContent = opt;
+      btn.appendChild(letterSpan);
+      btn.appendChild(textSpan);
+      btn.addEventListener('click', function() { handleAnswer(btn, opt); });
+      els.options.appendChild(btn);
+    });
+
+    els.feedback.style.display = 'none';
+    els.next.style.display = 'none';
+    document.getElementById('trivia-card').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function handleAnswer(btn, chosen) {
+    if (answered) return;
+    answered = true;
+
+    var isCorrect = chosen === currentQ.a;
+    var allBtns = els.options.querySelectorAll('.trivia-option');
+
+    allBtns.forEach(function(b) {
+      b.classList.add('disabled');
+      var text = b.querySelector('span:last-child').textContent;
+      if (text === currentQ.a) b.classList.add('correct');
+    });
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      score++;
+      streak++;
+      if (streak > bestStreak) bestStreak = streak;
+      els.feedback.className = 'trivia-feedback correct-fb';
+      els.feedback.innerHTML = '<strong>✅ Correct!</strong>' + (streak > 1 ? ' 🔥 ' + streak + ' in a row!' : '');
+    } else {
+      btn.classList.add('wrong');
+      btn.classList.add('shake');
+      var prevStreak = streak;
+      streak = 0;
+      els.feedback.className = 'trivia-feedback wrong-fb';
+      els.feedback.innerHTML = '<strong>❌ Not quite.</strong> The answer is <strong>' + currentQ.a + '</strong>.' + (prevStreak >= 3 ? ' Streak of ' + prevStreak + ' ended.' : '');
+    }
+
+    els.score.textContent = score;
+    els.streak.textContent = '🔥 ' + streak;
+    els.feedback.style.display = 'block';
+    els.next.style.display = 'block';
+    els.next.focus();
+  }
+
+  els.startBtn.addEventListener('click', startGame);
+  els.next.addEventListener('click', loadQuestion);
+
+  document.addEventListener('keydown', function(e) {
+    if (activeTab !== 'trivia') return;
+    if (!answered) {
+      var num = parseInt(e.key);
+      if (num >= 1 && num <= 4) {
+        var btns = els.options.querySelectorAll('.trivia-option');
+        if (btns[num - 1]) btns[num - 1].click();
+      }
+    } else {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        els.next.click();
+      }
+    }
+  });
+})();
+</script>
+</body>
+</html>

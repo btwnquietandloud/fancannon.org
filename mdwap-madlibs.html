@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Belinda Blinked Mad Libs | Fan Cannon</title>
+<meta name="description" content="Write your own Belinda Blinked chapter! 20 Mad Libs stories in the style of Rocky Flintstone. Pots, pans, and passion.">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link href="https://fonts.googleapis.com/css2?family=Chewy&family=Nunito:wght@400;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Nunito',sans-serif;overflow-x:hidden;min-height:100vh}
+.world{min-height:100vh;background:linear-gradient(180deg,#0e0a10 0%,#1a1020 40%,#201028 70%,#0e0a10 100%);position:relative}
+.shimmer{position:fixed;top:0;left:0;right:0;height:100%;z-index:0;pointer-events:none;opacity:.06;background:radial-gradient(ellipse 60% 40% at 50% 20%,rgba(212,87,122,0.4),transparent 70%),radial-gradient(circle at 80% 80%,rgba(212,160,74,0.3),transparent 50%)}
+.gc{position:relative;z-index:1;max-width:680px;margin:0 auto;padding:20px 16px}
+.card{background:rgba(26,18,32,0.95);border-radius:4px;border:3px solid #d4577a;padding:24px 20px;box-shadow:0 4px 20px rgba(212,87,122,0.08);margin-bottom:14px;animation:ci .4s ease;color:#ede4f0}
+@keyframes ci{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.title{font-family:'Chewy',cursive;font-size:36px;color:#d4577a;line-height:1.1;text-align:center;margin-bottom:4px}
+.title .sm{font-size:18px;color:#d4a04a;display:block;font-family:'Playfair Display',serif;font-style:italic;font-weight:400}
+.story-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px;margin-bottom:8px}
+.story-card{padding:14px;border:2px solid #302040;border-radius:4px;background:rgba(30,20,40,0.8);cursor:pointer;transition:all .15s;text-align:center;color:#ede4f0}
+.story-card:hover{background:rgba(212,87,122,0.1);border-color:#d4577a;transform:translate(-2px,-2px);box-shadow:4px 4px 0 rgba(212,87,122,.15)}
+.story-card .icon{font-size:28px;margin-bottom:4px}
+.story-card .name{font-family:'Chewy',cursive;font-size:16px;line-height:1.2}
+.story-card .tease{font-size:11px;color:#685878;font-weight:600;margin-top:2px}
+.prompt-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.prompt-item{display:flex;flex-direction:column;gap:4px}
+.prompt-item label{font-size:12px;font-weight:800;color:#9888a8;text-transform:uppercase;letter-spacing:.5px}
+.prompt-item input{padding:10px 12px;border:2px solid #302040;border-radius:4px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;color:#ede4f0;background:rgba(30,20,40,0.6);transition:border-color .2s}
+.prompt-item input:focus{outline:none;border-color:#d4577a;background:rgba(40,25,50,0.8)}
+.prompt-item input::placeholder{color:#4a3860}
+.bb{display:block;width:100%;padding:14px 20px;border:3px solid #302040;border-radius:4px;font-family:'Nunito',sans-serif;font-size:16px;font-weight:800;cursor:pointer;transition:all .15s;margin-bottom:8px;text-align:center;background:rgba(30,20,40,0.6);color:#d4577a}
+.bb:hover{transform:translate(-2px,-2px);box-shadow:4px 4px 0 rgba(212,87,122,.15);border-color:#d4577a}
+.bb.go{background:rgba(212,87,122,0.15);border-color:#d4577a;font-family:'Chewy',cursive;font-size:22px;color:#d4a04a}
+.bb.go:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
+.bb.pick{background:rgba(212,160,74,0.1);border-color:#d4a04a;color:#d4a04a;font-family:'Chewy',cursive;font-size:18px}
+.random-btn{display:inline-block;padding:8px 16px;border:2px solid #302040;border-radius:4px;font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;cursor:pointer;background:rgba(30,20,40,0.6);color:#9888a8;transition:all .15s;margin-bottom:12px}
+.random-btn:hover{border-color:#d4a04a;color:#d4a04a}
+.story-text{font-size:17px;line-height:1.85;color:#c0b0d0;white-space:pre-line;font-family:'Nunito',sans-serif}
+.story-text .blank{font-weight:900;color:#d4a04a;background:rgba(212,160,74,.08);padding:1px 6px;border-radius:4px;border-bottom:2px solid #d4a04a}
+.story-title-display{font-family:'Chewy',cursive;font-size:28px;color:#d4577a;text-align:center;margin-bottom:4px}
+.story-subtitle{font-family:'Playfair Display',serif;font-style:italic;font-size:15px;color:#d4a04a;text-align:center;margin-bottom:20px}
+.nav{position:sticky;top:0;z-index:100;background:rgba(14,10,16,.95);backdrop-filter:blur(12px);border-bottom:1px solid rgba(212,87,122,.15);padding:8px 16px;display:flex;align-items:center;gap:10px;font-family:'Nunito',sans-serif}
+.nav a{text-decoration:none;color:#9888a8;font-size:13px;font-weight:700;transition:color .2s}
+.nav a:hover{color:#d4577a}
+.nav .sep{color:rgba(255,255,255,.15);font-size:18px}
+.nav .pg{font-size:13px;font-weight:600;color:rgba(255,255,255,.3)}
+.warning{background:rgba(212,87,122,0.06);border:1px solid rgba(212,87,122,0.2);border-radius:8px;padding:12px 16px;margin-bottom:16px;font-size:13px;color:#e8a0b8;text-align:center;line-height:1.5}
+@media(max-width:500px){.title{font-size:28px}.story-grid{grid-template-columns:1fr 1fr}.prompt-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="nav"><a href="mdwap-universe.html">← Belinda Blinked Universe</a><span class="sep">|</span><span class="pg">Belinda Blinked Mad Libs</span></div>
+<div class="world">
+<div class="shimmer"></div>
+<div class="gc"><div id="app"></div></div>
+</div>
+<script>
+var PROMPTS=[
+  {id:"noun",label:"A Noun",placeholder:"e.g. filing cabinet"},
+  {id:"plural_noun",label:"Plural Noun",placeholder:"e.g. frying pans"},
+  {id:"adjective",label:"An Adjective",placeholder:"e.g. throbbing"},
+  {id:"adjective2",label:"Another Adjective",placeholder:"e.g. sensual"},
+  {id:"verb_past",label:"Verb (Past Tense)",placeholder:"e.g. quivered"},
+  {id:"verb_ing",label:"Verb (-ing)",placeholder:"e.g. glistening"},
+  {id:"body_part",label:"Body Part",placeholder:"e.g. elbow"},
+  {id:"number",label:"A Number",placeholder:"e.g. 47"},
+  {id:"garment",label:"An Item of Clothing",placeholder:"e.g. black thong"},
+  {id:"food_drink",label:"A Food or Drink",placeholder:"e.g. Australian chardonnay"},
+  {id:"kitchenware",label:"Kitchen Item",placeholder:"e.g. colander"},
+  {id:"place",label:"A Place",placeholder:"e.g. the Leather Room"},
+];
+var STORIES=[
+{icon:"👩‍💼",title:"Belinda's Job Interview",tease:"The application process is... thorough.",
+text:"Belinda strode into Steele's Pots and Pans headquarters at Heathrow Airport. Her {adjective} {garment} was freshly pressed. Sir James Godwin sat behind a desk made of {kitchenware}.\n\n\"So,\" he said, adjusting his {garment}, \"you want to be our International Sales Director.\"\n\n\"I am the greatest {noun} in British kitchenware,\" Belinda declared, tossing her {body_part} confidently.\n\nBill from HR was also present. He asked one question about {plural_noun}. He would never be seen again.\n\n\"Your CV says you sold {number} {plural_noun} at Typhoid Crockery Holdings,\" Sir James continued. \"Impressive. But can you remove your {garment} whilst closing a deal?\"\n\n\"Sir James,\" Belinda said, {verb_ing} across the room, \"I can do anything whilst {verb_ing}.\"\n\n\"You're hired.\"\n\nTony Sylvester appeared from behind a {kitchenware}. \"Welcome to the team. Can I offer you some {food_drink}?\"\n\nBelinda accepted. The {food_drink} was {adjective2}. Her career in {adjective} kitchenware had begun."},
+
+{icon:"🧪",title:"The Tri-Oxy Brillo Presentation",tease:"Revolutionary pan technology. Very serious business.",
+text:"Professor Slinz adjusted his {garment} and unveiled the Tri-Oxy Brillo Range. The boardroom gasped. Tony dropped his {kitchenware}.\n\n\"Zis pan,\" Slinz whispered, \"can boil {food_drink} in {number} seconds.\"\n\n\"That's impossible,\" said Ken Dewsbury, RSM for Central and Northern England.\n\n\"Nothing is impossible when you have a {adjective} {noun} and German engineering.\"\n\nBelinda's {body_part} tingled. She knew this was the future of {adjective2} cookware. She leaned across the table, her {garment} {verb_ing} against the mahogany.\n\n\"How much?\"\n\n\"{number} million euros. Plus {plural_noun}.\"\n\n\"We'll take {number} units.\"\n\nSir James stood and applauded. \"This is why Belinda is the greatest {noun} in the company.\"\n\nProfessor Slinz demonstrated by boiling a {kitchenware} full of {food_drink}. It {verb_past}. Everyone's {body_part} was {adjective}.\n\n\"By the Norse gods,\" Belinda whispered, staring at the {adjective2} steam rising from the pan. \"We are going to destroy Bisch.\""},
+
+{icon:"🕵️",title:"Giselle's Secret",tease:"The Special One is revealed.",
+text:"It was a {adjective} Tuesday evening in {place} when Belinda found the documents in Giselle's {kitchenware}.\n\n\"Maarschalkerweerd de Klotz,\" Belinda read aloud, because that was genuinely Giselle's maiden name.\n\nThe files showed that Giselle had been sending Tri-Oxy Brillo blueprints to Herr Bisch in exchange for {number} {plural_noun} and treatment for her mother's conchakkutitus-detritus.\n\n\"How could you?\" Belinda {verb_past}, her {body_part} trembling with rage and {food_drink}.\n\nGiselle stood in the doorway, wearing nothing but a {adjective2} {garment}. \"You don't understand, Belinda. My mother's {body_part} was {verb_ing}. I had no choice.\"\n\n\"You were the Special One all along.\"\n\n\"I was. And I'd do it again for a {adjective} {noun}.\"\n\nBelinda threw a {kitchenware} at the wall. \"The Glee Team is OVER.\"\n\n\"Is it though?\" Giselle whispered, reaching for the {food_drink}. \"Is it really?\"\n\nSpoiler: it wasn't. By Book 5, Giselle was back on the team. Rocky forgives quickly."},
+
+{icon:"🐴",title:"Tea with the Duchess",tease:"Horses, intelligence, and interior decorating.",
+text:"The Duchess of Epsom arrived at {place} on horseback. Toffee Apple Chew, her {adjective} soul sister stallion, whinnied and deposited a {noun} on the doorstep.\n\n\"Belinda, darling,\" the Duchess announced, dismounting whilst somehow not disrupting her {garment}. \"I have intelligence.\"\n\n\"About Bisch?\"\n\n\"About {plural_noun}. And also Bisch.\"\n\nThey retired to the Duchess's private room — the one covered entirely in {adjective2} accessories. Every surface. Floor to ceiling. {number} items in total. Belinda's {body_part} {verb_past}.\n\n\"As 'M,' head of all British Intelligence, I can confirm that Bisch's {noun} is located {number} miles from Heathrow.\"\n\n\"That's Poland.\"\n\n\"Is it? Interesting.\"\n\nThe Duchess poured {food_drink} from a {kitchenware} while Toffee Apple Chew ate a {noun} in the garden. Sam — the youngish man — brought {food_drink} and biscuits.\n\n\"How youngish is he, exactly?\" Belinda asked.\n\nThe Duchess smiled. \"Nobody knows, dear. Nobody knows.\""},
+
+{icon:"🤠",title:"Jim Stirling's Texas Problem",tease:"Medical procedures no one asked for.",
+text:"Jim Stirling called from Texas. \"Belinda, I have news about my {body_part}.\"\n\nBelinda braced herself. She poured a {adjective} glass of {food_drink}. She was going to need it.\n\n\"The doctors said they can give me a {adjective2} transplant. Using a {noun}.\"\n\n\"Jim—\"\n\n\"It'll be {number} inches. Made from a {adjective} {kitchenware}.\"\n\n\"Jim, that's not how—\"\n\n\"I'm doing it, Belinda. For us. For Steele's. For the entire {noun} industry.\"\n\nThe surgery took {number} hours. The doctors used {plural_noun} and a {kitchenware}. Jim emerged wearing a {adjective2} {garment} and a smile.\n\n\"How do you feel?\" Belinda asked.\n\n\"Like a new {noun}.\"\n\nTwo weeks later, everything went wrong. The replacement {body_part} started {verb_ing}. The skin {verb_past}. Jim called, panicking.\n\n\"Belinda, my {noun} is {verb_ing}!\"\n\n\"Call Dr. Stud.\"\n\n\"THE ONE WHO SPECIALIZES IN COMAS AND SEX?\"\n\n\"She's all we've got, Jim.\""},
+
+{icon:"💣",title:"The Car Bomb at Steele's",tease:"Kitchenware espionage gets dangerous.",
+text:"The bomb went off at {number} o'clock in {place}. Bella's {body_part} hit the {kitchenware} display. She collapsed, her {garment} singed and her {adjective} hair {verb_ing} in the blast.\n\n\"BELLA!\" Belinda screamed, rushing past {number} {adjective2} {plural_noun}.\n\nTony appeared, his military training finally relevant. \"Everyone to the Leather Room! It's structurally sound! We tested it!\"\n\n\"Why did you TEST the Leather Room for structural integrity?\"\n\n\"Don't ask questions you don't want answers to.\"\n\nBella was in a coma. Jim Thompson — Mr. Fix-it — tried to revive her with {food_drink}. It didn't work.\n\n\"She needs a specialist,\" Patrick O'Hamlyn declared from Scotland (via phone).\n\n\"Dr. Veronica Stud,\" Belinda whispered. \"The one who specializes in comas and sex.\"\n\n\"That's not a real specialty,\" Tony said.\n\n\"It is now.\"\n\nOutside, George Sylvester watched from a {adjective} {noun}. His {body_part} was {verb_ing} with satisfaction. Bisch's plan was working. The {adjective2} darkness was increasing."},
+
+{icon:"🧭",title:"Peter Rouse and the Mud Ritual",tease:"Spiritual. Romantic. Very muddy.",
+text:"Peter Rouse led Belinda to a {adjective} clearing near {place}. The moonlight hit his {body_part}. He was carrying a {kitchenware} full of ceremonial mud.\n\n\"Tonight,\" Peter said, removing his {garment}, \"we paint.\"\n\n\"Again?\"\n\n\"Always.\"\n\nThe mud was mixed with {food_drink} and crushed {plural_noun}. Peter dipped his {body_part} into the {kitchenware} and began tracing {adjective2} patterns on Belinda's {body_part}.\n\n\"This represents the {noun} of our bond,\" he whispered.\n\n\"What does this squiggle represent?\"\n\n\"That's a {kitchenware}. It symbolizes our shared commitment to European cookware distribution.\"\n\nBelinda {verb_past}. She had never felt so {adjective}. The mud was cold but Peter's {body_part} was {adjective2}.\n\n\"Marry me,\" Peter said, producing a ring from inside a {noun}.\n\n\"Ask me again in Book 6.\"\n\n\"...What?\"\n\n\"Nothing. Pass the {food_drink}.\""},
+
+{icon:"🔫",title:"Spooner's Gadget Demonstration",tease:"Q Branch would resign.",
+text:"James Spooner — MI5 agent, or possibly MI6 (Rocky kept changing his mind) — laid his gadgets on the {kitchenware} in {place}.\n\n\"This,\" he said, holding up a {adjective} cufflink, \"is a clothes-destroying laser.\"\n\n\"Why would a spy need that?\" Tony asked.\n\n\"Don't ask.\"\n\n\"And this,\" Spooner continued, \"is a leather charm bracelet that unfolds into binoculars with {plural_noun} stored inside.\"\n\n\"Why are there {plural_noun} in the binoculars?\"\n\n\"TACTICAL {plural_noun}.\"\n\nBelinda examined the bracelet. Her {body_part} brushed against the {adjective2} leather. She {verb_past}.\n\n\"I also have a {noun} that shoots {number} {plural_noun} per second,\" Spooner added, \"and a {garment} lined with {kitchenware} for protection.\"\n\n\"That would be incredibly uncomfortable,\" Alice — sorry, Belinda — noted.\n\n\"Comfort is not in the MI{number} handbook.\"\n\nSpooner adjusted his {adjective2} {garment} and disappeared into {place}. He was the greatest spy in British kitchenware intelligence. He would also be dead by Book 5."},
+
+{icon:"🏰",title:"The Maze at Sir James's Estate",tease:"Hedge fund, meet hedge maze.",
+text:"The tombola charity event at Sir James's estate was in full swing. {number} guests wandered the {adjective} maze, each clutching a {kitchenware} and a glass of {food_drink}.\n\nBelinda found Alfonse Stirbacker in the center. He was leaning against a {noun}, his {garment} slightly undone.\n\n\"Belinda. We meet in the maze. How {adjective2}.\"\n\n\"I'm here to discuss the distribution contract for {plural_noun}.\"\n\n\"Of course. All the best business deals happen in hedge mazes.\" He wasn't wrong — in Rocky's universe, they did.\n\nThey negotiated. Belinda's {body_part} was {verb_ing} with anticipation. Alfonse offered {number} units at {number} euros per {kitchenware}.\n\n\"That's {adjective}.\"\n\n\"It's European business, Belinda. Everything is {adjective}.\"\n\nThey sealed the deal with {food_drink}. Sir James's donkey (from the Asses and Donkeys Trust) watched from beyond the hedge. It {verb_past}.\n\n\"Even the donkey approves,\" Alfonse noted.\n\nBelinda straightened her {adjective2} {garment}. Another deal closed. Another maze navigated. Tuesday at Steele's."},
+
+{icon:"🍳",title:"Cosmo Macaroon's Cooking Show",tease:"Celebrity endorsement, Rocky style.",
+text:"Cosmo Macaroon, celebrity TV chef, stood in the studio kitchen. His show — \"Cooking with Cosmo\" — was about to feature the Tri-Oxy Brillo Range live on air.\n\n\"Today,\" Cosmo announced to {number} viewers, \"we're going to boil {food_drink} in just {number} seconds using this {adjective} {kitchenware}!\"\n\nBelinda watched from backstage, clutching her {noun}. This was the biggest product placement in Steele's history.\n\nCosmo poured the {food_drink} into the pan. It {verb_past} instantly. The studio audience's collective {body_part} gasped.\n\n\"MAGNIFICO!\" Cosmo shouted, his {garment} fluttering with the steam. \"This pan is more {adjective2} than my grandmother's risotto!\"\n\n\"That's... quite a comparison,\" his co-host managed.\n\nBelinda's phone buzzed. Tony: \"Orders up {number}%. Sir James is {verb_ing}.\"\n\nShe smiled. The {adjective} {kitchenware} had done its job. Steele's was back on top. And all it took was a celebrity chef, a revolutionary pan, and the complete suspension of how cooking actually works."},
+
+{icon:"🎪",title:"The Torremolinos Hen Party",tease:"Giselle's hen do goes exactly as you'd expect.",
+text:"Giselle's hen party descended on Torremolinos like a {adjective} force of nature. The Glee Team — Belinda, Giselle, and Bella — arrived wearing matching {plural_noun} and carrying a {kitchenware} full of {food_drink}.\n\n\"TO GISELLE!\" Belinda toasted, her {body_part} already sunburned.\n\n\"TO {adjective2} MARRIAGE!\" Bella shrieked, her Essex accent carrying across {number} hotel pools.\n\nThey met Butch the Sunburnt Kid at the strip. He was selling {plural_noun} from a {noun} near the beach. His {body_part} was the color of a {adjective} lobster.\n\n\"Ladies,\" Butch said, flexing his {verb_ing} shoulders, \"can I interest you in a {kitchenware}?\"\n\n\"We work in kitchenware,\" Giselle explained. \"We ARE the {kitchenware} industry.\"\n\nButch was undeterred. He produced a {adjective2} {noun} from his {garment}. \"Then maybe you'd prefer this.\"\n\nThe night ended with {number} empty bottles of {food_drink}, a stolen {kitchenware}, and Bella asleep on a {noun}. Standard Glee Team procedure.\n\n\"I'm getting married,\" Giselle whispered, staring at the Mediterranean.\n\n\"To a man whose brother will try to destroy your company,\" Belinda thought but did not say."},
+
+{icon:"⚰️",title:"Spooner's State Funeral",tease:"Westminster Abbey has seen worse. Probably.",
+text:"The funeral of James Spooner, MI5/MI6 agent (the program said both), was held at Westminster Abbey. {number} dignitaries attended, each wearing a {adjective} {garment}.\n\nToffee Apple Chew pulled the coffin, which was draped in a flag embroidered with {plural_noun}. The soul sister stallion was {adjective2} and solemn. His/her hooves echoed on the cobblestones.\n\nBelinda stood at the front. Her {body_part} ached. Spooner had been a {adjective} ally in the fight against Bisch.\n\n\"He died for {kitchenware},\" she whispered to Peter Rouse.\n\n\"He died for ALL {kitchenware},\" Peter corrected.\n\nThe Duchess, in full 'M' regalia, read the eulogy. \"Spooner was the greatest {noun} this country has ever produced. His binoculars had built-in {plural_noun}. His cufflinks shot lasers. His {body_part} was legendary.\"\n\nTony saluted. Giselle wept (she felt responsible). Sir James donated {number} {plural_noun} to the Asses and Donkeys Trust in Spooner's memory.\n\nAfterward, Des Martin played the ocarina. Of course he did.\n\nBelinda drank {food_drink} and stared at the {adjective2} sky. The war against Bisch was far from over."},
+
+{icon:"🎈",title:"The Hot Air Balloon Escape",tease:"Belinda's least subtle getaway.",
+text:"George Sylvester was closing in. His {adjective} henchmen had surrounded {place}. Belinda had {number} seconds to escape.\n\n\"THE BALLOON!\" she shouted, spotting a {adjective2} hot air balloon tethered to a {noun} in the garden.\n\n\"A hot air balloon?\" Tony asked. \"Why is there a hot air balloon?\"\n\n\"DON'T QUESTION THE BALLOON, TONY.\"\n\nBelinda leapt in, her {garment} billowing. She cut the rope with a {kitchenware}. The balloon rose. George fired {number} {plural_noun} at her but missed.\n\n\"YOU CAN'T ESCAPE, BLUMENTHAL!\" George screamed, his {body_part} {verb_ing} with rage.\n\n\"I literally just did!\" Belinda called down, sipping {food_drink} from a flask.\n\nShe floated over the English countryside. Below her, Steele's HQ at Heathrow was {adjective}. She could see planes. She was in a hot air balloon directly over an international airport.\n\n\"This seems dangerous,\" she noted to no one.\n\nIt was. Air traffic control was furious. But Belinda Blumenthal — the greatest {noun} in British kitchenware — was free. Floating in a balloon. Drinking {food_drink}. Wearing a {adjective2} {garment}.\n\nRocky considered this a triumphant escape."},
+
+{icon:"👻",title:"Where Is Bill?",tease:"A missing persons investigation.",
+text:"It had been {number} books since anyone had seen Bill, the HR Director.\n\nBelinda was in {place}, organizing {plural_noun}, when it hit her. \"Has anyone seen Bill?\"\n\nTony looked up from his {kitchenware}. \"Who?\"\n\n\"Bill. From HR. He was at my interview.\"\n\n\"I don't know a Bill.\"\n\n\"He sat RIGHT THERE.\" Belinda pointed to a {adjective} chair. It was covered in dust. A {noun} had grown on it.\n\nShe asked Jim Thompson. \"Bill? The name rings a {adjective2} bell.\"\n\nShe asked Bella. \"Was he the one with the {body_part}? Or was that Dave Wilcox?\"\n\n\"Dave Wilcox is also missing.\"\n\n\"Oh.\"\n\nBelinda searched HR. The office was empty. The only trace of Bill was a single {garment} hanging on a hook and a mug that said \"World's #{number} {noun}.\"\n\n\"He was here,\" Belinda whispered, her {body_part} {verb_ing}. \"He was real.\"\n\n\"Are you sure?\" Tony asked.\n\nShe wasn't. Bill existed in that space between memory and {food_drink}-induced hallucination. A man introduced and forgotten. An HR Director lost to Rocky's imagination.\n\nRest in peace, Bill. Or don't. You're probably fine. You just don't exist anymore."},
+
+{icon:"🏢",title:"The Leather Room Meeting",tease:"Steele's most versatile conference room.",
+text:"\"Meeting in the Leather Room,\" Tony announced. \"Bring your {kitchenware} and a {adjective} attitude.\"\n\nThe Leather Room was Steele's most {adjective2} space. It served dual purposes: corporate boardroom and... something else. The walls were lined with {plural_noun}. The chairs were made of {adjective} leather. There was a {noun} in the corner that nobody discussed.\n\nBelinda entered. Sir James was already seated, his {garment} impeccable. Giselle was taking notes on a {kitchenware}. Bella was {verb_ing}.\n\n\"The agenda,\" Sir James began. \"Item one: Bisch has stolen our {plural_noun}. Item two: sales in {place} are down {number} percent. Item three: the {noun} in the corner is making a noise.\"\n\n\"Should we address item three?\" Bella asked.\n\n\"Never address item three.\"\n\nThe meeting lasted {number} hours. Belinda presented a {adjective2} sales strategy involving {food_drink}, a trip to Peter Rouse's estate, and {number} units of the Tri-Oxy Brillo Range.\n\n\"Brilliant,\" Sir James declared, adjusting his {garment}. \"Belinda, you are the greatest {body_part}— I mean ASSET — in this company.\"\n\n\"Thank you, Sir James.\"\n\nThe {noun} in the corner made another sound. Everyone pretended not to hear it."},
+
+{icon:"📖",title:"Rocky's Writing Process",tease:"Inside the garden shed of genius.",
+text:"Rocky Flintstone sat in his garden shed. His wife had banished him from the house {number} books ago. He didn't mind. The shed had a {adjective} {noun}, a typewriter, and a bottle of {food_drink}.\n\n\"Chapter {number},\" he muttered, flexing his {body_part}. \"Belinda entered the room. Her {garment} was... {adjective2}.\"\n\nHe paused. What came next? A business deal? A fight scene? A {noun}? All three?\n\n\"ALL THREE,\" Rocky decided.\n\nHe wrote for {number} hours. Characters appeared and vanished. Bella became Donna for a paragraph. A horse was simultaneously male and female. East Berlin moved to Poland.\n\n\"Geography,\" Rocky said, waving a {kitchenware} dismissively. \"Details.\"\n\nHis phone buzzed. Jamie had texted: \"Dad, the podcast has {number} million downloads.\"\n\n\"Good,\" Rocky said, returning to his {adjective} manuscript. \"Chapter {number}: Belinda's {body_part} {verb_past} as she gazed upon the {adjective2} {kitchenware}.\"\n\nHe typed the words. He didn't look back. He never looked back.\n\nOutside the shed, his wife shook her head and poured herself some {food_drink}. She still hadn't read the books. This was, by universal agreement, for the best."},
+
+{icon:"🎭",title:"The C.O.C.K. Initiation",tease:"Rocky swears the name is a coincidence.",
+text:"Belinda stood in the candlelit {place}. {number} Steele's employees surrounded her, each holding a {kitchenware} and wearing a {adjective} {garment}.\n\n\"Welcome,\" Belinda declared, \"to the inaugural meeting of the Confidential Order of Cookware Knights.\"\n\nSilence.\n\n\"...C.O.C.K.,\" Bella added helpfully.\n\n\"Yes, thank you, Bella.\"\n\n\"Is the acronym deliberate?\" Jim Thompson asked.\n\n\"ABSOLUTELY NOT,\" Belinda insisted. \"It stands for {adjective2} things. Noble things. Cookware things.\"\n\nThe initiation ceremony involved anointing each member's {body_part} with {food_drink} and swearing an oath on a {kitchenware}. Each member received a {adjective} {noun} as their badge of office.\n\n\"By the Norse gods,\" Belinda intoned, \"we pledge to protect Steele's Pots and Pans from the {adjective2} forces of Bisch-Herstellung Enterprises.\"\n\n\"And also from whoever is stealing {plural_noun} from the break room,\" Maeve added.\n\n\"That too.\"\n\nC.O.C.K. had {number} members. They met weekly in {place}. Their weapons: {kitchenware}, loyalty, and an acronym Rocky insists he didn't mean."},
+
+{icon:"🌏",title:"Belinda's Australian Adventure",tease:"Book 6 goes Down Under.",
+text:"Belinda was presumed dead. She was not dead. She was in Australia, drinking {food_drink} in {place} and wearing a {adjective} {garment}.\n\n\"Nobody can find me here,\" she said, adjusting her {body_part} in the southern hemisphere sun.\n\nShe was wrong. {number} people found her within a week.\n\nFirst, a {adjective2} kangaroo stole her {kitchenware}. Then an Australian businessman offered her a deal on {plural_noun}. Then Bella called.\n\n\"Belinda, I'm the Sales Director now. Your {noun} is on my desk.\"\n\n\"That's MY {noun}.\"\n\n\"You're dead, Belinda.\"\n\n\"I'm in Australia!\"\n\n\"Same thing, professionally.\"\n\nBelinda spent {number} weeks in exile. She {verb_past}. She drank {food_drink}. She discovered that Australian {kitchenware} was surprisingly {adjective2}.\n\nBut Steele's needed her. Bisch was {verb_ing}. Tony was useless. The {noun} in the Leather Room was making that sound again.\n\nBelinda booked a flight back to Heathrow. She packed her {adjective} {garment}, her {kitchenware}, and her dignity.\n\n\"I'm coming back,\" she announced. \"And I'm bringing {number} {plural_noun}.\"\n\nBelinda Bounty Blumenthal was alive. And she was {adjective2}."},
+
+{icon:"🎲",title:"Belinda's Big Bonus Board Game Night",tease:"The Steele's team-building event nobody asked for.",
+text:"Sir James decreed a team-building evening in {place}. The activity: the new Belinda's Big Bonus board game, published by Hollandspiele.\n\n\"This is based on MY life,\" Belinda protested.\n\n\"Exactly. You should be {adjective2} at it,\" Tony said, rolling a {kitchenware}-shaped die.\n\nThe game involved moving your {noun} around a board shaped like Steele's headquarters. Each space required a business challenge or a {adjective} encounter.\n\nBella landed on \"Close a deal in {place} using only a {garment} and {food_drink}.\" She rolled a {number}. She succeeded. Everyone's {body_part} {verb_past}.\n\nGiselle landed on \"Reveal yourself as a spy.\" She looked uncomfortable.\n\nTony landed on \"Marriage proposal in Torremolinos.\" He looked at Giselle. Giselle looked at the floor.\n\nBelinda landed on \"Remove your {garment} to close the sale.\" She sighed. \"This game is TOO accurate.\"\n\nAfter {number} hours, Maeve won with {number} points. She'd never read the books. She was the only sane person at Steele's.\n\n\"REMATCH!\" Sir James demanded, clutching his {adjective2} {kitchenware} game piece.\n\nDes Martin played the victory ocarina. Of course he did."},
+
+{icon:"💍",title:"Peter's Proposal",tease:"The most romantic mud-adjacent moment in literature.",
+text:"Peter Rouse knelt in {place}. His {body_part} was {verb_ing}. He held a ring box made from a {adjective} {kitchenware}.\n\n\"Belinda Bounty Blumenthal,\" he said, his voice {adjective2}, \"will you—\"\n\n\"Is there mud involved?\"\n\n\"...I had planned a small mud ceremony after, yes.\"\n\n\"Continue.\"\n\n\"Will you marry me? I have loved you since we first painted each other with {food_drink} and crushed {plural_noun} under the moonlight. Your {body_part} is my {noun}. Your {garment} is my flag. Your sales figures are {adjective}.\"\n\nBelinda looked at the ring. It was shaped like a {kitchenware}. {number} diamonds. {adjective2} gold.\n\n\"Peter,\" she said, her {body_part} full of emotion and Australian chardonnay, \"I have fought Bisch. I have survived a car bomb. I have escaped in a hot air balloon over Heathrow Airport. I formed C.O.C.K. I watched Bill vanish from existence.\"\n\n\"And?\"\n\n\"YES. I will marry you. But only if Toffee Apple Chew pulls the carriage.\"\n\n\"She's a stallion.\"\n\n\"She's a SOUL SISTER stallion, Peter.\"\n\nThey kissed in {place}. Somewhere, Rocky Flintstone put down his pen in the garden shed. His magnum opus was complete.\n\nThe {adjective2} {kitchenware} of love had been sealed."},
+
+{icon:"🎬",title:"The HBO Special",tease:"Rocky goes live. What could go wrong.",
+text:"The Roundhouse in London was packed. {number} people had come to see Team Porno perform live. Jamie held a {adjective} copy of Book {number}. James gripped his {kitchenware} (emotional support). Alice was {verb_ing} with anticipation.\n\n\"Welcome,\" Jamie said, \"to My Dad Wrote a Porno: LIVE.\"\n\nThe crowd screamed. Someone threw a {garment} onstage.\n\n\"We're going to read the chapter where Belinda's {body_part} encounters a {adjective2} {noun} in {place},\" Jamie announced.\n\nHe began reading. The audience {verb_past}. James nearly fell off his chair. Alice said a word HBO had to bleep {number} times.\n\n\"And then,\" Jamie continued, barely breathing, \"Belinda {verb_past} her {garment} across the {kitchenware}, and Tony said: 'That's the most {adjective} thing I've seen since the tombola.'\"\n\nThe audience collapsed. {number} people were medically {adjective2}. One woman laughed so hard she spilled {food_drink} on a celebrity in the front row.\n\nBackstage, Rocky watched on a monitor. He smiled. He didn't understand why everyone was laughing. He'd written a serious erotic thriller.\n\n\"They love it,\" he said, adjusting his {garment}.\n\nThey did. Just not for the reasons he thought."}
+];
+
+var RANDOMS={
+  noun:["filing cabinet","leather ottoman","tombola ticket","fax machine","chandelier","spreadsheet","briefcase","garden shed","pen lid","butter dish"],
+  plural_noun:["frying pans","staplers","thongs","business cards","rivets","cufflinks","saucepans","invoices","grapefruits","candelabras"],
+  adjective:["throbbing","glistening","provocative","moistened","turgid","swollen","sumptuous","engorged","dripping","heaving"],
+  adjective2:["deeply sensual","impossibly erotic","outrageously seductive","magnificently inappropriate","breathtakingly moist","scandalously voluptuous","indecently luxurious","thoroughly aroused"],
+  verb_past:["quivered","throbbed","pulsated","gyrated","undulated","shuddered","erupted","convulsed","trembled","heaved"],
+  verb_ing:["glistening","throbbing","quivering","pulsating","gyrating","undulating","heaving","moistening","tingling","trembling"],
+  body_part:["elbow","left nipple","kneecap","clavicle","vaginal lid","inner thigh","belly button","right earlobe","shoulder blade","little finger"],
+  number:["47","69","3","1,000","812","17","42","99","6.5","704"],
+  garment:["black thong","silk negligee","business blazer","cashmere cardigan","leather corset","satin brassiere","Marks & Spencer suit","fishnet bodysuit","tweed waistcoat","sequined cape"],
+  food_drink:["Australian chardonnay","lukewarm prosecco","room-temperature cream","champagne","Special Jay cereal","Tit Tat Crunchy bar","warm Baileys","truffle oil","fondue","sparkling Ribena"],
+  kitchenware:["colander","Tri-Oxy Brillo pan","non-stick wok","cast iron skillet","Le Creuset casserole","potato masher","fondue set","gravy boat","silicon spatula","melon baller"],
+  place:["the Leather Room","Heathrow Airport","the Pentra hotel","Sir James's maze","the garden shed","the Duchess's estate","Torremolinos","East Berlin (Poland)","The Ritz spa","the Horse and Jockey"]
+};
+
+var words={},selectedStory=null;
+
+function renderPicker(){
+  var app=document.getElementById('app');
+  var grid=STORIES.map(function(s,i){
+    return '<div class="story-card" onclick="pickStory('+i+')"><div class="icon">'+s.icon+'</div><div class="name">'+s.title+'</div><div class="tease">'+s.tease+'</div></div>';
+  }).join('');
+  app.innerHTML=
+    '<div class="card" style="text-align:center;padding:0;overflow:hidden;border:none;">'+
+      '<img src="belinda-madlibs.png" alt="Write Your Own Chapter" style="width:100%;display:block;border-radius:4px">'+
+    '</div>'+
+    '<div class="warning">⚠️ <strong>Adult Content:</strong> These stories parody Rocky Flintstone\'s famously absurd erotic writing. The results will be suggestive, ridiculous, and exactly what Rocky would have written if he\'d had a Mad Libs book. Proceed with your black thong firmly in place.</div>'+
+    '<div class="card">'+
+      '<div style="font-family:Chewy,cursive;font-size:22px;text-align:center;margin-bottom:4px;color:#d4577a">Pick a Chapter</div>'+
+      '<div style="font-size:13px;color:#685878;font-weight:600;text-align:center;margin-bottom:16px">20 stories — pots, pans, and passion await</div>'+
+      '<div class="story-grid">'+grid+'</div>'+
+    '</div>';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function pickStory(i){selectedStory=i;renderInputs();}
+
+function renderInputs(){
+  var s=STORIES[selectedStory];
+  var fields=PROMPTS.map(function(p){
+    return '<div class="prompt-item"><label>'+p.label+'</label><input type="text" id="w_'+p.id+'" placeholder="'+p.placeholder+'" oninput="checkReady()"></div>';
+  }).join('');
+  document.getElementById('app').innerHTML=
+    '<div class="card" style="text-align:center;">'+
+      '<div style="font-size:32px;margin-bottom:4px">'+s.icon+'</div>'+
+      '<div style="font-family:Chewy,cursive;font-size:22px;margin-bottom:2px;color:#d4577a">'+s.title+'</div>'+
+      '<div style="font-family:Playfair Display,serif;font-style:italic;font-size:14px;color:#d4a04a;margin-bottom:16px">'+s.tease+'</div>'+
+      '<button class="random-btn" onclick="randomFill()">🎲 Random Fill (Rocky Mode)</button>'+
+      '<div class="prompt-grid">'+fields+'</div>'+
+      '<div style="margin-top:16px;">'+
+        '<button class="bb go" id="btn-go" disabled onclick="showStory()">📖 Read My Chapter!</button>'+
+        '<button class="bb" onclick="renderPicker()">← Pick Different Chapter</button>'+
+      '</div>'+
+    '</div>';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function randomFill(){
+  PROMPTS.forEach(function(p){
+    var b=RANDOMS[p.id];
+    document.getElementById('w_'+p.id).value=b[Math.floor(Math.random()*b.length)];
+  });
+  checkReady();
+}
+
+function checkReady(){
+  document.getElementById('btn-go').disabled=!PROMPTS.every(function(p){
+    return document.getElementById('w_'+p.id).value.trim();
+  });
+}
+
+function showStory(){
+  words={};
+  PROMPTS.forEach(function(p){words[p.id]=document.getElementById('w_'+p.id).value.trim();});
+  var s=STORIES[selectedStory];
+  var html=s.text.replace(/\{(\w+)\}/g,function(m,k){return '<span class="blank">'+(words[k]||m)+'</span>';});
+  document.getElementById('app').innerHTML=
+    '<div class="card">'+
+      '<div style="font-size:40px;text-align:center;margin-bottom:6px">'+s.icon+'</div>'+
+      '<div class="story-title-display">'+s.title+'</div>'+
+      '<div class="story-subtitle">A Belinda Blinked Chapter by You (and Rocky, spiritually)</div>'+
+      '<div class="story-text">'+html+'</div>'+
+    '</div>'+
+    '<div class="card" style="text-align:center;">'+
+      '<button class="bb pick" onclick="renderPicker()">📝 Pick Another Chapter</button>'+
+      '<button class="bb" onclick="renderInputs()">🔄 Same Chapter, New Words</button>'+
+      '<button class="bb" onclick="readAnother()">📖 Read Another (Same Words)</button>'+
+    '</div>';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function readAnother(){
+  var idx;
+  do{idx=Math.floor(Math.random()*STORIES.length);}while(idx===selectedStory);
+  selectedStory=idx;
+  var s=STORIES[selectedStory];
+  var html=s.text.replace(/\{(\w+)\}/g,function(m,k){return '<span class="blank">'+(words[k]||m)+'</span>';});
+  document.getElementById('app').innerHTML=
+    '<div class="card">'+
+      '<div style="font-size:40px;text-align:center;margin-bottom:6px">'+s.icon+'</div>'+
+      '<div class="story-title-display">'+s.title+'</div>'+
+      '<div class="story-subtitle">A Belinda Blinked Chapter by You (and Rocky, spiritually)</div>'+
+      '<div class="story-text">'+html+'</div>'+
+    '</div>'+
+    '<div class="card" style="text-align:center;">'+
+      '<button class="bb pick" onclick="renderPicker()">📝 Pick Another Chapter</button>'+
+      '<button class="bb" onclick="renderInputs()">🔄 New Words</button>'+
+      '<button class="bb" onclick="readAnother()">📖 Read Another (Same Words)</button>'+
+    '</div>';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+renderPicker();
+</script>
+</body>
+</html>

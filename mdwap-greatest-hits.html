@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rocky's Greatest Hits | Fan Cannon</title>
+<meta name="description" content="The most absurd, bewildering, and unforgettable moments from Rocky Flintstone's Belinda Blinked series — affectionately catalogued.">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link href="https://fonts.googleapis.com/css2?family=Chewy&family=Nunito:wght@400;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Nunito',sans-serif;overflow-x:hidden;min-height:100vh;background:#0e0a10;color:#ede4f0}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:#0e0a10}::-webkit-scrollbar-thumb{background:#302040;border-radius:3px}
+
+.nav{position:sticky;top:0;z-index:100;background:rgba(14,10,16,0.95);backdrop-filter:blur(12px);border-bottom:1px solid rgba(212,87,122,0.15);padding:8px 16px;display:flex;align-items:center;gap:10px}
+.nav a{text-decoration:none;color:#9888a8;font-size:13px;font-weight:700;transition:color .2s}
+.nav a:hover{color:#d4577a}
+.nav .sep{color:rgba(255,255,255,0.15);font-size:18px}
+.nav .pg{font-size:13px;font-weight:600;color:rgba(255,255,255,0.3)}
+
+.gc{max-width:760px;margin:0 auto;padding:20px 16px 80px}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes shimmer{0%{background-position:-200% 50%}100%{background-position:200% 50%}}
+
+.hero-card{text-align:center;padding:40px 24px;margin-bottom:24px;background:linear-gradient(135deg,#1a1220 0%,rgba(212,87,122,0.08) 50%,#1a1220 100%);border-radius:24px;border:1px solid #302040;position:relative;overflow:hidden}
+.hero-card::before{content:'';position:absolute;inset:0;opacity:0.04;background:repeating-linear-gradient(45deg,transparent,transparent 20px,rgba(212,160,74,0.4) 20px,rgba(212,160,74,0.4) 22px)}
+.hero-card .icon{font-size:56px;margin-bottom:12px}
+.hero-card h1{font-family:'Chewy',cursive;font-size:clamp(28px,5vw,42px);color:#d4577a;margin-bottom:6px}
+.hero-card .sub{font-family:'Nunito',sans-serif;font-weight:700;font-size:17px;color:#d4a04a;margin-bottom:8px}
+.hero-card .meta{font-size:13px;color:#685878;max-width:500px;margin:0 auto;line-height:1.6}
+
+/* Filter tabs */
+.filter-bar{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:28px;position:sticky;top:45px;z-index:10;background:rgba(14,10,16,0.92);backdrop-filter:blur(8px);padding:12px 0;border-bottom:1px solid #302040}
+.filter-btn{padding:7px 16px;border-radius:99px;border:1px solid #302040;cursor:pointer;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;background:#1a1220;color:#9888a8;transition:all .2s}
+.filter-btn:hover{border-color:#d4577a;color:#ede4f0}
+.filter-btn.active{background:#d4577a;color:#fff;border-color:#d4577a}
+.count-badge{font-size:11px;color:#685878;text-align:center;margin-bottom:20px}
+
+/* Hit cards */
+.hit-card{background:#1a1220;border:1px solid #302040;border-radius:20px;padding:28px 26px;margin-bottom:16px;transition:all .25s;animation:fadeUp .4s ease both;position:relative;overflow:hidden}
+.hit-card:hover{border-color:var(--hit-color,#d4577a);transform:translateY(-2px)}
+.hit-card .hit-header{display:flex;align-items:flex-start;gap:14px;margin-bottom:14px}
+.hit-card .hit-icon{font-size:36px;flex-shrink:0;width:52px;height:52px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.03);border-radius:14px;border:1px solid #302040}
+.hit-card .hit-meta{flex:1}
+.hit-card .hit-badge{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1.2px;color:var(--hit-color,#d4577a);margin-bottom:4px}
+.hit-card .hit-title{font-family:'Chewy',cursive;font-size:20px;color:#ede4f0;line-height:1.2}
+.hit-card .hit-book{font-size:11px;font-weight:700;color:#685878;margin-top:3px}
+.hit-card .hit-body{font-size:15px;color:#9888a8;line-height:1.8}
+.hit-card .hit-body strong{color:#ede4f0}
+.hit-card .hit-body em{color:#d4a04a;font-style:italic}
+
+/* Rocky quote style — for describing the TYPE of thing Rocky wrote, not quoting verbatim */
+.hit-card .rocky-moment{font-family:'Playfair Display',serif;font-style:italic;font-size:15px;color:#d4a04a;line-height:1.7;padding:14px 20px;margin:14px 0 0;border-left:3px solid #d4a04a;background:rgba(212,160,74,0.04);border-radius:0 12px 12px 0}
+
+/* Podcast reaction */
+.hit-card .reaction{margin-top:14px;padding:12px 16px;background:rgba(192,132,216,0.06);border:1px solid rgba(192,132,216,0.12);border-radius:12px;font-size:13px;color:#c084d8;line-height:1.6}
+.hit-card .reaction strong{color:#e8a0b8}
+
+.footer-card{text-align:center;padding:28px;background:#1a1220;border:1px solid #302040;border-radius:20px;margin-top:8px}
+.footer-card p{font-size:13px;color:#685878;line-height:1.8}
+.footer-card a{color:#d4577a;text-decoration:none;font-weight:700}
+.footer-card a:hover{color:#e8a0b8}
+
+@media(max-width:500px){.hero-card{padding:28px 16px}.hit-card{padding:22px 18px}.filter-bar{gap:4px}}
+</style>
+</head>
+<body>
+<div class="nav"><a href="mdwap-universe.html">← Belinda Blinked Universe</a><span class="sep">|</span><span class="pg">Rocky's Greatest Hits</span></div>
+<div class="gc">
+
+<div class="hero-card" style="padding:0;overflow:hidden">
+<img src="belinda-hits.png" alt="Rocky's Greatest Hits" style="width:100%;display:block;border-radius:24px">
+</div>
+
+<div class="filter-bar" id="filter-bar"></div>
+<div class="count-badge" id="count-badge"></div>
+<div id="hits-container"></div>
+
+<div class="footer-card">
+<p>Fan-made celebration of Rocky Flintstone's literary universe.<br>
+Listen to the podcast at <strong>My Dad Wrote a Porno</strong> wherever you get podcasts.<br>
+<a href="mdwap-universe.html">← Back to the Belinda Blinked Universe</a></p>
+</div>
+</div>
+
+<script>
+var HITS = [
+  // ═══ ANATOMY & VOCABULARY ═══
+  {
+    cat:"Anatomy", icon:"🤔", color:"#d4577a",
+    title:"The Vaginal Lids",
+    book:"Recurring — multiple books",
+    body:"Rocky repeatedly references something called <strong>\"vaginal lids.\"</strong> This is not a recognized anatomical term. It has never been a recognized anatomical term. The hosts spent six series trying to work out what he meant. Medical professionals were consulted. No conclusion was reached. Rocky has never clarified.",
+    reaction:"Jamie, James, and Alice each independently tried to diagram what this could possibly mean. None of their diagrams agreed. The phrase haunts them to this day."
+  },
+  {
+    cat:"Anatomy", icon:"🩲", color:"#d4577a",
+    title:"The Universal Black Thong",
+    book:"Every single book",
+    body:"In Rocky's universe, <strong>every character wears a black thong at all times.</strong> Men, women, aristocrats, spies, regional sales managers. There is no variation. No one wears any other undergarment. Rocky appears to believe this is the default state of humanity.",
+    reaction:"Alice started keeping a thong tally. It became the most consistent data set in the entire series."
+  },
+  {
+    cat:"Vocabulary", icon:"🐴", color:"#c084d8",
+    title:"The Soul Sister Stallion",
+    book:"Book 2 onwards",
+    body:"The Duchess of Epsom's horse, <strong>Toffee Apple Chew</strong>, is described as her <em>\"soul sister stallion.\"</em> The problem: stallions are male horses. Rocky combined a feminine bonding term with a word that specifically means a male horse. The hosts noticed immediately. Rocky did not.",
+    reaction:"James: \"Is the horse female?\" Jamie: \"He says stallion.\" Alice: \"But also soul sister?\" Jamie: \"Yes.\" Long pause. James: \"...Right.\""
+  },
+  {
+    cat:"Vocabulary", icon:"🤠", color:"#c084d8",
+    title:"Bareback vs. Commando",
+    book:"Multiple books",
+    body:"When Rocky wants to describe a character not wearing underwear, he writes that they're going <strong>\"bareback.\"</strong> This is not what bareback means. Bareback means riding a horse without a saddle (or other things we won't get into). The word he's looking for is <em>\"commando.\"</em> He uses the wrong word every single time.",
+    reaction:"The hosts debated whether to tell Rocky. They decided the comedy was too valuable to correct."
+  },
+  {
+    cat:"Vocabulary", icon:"🏷️", color:"#c084d8",
+    title:"Brand Name Approximations",
+    book:"Multiple books",
+    body:"Rocky tries to reference real brands but gets them slightly wrong. <strong>Special K</strong> becomes <em>\"Special Jay.\"</em> <strong>Kit Kat Chunky</strong> becomes <em>\"Tit Tat Crunchy.\"</em> These are not satirical alterations to avoid trademark issues — Rocky genuinely seems to think these are the correct names.",
+    reaction:"Alice: \"Did he just say Tit Tat Crunchy?\" Jamie: \"That's what he wrote.\" James: \"Your father thinks Kit Kat is called Tit Tat.\" Jamie: \"...Apparently, yes.\""
+  },
+
+  // ═══ CHARACTERS ═══
+  {
+    cat:"Characters", icon:"👻", color:"#888888",
+    title:"The Disappearance of Bill",
+    book:"Book 1, Chapter 1 — and never again",
+    body:"<strong>Bill</strong> is introduced as the HR Director at Steele's Pots and Pans. He appears at Belinda's job interview. He asks a question. He is never mentioned again in any of the six books. Rocky appears to have completely forgotten he exists. Bill has become the podcast's most beloved running joke — a man lost to the void of Rocky's memory.",
+    reaction:"The hosts asked Rocky about Bill in the final series interview. Rocky had no idea who they were talking about. Bill remains missing."
+  },
+  {
+    cat:"Characters", icon:"❓", color:"#888888",
+    title:"Dave Wilcox: Gone But Not Forgotten",
+    book:"Early in the series",
+    body:"<strong>Dave Wilcox</strong>, Regional Sales Manager for Western England, is introduced with the same ceremony as the other RSMs. He then immediately vanishes. He joins Bill in the phantom zone of characters Rocky created and abandoned. The hosts consider Bill and Dave kindred spirits.",
+    reaction:"James proposed a spin-off podcast called \"Where Are They Now?\" dedicated exclusively to Bill and Dave Wilcox."
+  },
+  {
+    cat:"Characters", icon:"📝", color:"#e8a040",
+    title:"Bella Becomes Donna",
+    book:"Book 1, Chapter 3",
+    body:"Rocky introduces <strong>Bella Ridley</strong> as the receptionist. Three chapters later, he accidentally calls her <strong>\"Donna.\"</strong> He simply forgot the name of a character he created a few pages earlier. The name Donna never appears again. Bella goes back to being Bella. Rocky never acknowledges the switch.",
+    reaction:"Jamie had to stop reading because he was laughing too hard. Alice: \"He forgot her name. Three chapters in. His OWN character.\""
+  },
+  {
+    cat:"Characters", icon:"🐭", color:"#c88040",
+    title:"The Vole and Its Sequel",
+    book:"Book 1 (introduction), Book 5 (the surgery)",
+    body:"<strong>Jim Stirling</strong>, CEO of Sterling Corp, Texas, is revealed to have a micropenis which the hosts nicknamed <em>\"the vole.\"</em> But it gets worse. In Book 5, Jim undergoes a <strong>transplant procedure</strong> to address this. The replacement goes catastrophically wrong — the grafted skin begins to slough off. Rocky describes this in clinical detail. It is the most horrifying subplot in the series.",
+    reaction:"All three hosts were audibly distressed during the transplant chapters. James threatened to leave the podcast. He did not leave the podcast."
+  },
+  {
+    cat:"Characters", icon:"🩺", color:"#c070a0",
+    title:"Dr. Veronica Stud's Medical Practice",
+    book:"Book 5",
+    body:"When Bella is put in a coma by a car bomb, she is treated by <strong>Dr. Veronica Stud</strong>, who specializes in — and Rocky writes this with a straight face — <em>\"comas and sex.\"</em> The doctor's treatment method is <strong>sexual therapy</strong> to awaken coma patients. Bella wakes up. Rocky presents this as standard medical practice.",
+    reaction:"Alice: \"I'm sorry, her specialism is comas AND sex?\" Jamie: \"Simultaneously, apparently.\" James: \"Is this... is this a thing?\" It is not a thing."
+  },
+  {
+    cat:"Characters", icon:"🛎️", color:"#6898b0",
+    title:"The Youngish Man",
+    book:"Multiple books",
+    body:"<strong>Sam</strong>, the manager of The Ritz, is described only as <em>\"the youngish man.\"</em> Rocky never gives his age. Not 'young' — <em>youngish.</em> He could be 25 or 45. The qualifier haunts the hosts. What age range does Rocky consider 'youngish'? What was he young relative to?",
+    reaction:"The hosts spent an unreasonable amount of time trying to determine Sam's age. They settled on \"somewhere between 19 and 55\" and moved on."
+  },
+  {
+    cat:"Characters", icon:"🎩", color:"#d4a04a",
+    title:"Rocky Relates to Sir James",
+    book:"Podcast interview",
+    body:"<strong>Sir James Godwin</strong> is the CEO of Steele's: a wealthy man whose third wife died in a suspicious parachuting \"accident,\" who runs a charity called the Asses and Donkeys Trust, and who maintains a corporate leather room. When asked which character he relates to most, <strong>Rocky said Sir James.</strong> The hosts found this deeply alarming.",
+    reaction:"James: \"Your dad relates to the man whose wife died in a parachuting 'accident.'\" Jamie: \"I don't want to talk about it.\" Alice: \"Should we be worried?\""
+  },
+
+  // ═══ GEOGRAPHY & HISTORY ═══
+  {
+    cat:"Geography", icon:"🗺️", color:"#40a8c0",
+    title:"East Berlin Is in Poland",
+    book:"Book 4",
+    body:"Herr Bisch's headquarters is located in <strong>\"East Berlin.\"</strong> Rocky helpfully provides the distance from Heathrow: <strong>704 miles.</strong> The problem is that Berlin is about 580 miles from Heathrow. 704 miles puts you somewhere in <strong>Poland.</strong> Rocky appears to have invented an East Berlin that is 120 miles further east than actual Berlin.",
+    reaction:"James got out a map. Alice calculated the distance. They pinpointed the location somewhere near Poznań. Rocky's Bisch-Herstellung is a Polish company."
+  },
+  {
+    cat:"Geography", icon:"✈️", color:"#40a8c0",
+    title:"Steele's Is at Heathrow Airport",
+    book:"Book 1 onwards",
+    body:"Rocky locates <strong>Steele's Pots and Pans headquarters at Heathrow Airport.</strong> Not near it. Not in the Heathrow area. At the airport. He appears to believe this is a normal location for the second-largest pot and pan distributor in Europe. The hosts have never fully recovered from this detail.",
+    reaction:"Alice: \"Why is a kitchenware company at an airport?\" Jamie: \"I don't think he knows it's an airport.\" James: \"He's been to Heathrow! He lives in England!\""
+  },
+  {
+    cat:"Geography", icon:"📅", color:"#40a8c0",
+    title:"The 1980s with an O2 Arena",
+    book:"Multiple books",
+    body:"The series is ostensibly set in <strong>the 1980s</strong>, but Rocky references the <strong>O2 Arena</strong> — which he calls the <em>\"Millennium Dome Building\"</em> — a venue that didn't open until 2007. Rocky's timeline exists in a dimension where the 1980s and 2000s happen simultaneously.",
+    reaction:"The hosts tried to establish a definitive timeline for when the books are set. They failed. Rocky's universe exists outside of time."
+  },
+  {
+    cat:"Geography", icon:"🚢", color:"#40a8c0",
+    title:"The Three-Inch Titanic Rivets",
+    book:"Book 2",
+    body:"Rocky describes the rivets of the Titanic as being <strong>\"3 inches long.\"</strong> Actual Titanic rivets were about 1.25 inches in diameter but the heads were substantial — and more importantly, this fact has absolutely nothing to do with a story about kitchenware sales. Rocky just... decided to include Titanic rivet dimensions. And got them wrong.",
+    reaction:"James: \"Why is he talking about the Titanic?\" Jamie: \"I don't know.\" Alice: \"And why are the rivets wrong?\" Jamie: \"I don't know that either.\""
+  },
+
+  // ═══ PLOT MOMENTS ═══
+  {
+    cat:"Plot", icon:"⚔️", color:"#d4577a",
+    title:"C.O.C.K. — The Acronym Rocky Swears Is a Coincidence",
+    book:"Book 4",
+    body:"Belinda forms a secret organization to fight Bisch called the <strong>Confidential Order of Cookware Knights</strong> — abbreviated <strong>C.O.C.K.</strong> Rocky insists the acronym is entirely coincidental. He maintains this position despite writing a book series that is explicitly about sex. Nobody believes him.",
+    reaction:"The hosts could not breathe for approximately two minutes after Jamie read the acronym aloud. Rocky later confirmed in an interview that the name was not intentional. He was the only person in the world who thought this."
+  },
+  {
+    cat:"Plot", icon:"🧪", color:"#40a8c0",
+    title:"Professor Slinz Dies for Pans",
+    book:"Books 4–5",
+    body:"<strong>Professor Slinz</strong> invents the Tri-Oxy Brillo Range — revolutionary pans that boil water in 3 seconds. When kidnapped by the villains, rather than reveal the blueprints, <strong>he takes a cyanide pill.</strong> He dies. For pans. Revolutionary pans, certainly, but pans nonetheless. Rocky treats this as a noble sacrifice on par with any wartime heroism.",
+    reaction:"James: \"He killed himself to protect a pan recipe.\" Alice: \"That's the stakes Rocky has established. Pans are worth dying for.\""
+  },
+  {
+    cat:"Plot", icon:"⚰️", color:"#4060a0",
+    title:"Spooner's State Funeral",
+    book:"Book 6",
+    body:"When spy <strong>James Spooner</strong> is killed by George Sylvester, Rocky gives him a <strong>full state funeral at Westminster Abbey.</strong> His coffin is pulled by the Duchess's horse, <strong>Toffee Apple Chew.</strong> Rocky apparently felt that a kitchenware-adjacent spy deserved the same send-off as Winston Churchill.",
+    reaction:"Alice: \"A state funeral. At Westminster Abbey. For a spy who worked in the kitchenware industry.\" James: \"Pulled by a horse who is both a stallion and a soul sister.\" Jamie just stared at the page."
+  },
+  {
+    cat:"Plot", icon:"🔫", color:"#4060a0",
+    title:"Spooner's Spy Gadgets",
+    book:"Books 4–5",
+    body:"<strong>James Spooner</strong> is a blatant James Bond parody whose gadgets include: a <strong>clothes-destroying laser cufflink</strong> and a <strong>leather charm bracelet that unfolds into binoculars with wet wipes stored inside.</strong> Rocky invents spy technology that Q would resign over.",
+    reaction:"James: \"Binoculars... with wet wipes?\" Jamie: \"Built into a charm bracelet.\" Alice: \"Who is the wet wipe for? What situation requires both binoculars AND wet wipes simultaneously?\""
+  },
+  {
+    cat:"Plot", icon:"👼", color:"#c084d8",
+    title:"Dick Van Dyke in Heaven",
+    book:"Book 5",
+    body:"During a near-death experience, Belinda briefly visits heaven. There, she encounters <strong>Dick Van Dyke.</strong> The actor Dick Van Dyke. Rocky includes this detail without explanation, context, or follow-up. It is never referenced again. Dick Van Dyke is just... in heaven, in a book about kitchenware sales.",
+    reaction:"Alice: \"Did he just write Dick Van Dyke into heaven?\" Jamie: \"He did.\" James: \"Is Dick Van Dyke even dead?\" He was not. (And as of this page being made, he still isn't.)"
+  },
+  {
+    cat:"Plot", icon:"🎈", color:"#e8a0b8",
+    title:"The Hot Air Balloon Escape",
+    book:"Book 5",
+    body:"When things get dire, Belinda escapes the villains in <strong>a hot air balloon.</strong> This is a woman who works in kitchenware sales. Rocky decided her escape vehicle from a corporate espionage thriller should be the least subtle mode of transport imaginable. She just... floats away.",
+    reaction:"James: \"She could have taken a car.\" Alice: \"Or a train.\" Jamie: \"My dad chose a hot air balloon.\" James: \"Because of course he did.\""
+  },
+  {
+    cat:"Plot", icon:"🎨", color:"#a07048",
+    title:"The Ritualistic Mud Painting",
+    book:"Multiple books",
+    body:"<strong>Peter Rouse</strong>, Belinda's European distributor and eventual fiancé, has a deep spiritual connection with her that involves <strong>ritualistic mud painting.</strong> They paint each other with mud as part of their bond. Rocky presents this as deeply romantic and spiritually significant. The hosts are unsure what tradition this belongs to.",
+    reaction:"Alice: \"Is this a real thing people do?\" James: \"In Rocky's world, yes.\" Jamie: \"My dad thinks mud painting is peak romance.\" It somehow remains the most genuine relationship in the series."
+  },
+  {
+    cat:"Plot", icon:"💣", color:"#c03040",
+    title:"Giselle's Betrayal Disease",
+    book:"Books 4–5",
+    body:"When <strong>Giselle</strong> is revealed as the mole inside Steele's, her motive is sympathetic: she needed money for her mother's treatment for <strong>\"conchakkutitus-detritus.\"</strong> This is not a real disease. Rocky invented a disease name that sounds like a combination of a pasta dish and building debris. He never defines what the disease actually does.",
+    reaction:"Jamie tried to pronounce it three times. James asked if Rocky had consulted any medical resources. He had not."
+  },
+
+  // ═══ META & PODCAST ═══
+  {
+    cat:"Meta", icon:"🏡", color:"#d4a04a",
+    title:"The Garden Shed Origin",
+    book:"Real life",
+    body:"Rocky writes all of his books in <strong>his garden shed</strong> because his wife won't let him write in the house. This is perhaps the only entirely reasonable detail in the entire Belinda Blinked universe. After reading the books, most listeners agree with Rocky's wife.",
+    reaction:"Alice: \"His wife has read these?\" Jamie: \"She has not.\" James: \"That's probably for the best.\""
+  },
+  {
+    cat:"Meta", icon:"📚", color:"#d4a04a",
+    title:"Rocky's Previous Literary Career",
+    book:"Real life",
+    body:"Before writing erotic fiction about kitchenware sales, Rocky self-published books on <strong>Brazil tourism, mineral identification, and gardening.</strong> The pivot from mineral identification guides to prose featuring vaginal lids is one of the most remarkable career trajectories in literary history.",
+    reaction:"James: \"He went from minerals to THIS.\" Alice: \"What's the Venn diagram between people who buy mineral identification guides and erotic fiction?\" Jamie: \"My dad, apparently.\""
+  },
+  {
+    cat:"Meta", icon:"🔍", color:"#d4a04a",
+    title:"Rocky's Amazon Keywords",
+    book:"Book 1 — Amazon listing",
+    body:"When self-publishing Book 1 on Amazon, Rocky chose his marketing keywords: <strong>\"lesbian, erotica and business and leadership.\"</strong> He was apparently targeting readers who search for both lesbian erotica AND business leadership content simultaneously. A narrow demographic, but Rocky believed in it.",
+    reaction:"Alice: \"He thinks people search for 'erotica AND business leadership?'\" Jamie: \"He was covering all bases.\" James: \"The man has range.\""
+  },
+  {
+    cat:"Meta", icon:"👑", color:"#a06890",
+    title:"The Duchess's Room",
+    book:"Book 2",
+    body:"The Duchess of Epsom — later revealed to be <strong>'M,' the head of all British Intelligence</strong> — maintains a room in her estate that is entirely covered in <strong>adult accessories.</strong> Every surface. Rocky describes this room in the same matter-of-fact tone he uses for corporate meetings. The Duchess rides her horse to this room.",
+    reaction:"Alice: \"An entire room?\" Jamie: \"Floor to ceiling.\" James: \"And she's the head of MI6?\" Jamie: \"MI5. Or MI6. Rocky changes his mind.\" James: \"Of course he does.\""
+  },
+  {
+    cat:"Meta", icon:"🎵", color:"#70a880",
+    title:"Des Martin and His Ocarina",
+    book:"Book 6",
+    body:"When Belinda leaves Steele's, her farewell party features a song led by <strong>Des Martin playing the ocarina.</strong> Rocky decided that a corporate farewell party at a kitchenware company should feature an ocarina performance. This is the level of specificity Rocky brings to details that don't matter while forgetting the names of his own characters.",
+    reaction:"James: \"Not a guitar. Not a keyboard. An ocarina.\" Alice: \"Does Des Martin appear before this?\" Jamie: \"Barely.\" James: \"So his only contribution to six books is an ocarina farewell song.\" Jamie: \"Correct.\""
+  },
+];
+
+// ═══ RENDER ═══
+var activeFilter = 'All';
+var catSet = {};
+HITS.forEach(function(h){ catSet[h.cat] = true; });
+var categories = ['All'].concat(Object.keys(catSet));
+
+function renderFilters(){
+  var bar = document.getElementById('filter-bar');
+  bar.innerHTML = '';
+  categories.forEach(function(cat){
+    var btn = document.createElement('button');
+    btn.className = 'filter-btn' + (cat === activeFilter ? ' active' : '');
+    btn.textContent = cat;
+    btn.addEventListener('click', function(){
+      activeFilter = cat;
+      renderFilters();
+      renderHits();
+    });
+    bar.appendChild(btn);
+  });
+}
+
+function renderHits(){
+  var container = document.getElementById('hits-container');
+  container.innerHTML = '';
+  var filtered = activeFilter === 'All' ? HITS : HITS.filter(function(h){ return h.cat === activeFilter; });
+  document.getElementById('count-badge').textContent = filtered.length + ' greatest hit' + (filtered.length !== 1 ? 's' : '');
+
+  filtered.forEach(function(h, i){
+    var card = document.createElement('div');
+    card.className = 'hit-card';
+    card.style.setProperty('--hit-color', h.color);
+    card.style.animationDelay = (i * 0.04) + 's';
+
+    var html =
+      '<div class="hit-header">' +
+        '<div class="hit-icon">' + h.icon + '</div>' +
+        '<div class="hit-meta">' +
+          '<div class="hit-badge">' + h.cat + '</div>' +
+          '<div class="hit-title">' + h.title + '</div>' +
+          '<div class="hit-book">' + h.book + '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="hit-body">' + h.body + '</div>';
+
+    if (h.reaction) {
+      html += '<div class="reaction"><strong>🎙️ The Hosts:</strong> ' + h.reaction + '</div>';
+    }
+
+    card.innerHTML = html;
+    container.appendChild(card);
+  });
+}
+
+renderFilters();
+renderHits();
+</script>
+</body>
+</html>
