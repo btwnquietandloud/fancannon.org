@@ -503,6 +503,18 @@
   .fc-brand-bar .fc-sep{color:rgba(255,255,255,0.15);font-size:18px;font-weight:300}
   .fc-brand-bar .fc-page-name{font-size:13px;font-weight:600;color:rgba(255,255,255,0.4)}
 
+  /* ── Audio Player ── */
+  .custom-player{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.03);border-radius:12px;padding:12px 16px;margin:8px 0}
+  .play-btn{width:40px;height:40px;border-radius:50%;border:none;background:var(--accent);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
+  .play-btn:hover{filter:brightness(1.2);transform:scale(1.05)}
+  .play-btn svg{width:18px;height:18px}
+  .player-track{flex:1;min-width:0}
+  .track-bar{height:6px;background:rgba(255,255,255,0.08);border-radius:3px;cursor:pointer;position:relative;margin-bottom:6px}
+  .track-progress{height:100%;background:var(--accent);border-radius:3px;width:0%;transition:width .1s linear}
+  .track-handle{position:absolute;top:50%;width:12px;height:12px;background:#fff;border-radius:50%;transform:translate(-50%,-50%);left:0%;opacity:0;transition:opacity .2s}
+  .custom-player:hover .track-handle{opacity:1}
+  .track-times{display:flex;justify-content:space-between;font-size:11px;color:var(--text-dim);font-weight:600;font-variant-numeric:tabular-nums}
+
   @media(max-width:640px){
     .tab-nav{gap:2px;padding:4px}
     .tab-btn{padding:8px 12px;font-size:13px}
@@ -581,6 +593,118 @@
       <img src="belinda-books.png" alt="The Belinda Blinked book series" style="width:100%;border-radius:14px;display:block;margin-bottom:20px">
       <div class="book-grid" id="book-grid"></div>
       <p style="font-size:13px;color:var(--text-dim)"><strong style="color:var(--text-muted)">Spin-offs:</strong> Lockdown 69, Christmas specials, business tips, wine diet book, sweet treats recipe book, Spanish translation.</p>
+    </div>
+
+    <div class="about-card">
+      <h2>🎵 Ode to Belinda</h2>
+      <p style="margin-bottom:12px">An original anthem celebrating Rocky Flintstone's literary universe — pots, pans, passion, and the eternal mystery of Bill from HR.</p>
+      <audio id="audio1" src="ode-to-belinda.mp3" preload="metadata"></audio>
+      <div class="custom-player" id="player1">
+        <button class="play-btn" id="playBtn1" aria-label="Play">
+          <svg class="icon-play" viewBox="0 0 24 24"><polygon points="8,4 20,12 8,20" fill="currentColor"/></svg>
+          <svg class="icon-pause" viewBox="0 0 24 24" style="display:none"><rect x="6" y="4" width="4" height="16" fill="currentColor"/><rect x="14" y="4" width="4" height="16" fill="currentColor"/></svg>
+        </button>
+        <div class="player-track">
+          <div class="track-bar" id="trackBar1"><div class="track-progress" id="prog1"></div><div class="track-handle" id="handle1"></div></div>
+          <div class="track-times"><span id="cur1">0:00</span><span id="tot1">0:00</span></div>
+        </div>
+      </div>
+      <details style="margin-top:16px">
+        <summary style="cursor:pointer;font-size:14px;font-weight:700;color:var(--accent2);padding:8px 0">📜 Show Lyrics</summary>
+        <div style="background:rgba(255,255,255,0.02);border-radius:14px;padding:20px 24px;margin-top:10px;font-size:14px;line-height:1.85;color:var(--text-muted)">
+          <div style="font-size:11px;font-weight:800;color:var(--text-dim);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px">Verse 1</div>
+She walked through the doors at Heathrow
+Black thong pressed and ready to go
+Sir James said "Welcome to Steele's
+Where we close every deal in high heels"
+
+Bill from HR said hello
+Then vanished like he'd never show
+Nobody asked and nobody cared
+One chapter in and the man disappeared
+
+          <div style="font-size:11px;font-weight:800;color:var(--text-dim);letter-spacing:1.5px;text-transform:uppercase;margin:16px 0 8px">Pre-Chorus</div>
+She swears by the Norse gods above
+Her weapons are chardonnay and love
+The second-largest distributor of pans in the land
+And Belinda's got it all in hand
+
+          <div style="font-size:11px;font-weight:800;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin:16px 0 8px">Chorus</div>
+          <div style="color:var(--accent)">Belinda Blinked! Belinda Blinked!
+Pots and pans and passion interlinked
+From the Leather Room to the Ritz
+Rocky wrote it and it's absolute —
+Belinda Blinked! Belinda Blinked!
+The sexiest sales girl on the brink
+Close the deal, remove the heel
+Nothing in this book is real
+Belinda Blinked!</div>
+
+          <div style="font-size:11px;font-weight:800;color:var(--text-dim);letter-spacing:1.5px;text-transform:uppercase;margin:16px 0 8px">Verse 2</div>
+Giselle's got a maiden name
+Maarschalkerweerd de Klotz, no shame
+She's the Special One inside
+Betrayed us all for the other side
+
+The Duchess rides to every meet
+On Toffee Apple Chew so sweet
+A soul sister stallion, fierce and proud
+Stallions are male but Rocky's allowed
+
+          <div style="font-size:11px;font-weight:800;color:var(--text-dim);letter-spacing:1.5px;text-transform:uppercase;margin:16px 0 8px">Pre-Chorus</div>
+Spooner's got binoculars with wipes
+Jim Stirling's got a surgical gripe
+East Berlin's in Poland now
+Seven hundred four miles — Rocky, how?
+
+          <div style="font-size:11px;font-weight:800;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin:16px 0 8px">Chorus</div>
+          <div style="color:var(--accent)">Belinda Blinked! Belinda Blinked!
+Pots and pans and passion interlinked
+From the Leather Room to the Ritz
+Rocky wrote it and it's absolute —
+Belinda Blinked! Belinda Blinked!
+The sexiest sales girl on the brink
+Close the deal, remove the heel
+Nothing in this book is real
+Belinda Blinked!</div>
+
+          <div style="font-size:11px;font-weight:800;color:var(--accent3);letter-spacing:1.5px;text-transform:uppercase;margin:16px 0 8px">Bridge (Spoken)</div>
+          <div style="color:var(--accent3)">And what of Bill?
+What of Dave Wilcox, RSM for Western England?
+Gone. Both of them. Gone.
+Rocky forgot. The pages turned.
+The darkness increased.
+And the vaginal lids... remained unexplained.</div>
+
+          <div style="font-size:11px;font-weight:800;color:var(--text-dim);letter-spacing:1.5px;text-transform:uppercase;margin:16px 0 8px">Verse 3</div>
+Peter Rouse proposed in mud
+C.O.C.K. was formed to spill some blood
+The acronym's a coincidence
+At least that's Rocky's defense
+
+Cosmo cooked on live TV
+Doc Stud cured a coma sexually
+A state funeral for a kitchenware spy
+Toffee Apple Chew said goodbye
+
+          <div style="font-size:11px;font-weight:800;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin:16px 0 8px">Final Chorus</div>
+          <div style="color:var(--accent)">Belinda Blinked! Belinda Blinked!
+Four hundred thirty million listeners winked
+From the garden shed to HBO
+Rocky wrote the greatest show
+
+Belinda Blinked! Belinda Blinked!
+Six books of genius on the brink
+Jamie read it, we all screamed
+The maddest thing you've ever dreamed
+Belinda Blinked!</div>
+
+          <div style="font-size:11px;font-weight:800;color:var(--text-dim);letter-spacing:1.5px;text-transform:uppercase;margin:16px 0 8px">Outro (Spoken)</div>
+          <div style="color:var(--accent2)">Written in a garden shed...
+Because his wife won't let him write in the house...
+<em>ocarina solo by Des Martin</em></div>
+        </div>
+      </details>
     </div>
 
     <div class="about-card">
@@ -1337,6 +1461,29 @@ document.querySelectorAll('.quick-card[data-nav]').forEach(function(card) {
       }
     }
   });
+})();
+
+// ═══════════ AUDIO PLAYER ═══════════
+(function(){
+  function fmt(s){var m=Math.floor(s/60);var sec=Math.floor(s%60);return m+':'+(sec<10?'0':'')+sec;}
+  var a=document.getElementById('audio1');
+  var btn=document.getElementById('playBtn1');
+  var iPlay=btn.querySelector('.icon-play');
+  var iPause=btn.querySelector('.icon-pause');
+  var bar=document.getElementById('trackBar1');
+  var prog=document.getElementById('prog1');
+  var handle=document.getElementById('handle1');
+  var cur=document.getElementById('cur1');
+  var tot=document.getElementById('tot1');
+  var pl=document.getElementById('player1');
+  a.addEventListener('loadedmetadata',function(){tot.textContent=fmt(a.duration);});
+  a.addEventListener('timeupdate',function(){var pct=(a.currentTime/a.duration)*100;prog.style.width=pct+'%';handle.style.left=pct+'%';cur.textContent=fmt(a.currentTime);});
+  a.addEventListener('ended',function(){pl.classList.remove('playing');iPlay.style.display='';iPause.style.display='none';});
+  btn.addEventListener('click',function(){
+    if(a.paused){a.play().then(function(){pl.classList.add('playing');iPlay.style.display='none';iPause.style.display='';}).catch(function(){cur.textContent='Audio file not found';cur.style.color='var(--accent)';});}
+    else{a.pause();pl.classList.remove('playing');iPlay.style.display='';iPause.style.display='none';}
+  });
+  bar.addEventListener('click',function(e){var rect=bar.getBoundingClientRect();var pct=(e.clientX-rect.left)/rect.width;a.currentTime=pct*a.duration;});
 })();
 </script>
 </body>
