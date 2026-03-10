@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Battle for YOUR Dream Island | Fan Cannon</title>
+<meta name="description" content="A BFDI Choose Your Own Adventure game. Make choices, navigate challenges, and try to win Dream Island!">
+<link href="https://fonts.googleapis.com/css2?family=Chewy&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Nunito',sans-serif;overflow-x:hidden;min-height:100vh;}
+.world{min-height:100vh;background:linear-gradient(180deg,#7EC8E3 0%,#A8E0F0 40%,#C5ECF7 70%,#8BC34A 70%,#6DAA2C 100%);position:relative;}
+.cloud{position:fixed;background:white;border-radius:50px;opacity:.85;z-index:0;}
+.cloud::before,.cloud::after{content:'';position:absolute;background:white;border-radius:50%;}
+.c1{width:120px;height:40px;top:8%;left:10%;animation:cd 45s linear infinite;}
+.c1::before{width:50px;height:50px;top:-25px;left:20px;}.c1::after{width:70px;height:55px;top:-30px;left:50px;}
+.c2{width:90px;height:30px;top:15%;left:65%;animation:cd 60s linear infinite reverse;}
+.c2::before{width:40px;height:40px;top:-20px;left:15px;}.c2::after{width:55px;height:45px;top:-25px;left:35px;}
+.c3{width:100px;height:35px;top:5%;left:40%;animation:cd 50s linear infinite;}
+.c3::before{width:45px;height:45px;top:-22px;left:18px;}.c3::after{width:60px;height:50px;top:-28px;left:42px;}
+@keyframes cd{0%{transform:translateX(-200px);}100%{transform:translateX(calc(100vw + 200px));}}
+.gc{position:relative;z-index:1;max-width:640px;margin:0 auto;padding:20px 16px;min-height:100vh;display:flex;flex-direction:column;}
+.card{background:white;border-radius:4px;border:3px solid #222;padding:24px 20px;box-shadow:4px 4px 0 rgba(0,0,0,.15);margin-bottom:14px;animation:cardIn .4s ease;}
+@keyframes cardIn{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+.title{font-family:'Chewy',cursive;font-size:36px;color:#E74C3C;line-height:1.1;text-align:center;margin-bottom:4px;}
+.title .small{font-size:20px;color:#E91E8C;display:block;}
+.story{font-size:16px;line-height:1.65;color:#333;margin-bottom:20px;white-space:pre-line;}
+.story em{color:#666;font-style:italic;}
+.choices{display:flex;flex-direction:column;gap:8px;}
+.choice{padding:14px 18px;border:3px solid #222;border-radius:4px;background:white;font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;color:#222;cursor:pointer;transition:all .15s;text-align:left;line-height:1.35;}
+.choice:hover{background:#FFFDE7;transform:translate(-2px,-2px);box-shadow:4px 4px 0 rgba(0,0,0,.15);}
+.choice:active{transform:translate(0,0);box-shadow:none;}
+.choice .arrow{color:#E74C3C;margin-right:6px;font-weight:900;}
+.ending-card{text-align:center;padding:28px 24px;}
+.ending-icon{font-size:64px;margin-bottom:8px;}
+.ending-title{font-family:'Chewy',cursive;font-size:28px;margin-bottom:4px;}
+.ending-title.good{color:#F9A825;}.ending-title.neutral{color:#1565C0;}.ending-title.bad{color:#C62828;}
+.ending-type{font-size:13px;color:#999;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;}
+.bb{display:block;width:100%;padding:14px 20px;border:3px solid #222;border-radius:4px;font-family:'Nunito',sans-serif;font-size:16px;font-weight:800;cursor:pointer;transition:all .15s;margin-bottom:8px;text-align:center;background:white;color:#222;}
+.bb:hover{transform:translate(-2px,-2px);box-shadow:4px 4px 0 rgba(0,0,0,.2);}
+.bb:active{transform:translate(0,0);box-shadow:none;}
+.bb.start{background:#E8F5E9;border-color:#2E7D32;font-family:'Chewy',cursive;font-size:22px;}
+.path-tag{display:inline-block;padding:3px 10px;border-radius:3px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;}
+.path-tag.lemons{background:#FFF9C4;color:#F57F17;}
+.path-tag.limes{background:#E8F5E9;color:#2E7D32;}
+.path-tag.mountain{background:#E3F2FD;color:#1565C0;}
+.path-tag.finale{background:#FCE4EC;color:#C62828;}
+.stats-row{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
+.stat{flex:1;min-width:calc(50% - 4px);background:#F5F5F5;border:2px solid #ddd;border-radius:4px;padding:10px 8px;text-align:center;}
+.stat .n{font-family:'Chewy',cursive;font-size:24px;color:#222;}
+.stat .l{font-size:11px;color:#888;font-weight:800;text-transform:uppercase;}
+@media(max-width:500px){.title{font-size:28px;}.title .small{font-size:17px;}.story{font-size:15px;}.choice{font-size:14px;padding:12px 14px;}}
+</style>
+</head>
+<body>
+<div class="world">
+<div class="cloud c1"></div><div class="cloud c2"></div><div class="cloud c3"></div>
+<div class="gc"><div id="game"></div></div>
+</div>
+<script>
+const ADVENTURE = {
+  title: "Battle for YOUR Dream Island",
+  subtitle: "A BFDI Choose Your Own Adventure",
+  intro: "You're a brand new object contestant who just appeared in Goiky. The Announcer has declared a special one-day mini-season — one day, one winner, Dream Island on the line.\n\nYour choices will determine everything.",
+  startNode: "start",
+  actThemes: {
+    act1: { label: "Act 1: Arrival", css: "" },
+    lemons: { label: "Crunchy Lemons", css: "lemons" },
+    limes: { label: "Zesty Limes", css: "limes" },
+    mountain: { label: "Yoyle Mountain", css: "mountain" },
+    finale: { label: "The Finale", css: "finale" }
+  },
+  nodes: {
+"start":{act:"act1",text:"You materialize in Goiky on a bright, impossibly sunny day. The grass is a green you've never seen in real life and the sky is that specific shade of blue you've only seen in dreams.\n\nA grey speaker box sits on a podium in front of you.\n\n\"Welcome, contestant,\" the Announcer drones. \"Today is a special one-day Battle for Dream Island. You'll need a team. Choose wisely.\"\n\nTwo groups of contestants wave you over from opposite sides of the field.",choices:[{text:"Join the Crunchy Lemons (Firey, Leafy, Blocky, Bubble)",next:"team_lemons"},{text:"Join the Zesty Limes (Coiny, Pin, Golf Ball, Ice Cube)",next:"team_limes"},{text:"Ask the Announcer for more info first",next:"ask_announcer"}]},
+
+"ask_announcer":{act:"act1",text:"\"What do you want to know?\" the Announcer drones.\n\nYou ask about the teams.\n\n\"The Crunchy Lemons are... unpredictable. Firey and Leafy have history. Blocky likes pranks. Bubble pops easily.\n\nThe Zesty Limes are more strategic. Golf Ball will try to lead everything. Pin is dependable. Coiny argues with everyone. Ice Cube is quiet but observant.\"\n\nYou pause. \"What's Dream Island like?\"\n\n\"It's an island. It's dreamy. That's all you need to know.\" He catches himself. \"One more thing. There's a rumor that somewhere on Yoyle Mountain, there's a portal to Yoyleland. Most people think it's a myth.\" He pauses. \"Not that I care. Choose a team. Now.\"",choices:[{text:"Join the Crunchy Lemons",next:"team_lemons"},{text:"Join the Zesty Limes",next:"team_limes"}]},
+
+"team_lemons":{act:"lemons",text:"You walk over to the Crunchy Lemons. Firey grins at you immediately. \"Hey, new kid! Welcome to the best team!\" Leafy nods enthusiastically beside him. Blocky looks you up and down with narrow eyes. \"You better not slow us down.\" Bubble floats nearby, nervous. \"Hoi! Noice to meet yoiu!\"\n\nBefore you can even settle in, the Announcer's voice cuts through: \"First challenge. Each team must cross the Goiky Canal. First team across wins. Go.\"\n\nFirey immediately panics — he can't touch water. Leafy starts strategizing out loud. Blocky is already sprinting toward the canal without a plan.",choices:[{text:"Help Firey find a way across without touching water",next:"help_firey"},{text:"Follow Blocky's lead and just go for it",next:"follow_blocky"},{text:"Suggest building a boat, like in episode 1",next:"build_boat"}]},
+
+"help_firey":{act:"lemons",text:"You grab a large leaf (not Leafy — an actual leaf) and fashion a little raft for Firey. He stares at you, genuinely moved. \"Wow... no one's ever done that for me before! Well, except Leafy that one time.\" Leafy beams.\n\nThe three of you cross together carefully while Blocky cannonballs in ahead of everyone, splashing water dangerously close to Firey.\n\nYour team finishes second — the Zesty Limes barely beat you because Golf Ball had already calculated the optimal route. But you've earned Firey and Leafy's loyalty, and that might matter more.\n\nAt Cake at Stake, the Announcer says your team is up for elimination. \"Time to vote.\"",choices:[{text:"Campaign to save yourself — remind everyone you helped Firey",next:"campaign_firey"},{text:"Stay quiet and hope your good deed speaks for itself",next:"stay_quiet_lemons"}]},
+
+"follow_blocky":{act:"lemons",text:"You sprint after Blocky. He seems confident — until you realize he's heading straight for a cliff edge over the canal.\n\n\"CANNONBALL!\" he screams, launching himself off the cliff into the water below. You skid to a stop right at the edge, heart pounding.\n\nBelow, Blocky is laughing and splashing around. Firey is panicking on the shore behind you. Leafy is trying to calm everyone down. Bubble has already popped somehow.\n\nYour team comes in dead last. The Zesty Limes are already celebrating on the other side.\n\nAt Cake at Stake, someone has to go.",choices:[{text:"Blame Blocky — he's the one who ran off a cliff",next:"blame_blocky"},{text:"Take responsibility — you should have thought it through",next:"take_blame_lemons"}]},
+
+"build_boat":{act:"lemons",text:"\"We should build a boat! Just like episode 1!\" you say.\n\nLeafy's face lights up. \"YES! That's exactly what I was thinking!\" You and Leafy get to work immediately. Firey supervises from a safe distance (he can't touch the wet wood). Even Blocky pitches in, grudgingly nailing planks together. Bubble cheers from the sidelines.\n\nThe boat works beautifully. Your team crosses the canal smoothly and finishes FIRST. The Announcer sounds almost impressed. Almost.\n\n\"The Crunchy Lemons win. The Zesty Limes are up for elimination.\"\n\nYour team celebrates. Firey high-fives you. It burns a little, but you don't care.",choices:[{text:"Continue",next:"lemons_win_witness"}]},
+
+"lemons_win_witness":{act:"lemons",text:"Your team watches the Zesty Limes' Cake at Stake from a distance. Golf Ball is arguing that Coiny should go. Coiny is arguing that Golf Ball should go. Pin looks exhausted. Ice Cube says nothing.\n\nIn the end, Coiny gets the most votes. He's flung to the TLC, shouting \"THIS IS RIGGED!\" the entire way.\n\nLeafy turns to you. \"That could have been us. We need to stick together.\"\n\nBlocky, however, has wandered off. You spot him near the tree line, talking to himself and kicking rocks.",choices:[{text:"Go talk to Blocky — try to get him invested in the team",next:"talk_blocky"},{text:"Stay with Firey and Leafy — Blocky can figure himself out",next:"lemons_win_ch1"}]},
+
+"talk_blocky":{act:"lemons",text:"You find Blocky sitting on a rock, looking annoyed. \"What do you want?\" he says.\n\n\"Just checking in. We're a team, right?\"\n\nHe looks surprised. \"Nobody ever checks in on me. Usually they just blame me for stuff.\" He's quiet for a second. \"Look, I know I'm not the easiest teammate. But I'm strong and I'm fast. I just... don't like being told what to do.\"\n\nYou nod. \"How about this — next challenge, I'll make sure you get to do something that actually uses your strengths.\"\n\nBlocky grins. It's the first real smile you've seen from him. \"Deal.\"\n\nWhen you return, Leafy whispers: \"What did you say to him? Whatever it was, keep doing it.\"",choices:[{text:"Continue to Challenge 2",next:"lemons_win_ch1"}]},
+
+"campaign_firey":{act:"lemons",text:"You step up at Cake at Stake and make your case. \"I helped Firey cross the canal! I'm a team player — I look out for everyone.\"\n\nFirey backs you up immediately. \"It's true! They made me a raft!\" Leafy nods firmly.\n\nThe Announcer reads the votes in his painfully slow monotone. \"...Safe.\" He tosses you a slice of cake. It's actually pretty good.\n\nBlocky gets the most votes. He's flung toward the TLC, yelling something unprintable on the way. Your team is smaller now — but tighter.",choices:[{text:"Continue",next:"lemons_campfire"}]},
+
+"stay_quiet_lemons":{act:"lemons",text:"You decide to stay quiet and let your actions speak. At Cake at Stake, the Announcer reads the votes with excruciating slowness.\n\nIt comes down to you and Blocky. The silence stretches.\n\n\"...The contestant eliminated is...\"\n\nYour heart is hammering.\n\n\"...Blocky.\"\n\nYou exhale so hard you nearly fall over. Blocky is flung to the TLC. But Firey whispers to you afterward: \"That was close. You survived by ONE vote.\"",choices:[{text:"Continue",next:"lemons_campfire"}]},
+
+"lemons_campfire":{act:"lemons",text:"The Announcer announces a thirty-minute break before Challenge 2. Your team — now just you, Firey, and Leafy — sits in the grass near the edge of the field.\n\nFirey creates a small, controlled flame between you. It's surprisingly cozy. Leafy pulls out some berries she found. \"Not Yoyleberries,\" she says quickly. \"Those turn you to metal. These are just regular berries.\"\n\nThe three of you sit in comfortable silence for a while. Then Leafy looks at you both. \"Okay, real talk. We're down to three against a bigger team. We need a strategy. What kind of player are you?\"",choices:[{text:"\"I'm the problem-solver. I'll adapt to whatever we face.\"",next:"challenge_2_lemons"},{text:"\"I'm the risk-taker. I'll do whatever it takes to win.\"",next:"ch2_lemons_bold"}]},
+
+"ch2_lemons_bold":{act:"mountain",text:"Firey's eyes light up. \"A risk-taker! I like it!\" Leafy looks less sure. \"Risks can go wrong fast. But... sometimes they're the only way.\"\n\nThe Announcer announces Challenge 2: \"Climb Yoyle Mountain. First team to plant their flag wins.\"\n\nLeafy briefs you: \"The main trail takes about an hour. Safe, boring. But there are caves that cut through the mountain — faster, but dangerous.\"\n\nFirey grins at you. Leafy raises an eyebrow.",choices:[{text:"Live up to it — take the caves",next:"cave_shortcut"},{text:"Actually, let's be smart — take the trail",next:"safe_trail"},{text:"Ask Leafy what SHE would choose",next:"leafy_advice"}]},
+
+"leafy_advice":{act:"mountain",text:"Leafy pauses, genuinely considering it. \"If it were just me, I'd take the trail. I know every rock on that path. But we're smaller than the other team, so we're slower.\"\n\nShe looks at the mountain. \"The caves scare me a little. But they might be our only shot at getting there first.\"\n\nFirey chimes in: \"I can light the way in the caves. My whole body glows.\"\n\nLeafy smiles at him. \"That's actually really useful for once.\"\n\n\"HEY!\" Firey protests, but he's laughing.",choices:[{text:"Take the caves — Firey's light gives you an advantage",next:"cave_shortcut"},{text:"Trust Leafy's instincts — take the trail she knows",next:"safe_trail"}]},
+
+"blame_blocky":{act:"lemons",text:"At Cake at Stake, you point straight at Blocky. \"He ran off a cliff without telling anyone! That's why we lost!\"\n\nBlocky is furious. \"Oh, so you're THAT kind of contestant.\" Firey shifts uncomfortably. Leafy stares at the ground.\n\nThe votes come in. Blocky is eliminated — but he glares at you with genuine hatred as he's flung to the TLC. \"This isn't over,\" he snarls.\n\nWorse, Firey and Leafy seem wary of you now. You saved yourself, but the trust is gone.",choices:[{text:"Continue",next:"lemons_campfire_low"}]},
+
+"lemons_campfire_low":{act:"lemons",text:"During the break, Firey and Leafy sit together. You sit nearby, but there's a gap — physical and otherwise.\n\nLeafy eventually speaks without looking at you. \"What you did to Blocky... he deserved to be voted out. But the way you did it felt wrong.\"\n\nFirey nods slowly. \"Throwing someone under the bus at Cake at Stake? That's how alliances break.\"\n\nThe silence is heavy.",choices:[{text:"Apologize — tell them you panicked and it won't happen again",next:"apologize_team"},{text:"Defend yourself — you were just being honest about what happened",next:"ch2_lemons_low"}]},
+
+"apologize_team":{act:"lemons",text:"\"You're right,\" you say. \"I panicked and I threw him under the bus. That wasn't okay. I'm sorry.\"\n\nThe words hang in the air. Leafy looks at Firey. Firey looks at you.\n\n\"Okay,\" Firey says finally. \"Everyone gets one. But only one.\"\n\nLeafy nods. \"Challenge 2 is a fresh start.\"\n\nIt's not perfect. The warmth isn't fully back. But when the Announcer calls Challenge 2, the three of you walk toward Yoyle Mountain together instead of in a line.",choices:[{text:"Continue to Challenge 2",next:"challenge_2_lemons"}]},
+
+"take_blame_lemons":{act:"lemons",text:"\"That was my fault,\" you say quietly. Everyone looks at you. \"I followed Blocky without thinking. I should have come up with a real plan. I'll do better.\"\n\nThe team is surprised. Firey breaks the silence first: \"Hey, at least you're honest. That's more than most contestants.\" Leafy agrees: \"Owning it takes courage.\"\n\nAt Cake at Stake, the votes spare you. Bubble is eliminated instead — she pops dramatically on the way to the TLC and everyone winces.\n\nBut your honesty earned something votes can't measure: the team's genuine respect.",choices:[{text:"Continue",next:"lemons_campfire"}]},
+
+"lemons_win_ch1":{act:"lemons",text:"With the win behind you, confidence is high. The Announcer announces Challenge 2: \"Climb Yoyle Mountain. First team to plant their flag wins.\"\n\nYoyle Mountain looms in the distance, tall and purple-tinged at the peak. Leafy knows the terrain. Firey looks nervous — it gets cold up there.",choices:[{text:"Take the known trail (slower but safer)",next:"safe_trail"},{text:"Suggest a shortcut through the caves",next:"cave_shortcut"}]},
+
+"challenge_2_lemons":{act:"mountain",text:"The Announcer announces Challenge 2: \"Climb Yoyle Mountain. First team to plant their flag wins.\"\n\nYour team is down to three — you, Firey, and Leafy. Small, but solid. Yoyle Mountain rises ahead, its peak tinged with purple.\n\nLeafy speaks up: \"I know two ways up. The main trail is reliable but slow. There are also caves that cut through the mountain — faster, but dark.\"",choices:[{text:"Take the known trail — let Leafy lead",next:"safe_trail"},{text:"Try the caves — speed could win this",next:"cave_shortcut"}]},
+
+"ch2_lemons_low":{act:"mountain",text:"Challenge 2: Yoyle Mountain. Firey and Leafy walk ahead of you, talking quietly between themselves. They're keeping their distance.\n\nLeafy glances back. \"There's a safe trail or we could try the caves. Your call.\" It doesn't sound like she trusts your judgment, but she's giving you a chance.",choices:[{text:"Take the safe trail and let Leafy lead",next:"safe_trail"},{text:"Suggest the risky cave shortcut to prove your value",next:"cave_risky"}]},
+
+"team_limes":{act:"limes",text:"You approach the Zesty Limes. Golf Ball immediately takes charge. \"Good. A new variable. I'll factor you into my calculations. Stand there.\" She points to a specific spot.\n\nPin smiles warmly at you. \"Don't worry, she's always like this.\" Coiny gives you a casual wave. Ice Cube looks at you and gives the tiniest nod you've ever seen.\n\nThe Announcer announces the first challenge: cross the Goiky Canal.\n\nGolf Ball already has a plan. \"I've calculated the optimal crossing pattern based on current speeds, water temperature, and individual buoyancy ratings. Follow my instructions exactly.\"",choices:[{text:"Follow Golf Ball's plan to the letter",next:"follow_gb"},{text:"Suggest an alternative — you spotted stepping stones nearby",next:"stepping_stones"},{text:"Ignore the plan and try to swim across solo",next:"swim_solo"}]},
+
+"follow_gb":{act:"limes",text:"You execute Golf Ball's plan to the letter. Move here, step there, wade at this angle. It's efficient, clinical, and honestly a little exhausting to follow.\n\nBut it works. Your team crosses first by a comfortable margin.\n\nGolf Ball looks deeply satisfied. \"See? Strategy wins every time.\" Pin pats you on the back. \"Good teamwork out there.\"",choices:[{text:"Continue",next:"limes_win_strategy"}]},
+
+"limes_win_strategy":{act:"limes",text:"During the break, Golf Ball gathers the team. \"We won, but our margin wasn't large enough. I need each of you to tell me your capabilities.\"\n\nCoiny rolls his eyes. Pin dutifully lists her abilities. Ice Cube mumbles about cold resistance. Coiny says \"I'm good at everything\" which makes Golf Ball's eye twitch.\n\nThen Golf Ball turns to you. \"And you. You followed instructions well. But are you a follower or a leader? Be honest. There's no wrong answer. I just need accurate data.\"",choices:[{text:"\"I'm a follower. Tell me what to do and I'll execute.\"",next:"limes_win_ch1"},{text:"\"I'm a leader. I work best when I can make calls.\"",next:"limes_win_leader"},{text:"\"I'm adaptable. I can do either.\"",next:"limes_win_ch1"}]},
+
+"limes_win_leader":{act:"limes",text:"Golf Ball stares at you. The silence is uncomfortable.\n\n\"A leader,\" she repeats. \"On MY team.\"\n\nPin winces. Coiny looks entertained.\n\nGolf Ball takes a breath. \"Fine. In Challenge 2, I'll give you a section to lead. If it works, I'll adjust my models. If it doesn't...\" She doesn't finish the sentence.\n\nPin whispers: \"Bold move. She either respects you for it or never forgives you. No in-between with GB.\"",choices:[{text:"Continue to Challenge 2",next:"limes_win_ch1_leader"}]},
+
+"limes_win_ch1_leader":{act:"limes",text:"The Announcer announces Challenge 2: \"Climb Yoyle Mountain. Plant your flag.\"\n\nGolf Ball hands you her map. \"You said you're a leader. Pick a route for the north approach. I'll handle south as backup.\"\n\nIt's a test. Pin gives you a subtle thumbs up.\n\nYou study the map. One route goes through ice fields. Another goes straight up a rocky scramble. The third is unmarked — just a question mark in Golf Ball's handwriting.",choices:[{text:"Pick the ice field route — play to Ice Cube's strengths",next:"ask_ic"},{text:"Pick the rocky scramble — straightforward and fast",next:"gb_route"},{text:"Pick the mystery route — what's Golf Ball hiding?",next:"scout_ahead"}]},
+
+"stepping_stones":{act:"limes",text:"\"Wait — I see stepping stones over there!\" you call out, pointing downstream.\n\nGolf Ball frowns deeply. \"That wasn't in my calculations.\" But Pin backs you up. \"Let's try it!\"\n\nThe stepping stones work — mostly. A couple of wobbly moments, but everyone makes it across. However, it's close. The Announcer rules it a DRAW.\n\n\"Both teams are safe. No elimination this round.\" He sounds disappointed.\n\nGolf Ball is clearly annoyed. But Pin and Ice Cube seem to respect your initiative.",choices:[{text:"Continue",next:"limes_draw_drama"}]},
+
+"limes_draw_drama":{act:"limes",text:"During the break, things get tense. Coiny and Golf Ball are arguing — loudly.\n\n\"Your 'optimal plan' would have been SLOWER than the stepping stones!\" Coiny shouts.\n\n\"My plan was PROVEN. The stepping stones were a gamble that resulted in a DRAW,\" Golf Ball fires back.\n\nCoiny turns to you. \"You spotted them! Tell her — instinct beats spreadsheets!\"\n\nGolf Ball crosses her arms. \"Go ahead. Pick a side.\" Pin and Ice Cube are staring at the ground.",choices:[{text:"Side with Coiny — instinct matters",next:"side_coiny"},{text:"Side with Golf Ball — her strategy got you this far",next:"limes_draw_ch1"},{text:"Refuse to pick sides — \"We need BOTH approaches.\"",next:"limes_draw_peace"}]},
+
+"side_coiny":{act:"limes",text:"\"Coiny's got a point,\" you say. \"I saw something the calculations missed. Sometimes you have to trust your eyes.\"\n\nCoiny pumps his fist. Golf Ball goes very quiet. \"Noted. I'll factor 'gut feelings' into my margin of error.\" Her voice is ice cold.\n\nPin sighs. The team has split: you and Coiny in front, Golf Ball and Pin behind, Ice Cube in the middle.\n\nThis is going to be a long climb.",choices:[{text:"Scout ahead on the mountain",next:"scout_ahead"},{text:"Fall back and smooth things over with Golf Ball",next:"gb_route"}]},
+
+"limes_draw_peace":{act:"limes",text:"\"Stop,\" you say firmly. \"Golf Ball, your plan was solid. Coiny, your flexibility keeps us unpredictable. We need BOTH.\"\n\nPin starts clapping slowly. \"THANK you.\"\n\nGolf Ball considers. \"...Structured flexibility. I can model that.\" Coiny shrugs. \"Fine. But I'm not apologizing.\" Golf Ball: \"Neither am I.\" Somehow that counts as resolution.\n\nIce Cube whispers to you: \"That was brave. They're both scary when they're mad.\"",choices:[{text:"Continue to Challenge 2",next:"limes_draw_ch1"}]},
+
+"swim_solo":{act:"limes",text:"You dive into the Goiky Canal with total confidence — and immediately realize your mistake. The current is vicious. You're swept downstream while your team watches in horror.\n\nPin reaches out but you've drifted too far. Golf Ball shakes her head.\n\nYour team loses badly. At Cake at Stake, the votes are unanimous.\n\n\"The contestant eliminated is... you.\"\n\nThe last thing you see is Golf Ball mouthing: \"Should have followed the plan.\"",ending:{title:"Early Elimination",type:"bad",icon:"📦",desc:"Flung to the TLC on day one. The Goiky Canal claimed another overconfident contestant.\n\nThe TLC is dark, cramped, and smells like old pizza. A voice in the darkness: \"First time?\" It's Spongy. He's been here a while.\n\nYou sit down and accept a slice of stale pizza. It's going to be a long night."}},
+
+"limes_win_ch1":{act:"limes",text:"The Announcer announces Challenge 2: \"Climb Yoyle Mountain. First team to plant their flag wins.\"\n\nGolf Ball has already pulled out a hand-drawn map with three possible routes. But you notice Ice Cube staring at the mountain quietly, like she sees something no one else does.",choices:[{text:"Go with Golf Ball's recommended route",next:"gb_route"},{text:"Ask Ice Cube what she's thinking",next:"ask_ic"}]},
+
+"limes_draw_ch1":{act:"limes",text:"No elimination means full teams heading into Challenge 2: Yoyle Mountain.\n\n\"This time there WILL be a loser,\" the Announcer promises.\n\nGolf Ball is recalculating. Pin pulls you aside. \"Nice call with the stepping stones. But Golf Ball holds grudges. Be careful.\"",choices:[{text:"Follow Golf Ball's lead this time",next:"gb_route"},{text:"Stick with your instincts — scout ahead",next:"scout_ahead"}]},
+
+"safe_trail":{act:"mountain",text:"Leafy leads the way up the established trail. It winds through wildflowers and past rocky outcrops, and you can see all of Goiky spread out below.\n\nThe progress is steady and calm. For a moment, it almost feels like a nice hike instead of a competition.",choices:[{text:"Continue up the trail",next:"trail_midpoint"}]},
+
+"trail_midpoint":{act:"mountain",text:"Halfway up, you round a bend and nearly trip over something: a Win Token, just lying in the grass. It glints gold in the sunlight.\n\nLeafy gasps. \"A Win Token! In the original competition, they could halve your elimination votes!\"\n\nFirey reaches for it, then hesitates. \"But what would we use it for?\"\n\nLeafy thinks. \"It might matter at the finale. Or we could toss it behind us — the other team might stop to pick it up.\"\n\nNear the summit, you can see the other team converging. They're close.",choices:[{text:"Keep the Win Token — might be useful later",next:"sprint_summit_token"},{text:"Toss it on the other team's trail as a distraction",next:"distraction"},{text:"Leave it — focus on sprinting to the summit",next:"sprint_summit"}]},
+
+"sprint_summit_token":{act:"finale",text:"You pocket the Win Token and sprint. Both teams converge on the summit. Your legs burn. The flag feels heavier with every step.\n\nYou jam the flag into the ground — but at the exact same moment, someone from the other team slams their flag down too. A tie?!\n\nThe Announcer considers. \"Tiebreaker. Does either team have a Win Token?\"\n\nYou pull the golden token from your pocket. The other team has nothing.\n\n\"Winner: the team with the Win Token.\"\n\nThe other team erupts in protests. But the Announcer has spoken.",choices:[{text:"Celebrate your victory",next:"finale_winner"}]},
+
+"cave_shortcut":{act:"mountain",text:"The caves are dark and winding, but you move fast. Firey lights the way — literally, his whole body glows, casting flickering shadows. Leafy navigates from memory.",choices:[{text:"Continue deeper",next:"cave_obstacle"}]},
+
+"cave_obstacle":{act:"mountain",text:"The tunnel narrows and you hit a problem: an underground stream cuts across your path. Firey stops cold.\n\n\"I can't cross that,\" he says, his flame dimming. \"Even a little water could put me out.\"\n\nLeafy looks around. \"We could stack rocks to make stepping stones. But it'll take time.\"\n\nYou also notice a narrow ledge along the wall — risky, but if Firey pressed flat against the rock, he might shimmy across.",choices:[{text:"Stack rocks — take the time, keep everyone safe",next:"cave_rocks"},{text:"Try the ledge — faster but riskier for Firey",next:"cave_ledge"}]},
+
+"cave_rocks":{act:"mountain",text:"You and Leafy stack flat rocks into a makeshift bridge. It's not pretty, but it holds. Firey crosses carefully, his flame flickering. When he reaches the other side, he exhales a burst of relieved sparks.\n\n\"Thanks for not rushing,\" he says quietly.\n\nJust past the stream, the tunnel forks. One path glows faintly purple. The other slopes upward into darkness.",choices:[{text:"Take the glowing purple path",next:"yoyle_portal"},{text:"Take the dark upward path toward the summit",next:"sprint_summit"}]},
+
+"cave_ledge":{act:"mountain",text:"\"Trust me,\" you say. \"Press flat against the wall. I'll guide you.\"\n\nFirey inches along the narrow ledge, flame pressed against cold stone. Water splashes inches below. You walk alongside in the stream, one hand ready to catch him.\n\nHe makes it — barely. A tiny splash hits his foot and he yelps, but it's not enough to do real damage.\n\n\"Don't EVER make me do that again,\" he says, but he's smiling.\n\nThe tunnel fork is just ahead. One path glows purple. The other slopes upward.",choices:[{text:"Take the glowing purple path",next:"yoyle_portal"},{text:"Take the dark upward path toward the summit",next:"sprint_summit"}]},
+
+"cave_risky":{act:"mountain",text:"You charge into the caves, not waiting for the others. After a moment, Firey and Leafy reluctantly follow.\n\nDeep inside, the tunnel splits. One path glows purple. The other is dark but slopes upward.\n\nYou can hear your teammates catching up. Whatever you choose, you're choosing for everyone.",choices:[{text:"Take the glowing purple path",next:"yoyle_portal"},{text:"Take the dark upward path — just get to the top",next:"sprint_alone"}]},
+
+"gb_route":{act:"mountain",text:"Golf Ball's route is methodical. She's timed the wind patterns and mapped every switchback. It's not exciting — Pin yawns twice — but you make steady progress.\n\nNear the top, you see the other team approaching. They're close.\n\nGolf Ball checks her calculations. \"At current pace, we arrive in 4 minutes. They arrive in 3.5. We need to adjust.\"",choices:[{text:"Trust Golf Ball's pacing — stay the course",next:"sprint_summit"},{text:"Break away and sprint ahead solo",next:"solo_sprint_limes"},{text:"Suggest splitting up to confuse the other team",next:"limes_split"}]},
+
+"limes_split":{act:"mountain",text:"\"What if we split up?\" you suggest. \"Two as decoys, one carries the flag on a hidden path.\"\n\nGolf Ball pauses. \"That increases success probability by 23% if they don't know who has the flag.\"\n\nPin volunteers. \"I'm fast and quiet. They won't see me.\"\n\nGolf Ball nods. \"You and I are the decoy. Pin, take the eastern ridge.\"\n\nYou watch Pin disappear with the flag. Now you need to keep the other team focused on you.",choices:[{text:"Be a loud, obvious decoy — shout and wave",next:"loud_decoy"},{text:"Be subtle — walk normally so they think YOU have the flag",next:"sprint_summit"}]},
+
+"loud_decoy":{act:"finale",text:"You wave your arms and shout. \"HEY! RACE YOU TO THE TOP!\" Golf Ball winces at the volume but plays along.\n\nThe other team takes the bait. They sprint toward you. You pretend to flag, stumble, slow down — while Pin quietly scales the eastern ridge unseen.\n\nThe other team overtakes you triumphantly — only to find Pin already at the summit, flag planted.\n\n\"But — how — we passed —\" they stammer.\n\nGolf Ball adjusts an imaginary pair of glasses. \"Misdirection. Look it up.\"",choices:[{text:"Celebrate your victory",next:"finale_winner"}]},
+
+"ask_ic":{act:"mountain",text:"You walk over to Ice Cube. \"Hey, you've been really quiet. What are you thinking?\"\n\nShe blinks, startled. Then, quietly: \"I noticed frozen handholds on the north face. I could climb that easily. It's steep, but I'm... well, I'm ice.\"\n\nGolf Ball scoffs. \"Unacceptable. My route is optimized.\" But Pin looks intrigued.\n\nIce Cube looks at you, waiting.",choices:[{text:"Back Ice Cube's plan — she knows what she can do",next:"ic_climb"},{text:"Play it safe with Golf Ball's route",next:"gb_route"}]},
+
+"scout_ahead":{act:"mountain",text:"You run ahead to scout. Higher up, you scramble onto a ledge and survey the terrain.\n\nYou spot two things. First: a faster trail hidden behind boulders. Second: something moving in the shadows between the trees.\n\nYou squint. It's... Evil Leafy. Just standing there. Watching.",choices:[{text:"Tell the team about the faster trail (ignore Evil Leafy)",next:"sprint_summit"},{text:"Warn everyone about Evil Leafy — safety first",next:"evil_leafy"},{text:"Investigate Evil Leafy yourself",next:"confront_evil_leafy"}]},
+
+"confront_evil_leafy":{act:"mountain",text:"Against every instinct, you walk toward Evil Leafy. She doesn't move. Doesn't blink. The air around her is cold.\n\nThen she points — not at you, but behind you. Through a gap in the rocks, you see a shortcut leading almost directly to the summit.\n\nWas she... helping you? Before you can process it, she vanishes. Like she was never there.\n\nYour heart is pounding. But the shortcut is real.",choices:[{text:"Take Evil Leafy's shortcut",next:"sprint_summit"},{text:"Go back to the team — that was too weird",next:"evil_leafy"}]},
+
+"sprint_summit":{act:"finale",text:"It's a dead sprint. Both teams converge on the summit from different angles. Your legs burn. Your lungs scream. The flag feels heavier with every step.\n\nThe peak is RIGHT THERE — a flat rocky platform with a small hole clearly meant for a flag.\n\nTen steps. Five. Three.\n\nYou JAM the flag into the ground.\n\nOne second later, the other team arrives, gasping.\n\n\"THE WINNER!\" the Announcer's voice booms across the mountain.",choices:[{text:"Celebrate your victory",next:"finale_winner"}]},
+
+"sprint_alone":{act:"finale",text:"You burst out of the dark tunnel near the summit, blinking. You're alone — Firey and Leafy fell behind in the darkness.\n\nThe summit is right there. The other team is close.\n\nYou plant the flag just in time. Victory.\n\nBut when you turn around, Firey and Leafy aren't cheering. They're at the cave entrance, looking at you quietly.\n\n\"You left us behind in the dark,\" Leafy says. Not angry. Just disappointed.",choices:[{text:"Apologize — \"I got caught up. I should have waited.\"",next:"sprint_alone_apologize"},{text:"Justify it — \"I won us the challenge. That's what matters.\"",next:"ending_hollow"}]},
+
+"sprint_alone_apologize":{act:"finale",text:"\"You're right. I got caught up and left you behind. I'm sorry.\"\n\nFirey sighs. \"At least you came back to say it. Blocky never would have.\"\n\nLeafy nods slowly. \"You won the challenge. And you apologized. That's two good things.\"\n\nIt's not triumphant. But it's honest. And the three of you walk down together — together being the key word.",choices:[{text:"See your ending",next:"finale_winner"}]},
+
+"distraction":{act:"finale",text:"You toss the Win Token onto the other team's trail. Sure enough, they spot it.\n\n\"A WIN TOKEN!\" someone shouts. \"Should we grab it?\" \"Is it a trap?\" \"GRAB IT!\" \"Wait—\"\n\nThe argument costs them a full minute. You sprint up the final stretch and plant your flag.\n\nGolf Ball eventually figures it out. \"That was a PLANTED distraction!\" The Announcer doesn't care. \"A win is a win.\"",choices:[{text:"Celebrate your victory",next:"finale_winner"}]},
+
+"yoyle_portal":{act:"finale",text:"The purple glow intensifies. The air hums. Your teammates hesitate, but you step forward.\n\nSuddenly — you're somewhere else entirely.\n\nThe sky is deep violet. The trees are crystalline. Yoyleberries hang from every branch, glowing softly.\n\nYou're in Yoyleland. The deep heart of it. A place most contestants only hear rumors about.\n\nA bush rustles. A quiet voice: \"Not many find this place on purpose.\"",choices:[{text:"Stay and explore",next:"yoyle_explore"},{text:"Find a way back — you have a competition to win!",next:"sprint_summit"}]},
+
+"yoyle_explore":{act:"finale",text:"You take a few steps deeper. The Yoyleberries glow brighter as you approach. You pick one — it tastes sweet, tangy, and nostalgic for a place you've never been. Your fingertips turn faintly purple.\n\nA path opens into a crystalline forest. Behind you, the portal still shimmers.\n\nFaintly, from the mountain: \"Five minutes remaining.\"\n\nFive minutes. You could still make it back. Or walk deeper and leave the competition behind forever.",choices:[{text:"Walk deeper into Yoyleland — this is where you belong",next:"ending_yoyleland"},{text:"Rush back through the portal — can't give up now",next:"sprint_summit"},{text:"Take Yoyleberries with you and head back — best of both worlds",next:"yoyle_berries_back"}]},
+
+"yoyle_berries_back":{act:"finale",text:"You stuff your pockets with glowing Yoyleberries and dive back through the portal. Purple light swirls around you, and you're back in the cave.\n\n\"Your hands are PURPLE,\" Firey says.\n\n\"Long story. Move. NOW.\"\n\nThe Yoyleberries seem to give you energy — your legs don't tire, your lungs don't burn. You're running faster than ever.\n\nYou burst out near the summit and plant the flag with seconds to spare.\n\nLeafy stares at the berries. \"Are those... from ACTUAL Yoyleland?\" Her eyes go wide. \"You found it. You actually found it.\"",choices:[{text:"Celebrate your victory — and your discovery",next:"ending_yoyle_winner"}]},
+
+"ic_climb":{act:"finale",text:"\"I trust you,\" you say. \"Go for it.\"\n\nIce Cube nods, takes the flag, and approaches the north face. The frozen handholds glint in sunlight. She grips them easily — ice locks onto frost like a key in a lock.\n\nShe climbs with speed and grace nobody expected. Golf Ball watches, mouth open. Pin grins. \"Called it.\"\n\nIce Cube plants the flag while Golf Ball's route still has ten minutes to go.\n\nShe smiles from the peak — maybe for the first time all day. \"Thanks for believing in me.\"",choices:[{text:"Celebrate your victory",next:"finale_winner"}]},
+
+"evil_leafy":{act:"finale",text:"You rush back. \"Evil Leafy is up there! In the trees!\"\n\nEveryone takes it seriously. The team detours wide around the shadow area. It costs precious minutes.\n\nYou lose the race by seconds. The other team's flag is already planted.\n\nBut you kept everyone safe. At the final ceremony, the Announcer tallies performance.\n\n\"You showed leadership today,\" he says, with what might almost be respect. \"Second place.\"",choices:[{text:"See your ending",next:"ending_respected"}]},
+
+"solo_sprint_limes":{act:"finale",text:"You break away and sprint. Golf Ball screams: \"THIS IS WHY I CALCULATE! THIS IS WHY!\"\n\nBut you're fast. You reach the peak and slam the flag down. Your team wins.\n\nGolf Ball refuses to speak to you afterward. Pin gives you a complicated look. But a win is a win... right?",choices:[{text:"Celebrate your victory",next:"finale_winner"}]},
+
+"finale_winner":{act:"finale",ending:{title:"Dream Island Winner",type:"good",icon:"🏝️",desc:"The Announcer speaks for the final time: \"Congratulations. You've won the one-day Battle for Dream Island.\"\n\nA tiny island shimmers into existence. Palm trees, a little house, warm sand, sunshine forever.\n\nYour teammates gather around you. Handshakes, high-fives, and even a careful hug from Firey (it only singes a little). \"You earned it.\"\n\nYou step onto Dream Island. It's everything you imagined — and somehow, even more."}},
+
+"ending_yoyle_winner":{act:"finale",ending:{title:"The Best of Both Worlds",type:"good",icon:"🏝️💜",desc:"You won Dream Island AND discovered the path to Yoyleland. As you stand on the island's shores, you hold a glowing Yoyleberry — proof the legends were real.\n\nLeafy asks if you'll show her the portal someday. Firey wants to know if Yoyleland has fire-friendly zones. Even Golf Ball looks grudgingly curious.\n\nYou have Dream Island. You have the secret of Yoyleland. And you have friends who want to explore both with you.\n\nNot bad for your first day in Goiky."}},
+
+"ending_hollow":{act:"finale",ending:{title:"The Hollow Victory",type:"neutral",icon:"🏝️",desc:"You won the challenge. The Announcer hands you Dream Island.\n\nBut nobody came to celebrate. Firey and Leafy went home. Blocky is in the TLC. Bubble popped long ago.\n\nDream Island is beautiful. The sunset is golden. The waves are gentle.\n\nAnd it is very, very quiet.\n\nYou won. But you're not sure what it cost."}},
+
+"ending_yoyleland":{act:"finale",ending:{title:"The Yoyleland Discovery",type:"good",icon:"💜",desc:"You wander deeper into Yoyleland. The Yoyleberries turn you a little purple, but it suits you.\n\nYou find ancient structures covered in crystalline moss. Tiny glowing creatures dart between trees. There's a peace here you never felt in the competition.\n\nBack in Goiky, the others wonder where you went. But you've found something most contestants never knew existed.\n\nSomething better than winning."}},
+
+"ending_respected":{act:"finale",ending:{title:"The Respected Competitor",type:"neutral",icon:"⭐",desc:"You didn't win Dream Island. Someone else gets those sandy shores today.\n\nBut as the sun sets, contestant after contestant approaches. \"You were solid out there.\" \"Thanks for the Evil Leafy warning.\" \"Team up next season?\"\n\nYou didn't get the island. But you got something harder to win: genuine respect from people who've competed for years.\n\nYou'll be back. And everyone knows it."}}
+  }
+};
+
+// ============================================================
+//  ENGINE
+// ============================================================
+let state = { node: null, history: [], startTime: null };
+
+function render() {
+  const el = document.getElementById('game');
+  if (!state.node) { renderTitle(el); return; }
+  const node = ADVENTURE.nodes[state.node];
+  if (!node) { renderTitle(el); return; }
+  if (node.ending) { renderEnding(el, node); return; }
+  renderNode(el, node);
+}
+
+function renderTitle(el) {
+  el.innerHTML = `
+    <div style="flex:1;display:flex;flex-direction:column;justify-content:center;">
+      <div class="card" style="text-align:center;padding:32px 24px;">
+        <div style="font-size:56px;margin-bottom:8px;">🏝️</div>
+        <div class="title">${ADVENTURE.title}<span class="small">${ADVENTURE.subtitle}</span></div>
+      </div>
+      <div class="card">
+        <div class="story">${ADVENTURE.intro}</div>
+        <button class="bb start" onclick="startGame()">Begin Your Adventure</button>
+      </div>
+    </div>`;
+}
+
+function renderNode(el, node) {
+  const act = ADVENTURE.actThemes[node.act];
+  const tagCss = act ? act.css : '';
+  const tagLabel = act ? act.label : '';
+  const choicesHtml = node.choices.map(c =>
+    `<button class="choice" onclick="choose('${c.next}')"><span class="arrow">▸</span>${c.text}</button>`
+  ).join('');
+  el.innerHTML = `
+    ${tagLabel ? `<span class="path-tag ${tagCss}">${tagLabel}</span>` : ''}
+    <div class="card">
+      <div class="story">${formatText(node.text)}</div>
+      <div class="choices">${choicesHtml}</div>
+    </div>
+    ${state.history.length > 0 ? `<div style="text-align:center;margin-top:4px;"><button class="bb" style="max-width:200px;margin:0 auto;font-size:13px;padding:8px 16px;" onclick="goBack()">← Go Back</button></div>` : ''}`;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function renderEnding(el, node) {
+  const e = node.ending;
+  const duration = Math.round((Date.now() - state.startTime) / 60000);
+  const decisions = state.history.length;
+  const typeClass = e.type === 'good' ? 'good' : e.type === 'bad' ? 'bad' : 'neutral';
+  el.innerHTML = `
+    <span class="path-tag finale">Ending</span>
+    <div class="card ending-card">
+      <div class="ending-icon">${e.icon}</div>
+      <div class="ending-title ${typeClass}">${e.title}</div>
+      <div class="ending-type">${e.type === 'good' ? '★ Good Ending' : e.type === 'bad' ? '✗ Bad Ending' : '◆ Neutral Ending'}</div>
+      <div class="story" style="text-align:left;">${formatText(e.desc)}</div>
+    </div>
+    <div class="card">
+      <div class="stats-row">
+        <div class="stat"><div class="n">${decisions}</div><div class="l">Decisions Made</div></div>
+        <div class="stat"><div class="n">${duration}m</div><div class="l">Time Played</div></div>
+      </div>
+      <div class="ending-type" style="margin-bottom:12px;">There are ${countEndings()} endings to discover. Try different choices!</div>
+      <button class="bb start" onclick="startGame()">Play Again</button>
+      <button class="bb" onclick="backToTitle()">Back to Title</button>
+    </div>`;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function formatText(t) {
+  t = t.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+  t = t.replace(/"([^"]+)"/g, '"<em>$1</em>"');
+  return t;
+}
+function countEndings() { return Object.values(ADVENTURE.nodes).filter(n => n.ending).length; }
+function startGame() { state = { node: ADVENTURE.startNode, history: [], startTime: Date.now() }; render(); }
+function choose(id) { state.history.push(state.node); state.node = id; render(); }
+function goBack() { if (state.history.length) { state.node = state.history.pop(); render(); } }
+function backToTitle() { state = { node: null, history: [], startTime: null }; render(); }
+render();
+</script>
+</body>
+</html>
