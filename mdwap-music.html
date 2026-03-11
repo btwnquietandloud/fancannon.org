@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Original music from the Belinda Blinked universe — three songs celebrating Rocky Flintstone's literary masterwork, with full lyrics.">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>Belinda Blinked Music — Songs of Steele's | Fan Cannon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Chewy&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0e0a10;--card:#1a1220;--card2:#221830;--accent:#d4577a;--accent2:#d4a04a;--accent3:#c084d8;--accent4:#e8a0b8;--text:#ede4f0;--muted:#9888a8;--dim:#685878;--border:#302040}
+*{box-sizing:border-box;margin:0;padding:0}
+body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 70% 50% at 50% 30%,rgba(212,87,122,0.03) 0%,transparent 70%);pointer-events:none}
+.fc-brand-bar{position:sticky;top:0;z-index:100;background:rgba(14,10,16,0.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.06);padding:8px 16px;display:flex;align-items:center;gap:10px}
+.fc-brand-bar a{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit}.fc-brand-bar img{width:32px;height:32px;border-radius:50%}
+.fc-brand-bar span{font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;color:#c9a44a;letter-spacing:0.5px}
+.fc-brand-bar .fc-sep{color:rgba(255,255,255,0.15);font-size:18px}.fc-brand-bar .fc-page-name{font-size:13px;font-weight:600;color:rgba(255,255,255,0.4)}
+.container{position:relative;z-index:1;max-width:850px;margin:0 auto;padding:24px 16px 80px}
+.back-link{display:inline-block;color:var(--accent);text-decoration:none;font-size:13px;font-weight:700;padding:6px 14px;border:1px solid var(--border);border-radius:99px;transition:all .2s;margin-bottom:16px}.back-link:hover{border-color:var(--accent)}
+.hero{text-align:center;padding:20px 0 28px}
+.hero h1{font-family:'Chewy',cursive;font-size:clamp(26px,5vw,42px);color:var(--accent);text-shadow:0 0 40px rgba(212,87,122,0.3)}
+.hero .sub{font-size:14px;color:var(--accent2);letter-spacing:1px;margin-top:6px;font-weight:700}
+.hero p{color:var(--muted);font-size:15px;margin-top:14px;line-height:1.7;max-width:660px;margin-left:auto;margin-right:auto}
+.s-title{font-family:'Chewy',cursive;font-size:22px;margin:36px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:28px;margin-bottom:18px;transition:border-color .25s}
+.card:hover{border-color:rgba(212,87,122,0.3)}
+.card h2{font-family:'Chewy',cursive;font-size:22px;margin-bottom:8px}
+.card p{font-size:14px;color:var(--muted);line-height:1.75;margin-bottom:10px}
+.card p:last-child{margin-bottom:0}
+.hl{color:var(--accent);font-weight:700}.hl2{color:var(--accent2);font-weight:700}.hl3{color:var(--accent3);font-weight:700}
+.song-card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:16px;transition:border-color .25s}
+.song-card:hover{border-color:var(--accent)}
+.song-header{padding:20px 24px;cursor:pointer;display:flex;align-items:center;gap:14px}
+.song-header .sh-emoji{font-size:32px}
+.song-header .sh-info{flex:1}
+.song-header .sh-title{font-family:'Chewy',cursive;font-size:20px}
+.song-header .sh-sub{font-size:12px;color:var(--dim);margin-top:2px}
+.song-header .sh-genre{display:inline-block;font-size:10px;font-weight:800;padding:3px 10px;border-radius:6px;margin-top:6px;letter-spacing:0.5px}
+.song-header .sh-toggle{margin-left:auto;font-size:18px;color:var(--dim);transition:transform .3s}
+.song-card.open .sh-toggle{transform:rotate(180deg)}
+.song-body{max-height:0;overflow:hidden;transition:max-height .5s ease}
+.song-card.open .song-body{max-height:8000px}
+.song-inner{padding:0 24px 24px}
+.lyric-block{background:var(--card2);border-radius:14px;padding:20px 24px;margin:14px 0}
+.lyric-section{font-size:11px;font-weight:800;color:var(--dim);letter-spacing:1.5px;margin:16px 0 8px;text-transform:uppercase}
+.lyric-section:first-child{margin-top:0}
+.lyric-line{font-size:15px;color:var(--text);line-height:1.85}
+.lyric-hl{color:var(--accent)}
+.lyric-hl2{color:var(--accent2)}
+.lyric-hl3{color:var(--accent3)}
+.custom-player{display:flex;align-items:center;gap:12px;background:var(--card2);border-radius:12px;padding:12px 16px;margin:8px 0}
+.play-btn{width:40px;height:40px;border-radius:50%;border:none;background:var(--accent);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
+.play-btn:hover{filter:brightness(1.2);transform:scale(1.05)}
+.play-btn svg{width:18px;height:18px}
+.player-track{flex:1;min-width:0}
+.track-bar{height:6px;background:rgba(255,255,255,0.08);border-radius:3px;cursor:pointer;position:relative;margin-bottom:6px}
+.track-progress{height:100%;background:var(--accent);border-radius:3px;width:0%;transition:width .1s linear}
+.track-handle{position:absolute;top:50%;width:12px;height:12px;background:#fff;border-radius:50%;transform:translate(-50%,-50%);left:0%;opacity:0;transition:opacity .2s}
+.custom-player:hover .track-handle{opacity:1}
+.track-times{display:flex;justify-content:space-between;font-size:11px;color:var(--dim);font-weight:600;font-variant-numeric:tabular-nums}
+.player-title{font-size:13px;font-weight:800;letter-spacing:0.5px;margin-bottom:6px}
+footer{text-align:center;margin-top:48px;padding:20px;border-top:1px solid var(--border)}
+footer p{font-size:12px;color:var(--dim)}
+footer a{color:var(--accent);text-decoration:none;font-weight:700}
+@media(max-width:600px){.song-header{padding:16px 18px}.song-inner{padding:0 18px 18px}.lyric-block{padding:16px 18px}}
+</style>
+</head>
+<body>
+<div class="fc-brand-bar"><a href="index.html"><img src="fancannonlogo.png" alt="Fan Cannon"><span>Fan Cannon</span></a><span class="fc-sep">|</span><span class="fc-page-name">Belinda Blinked Music</span></div>
+<div class="container">
+<a href="mdwap-universe.html" class="back-link">← Back to the Belinda Blinked Universe</a>
+
+<div class="hero">
+<div style="font-size:56px;margin-bottom:8px">🎵</div>
+<h1>Songs of Steele's</h1>
+<div class="sub">ORIGINAL MUSIC FROM THE BELINDA BLINKED UNIVERSE</div>
+<p>Three original compositions inspired by Rocky Flintstone's six-book saga of pots, pans, and passion. From anthems to power ballads to Europop, the Belinda Blinked universe has a soundtrack it never asked for and absolutely deserves.</p>
+</div>
+
+<div class="card">
+<h2 style="color:var(--accent2)">Why Belinda Blinked Needs Music</h2>
+<p>Every great literary universe has a soundtrack. Lord of the Rings has Howard Shore. Star Wars has John Williams. Harry Potter has hedwig's theme. Belinda Blinked has... well, until now it had nothing. Which is remarkable for a series where <span class="hl2">Des Martin plays the ocarina at a corporate farewell party</span>.</p>
+<p>These songs fill that void. They're <span class="hl">original fan compositions</span> that capture the spirit of Rocky's masterwork — the absurdity, the sincerity, the black thongs, the geography crimes, and the eternal question: <span class="hl3">what happened to Bill?</span></p>
+<p>Each song takes a different musical approach, because the Belinda Blinked universe contains multitudes. It's simultaneously a corporate drama, a spy thriller, an erotic novel, and a family comedy podcast. No single genre could contain it. So we used three.</p>
+</div>
+
+<!-- ═══ SONG 1: ODE TO BELINDA ═══ -->
+<h2 class="s-title" style="color:var(--accent)">🎤 THE SONGS</h2>
+
+<div class="song-card" id="song1">
+<div class="song-header" onclick="document.getElementById('song1').classList.toggle('open')">
+<div class="sh-emoji">🍳</div>
+<div class="sh-info">
+<div class="sh-title" style="color:var(--accent)">Ode to Belinda</div>
+<div class="sh-sub">The official Belinda Blinked anthem — a comedic pop-rock singalong</div>
+<div class="sh-genre" style="background:rgba(212,87,122,0.12);color:var(--accent)">POP-ROCK ANTHEM</div>
+</div>
+<div class="sh-toggle">▼</div>
+</div>
+<div style="padding:0 24px 12px">
+<div class="player-title" style="color:var(--accent)">🎵 Ode to Belinda</div>
+<audio id="audio1" src="ode-to-belinda.mp3" preload="metadata"></audio>
+<div class="custom-player" id="player1">
+<button class="play-btn" id="playBtn1" aria-label="Play">
+<svg class="icon-play" viewBox="0 0 24 24"><polygon points="8,4 20,12 8,20" fill="currentColor"/></svg>
+<svg class="icon-pause" viewBox="0 0 24 24" style="display:none"><rect x="6" y="4" width="4" height="16" fill="currentColor"/><rect x="14" y="4" width="4" height="16" fill="currentColor"/></svg>
+</button>
+<div class="player-track">
+<div class="track-bar" id="trackBar1"><div class="track-progress" id="prog1"></div><div class="track-handle" id="handle1"></div></div>
+<div class="track-times"><span id="cur1">0:00</span><span id="tot1">0:00</span></div>
+</div>
+</div>
+</div>
+<div class="song-body"><div class="song-inner">
+<p>If the Belinda Blinked universe had a theme song that played over the opening credits, this would be it. A theatrical pop-rock anthem that tries to fit the entire six-book saga into four minutes — from Belinda's Heathrow interview to Peter's mud-covered proposal. The chorus is designed to be shouted by a room full of podcast listeners who can't believe any of this is real.</p>
+<p>Key moments: <span class="hl">Bill's disappearance gets its own verse</span>, the spoken bridge delivers the existential devastation of "vaginal lids... remained unexplained," and the outro calls for a Des Martin ocarina solo because of course it does.</p>
+
+<div class="lyric-block">
+<div class="lyric-section">Verse 1</div>
+<div class="lyric-line">She walked through the doors at Heathrow
+Black thong pressed and ready to go
+Sir James said "Welcome to Steele's
+Where we close every deal in high heels"
+
+Bill from HR said hello
+Then vanished like he'd never show
+Nobody asked and nobody cared
+One chapter in and the man disappeared</div>
+
+<div class="lyric-section">Pre-Chorus</div>
+<div class="lyric-line">She swears by the Norse gods above
+Her weapons are chardonnay and love
+The second-largest distributor of pans in the land
+And Belinda's got it all in hand</div>
+
+<div class="lyric-section">Chorus</div>
+<div class="lyric-line lyric-hl">Belinda Blinked! Belinda Blinked!
+Pots and pans and passion interlinked
+From the Leather Room to the Ritz
+Rocky wrote it and it's absolute —
+Belinda Blinked! Belinda Blinked!
+The sexiest sales girl on the brink
+Close the deal, remove the heel
+Nothing in this book is real
+Belinda Blinked!</div>
+
+<div class="lyric-section">Verse 2</div>
+<div class="lyric-line">Giselle's got a maiden name
+Maarschalkerweerd de Klotz, no shame
+She's the Special One inside
+Betrayed us all for the other side
+
+The Duchess rides to every meet
+On Toffee Apple Chew so sweet
+A soul sister stallion, fierce and proud
+Stallions are male but Rocky's allowed</div>
+
+<div class="lyric-section">Pre-Chorus</div>
+<div class="lyric-line">Spooner's got binoculars with wipes
+Jim Stirling's got a surgical gripe
+East Berlin's in Poland now
+Seven hundred four miles — Rocky, how?</div>
+
+<div class="lyric-section">Chorus</div>
+<div class="lyric-line lyric-hl">Belinda Blinked! Belinda Blinked! ...</div>
+
+<div class="lyric-section">Bridge (Spoken)</div>
+<div class="lyric-line lyric-hl3">And what of Bill?
+What of Dave Wilcox, RSM for Western England?
+Gone. Both of them. Gone.
+Rocky forgot. The pages turned.
+The darkness increased.
+And the vaginal lids... remained unexplained.</div>
+
+<div class="lyric-section">Verse 3</div>
+<div class="lyric-line">Peter Rouse proposed in mud
+C.O.C.K. was formed to spill some blood
+The acronym's a coincidence
+At least that's Rocky's defense
+
+Cosmo cooked on live TV
+Doc Stud cured a coma sexually
+A state funeral for a kitchenware spy
+Toffee Apple Chew said goodbye</div>
+
+<div class="lyric-section">Final Chorus</div>
+<div class="lyric-line lyric-hl">Belinda Blinked! Belinda Blinked!
+Four hundred thirty million listeners winked
+From the garden shed to HBO
+Rocky wrote the greatest show
+
+Belinda Blinked! Belinda Blinked!
+Six books of genius on the brink
+Jamie read it, we all screamed
+The maddest thing you've ever dreamed
+Belinda Blinked!</div>
+
+<div class="lyric-section">Outro (Spoken)</div>
+<div class="lyric-line lyric-hl2">Written in a garden shed...
+Because his wife won't let him write in the house...
+<em>ocarina solo by Des Martin</em></div>
+</div>
+</div></div>
+</div>
+
+<!-- ═══ SONG 2: WHERE DID BILL GO ═══ -->
+<div class="song-card" id="song2">
+<div class="song-header" onclick="document.getElementById('song2').classList.toggle('open')">
+<div class="sh-emoji">👻</div>
+<div class="sh-info">
+<div class="sh-title" style="color:var(--accent3)">Where Did Bill Go?</div>
+<div class="sh-sub">An 80s power ballad from the perspective of Steele's most forgotten employee</div>
+<div class="sh-genre" style="background:rgba(192,132,216,0.12);color:var(--accent3)">80s POWER BALLAD</div>
+</div>
+<div class="sh-toggle">▼</div>
+</div>
+<div style="padding:0 24px 12px">
+<div class="player-title" style="color:var(--accent3)">🎵 Where Did Bill Go?</div>
+<audio id="audio2" src="where-did-bill-go.mp3" preload="metadata"></audio>
+<div class="custom-player" id="player2">
+<button class="play-btn" id="playBtn2" aria-label="Play" style="background:var(--accent3)">
+<svg class="icon-play" viewBox="0 0 24 24"><polygon points="8,4 20,12 8,20" fill="currentColor"/></svg>
+<svg class="icon-pause" viewBox="0 0 24 24" style="display:none"><rect x="6" y="4" width="4" height="16" fill="currentColor"/><rect x="14" y="4" width="4" height="16" fill="currentColor"/></svg>
+</button>
+<div class="player-track">
+<div class="track-bar" id="trackBar2"><div class="track-progress" id="prog2" style="background:var(--accent3)"></div><div class="track-handle" id="handle2"></div></div>
+<div class="track-times"><span id="cur2">0:00</span><span id="tot2">0:00</span></div>
+</div>
+</div>
+</div>
+<div class="song-body"><div class="song-inner">
+<p>The most emotionally devastating song ever written about a fictional HR director who appeared in one chapter and was never mentioned again. Sung from Bill's perspective as a full-throated 80s power ballad — soft piano building to a massive reverb-drenched crescendo — the comedy comes entirely from the contrast between the earnest, heartbroken delivery and the absurdity of what he's actually upset about.</p>
+<p>The bridge is the centerpiece: <span class="hl3">the hosts asked Rocky about Bill in the final episode. Rocky said "Who?"</span> The song treats this single word as the most devastating moment in literary history. There is a key change. There are tears. Bill is still missing.</p>
+
+<div class="lyric-block">
+<div class="lyric-section">Verse 1</div>
+<div class="lyric-line">I was there at the interview
+I sat right next to Sir James
+I asked about her references
+I even remembered her name
+
+I had a desk in Human Resources
+I had a mug that said "World's Best"
+I had a future at Steele's Pots and Pans
+But Rocky put that dream to rest</div>
+
+<div class="lyric-section">Pre-Chorus</div>
+<div class="lyric-line">One chapter was all I got
+One single scene and then I'm not
+In any page, in any book
+He didn't even take a second look</div>
+
+<div class="lyric-section">Chorus</div>
+<div class="lyric-line lyric-hl3">Where did Bill go?
+Where did Bill go?
+Six books and not a single word
+The greatest HR man the world has never heard
+Where did Bill go?
+Does anybody know?
+I filed the paperwork, I wore my finest tie
+I didn't even get to say goodbye</div>
+
+<div class="lyric-section">Verse 2</div>
+<div class="lyric-line">Dave Wilcox understands my pain
+RSM for Western England
+He showed up once, then disappeared
+Like we were never even planned
+
+Bella got a name change back
+Giselle got redemption and a spy arc too
+Even the horse got a funeral
+But Bill from HR? Rocky never knew</div>
+
+<div class="lyric-section">Pre-Chorus</div>
+<div class="lyric-line">I could have run the pension scheme
+I could have been the Glee Team's dream
+I could have stopped the bombing plot
+But I was stuck on page forgot</div>
+
+<div class="lyric-section">Chorus</div>
+<div class="lyric-line lyric-hl3">Where did Bill go? ...</div>
+
+<div class="lyric-section">Bridge (Spoken — devastated)</div>
+<div class="lyric-line lyric-hl">They asked him in the interview
+The final episode, Series Six
+"Rocky, what happened to Bill?"
+
+He said...
+
+"Who?"
+
+Who.
+
+He said who.</div>
+
+<div class="lyric-section">Final Chorus (Key Change)</div>
+<div class="lyric-line lyric-hl3">WHERE DID BILL GO?
+WHERE DID BILL GO?
+Four hundred thirty million people heard this show
+And not a single one knows where I am
+I'm Bill! I'm in HR! I had a PLAN!
+
+Where did Bill go?
+I need to know!
+Des Martin played the ocarina at the end
+But Bill from Human Resources
+Didn't even get a friend</div>
+
+<div class="lyric-section">Outro (Spoken)</div>
+<div class="lyric-line lyric-hl2">I'm still here, you know.
+Somewhere between Chapter 1 and the void.
+If anyone from Steele's is listening...
+I'm available for the Christmas party.
+
+I make an excellent spreadsheet.
+
+...Please.</div>
+</div>
+</div></div>
+</div>
+
+<!-- ═══ SONG 3: BLACK THONG ═══ -->
+<div class="song-card" id="song3">
+<div class="song-header" onclick="document.getElementById('song3').classList.toggle('open')">
+<div class="sh-emoji">🩲</div>
+<div class="sh-info">
+<div class="sh-title" style="color:var(--accent2)">Black Thong (The Steele's Anthem)</div>
+<div class="sh-sub">A 90s Europop banger about Rocky's universal dress code</div>
+<div class="sh-genre" style="background:rgba(212,160,74,0.12);color:var(--accent2)">90s EUROPOP</div>
+</div>
+<div class="sh-toggle">▼</div>
+</div>
+<div style="padding:0 24px 12px">
+<div class="player-title" style="color:var(--accent2)">🎵 Black Thong (The Steele's Anthem)</div>
+<audio id="audio3" src="Black_Thong_The_Steeles_Anthem.mp3" preload="metadata"></audio>
+<div class="custom-player" id="player3">
+<button class="play-btn" id="playBtn3" aria-label="Play" style="background:var(--accent2)">
+<svg class="icon-play" viewBox="0 0 24 24"><polygon points="8,4 20,12 8,20" fill="currentColor"/></svg>
+<svg class="icon-pause" viewBox="0 0 24 24" style="display:none"><rect x="6" y="4" width="4" height="16" fill="currentColor"/><rect x="14" y="4" width="4" height="16" fill="currentColor"/></svg>
+</button>
+<div class="player-track">
+<div class="track-bar" id="trackBar3"><div class="track-progress" id="prog3" style="background:var(--accent2)"></div><div class="track-handle" id="handle3"></div></div>
+<div class="track-times"><span id="cur3">0:00</span><span id="tot3">0:00</span></div>
+</div>
+</div>
+</div>
+<div class="song-body"><div class="song-inner">
+<p>The absolute stupidest song on this page and therefore the most accurate representation of the source material. A full-throttle 90s Europop dance track — think Vengaboys meets Aqua — built around the single most consistent detail in all six Belinda Blinked books: <span class="hl2">every character wears a black thong. Every. Single. One.</span></p>
+<p>Men, women, aristocrats, spies, regional sales managers — Rocky never specifies any other undergarment across the entire series. This song celebrates that commitment to a singular sartorial vision. The spoken bridge where the singer realizes the scale of Rocky's thong obsession is the moment the song transcends parody and becomes something genuinely philosophical.</p>
+<p><span class="hl">Warning:</span> This song will be stuck in your head for approximately six to eight business days. Steele's Pots and Pans accepts no liability.</p>
+
+<div class="lyric-block">
+<div class="lyric-section">Verse 1</div>
+<div class="lyric-line">Belinda's at the office and she's ready for the day
+Her chardonnay is chilling and her heels are on display
+Tony's in the boardroom and he's buttoning his shirt
+Sir James is at the tombola doing business in the dirt
+
+Giselle is looking shifty but we'll deal with that in four
+Bella's at reception but she won't be there no more
+Rocky's in the garden shed, his wife said "not inside"
+He's writing Chapter Seven and he's filled with authorial pride</div>
+
+<div class="lyric-section">Pre-Chorus</div>
+<div class="lyric-line">Every single character
+From the Duchess to the spy
+From the Scottish factory floor
+To the Ritz where Sam goes by
+There's one thing they all share
+One thing that bonds them strong
+Doesn't matter who you are —</div>
+
+<div class="lyric-section">Chorus</div>
+<div class="lyric-line lyric-hl2">EVERYBODY'S WEARING A BLACK THONG
+Black thong! Black thong!
+Men and women all day long
+Black thong! Black thong!
+Belinda's got one on (black thong!)
+Tony's got one on (black thong!)
+Sir James underneath his suit — black thong!
+Even Bill was wearing one before he disappeared</div>
+
+<div class="lyric-section">Verse 2</div>
+<div class="lyric-line">Spooner's on a mission and his gadgets are insane
+His binoculars have wet wipes and his cufflink shoots a flame
+The Duchess rides to meetings on a stallion slash soul sister
+Peter Rouse is in the mud and he's about to paint and blister
+
+Jim Stirling's down in Texas and we will not discuss the vole
+Doc Stud has got a specialism that will take a heavy toll
+Cosmo's on the telly boiling water in three flat
+And somewhere between chapters Bella turned into someone called Pat
+
+Wait — Donna
+Her name was Donna
+No — Bella
+ROCKY</div>
+
+<div class="lyric-section">Chorus</div>
+<div class="lyric-line lyric-hl2">EVERYBODY'S WEARING A BLACK THONG ...</div>
+
+<div class="lyric-section">Bridge (Spoken)</div>
+<div class="lyric-line lyric-hl">You know what's funny?
+Rocky never describes any other underwear.
+Not once. In six books.
+No boxers. No briefs. No sensible cotton.
+Just... black thongs.
+Every character. Every scene.
+It's like he thinks that's what humans wear.
+All humans. All the time.
+
+WHAT COLOR IS YOUR THONG?
+...Black.
+WHAT MATERIAL?
+It's always black. Rocky never specifies material.
+AND WHO'S WEARING IT?
+Everyone. Literally everyone.</div>
+
+<div class="lyric-section">Final Chorus (Key Change)</div>
+<div class="lyric-line lyric-hl2">EVERYBODY'S WEARING A BLACK THONG
+Black thong! Black thong!
+From Chapter One until the end of Song
+Black thong! Black thong!
+Patrick's got one on (black thong!)
+Ken's got one on (black thong!)
+Dave Wilcox had one on before he was FORGOTTEN — black thong!
+C.O.C.K. members only — STILL a black thong!
+
+EVERYBODY'S WEARING A BLACK THONG
+Black thong! Black thong!
+Four hundred thirty million singalong
+Black thong! Black thong!
+Rocky's got one on (black thong!)
+Jamie's reading on (black thong!)
+Alice and James are crying on the microphone — black thong!
+The greatest dress code in the history of fiction</div>
+
+<div class="lyric-section">Outro</div>
+<div class="lyric-line lyric-hl2">Black thong...
+Always black...
+Never any other color...
+Rocky... why...</div>
+</div>
+</div></div>
+</div>
+
+<footer>
+<p>Fan-made music celebrating Rocky Flintstone's literary universe.<br>
+My Dad Wrote a Porno is by Jamie Morton, James Cooper &amp; Alice Levine.<br>
+<a href="mdwap-universe.html">← Back to the Belinda Blinked Universe</a></p>
+</footer>
+</div>
+
+<script>
+function fmt(s){var m=Math.floor(s/60);var sec=Math.floor(s%60);return m+':'+(sec<10?'0':'')+sec;}
+var allP=[];
+function initPlayer(audioId,btnId,barId,progId,handleId,curId,totId,playerId){
+  var a=document.getElementById(audioId);
+  var btn=document.getElementById(btnId);
+  var iPlay=btn.querySelector('.icon-play');
+  var iPause=btn.querySelector('.icon-pause');
+  var bar=document.getElementById(barId);
+  var prog=document.getElementById(progId);
+  var handle=document.getElementById(handleId);
+  var cur=document.getElementById(curId);
+  var tot=document.getElementById(totId);
+  var pl=document.getElementById(playerId);
+  a.addEventListener('loadedmetadata',function(){tot.textContent=fmt(a.duration);});
+  a.addEventListener('timeupdate',function(){var pct=(a.currentTime/a.duration)*100;prog.style.width=pct+'%';handle.style.left=pct+'%';cur.textContent=fmt(a.currentTime);});
+  a.addEventListener('ended',function(){pl.classList.remove('playing');iPlay.style.display='';iPause.style.display='none';});
+  btn.addEventListener('click',function(){
+    allP.forEach(function(p){if(p.a!==a&&!p.a.paused){p.a.pause();p.pl.classList.remove('playing');p.iPlay.style.display='';p.iPause.style.display='none';}});
+    if(a.paused){a.play().then(function(){pl.classList.add('playing');iPlay.style.display='none';iPause.style.display='';}).catch(function(){cur.textContent='Audio not found — will work when deployed';cur.style.color='var(--accent)';});}
+    else{a.pause();pl.classList.remove('playing');iPlay.style.display='';iPause.style.display='none';}
+  });
+  bar.addEventListener('click',function(e){var rect=bar.getBoundingClientRect();var pct=(e.clientX-rect.left)/rect.width;a.currentTime=pct*a.duration;});
+  return{a:a,pl:pl,iPlay:iPlay,iPause:iPause};
+}
+allP.push(initPlayer('audio1','playBtn1','trackBar1','prog1','handle1','cur1','tot1','player1'));
+allP.push(initPlayer('audio2','playBtn2','trackBar2','prog2','handle2','cur2','tot2','player2'));
+allP.push(initPlayer('audio3','playBtn3','trackBar3','prog3','handle3','cur3','tot3','player3'));
+</script>
+</body>
+</html>
