@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wesley's Sleepy Star Chart ⭐</title>
+<meta name="robots" content="noindex, nofollow">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Gaegu:wght@400;700&display=swap');
+
+  :root {
+    --bg-dark: #1a1a2e;
+    --bg-mid: #16213e;
+    --bg-card: #0f3460;
+    --accent-gold: #ffd700;
+    --accent-glow: #fff3a1;
+    --star-1: #ffd700;
+    --star-2: #ffaa00;
+    --btn-green: #4caf50;
+    --btn-green-hover: #66bb6a;
+    --btn-blue: #2196f3;
+    --btn-red: #e53935;
+    --btn-red-hover: #ef5350;
+    --text-main: #f0e6ff;
+    --text-dim: #a0a0c0;
+    --track-bg: #2a2a4a;
+    --track-fill: #7c4dff;
+    --reward-sleepover: #e91e63;
+    --reward-toy: #00bcd4;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Fredoka', sans-serif;
+    background: var(--bg-dark);
+    color: var(--text-main);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Starfield background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.6), transparent),
+      radial-gradient(1px 1px at 30% 70%, rgba(255,255,255,0.4), transparent),
+      radial-gradient(1.5px 1.5px at 50% 10%, rgba(255,255,255,0.7), transparent),
+      radial-gradient(1px 1px at 70% 40%, rgba(255,255,255,0.5), transparent),
+      radial-gradient(1px 1px at 90% 80%, rgba(255,255,255,0.3), transparent),
+      radial-gradient(1.5px 1.5px at 15% 90%, rgba(255,255,255,0.6), transparent),
+      radial-gradient(1px 1px at 85% 15%, rgba(255,255,255,0.5), transparent),
+      radial-gradient(1px 1px at 45% 55%, rgba(255,255,255,0.4), transparent),
+      radial-gradient(1.5px 1.5px at 60% 85%, rgba(255,255,255,0.6), transparent),
+      radial-gradient(1px 1px at 25% 45%, rgba(255,255,255,0.3), transparent),
+      radial-gradient(1px 1px at 75% 65%, rgba(255,255,255,0.5), transparent),
+      radial-gradient(1.5px 1.5px at 5% 60%, rgba(255,255,255,0.4), transparent),
+      radial-gradient(1px 1px at 95% 50%, rgba(255,255,255,0.6), transparent),
+      radial-gradient(1px 1px at 40% 30%, rgba(255,255,255,0.3), transparent),
+      radial-gradient(2px 2px at 55% 95%, rgba(255,215,0,0.8), transparent),
+      radial-gradient(2px 2px at 20% 5%, rgba(255,215,0,0.6), transparent);
+    pointer-events: none;
+    z-index: 0;
+    animation: twinkle 4s ease-in-out infinite alternate;
+  }
+
+  @keyframes twinkle {
+    0% { opacity: 0.7; }
+    100% { opacity: 1; }
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 20px 16px 40px;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+
+  .header h1 {
+    font-family: 'Gaegu', cursive;
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: var(--accent-gold);
+    text-shadow: 0 0 20px rgba(255,215,0,0.4), 0 2px 4px rgba(0,0,0,0.5);
+    line-height: 1.1;
+  }
+
+  .header h1 .sub {
+    display: block;
+    font-size: 1.1rem;
+    color: var(--text-dim);
+    text-shadow: none;
+    margin-top: 4px;
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 400;
+  }
+
+  /* Star Counter */
+  .star-counter {
+    background: linear-gradient(135deg, var(--bg-card), #1a1a4a);
+    border: 2px solid rgba(255,215,0,0.3);
+    border-radius: 20px;
+    padding: 24px;
+    text-align: center;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .star-counter::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(255,215,0,0.08), transparent 70%);
+    pointer-events: none;
+  }
+
+  .star-count-label {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+  }
+
+  .star-count-number {
+    font-family: 'Gaegu', cursive;
+    font-size: 4.5rem;
+    font-weight: 700;
+    color: var(--accent-gold);
+    text-shadow: 0 0 30px rgba(255,215,0,0.5);
+    line-height: 1;
+  }
+
+  .star-count-number .star-icon {
+    font-size: 3rem;
+    vertical-align: middle;
+    animation: pulse-star 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-star {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+  }
+
+  .streak-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #7c4dff, #b388ff);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-top: 12px;
+    box-shadow: 0 2px 10px rgba(124,77,255,0.3);
+  }
+
+  .streak-badge .fire {
+    margin-right: 4px;
+  }
+
+  /* BFDI Character + Timeline */
+  .timeline-section {
+    background: linear-gradient(135deg, var(--bg-card), #1a1a4a);
+    border: 2px solid rgba(124,77,255,0.3);
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 24px;
+  }
+
+  .timeline-section h2 {
+    font-family: 'Gaegu', cursive;
+    font-size: 1.3rem;
+    color: #b388ff;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+
+  .bfdi-scene {
+    position: relative;
+    height: 140px;
+    margin-bottom: 12px;
+  }
+
+  .bfdi-character {
+    position: absolute;
+    bottom: 28px;
+    transition: left 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 2;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4));
+  }
+
+  .bfdi-character.bounce {
+    animation: char-bounce 0.6s ease;
+  }
+
+  @keyframes char-bounce {
+    0%, 100% { transform: translateY(0); }
+    30% { transform: translateY(-18px); }
+    60% { transform: translateY(-6px); }
+  }
+
+  /* Milestone markers on the scene */
+  .milestone-marker {
+    position: absolute;
+    bottom: 0;
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    text-align: center;
+    transform: translateX(-50%);
+  }
+
+  .milestone-marker .flag {
+    font-size: 1.2rem;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  /* Track */
+  .track-bar {
+    width: 100%;
+    height: 14px;
+    background: var(--track-bg);
+    border-radius: 7px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .track-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #7c4dff, #b388ff, #ffd700);
+    border-radius: 7px;
+    transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+  }
+
+  .track-fill::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(255,255,255,0.25) 0%, transparent 60%);
+    border-radius: 7px;
+  }
+
+  .track-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 4px;
+    font-size: 0.7rem;
+    color: var(--text-dim);
+  }
+
+  /* Night Log Buttons */
+  .night-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+
+  .night-btn {
+    flex: 1;
+    border: none;
+    border-radius: 14px;
+    padding: 16px 12px;
+    font-family: 'Fredoka', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .night-btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(255,255,255,0.15) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .night-btn:active {
+    transform: scale(0.96);
+  }
+
+  .night-btn.perfect {
+    background: linear-gradient(135deg, #4caf50, #66bb6a);
+    box-shadow: 0 4px 15px rgba(76,175,80,0.4);
+  }
+
+  .night-btn.perfect:hover {
+    box-shadow: 0 6px 20px rgba(76,175,80,0.5);
+    transform: translateY(-1px);
+  }
+
+  .night-btn.stayed {
+    background: linear-gradient(135deg, #2196f3, #42a5f5);
+    box-shadow: 0 4px 15px rgba(33,150,243,0.4);
+  }
+
+  .night-btn.stayed:hover {
+    box-shadow: 0 6px 20px rgba(33,150,243,0.5);
+    transform: translateY(-1px);
+  }
+
+  .night-btn .btn-stars {
+    display: block;
+    font-size: 1.4rem;
+    margin-bottom: 4px;
+  }
+
+  .night-btn .btn-label {
+    display: block;
+    font-size: 0.78rem;
+    opacity: 0.9;
+    font-weight: 400;
+  }
+
+  /* Rewards Section */
+  .rewards-section {
+    background: linear-gradient(135deg, var(--bg-card), #1a1a4a);
+    border: 2px solid rgba(255,215,0,0.2);
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 24px;
+  }
+
+  .rewards-section h2 {
+    font-family: 'Gaegu', cursive;
+    font-size: 1.3rem;
+    color: var(--accent-gold);
+    margin-bottom: 14px;
+    text-align: center;
+  }
+
+  .reward-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    transition: all 0.2s;
+  }
+
+  .reward-card:last-child {
+    margin-bottom: 0;
+  }
+
+  .reward-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .reward-icon {
+    font-size: 1.8rem;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.08);
+    border-radius: 10px;
+  }
+
+  .reward-name {
+    font-weight: 600;
+    font-size: 1rem;
+  }
+
+  .reward-cost {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    margin-top: 2px;
+  }
+
+  .redeem-btn {
+    border: none;
+    border-radius: 10px;
+    padding: 8px 16px;
+    font-family: 'Fredoka', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: white;
+  }
+
+  .redeem-btn.available {
+    background: linear-gradient(135deg, var(--accent-gold), #ffaa00);
+    color: #1a1a2e;
+    box-shadow: 0 2px 10px rgba(255,215,0,0.3);
+  }
+
+  .redeem-btn.available:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(255,215,0,0.4);
+  }
+
+  .redeem-btn.locked {
+    background: rgba(255,255,255,0.1);
+    color: var(--text-dim);
+    cursor: not-allowed;
+  }
+
+  /* History Section */
+  .history-section {
+    background: linear-gradient(135deg, var(--bg-card), #1a1a4a);
+    border: 2px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 24px;
+  }
+
+  .history-section h2 {
+    font-family: 'Gaegu', cursive;
+    font-size: 1.3rem;
+    color: var(--text-main);
+    margin-bottom: 14px;
+    text-align: center;
+  }
+
+  .history-list {
+    max-height: 260px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,0.2) transparent;
+  }
+
+  .history-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    font-size: 0.85rem;
+    animation: fadeSlideIn 0.3s ease;
+  }
+
+  @keyframes fadeSlideIn {
+    from { opacity: 0; transform: translateX(-10px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  .history-item:last-child { border-bottom: none; }
+
+  .history-date {
+    color: var(--text-dim);
+    min-width: 90px;
+  }
+
+  .history-event {
+    flex: 1;
+    margin: 0 10px;
+  }
+
+  .history-stars {
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .history-stars.earned { color: #66bb6a; }
+  .history-stars.spent { color: #ef5350; }
+
+  .empty-history {
+    text-align: center;
+    color: var(--text-dim);
+    padding: 30px 0;
+    font-size: 0.9rem;
+  }
+
+  /* Admin Controls */
+  .admin-toggle {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .admin-toggle button {
+    background: none;
+    border: 1px solid rgba(255,255,255,0.15);
+    color: var(--text-dim);
+    font-family: 'Fredoka', sans-serif;
+    font-size: 0.8rem;
+    padding: 6px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .admin-toggle button:hover {
+    border-color: rgba(255,255,255,0.3);
+    color: var(--text-main);
+  }
+
+  .admin-panel {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 14px;
+    padding: 16px;
+    display: none;
+  }
+
+  .admin-panel.open { display: block; }
+
+  .admin-panel h3 {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .admin-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  .admin-input {
+    flex: 1;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 8px;
+    padding: 8px 12px;
+    color: var(--text-main);
+    font-family: 'Fredoka', sans-serif;
+    font-size: 0.85rem;
+  }
+
+  .admin-input:focus {
+    outline: none;
+    border-color: var(--accent-gold);
+  }
+
+  .admin-btn {
+    border: none;
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-family: 'Fredoka', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: white;
+  }
+
+  .admin-btn.adjust { background: #7c4dff; }
+  .admin-btn.adjust:hover { background: #9c6fff; }
+  .admin-btn.danger { background: var(--btn-red); }
+  .admin-btn.danger:hover { background: var(--btn-red-hover); }
+  .admin-btn.undo-btn { background: #ff9800; }
+  .admin-btn.undo-btn:hover { background: #ffa726; }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: linear-gradient(135deg, #333, #444);
+    color: white;
+    padding: 14px 24px;
+    border-radius: 14px;
+    font-family: 'Fredoka', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+    z-index: 1000;
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    pointer-events: none;
+    text-align: center;
+    max-width: 90vw;
+  }
+
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* Celebration overlay */
+  .celebration {
+    position: fixed;
+    inset: 0;
+    z-index: 500;
+    pointer-events: none;
+    display: none;
+  }
+
+  .celebration.active { display: block; }
+
+  .confetti-piece {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    opacity: 0;
+    animation: confetti-fall 2s ease forwards;
+  }
+
+  @keyframes confetti-fall {
+    0% { opacity: 1; transform: translateY(-20px) rotate(0deg) scale(1); }
+    100% { opacity: 0; transform: translateY(100vh) rotate(720deg) scale(0.3); }
+  }
+
+  /* Responsive */
+  @media (max-width: 480px) {
+    .header h1 { font-size: 1.8rem; }
+    .star-count-number { font-size: 3.5rem; }
+    .night-buttons { flex-direction: column; }
+    .reward-card { padding: 10px 12px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <h1>
+      Wesley's Sleepy Star Chart
+      <span class="sub">Stay in bed, earn stars, get awesome rewards!</span>
+    </h1>
+  </div>
+
+  <!-- Star Counter -->
+  <div class="star-counter">
+    <div class="star-count-label">Stars Earned</div>
+    <div class="star-count-number">
+      <span id="starTotal">0</span> <span class="star-icon">⭐</span>
+    </div>
+    <div class="streak-badge">
+      <span class="fire">🔥</span>
+      <span id="streakText">0 nights in a row!</span>
+    </div>
+  </div>
+
+  <!-- BFDI Character Timeline -->
+  <div class="timeline-section">
+    <h2>🌙 Wesley's Journey to Dream Island 🏝️</h2>
+    <div class="bfdi-scene" id="bfdiScene">
+      <svg id="bfdiChar" class="bfdi-character" width="60" height="90" viewBox="0 0 60 90" style="left: 0%;">
+        <!-- BFDI-style star character -->
+        <g id="charGroup">
+          <!-- Star body -->
+          <polygon id="starBody" points="30,5 36,25 55,25 40,37 46,57 30,45 14,57 20,37 5,25 24,25"
+            fill="#FFD700" stroke="#B8860B" stroke-width="2"/>
+          <!-- Shine -->
+          <polygon points="30,12 33,22 40,22 34,28 36,38 30,32 24,38 26,28 20,22 27,22"
+            fill="rgba(255,255,255,0.3)"/>
+          <!-- Left eye -->
+          <ellipse cx="24" cy="28" rx="4" ry="5" fill="white" stroke="#333" stroke-width="1"/>
+          <circle id="leftPupil" cx="25" cy="29" r="2.5" fill="#333"/>
+          <circle cx="23" cy="27" r="1" fill="white"/>
+          <!-- Right eye -->
+          <ellipse cx="36" cy="28" rx="4" ry="5" fill="white" stroke="#333" stroke-width="1"/>
+          <circle id="rightPupil" cx="37" cy="29" r="2.5" fill="#333"/>
+          <circle cx="35" cy="27" r="1" fill="white"/>
+          <!-- Mouth - happy -->
+          <path id="charMouth" d="M24,36 Q30,43 36,36" fill="none" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+          <!-- Legs (BFDI stick limbs) -->
+          <line x1="24" y1="52" x2="18" y2="75" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+          <line x1="36" y1="52" x2="42" y2="75" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+          <!-- Feet -->
+          <ellipse cx="16" cy="77" rx="6" ry="4" fill="#555" stroke="#333" stroke-width="1"/>
+          <ellipse cx="44" cy="77" rx="6" ry="4" fill="#555" stroke="#333" stroke-width="1"/>
+          <!-- Arms (BFDI stick limbs) -->
+          <line id="leftArm" x1="14" y1="35" x2="2" y2="48" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+          <line id="rightArm" x1="46" y1="35" x2="58" y2="48" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+        </g>
+      </svg>
+      <!-- Milestone flags -->
+      <div class="milestone-marker" style="left: 0%;"><span class="flag">🌙</span>Start</div>
+      <div class="milestone-marker" style="left: 20%;"><span class="flag">🎪</span>3⭐</div>
+      <div class="milestone-marker" style="left: 33%;"><span class="flag">🎁</span>5⭐</div>
+      <div class="milestone-marker" style="left: 66%;"><span class="flag">🎁</span>10⭐</div>
+      <div class="milestone-marker" style="left: 100%;"><span class="flag">🏝️</span>15⭐</div>
+    </div>
+    <div class="track-bar">
+      <div class="track-fill" id="trackFill" style="width: 0%;"></div>
+    </div>
+    <div class="track-labels">
+      <span>0 ⭐</span>
+      <span>15 ⭐</span>
+    </div>
+  </div>
+
+  <!-- Night Logging Buttons -->
+  <div class="night-buttons">
+    <button class="night-btn perfect" onclick="logNight(2)">
+      <span class="btn-stars">⭐⭐</span>
+      Slept On Time!
+      <span class="btn-label">Stayed in bed + fell asleep right away</span>
+    </button>
+    <button class="night-btn stayed" onclick="logNight(1)">
+      <span class="btn-stars">⭐</span>
+      Stayed in Bed
+      <span class="btn-label">Stayed in room but didn't sleep right away</span>
+    </button>
+  </div>
+
+  <!-- Rewards -->
+  <div class="rewards-section">
+    <h2>🎁 Star Shop</h2>
+    <div id="rewardsContainer"></div>
+  </div>
+
+  <!-- History -->
+  <div class="history-section">
+    <h2>📜 Star Diary</h2>
+    <div class="history-list" id="historyList">
+      <div class="empty-history">No entries yet — tonight could be the first! 🌙</div>
+    </div>
+  </div>
+
+  <!-- Admin -->
+  <div class="admin-toggle">
+    <button onclick="toggleAdmin()">⚙️ Dad Controls</button>
+  </div>
+  <div class="admin-panel" id="adminPanel">
+    <h3>Adjust Stars</h3>
+    <div class="admin-row">
+      <input type="number" class="admin-input" id="adjustInput" placeholder="Stars to add or remove" />
+      <button class="admin-btn adjust" onclick="adjustStars()">Adjust</button>
+    </div>
+    <div class="admin-row">
+      <button class="admin-btn undo-btn" onclick="undoLast()">↩️ Undo Last</button>
+      <button class="admin-btn danger" onclick="resetAll()">🗑️ Reset All</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<div class="celebration" id="celebration"></div>
+
+<script>
+  // ========== DATA LAYER ==========
+  const STORAGE_KEY = 'wesleySleepChart';
+
+  function getDefaultData() {
+    return {
+      stars: 0,
+      streak: 0,
+      history: [],
+      redeemed: []
+    };
+  }
+
+  function loadData() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) return JSON.parse(raw);
+    } catch(e) {}
+    return getDefaultData();
+  }
+
+  function saveData(data) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  }
+
+  let data = loadData();
+
+  // ========== REWARDS DEFINITION ==========
+  function getRewards(totalStars) {
+    const rewards = [
+      { id: 'sleepover', name: 'Sleepover', icon: '🎪', cost: 3, description: 'Have a friend stay over!' }
+    ];
+
+    // Base $10 toy at 5 stars, then every 5 beyond that
+    // "can spend stars to earn: $10 toy: 5 stars - and $10 more for every additional 5 stars earned"
+    // We show the next purchasable toy tier
+    const toyTiersRedeemed = data.redeemed.filter(r => r.startsWith('toy_')).length;
+    const nextToyCost = 5 + (toyTiersRedeemed * 5);
+    const nextToyValue = 10 + (toyTiersRedeemed * 10);
+
+    rewards.push({
+      id: `toy_${toyTiersRedeemed + 1}`,
+      name: `$${nextToyValue} Toy`,
+      icon: '🧸',
+      cost: nextToyCost,
+      description: `Pick out a $${nextToyValue} toy!`
+    });
+
+    return rewards;
+  }
+
+  // ========== UI RENDERING ==========
+  function render() {
+    // Star total
+    document.getElementById('starTotal').textContent = data.stars;
+
+    // Streak
+    const streakEl = document.getElementById('streakText');
+    if (data.streak === 0) {
+      streakEl.textContent = 'Start your streak tonight!';
+    } else if (data.streak === 1) {
+      streakEl.textContent = '1 night in a row!';
+    } else {
+      streakEl.textContent = `${data.streak} nights in a row!`;
+    }
+
+    // Timeline - track goes to 15 for visual, wraps around
+    const trackMax = 15;
+    const displayStars = data.stars % trackMax === 0 && data.stars > 0 ? trackMax : data.stars % trackMax;
+    const pct = Math.min((displayStars / trackMax) * 100, 100);
+    document.getElementById('trackFill').style.width = pct + '%';
+
+    // Character position
+    const charPct = Math.min(pct, 95);
+    const charEl = document.getElementById('bfdiChar');
+    charEl.style.left = `calc(${charPct}% - 30px)`;
+
+    // Character expression based on stars
+    updateCharExpression();
+
+    // Rewards
+    renderRewards();
+
+    // History
+    renderHistory();
+  }
+
+  function updateCharExpression() {
+    const mouth = document.getElementById('charMouth');
+    const leftPupil = document.getElementById('leftPupil');
+    const rightPupil = document.getElementById('rightPupil');
+    const leftArm = document.getElementById('leftArm');
+    const rightArm = document.getElementById('rightArm');
+
+    if (data.stars === 0) {
+      // Neutral/sleepy
+      mouth.setAttribute('d', 'M24,36 L36,36');
+      leftPupil.setAttribute('cy', '30');
+      rightPupil.setAttribute('cy', '30');
+      leftArm.setAttribute('x2', '2');
+      leftArm.setAttribute('y2', '50');
+      rightArm.setAttribute('x2', '58');
+      rightArm.setAttribute('y2', '50');
+    } else if (data.stars < 5) {
+      // Small smile
+      mouth.setAttribute('d', 'M24,36 Q30,41 36,36');
+      leftPupil.setAttribute('cy', '29');
+      rightPupil.setAttribute('cy', '29');
+      leftArm.setAttribute('x2', '2');
+      leftArm.setAttribute('y2', '48');
+      rightArm.setAttribute('x2', '58');
+      rightArm.setAttribute('y2', '48');
+    } else if (data.stars < 10) {
+      // Happy
+      mouth.setAttribute('d', 'M22,35 Q30,45 38,35');
+      leftPupil.setAttribute('cy', '28');
+      rightPupil.setAttribute('cy', '28');
+      leftArm.setAttribute('x2', '0');
+      leftArm.setAttribute('y2', '42');
+      rightArm.setAttribute('x2', '60');
+      rightArm.setAttribute('y2', '42');
+    } else {
+      // Super excited - arms up!
+      mouth.setAttribute('d', 'M21,34 Q30,47 39,34');
+      leftPupil.setAttribute('cy', '27');
+      rightPupil.setAttribute('cy', '27');
+      leftArm.setAttribute('x2', '0');
+      leftArm.setAttribute('y2', '20');
+      rightArm.setAttribute('x2', '60');
+      rightArm.setAttribute('y2', '20');
+    }
+  }
+
+  function renderRewards() {
+    const container = document.getElementById('rewardsContainer');
+    const rewards = getRewards(data.stars);
+    container.innerHTML = rewards.map(r => {
+      const canAfford = data.stars >= r.cost;
+      return `
+        <div class="reward-card">
+          <div class="reward-info">
+            <div class="reward-icon">${r.icon}</div>
+            <div>
+              <div class="reward-name">${r.name}</div>
+              <div class="reward-cost">${r.cost} ⭐ needed${canAfford ? ' — Ready!' : ` — ${r.cost - data.stars} more to go`}</div>
+            </div>
+          </div>
+          <button class="redeem-btn ${canAfford ? 'available' : 'locked'}"
+            ${canAfford ? `onclick="redeemReward('${r.id}', ${r.cost}, '${r.name}')"` : 'disabled'}>
+            ${canAfford ? 'Redeem!' : '🔒'}
+          </button>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function renderHistory() {
+    const container = document.getElementById('historyList');
+    if (data.history.length === 0) {
+      container.innerHTML = '<div class="empty-history">No entries yet — tonight could be the first! 🌙</div>';
+      return;
+    }
+
+    // Show newest first
+    const items = [...data.history].reverse();
+    container.innerHTML = items.map(h => {
+      const isSpend = h.stars < 0;
+      return `
+        <div class="history-item">
+          <span class="history-date">${h.date}</span>
+          <span class="history-event">${h.event}</span>
+          <span class="history-stars ${isSpend ? 'spent' : 'earned'}">${isSpend ? '' : '+'}${h.stars} ⭐</span>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // ========== ACTIONS ==========
+  function logNight(stars) {
+    const today = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
+    const event = stars === 2
+      ? '😴 Slept on time!'
+      : '🛏️ Stayed in bed';
+
+    data.stars += stars;
+    data.streak += 1;
+    data.history.push({ date: today, event, stars });
+    saveData(data);
+
+    // Bounce character
+    const charEl = document.getElementById('bfdiChar');
+    charEl.classList.remove('bounce');
+    void charEl.offsetWidth;
+    charEl.classList.add('bounce');
+
+    render();
+
+    if (stars === 2) {
+      showToast('⭐⭐ Amazing! Two stars for sleeping on time!');
+      celebrate();
+    } else {
+      showToast('⭐ Great job staying in bed, Wesley!');
+    }
+
+    // Streak milestones
+    if (data.streak === 7) {
+      setTimeout(() => showToast('🔥 7 nights in a row! Incredible!'), 2000);
+    } else if (data.streak === 14) {
+      setTimeout(() => showToast('🔥🔥 TWO WEEKS! You\'re a sleep champion!'), 2000);
+    }
+  }
+
+  function redeemReward(id, cost, name) {
+    if (data.stars < cost) return;
+
+    if (!confirm(`Spend ${cost} ⭐ on ${name}?`)) return;
+
+    const today = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
+    data.stars -= cost;
+    data.redeemed.push(id);
+    data.history.push({ date: today, event: `🎁 Redeemed: ${name}`, stars: -cost });
+    saveData(data);
+
+    render();
+    showToast(`🎉 ${name} earned! Way to go, Wesley!`);
+    celebrate();
+  }
+
+  function adjustStars() {
+    const input = document.getElementById('adjustInput');
+    const val = parseInt(input.value);
+    if (isNaN(val) || val === 0) return;
+
+    const today = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
+    data.stars = Math.max(0, data.stars + val);
+    data.history.push({ date: today, event: val > 0 ? '🔧 Stars added (Dad)' : '🔧 Stars removed (Dad)', stars: val });
+    saveData(data);
+
+    input.value = '';
+    render();
+    showToast(`Stars adjusted by ${val > 0 ? '+' : ''}${val}`);
+  }
+
+  function undoLast() {
+    if (data.history.length === 0) {
+      showToast('Nothing to undo!');
+      return;
+    }
+
+    if (!confirm('Undo the last entry?')) return;
+
+    const last = data.history.pop();
+    data.stars = Math.max(0, data.stars - last.stars);
+
+    // If it was a night log, decrease streak
+    if (last.stars > 0 && (last.event.includes('Slept') || last.event.includes('Stayed'))) {
+      data.streak = Math.max(0, data.streak - 1);
+    }
+
+    // If it was a redemption, un-redeem
+    if (last.event.includes('Redeemed')) {
+      data.redeemed.pop();
+    }
+
+    saveData(data);
+    render();
+    showToast('↩️ Last entry undone');
+  }
+
+  function resetAll() {
+    if (!confirm('Reset ALL stars and history? This cannot be undone!')) return;
+    if (!confirm('Are you really sure? Wesley will lose all stars!')) return;
+
+    data = getDefaultData();
+    saveData(data);
+    render();
+    showToast('Chart has been reset');
+  }
+
+  function toggleAdmin() {
+    document.getElementById('adminPanel').classList.toggle('open');
+  }
+
+  // ========== EFFECTS ==========
+  function showToast(msg) {
+    const toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2500);
+  }
+
+  function celebrate() {
+    const cel = document.getElementById('celebration');
+    cel.innerHTML = '';
+    cel.classList.add('active');
+
+    const colors = ['#FFD700', '#FF6B6B', '#4ECDC4', '#45B7D1', '#FF9FF3', '#54A0FF', '#5F27CD', '#01a3a4'];
+
+    for (let i = 0; i < 40; i++) {
+      const piece = document.createElement('div');
+      piece.className = 'confetti-piece';
+      piece.style.left = Math.random() * 100 + '%';
+      piece.style.top = '-10px';
+      piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+      piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+      piece.style.width = (6 + Math.random() * 8) + 'px';
+      piece.style.height = (6 + Math.random() * 8) + 'px';
+      piece.style.animationDelay = (Math.random() * 0.5) + 's';
+      piece.style.animationDuration = (1.5 + Math.random()) + 's';
+      cel.appendChild(piece);
+    }
+
+    setTimeout(() => {
+      cel.classList.remove('active');
+      cel.innerHTML = '';
+    }, 3000);
+  }
+
+  // ========== INIT ==========
+  render();
+</script>
+
+</body>
+</html>
