@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>BFDI Storybook — Wesley and the Battle for Dream Island</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Chewy&family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a12;
+    --bg-card: #12121f;
+    --accent: #4e9fff;
+    --accent2: #ffd166;
+    --accent3: #06d6a0;
+    --accent4: #ff6b35;
+    --text: #e8e8f0;
+    --text-muted: #8888a8;
+    --border: #2a2a3e;
+    --page-bg: #16162a;
+    --page-border: #2e2e50;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Nunito', sans-serif;
+    overflow-x: hidden;
+  }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  #floating-bg {
+    position: fixed; inset: 0; overflow: hidden;
+    pointer-events: none; z-index: 0;
+  }
+  @keyframes floatObj {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    25% { transform: translateY(-25px) rotate(4deg); }
+    50% { transform: translateY(-8px) rotate(-2deg); }
+    75% { transform: translateY(-32px) rotate(2deg); }
+  }
+  .float-obj {
+    position: absolute;
+    animation: floatObj var(--dur) ease-in-out infinite;
+    animation-delay: var(--delay);
+    opacity: var(--opa);
+    font-size: var(--size);
+    left: var(--x); top: var(--y);
+  }
+
+  .container {
+    position: relative; z-index: 1;
+    max-width: 800px; margin: 0 auto;
+    padding: 24px 16px 48px;
+  }
+
+  .book-header {
+    text-align: center;
+    margin-bottom: 32px;
+    animation: fadeUp 0.6s ease both;
+  }
+  .book-header .series-label {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 13px; letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .book-header h1 {
+    font-family: 'Chewy', sans-serif;
+    font-size: clamp(22px, 4.5vw, 36px);
+    color: var(--accent2);
+    text-shadow: 0 0 30px rgba(255,209,102,0.2);
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+  .book-header .byline {
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+
+  .book-wrapper {
+    perspective: 1200px;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 24px;
+  }
+
+  .book {
+    background: var(--page-bg);
+    border: 2px solid var(--page-border);
+    border-radius: 4px 20px 20px 4px;
+    box-shadow:
+      -6px 0 16px rgba(0,0,0,0.4),
+      0 8px 32px rgba(0,0,0,0.5),
+      inset 4px 0 12px rgba(0,0,0,0.3);
+    width: 100%;
+    max-width: 680px;
+    min-height: 520px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .book::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 28px;
+    background: linear-gradient(90deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.15) 40%, transparent 100%);
+    z-index: 5;
+    pointer-events: none;
+  }
+
+  .book::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(180deg, transparent, transparent 28px, rgba(255,255,255,0.008) 28px, rgba(255,255,255,0.008) 29px);
+    pointer-events: none;
+    z-index: 4;
+  }
+
+  .page {
+    display: none;
+    flex-direction: column;
+    padding: 36px 36px 36px 48px;
+    min-height: 520px;
+    animation: pageIn 0.45s ease both;
+  }
+  .page.active { display: flex; }
+
+  @keyframes pageIn {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes pageOut {
+    from { opacity: 1; transform: translateX(0); }
+    to { opacity: 0; transform: translateX(-20px); }
+  }
+  .page.exiting {
+    display: flex;
+    animation: pageOut 0.3s ease both;
+  }
+
+  .page.cover-page {
+    align-items: center;
+    justify-content: flex-start;
+    text-align: center;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover-bg {
+    position: absolute; inset: 0; z-index: 0;
+  }
+  .cover-bg img {
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: center top;
+  }
+  .cover-bg::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom,
+      rgba(10,10,18,0.55) 0%, rgba(10,10,18,0.15) 35%,
+      rgba(10,10,18,0.05) 55%, rgba(10,10,18,0.6) 85%,
+      rgba(10,10,18,0.85) 100%);
+  }
+  .cover-bg-placeholder {
+    position: absolute; inset: 0; z-index: 0;
+    background: linear-gradient(135deg, #0a1628 0%, #101a30 40%, #12121f 100%);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .cover-bg-placeholder .ph-emoji { font-size: 120px; opacity: 0.12; }
+  .cover-content {
+    position: relative; z-index: 1;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: space-between;
+    height: 100%; width: 100%;
+    padding: 36px 32px 32px;
+    min-height: 520px;
+  }
+  .cover-top { text-align: center; }
+  .cover-top .series-tag {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 11px; letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+    text-shadow: 0 1px 6px rgba(0,0,0,0.6);
+  }
+  .cover-top h2 {
+    font-family: 'Chewy', sans-serif;
+    font-size: clamp(24px, 4.5vw, 38px);
+    color: #fff;
+    margin-bottom: 8px;
+    line-height: 1.15;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.7), 0 0 40px rgba(78,159,255,0.25);
+  }
+  .cover-top .cover-sub {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 15px; font-weight: 500;
+    color: var(--accent2);
+    text-shadow: 0 1px 6px rgba(0,0,0,0.6);
+  }
+  .cover-bottom {
+    display: flex; flex-direction: column;
+    align-items: center; gap: 12px;
+  }
+  .cover-bottom .cover-featuring {
+    font-size: 13px;
+    color: rgba(255,255,255,0.7);
+    text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+  }
+  .cover-page .start-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--accent);
+    color: #fff;
+    border: none; border-radius: 14px;
+    padding: 14px 32px;
+    font-family: 'Fredoka', sans-serif;
+    font-size: 18px; font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 16px rgba(78,159,255,0.4);
+    text-shadow: none;
+  }
+  .cover-page .start-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(78,159,255,0.5);
+  }
+
+  .page-number {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 12px;
+    color: var(--text-muted);
+    opacity: 0.6;
+    margin-bottom: 16px;
+  }
+
+  .page-image-container {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    border: 2px solid var(--page-border);
+    position: relative;
+    background: linear-gradient(135deg, #1a1a30, #10102a);
+  }
+
+  .page-image-container img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .page-image-placeholder {
+    width: 100%; height: 100%;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 8px;
+    background: linear-gradient(135deg, rgba(78,159,255,0.06), rgba(255,209,102,0.06));
+  }
+  .page-image-placeholder .ph-emoji { font-size: 48px; opacity: 0.5; }
+  .page-image-placeholder .ph-text {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 13px; color: var(--text-muted); opacity: 0.5;
+  }
+
+  .page-text {
+    font-size: 17px;
+    line-height: 1.85;
+    color: var(--text);
+    flex: 1;
+  }
+  .page-text .character-name {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 600;
+  }
+  .page-text .dialogue {
+    font-style: italic;
+    color: var(--accent2);
+  }
+  .page-text .sound-effect {
+    font-family: 'Chewy', sans-serif;
+    font-size: 20px;
+    display: inline-block;
+  }
+  .page-text .wesley {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .page.end-page {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 48px;
+  }
+  .end-page h2 {
+    font-family: 'Chewy', sans-serif;
+    font-size: 36px;
+    color: var(--accent3);
+    margin-bottom: 12px;
+  }
+  .end-page .end-sub {
+    font-size: 15px;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+    line-height: 1.6;
+  }
+
+  .nav-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    max-width: 680px;
+    margin: 0 auto 24px;
+    animation: fadeUp 0.6s ease 0.2s both;
+  }
+  .nav-btn {
+    display: flex; align-items: center; gap: 6px;
+    padding: 12px 24px;
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    background: var(--bg-card);
+    color: var(--text);
+    font-family: 'Fredoka', sans-serif;
+    font-size: 15px; font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+  }
+  .nav-btn:hover:not(:disabled) {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-1px);
+  }
+  .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+  .nav-btn .arrow { font-size: 18px; }
+
+  .page-indicator {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 14px;
+    color: var(--text-muted);
+    min-width: 80px;
+    text-align: center;
+  }
+
+  .progress-bar-wrap {
+    max-width: 680px;
+    margin: 0 auto 32px;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+    animation: fadeUp 0.6s ease 0.3s both;
+  }
+  .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 2px;
+    transition: width 0.4s ease;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 600px) {
+    .book { min-height: 440px; border-radius: 2px 14px 14px 2px; }
+    .page { padding: 24px 20px 24px 32px; min-height: 440px; }
+    .cover-content { min-height: 440px; padding: 28px 20px 24px; }
+    .page-text { font-size: 15px; line-height: 1.75; }
+    .nav-btn { padding: 10px 16px; font-size: 14px; }
+  }
+
+  .fc-brand-bar{position:sticky;top:0;z-index:100;background:rgba(10,9,12,0.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.06);padding:8px 16px;display:flex;align-items:center;gap:10px}
+  .fc-brand-bar a{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit}
+  .fc-brand-bar img{width:32px;height:32px;border-radius:50%}
+  .fc-brand-bar span{font-family:'Fredoka',sans-serif;font-size:14px;font-weight:600;color:#c9a44a;letter-spacing:0.5px}
+  .fc-brand-bar .fc-sep{color:rgba(255,255,255,0.15);font-size:18px;font-weight:300}
+  .fc-brand-bar .fc-page-name{font-family:'Fredoka',sans-serif;font-size:13px;font-weight:500;color:rgba(255,255,255,0.4)}
+  .fc-brand-bar .fc-bfdi-link{font-family:'Fredoka',sans-serif;font-size:13px;font-weight:500;color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.2s}
+  .fc-brand-bar .fc-bfdi-link:hover{color:rgba(255,255,255,0.7)}
+</style>
+</head>
+<body>
+<div class="fc-brand-bar"><a href="index.html"><img src="fancannonlogo.png" alt="Fan Cannon"><span>Fan Cannon</span></a><span class="fc-sep">|</span><a href="bfdi-universe.html" class="fc-bfdi-link">BFDI Universe</a><span class="fc-sep">|</span><a href="bfdi-stories.html" class="fc-bfdi-link">Storybooks</a><span class="fc-sep">|</span><span class="fc-page-name">Story #3</span></div>
+
+<div id="floating-bg"></div>
+
+<div class="container">
+
+  <div class="book-header">
+    <div class="series-label">BFDI Storybook Collection — Story #3</div>
+    <h1>Wesley and the Battle for Dream Island</h1>
+    <div class="byline">What if YOU could be a contestant? Wesley's about to find out.</div>
+  </div>
+
+  <div class="book-wrapper">
+    <div class="book" id="book">
+
+      <!-- COVER -->
+      <div class="page cover-page active" data-page="0">
+        <div class="cover-bg"><img src="wes-cover.png" alt="Wesley standing with BFDI characters in front of a glowing tablet portal"></div>
+        <div class="cover-content">
+          <div class="cover-top">
+            <div class="series-tag">BFDI Storybook</div>
+            <h2>Wesley and the Battle<br>for Dream Island</h2>
+            <div class="cover-sub">A Battle for Dream Island Story</div>
+          </div>
+          <div class="cover-bottom">
+            <div class="cover-featuring">Featuring Wesley, Firey, Leafy, Bubble, Four & X</div>
+            <button class="start-btn" onclick="goToPage(1)">Start Reading ▶</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAGE 1 -->
+      <div class="page" data-page="1">
+        <div class="page-number">Page 1</div>
+        <div class="page-image-container">
+          <img src="wes-1.png" alt="Wesley being pulled into his glowing tablet">
+        </div>
+        <div class="page-text">
+          <span class="wesley">Wesley</span> was watching BFDI on his tablet — for the third time today. His mom had already said "five more minutes" twice.
+          <br><br>
+          <span class="dialogue">"I wish I could be IN the show,"</span> Wesley said, pulling his blanket up to his chin. <span class="dialogue">"I'd be the BEST contestant ever. I'd win Dream Island easy."</span>
+          <br><br>
+          Right as the episode hit the part where Four screeches, something weird happened. The screen started glowing — not normal glowing, but BRIGHT, like stare-into-the-sun bright.
+          <br><br>
+          <span class="dialogue">"Uh... that's new,"</span> Wesley said.
+          <br><br>
+          And then the tablet <span class="sound-effect" style="color:var(--accent)">PULLED</span> him in.
+        </div>
+      </div>
+
+      <!-- PAGE 2 -->
+      <div class="page" data-page="2">
+        <div class="page-number">Page 2</div>
+        <div class="page-image-container">
+          <img src="wes-2.png" alt="Wesley lands in Goiky surrounded by shocked characters">
+        </div>
+        <div class="page-text">
+          <span class="wesley">Wesley</span> tumbled through a swirl of colors and landed — <span class="sound-effect" style="color:var(--accent4)">THUD</span> — face-first in grass.
+          <br><br>
+          He sat up and looked around. Green fields. Blue sky. And in the distance... <span class="character-name" style="color:var(--accent2)">Dream Island</span>, sparkling on the water. ACTUAL Dream Island.
+          <br><br>
+          <span class="dialogue">"No. Way."</span> Wesley whispered.
+          <br><br>
+          <span class="dialogue">"HEY! HEY YOU! WHAT ARE YOU?!"</span>
+          <br><br>
+          Wesley spun around. Standing right in front of him was <span class="character-name" style="color:#ff6b35">Firey</span>, <span class="character-name" style="color:#06d6a0">Leafy</span>, <span class="character-name" style="color:#88ccff">Bubble</span>, and about thirty other contestants — all staring at him like he had three heads.
+          <br><br>
+          <span class="dialogue">"Are you... a HUMAN?!"</span> Leafy gasped. <span class="dialogue">"I've read about those!"</span>
+        </div>
+      </div>
+
+      <!-- PAGE 3 -->
+      <div class="page" data-page="3">
+        <div class="page-number">Page 3</div>
+        <div class="page-image-container">
+          <img src="wes-3.png" alt="Four poking Wesley while X bounces excitedly">
+        </div>
+        <div class="page-text">
+          Before Wesley could explain, the ground shook. A giant blue number descended from the sky. <span class="character-name" style="color:#ffe74c">FOUR</span>.
+          <br><br>
+          <span class="dialogue">"WHAT. IS. THIS."</span> Four said, poking Wesley's arm. <span class="dialogue">"It's squishy. And tall. And it doesn't have a recovery center."</span>
+          <br><br>
+          <span class="dialogue">"I'm Wesley! I'm a kid! I watch your show!"</span>
+          <br><br>
+          Four's eyes went wide. <span class="dialogue">"You... watch us? From where?"</span>
+          <br><br>
+          <span class="dialogue">"From my tablet. In Maryland."</span>
+          <br><br>
+          Four stared at him for a very long time. Then a huge grin spread across his face. <span class="dialogue">"A HUMAN contestant! This has NEVER happened before! You're IN. You're competing."</span>
+          <br><br>
+          <span class="character-name" style="color:#ffd166">X</span> bounced over excitedly. <span class="dialogue">"Ooh! Can he be on a team? Can he? CAN HE?!"</span>
+        </div>
+      </div>
+
+      <!-- PAGE 4 -->
+      <div class="page" data-page="4">
+        <div class="page-number">Page 4</div>
+        <div class="page-image-container">
+          <img src="wes-4.png" alt="Firey stepping up to pick Wesley for his team">
+        </div>
+        <div class="page-text">
+          <span class="dialogue">"TEAM PICKING TIME!"</span> Four screeched (Wesley covered his ears — that screech was WAY louder in person).
+          <br><br>
+          Nobody wanted to pick first. Everyone just stared at Wesley.
+          <br><br>
+          <span class="dialogue">"He doesn't even have ARMS that detach,"</span> <span class="character-name" style="color:#c0d8f0">Snowball</span> grumbled. <span class="dialogue">"He can't fly,"</span> <span class="character-name" style="color:#d880d8">Puffball</span> noted. <span class="dialogue">"He can't even recover if he DIES,"</span> <span class="character-name" style="color:#e53935">Blocky</span> added cheerfully.
+          <br><br>
+          Wesley's heart sank. Nobody wanted the human kid.
+          <br><br>
+          Then a voice spoke up. <span class="dialogue">"I'll take him."</span>
+          <br><br>
+          Everyone turned. It was <span class="character-name" style="color:#ff6b35">Firey</span>. <span class="dialogue">"He watches the show. That means he knows all of us. Our strengths, our weaknesses, our strategies."</span> Firey grinned. <span class="dialogue">"Wesley's basically a walking cheat code."</span>
+        </div>
+      </div>
+
+      <!-- PAGE 5 -->
+      <div class="page" data-page="5">
+        <div class="page-number">Page 5</div>
+        <div class="page-image-container">
+          <img src="wes-5.png" alt="Wesley leading a team huddle with Firey, Leafy, and Bubble">
+        </div>
+        <div class="page-text">
+          <span class="dialogue">"TODAY'S CHALLENGE,"</span> <span class="character-name" style="color:#ffe74c">Four</span> announced, <span class="dialogue">"is CAPTURE X'S BASKET."</span>
+          <br><br>
+          <span class="character-name" style="color:#ffd166">X</span> clutched his favorite basket protectively. <span class="dialogue">"Please be gentle with it..."</span>
+          <br><br>
+          The rules were simple: X's basket was hidden somewhere in the Goiky forest. First team to find it and bring it back wins. Losers face elimination.
+          <br><br>
+          <span class="wesley">Wesley</span>'s brain went into overdrive. He'd seen every episode. He KNEW this forest.
+          <br><br>
+          <span class="dialogue">"Guys, huddle up,"</span> Wesley said. <span class="dialogue">"I know where X hides things. He always picks spots near water because he likes the sound. We need to head toward Yoyle River."</span>
+          <br><br>
+          <span class="character-name" style="color:#06d6a0">Leafy</span>'s eyes went wide. <span class="dialogue">"He's RIGHT. X does love water sounds!"</span>
+          <br><br>
+          <span class="character-name" style="color:#e8b030">Coiny</span> shrugged. <span class="dialogue">"Okay, tiny human. Lead the way."</span>
+        </div>
+      </div>
+
+      <!-- PAGE 6 -->
+      <div class="page" data-page="6">
+        <div class="page-number">Page 6</div>
+        <div class="page-image-container">
+          <img src="wes-6.png" alt="Wesley climbing a huge tree while his team cheers">
+        </div>
+        <div class="page-text">
+          Wesley's team raced into the Goiky forest. The trees were HUGE — way bigger than any tree Wesley had seen back home. Some of them had faces (which was... unsettling).
+          <br><br>
+          <span class="dialogue">"Stay close!"</span> <span class="character-name" style="color:#06d6a0">Leafy</span> called. <span class="dialogue">"The other team went left!"</span>
+          <br><br>
+          Wesley spotted something — footprints. Tiny, X-shaped footprints in the mud, heading toward the river. <span class="dialogue">"THIS WAY!"</span>
+          <br><br>
+          But the path was blocked by a massive fallen tree. Firey tried to burn through it, but it was too thick and wet. Bubble couldn't squeeze through the gaps. Everyone was stuck.
+          <br><br>
+          Wesley looked at the tree. Then he looked at his team. Then he smiled.
+          <br><br>
+          <span class="dialogue">"I can climb OVER it. Humans are really good at climbing."</span>
+        </div>
+      </div>
+
+      <!-- PAGE 7 -->
+      <div class="page" data-page="7">
+        <div class="page-number">Page 7</div>
+        <div class="page-image-container">
+          <img src="wes-7.png" alt="Wesley jumping over Blocky tripwire in the forest">
+        </div>
+        <div class="page-text">
+          Wesley scrambled over the tree and found a path on the other side. He could hear the river! They were close.
+          <br><br>
+          But then — <span class="sound-effect" style="color:var(--accent4)">CRASH</span> — the other team burst through the bushes. <span class="character-name" style="color:#c0d8f0">Snowball</span> was in the lead, and he looked MAD.
+          <br><br>
+          <span class="dialogue">"THERE THEY ARE! GET THE BASKET BEFORE THE HUMAN DOES!"</span>
+          <br><br>
+          <span class="character-name" style="color:#e53935">Blocky</span> launched a prank — a tripwire made of string! Wesley saw it just in time and jumped over it.
+          <br><br>
+          <span class="dialogue">"HA! Nice try, Blocky! I've seen every episode of Blocky's Funny Doings International. I KNOW your tricks!"</span>
+          <br><br>
+          Blocky's jaw dropped. <span class="dialogue">"He... he knows about the show?!"</span>
+          <br><br>
+          <span class="dialogue">"I know EVERYTHING about the show,"</span> <span class="wesley">Wesley</span> grinned.
+        </div>
+      </div>
+
+      <!-- PAGE 8 -->
+      <div class="page" data-page="8">
+        <div class="page-number">Page 8</div>
+        <div class="page-image-container">
+          <img src="wes-8.png" alt="Bubble helping Wesley grab the basket by the river">
+        </div>
+        <div class="page-text">
+          Wesley burst through the last row of trees and there it was — the river, sparkling in the sunlight. And sitting on a mossy rock right next to the water...
+          <br><br>
+          <span class="character-name" style="color:#ffd166">X</span>'s basket.
+          <br><br>
+          <span class="dialogue">"THERE!"</span> Wesley shouted. He sprinted for it — but <span class="character-name" style="color:#c0d8f0">Snowball</span> was RIGHT behind him, and Snowball was FAST.
+          <br><br>
+          Wesley's legs were shorter. He wasn't going to make it.
+          <br><br>
+          Then <span class="character-name" style="color:#88ccff">Bubble</span> floated up beside him. <span class="dialogue">"Wesley! GRAB ON!"</span>
+          <br><br>
+          Wesley grabbed Bubble's hand — gently, SO gently — and Bubble floated him forward just far enough. His fingers closed around the basket handle.
+          <br><br>
+          <span class="dialogue">"GOT IT!"</span>
+          <br><br>
+          <span class="dialogue">"<span class="sound-effect" style="color:var(--accent2)">YOYLECAKE!</span>"</span> Bubble cheered. And miraculously, she didn't pop.
+        </div>
+      </div>
+
+      <!-- PAGE 9 -->
+      <div class="page" data-page="9">
+        <div class="page-number">Page 9</div>
+        <div class="page-image-container">
+          <img src="wes-9.png" alt="Wesley celebrated by all the characters after winning">
+        </div>
+        <div class="page-text">
+          Wesley's team ran back to <span class="character-name" style="color:#ffe74c">Four</span> carrying the basket, all of them cheering and yelling.
+          <br><br>
+          <span class="dialogue">"WE WON! WE WON! THE HUMAN WON IT FOR US!"</span> <span class="character-name" style="color:#e8b030">Coiny</span> shouted, doing a victory dance.
+          <br><br>
+          Four examined the basket carefully and handed it back to <span class="character-name" style="color:#ffd166">X</span>, who hugged it like a long-lost friend. <span class="dialogue">"My basket! You're SAFE!"</span>
+          <br><br>
+          <span class="dialogue">"The winners are... WESLEY'S TEAM!"</span> Four announced.
+          <br><br>
+          The contestants erupted. <span class="character-name" style="color:#ff6b35">Firey</span> high-fived Wesley (which stung a little — Firey was still fire). <span class="character-name" style="color:#06d6a0">Leafy</span> picked him up and spun him around. Even <span class="character-name" style="color:#cc88aa">Needle</span> gave him a pat on the back (carefully, so she wouldn't poke him).
+          <br><br>
+          <span class="dialogue">"Not bad for a human,"</span> <span class="character-name" style="color:#b050c8">Lollipop</span> said. Coming from her, that was basically a standing ovation.
+        </div>
+      </div>
+
+      <!-- PAGE 10 -->
+      <div class="page" data-page="10">
+        <div class="page-number">Page 10</div>
+        <div class="page-image-container">
+          <img src="wes-10.png" alt="Wesley eating cake at Cake at Stake with Firey and friends">
+        </div>
+        <div class="page-text">
+          That night, the losing team faced Cake at Stake. <span class="wesley">Wesley</span> watched from the safe seats, eating actual cake (it was way better than Flower's).
+          <br><br>
+          <span class="dialogue">"So this is what it looks like from the inside,"</span> Wesley whispered to <span class="character-name" style="color:#ff6b35">Firey</span>. <span class="dialogue">"On my tablet it's just a screen. But here it's... real."</span>
+          <br><br>
+          <span class="dialogue">"Were you scared?"</span> Firey asked. <span class="dialogue">"During the challenge?"</span>
+          <br><br>
+          <span class="dialogue">"Terrified,"</span> Wesley admitted. <span class="dialogue">"But like... the GOOD kind of scared. The kind where you do it anyway."</span>
+          <br><br>
+          Firey's flames flickered warmly. <span class="dialogue">"That's the best kind."</span>
+          <br><br>
+          <span class="character-name" style="color:#c8956c">Woody</span> leaned over from the row behind. <span class="dialogue">"Y-you were really brave out there, Wesley."</span>
+          <br><br>
+          Wesley smiled. That meant more than any Dream Island ever could.
+        </div>
+      </div>
+
+      <!-- PAGE 11 -->
+      <div class="page" data-page="11">
+        <div class="page-number">Page 11</div>
+        <div class="page-image-container">
+          <img src="wes-11.png" alt="Wesley hugging Bubble goodbye with tablet glowing in the sky">
+        </div>
+        <div class="page-text">
+          The next morning, Wesley's tablet appeared in the sky, glowing just like before.
+          <br><br>
+          <span class="dialogue">"That's your ride home, isn't it?"</span> <span class="character-name" style="color:#06d6a0">Leafy</span> said quietly.
+          <br><br>
+          Wesley's stomach dropped. He didn't WANT to go home. He wanted to stay in Goiky forever, with Firey and Leafy and Bubble and everyone.
+          <br><br>
+          <span class="dialogue">"Will I be able to come back?"</span> Wesley asked <span class="character-name" style="color:#ffe74c">Four</span>.
+          <br><br>
+          Four shrugged. <span class="dialogue">"How should I know? I'm a number, not a portal expert."</span> Then he added, softer than usual, <span class="dialogue">"But... the show goes on, Wesley. And as long as you're watching... you're always part of it."</span>
+          <br><br>
+          <span class="character-name" style="color:#88ccff">Bubble</span> floated over and gave him the gentlest hug in history. <span class="dialogue">"We'll moiss you, Wesley."</span>
+          <br><br>
+          Wesley hugged her back — carefully. <span class="dialogue">"I'll miss you too, Bubble. All of you."</span>
+        </div>
+      </div>
+
+      <!-- PAGE 12 -->
+      <div class="page" data-page="12">
+        <div class="page-number">Page 12</div>
+        <div class="page-image-container">
+          <img src="wes-12.png" alt="Wesley in bed holding a glowing flame pin with BFDI posters on the wall">
+        </div>
+        <div class="page-text">
+          <span class="wesley">Wesley</span> tumbled out of the screen and landed back in his bed, blanket and all. His tablet showed the BFDI end credits, playing normally like nothing had happened.
+          <br><br>
+          Had he dreamed it?
+          <br><br>
+          He looked down. In his hand, he was holding something small and warm — a tiny flame-shaped pin. It hadn't been there before.
+          <br><br>
+          Wesley smiled the biggest smile of his entire life. He set the pin on his nightstand, pulled up his blanket, and whispered:
+          <br><br>
+          <span class="dialogue">"Same time tomorrow, guys."</span>
+          <br><br>
+          The pin flickered. Just once. Just for him.
+        </div>
+      </div>
+
+      <!-- END PAGE -->
+      <div class="page end-page" data-page="13">
+        <div style="font-size:64px;margin-bottom:16px">🌟🔥</div>
+        <h2>The End</h2>
+        <div class="end-sub">
+          Thank you for reading, Wesley!<br>
+          Goiky will always be there waiting for you.<br>
+          All you have to do is press play.
+        </div>
+        <button class="start-btn" onclick="goToPage(0)" style="background:var(--accent3)">
+          Read Again 🔄
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="nav-controls">
+    <button class="nav-btn" id="prevBtn" onclick="prevPage()" disabled>
+      <span class="arrow">←</span> Back
+    </button>
+    <div class="page-indicator" id="pageIndicator">Cover</div>
+    <button class="nav-btn" id="nextBtn" onclick="nextPage()">
+      Next <span class="arrow">→</span>
+    </button>
+  </div>
+
+  <div class="progress-bar-wrap">
+    <div class="progress-bar" id="progressBar" style="width:0%"></div>
+  </div>
+
+</div>
+
+<script>
+(() => {
+  const bg = document.getElementById('floating-bg');
+  const objs = ['📱','🌀','🔥','🍃','🫧','4️⃣','✖️','🏝️','⭐','🧺','🪙','🎂','✨','🌟'];
+  for (let i = 0; i < 18; i++) {
+    const el = document.createElement('div');
+    el.className = 'float-obj';
+    el.textContent = objs[i % objs.length];
+    el.style.setProperty('--x', Math.random() * 95 + '%');
+    el.style.setProperty('--y', Math.random() * 95 + '%');
+    el.style.setProperty('--dur', (12 + Math.random() * 14) + 's');
+    el.style.setProperty('--delay', (-Math.random() * 10) + 's');
+    el.style.setProperty('--opa', (0.04 + Math.random() * 0.08).toFixed(2));
+    el.style.setProperty('--size', (16 + Math.random() * 20) + 'px');
+    bg.appendChild(el);
+  }
+})();
+
+let currentPage = 0;
+const totalStoryPages = 12;
+const totalPages = totalStoryPages + 2;
+
+function goToPage(n) {
+  const pages = document.querySelectorAll('.page');
+  const curr = document.querySelector('.page.active');
+  if (curr) {
+    curr.classList.remove('active');
+    curr.classList.add('exiting');
+    setTimeout(() => curr.classList.remove('exiting'), 300);
+  }
+  currentPage = n;
+  setTimeout(() => {
+    pages.forEach(p => {
+      p.classList.remove('active');
+      if (parseInt(p.dataset.page) === n) p.classList.add('active');
+    });
+    updateNav();
+  }, curr ? 200 : 0);
+}
+
+function nextPage() { if (currentPage < totalPages - 1) goToPage(currentPage + 1); }
+function prevPage() { if (currentPage > 0) goToPage(currentPage - 1); }
+
+function updateNav() {
+  document.getElementById('prevBtn').disabled = currentPage === 0;
+  document.getElementById('nextBtn').disabled = currentPage === totalPages - 1;
+  const indicator = document.getElementById('pageIndicator');
+  if (currentPage === 0) indicator.textContent = 'Cover';
+  else if (currentPage === totalPages - 1) indicator.textContent = 'The End';
+  else indicator.textContent = `Page ${currentPage} of ${totalStoryPages}`;
+  document.getElementById('progressBar').style.width = ((currentPage / (totalPages - 1)) * 100) + '%';
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextPage(); }
+  if (e.key === 'ArrowLeft') { e.preventDefault(); prevPage(); }
+});
+
+let touchStartX = 0;
+document.getElementById('book').addEventListener('touchstart', e => {
+  touchStartX = e.changedTouches[0].screenX;
+}, { passive: true });
+document.getElementById('book').addEventListener('touchend', e => {
+  const diff = touchStartX - e.changedTouches[0].screenX;
+  if (Math.abs(diff) > 50) { diff > 0 ? nextPage() : prevPage(); }
+}, { passive: true });
+
+updateNav();
+</script>
+</body>
+</html>
