@@ -392,9 +392,18 @@
     .page-text { font-size: 15px; line-height: 1.75; }
     .nav-btn { padding: 10px 16px; font-size: 14px; }
   }
+  .fc-brand-bar{position:sticky;top:0;z-index:100;background:rgba(10,9,12,0.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.06);padding:8px 16px;display:flex;align-items:center;gap:10px}
+  .fc-brand-bar a{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit}
+  .fc-brand-bar img{width:32px;height:32px;border-radius:50%}
+  .fc-brand-bar span{font-family:'Fredoka',sans-serif;font-size:14px;font-weight:600;color:#c9a44a;letter-spacing:0.5px}
+  .fc-brand-bar .fc-sep{color:rgba(255,255,255,0.15);font-size:18px;font-weight:300}
+  .fc-brand-bar .fc-page-name{font-family:'Fredoka',sans-serif;font-size:13px;font-weight:500;color:rgba(255,255,255,0.4)}
+  .fc-brand-bar .fc-bfdi-link{font-family:'Fredoka',sans-serif;font-size:13px;font-weight:500;color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.2s}
+  .fc-brand-bar .fc-bfdi-link:hover{color:rgba(255,255,255,0.7)}
 </style>
 </head>
 <body>
+<div class="fc-brand-bar"><a href="index.html"><img src="fancannonlogo.png" alt="Fan Cannon"><span>Fan Cannon</span></a><span class="fc-sep">|</span><a href="bfdi-universe.html" class="fc-bfdi-link">BFDI Universe</a><span class="fc-sep">|</span><a href="bfdi-stories.html" class="fc-bfdi-link">Storybooks</a><span class="fc-sep">|</span><span class="fc-page-name">Story #2</span></div>
 
 <div id="floating-bg"></div>
 
