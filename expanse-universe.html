@@ -184,11 +184,6 @@ nav button.active{background:var(--accent);color:#fff;border-color:var(--accent)
 <strong>The Expanse</strong> is set in the 24th century when humanity has colonized the solar system. Earth is governed by the <strong>United Nations</strong>, Mars has become an independent military superpower, and the <strong>Belt</strong> &mdash; the asteroid colonies between Mars and Jupiter &mdash; is an exploited underclass fighting for survival. When the crew of the ice hauler <strong>Canterbury</strong> stumbles onto an alien technology called the <strong>protomolecule</strong>, it sets off a chain reaction of wars, conspiracies, and first contact that spans decades. Written by <strong>Daniel Abraham</strong> and <strong>Ty Franck</strong> under the pen name James S.A. Corey, the series won the <strong>Hugo Award for Best Series</strong> in 2020.
 </div>
 
-<div style="margin:20px 0;text-align:center">
-<img src="expanse-protomolecule.png" alt="Protomolecule Timeline" style="width:100%;border-radius:16px;border:1px solid var(--border)">
-<div style="font-size:12px;color:var(--text-dim);margin-top:8px">The protomolecule's evolution &mdash; from Phoebe Station to the Ring Gate to Laconia</div>
-</div>
-
 <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin:28px 0">
   <a href="expanse-characters.html" style="text-decoration:none;color:inherit;background:var(--bg-card);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:all .25s;display:block">
     <img src="expanse-character-cta.png" alt="Character Deep Dives" style="width:100%;display:block;border-bottom:1px solid var(--border)">
@@ -213,7 +208,9 @@ nav button.active{background:var(--accent);color:#fff;border-color:var(--accent)
   </a>
 </div>
 
-<div style="background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:18px 22px;margin:14px 0">
+<div style="background:var(--bg-card);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin:14px 0;display:grid;grid-template-columns:1fr 1fr;gap:0">
+<a href="expanse-music.html" style="display:block"><img src="expanse-belt.png" alt="Belters raising fists — Adewu fo da Belt" style="width:100%;height:100%;object-fit:cover;display:block"></a>
+<div style="padding:20px 22px;display:flex;flex-direction:column;justify-content:center">
 <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
 <div style="font-size:24px">🎵</div>
 <div><div style="font-family:Orbitron,sans-serif;font-size:14px;font-weight:700;color:var(--accent2);letter-spacing:0.5px">Adewu fo da Belt</div>
@@ -222,7 +219,8 @@ nav button.active{background:var(--accent);color:#fff;border-color:var(--accent)
 <audio controls style="width:100%" preload="metadata">
 <source src="Adewu_fo_da_Belt.mp3" type="audio/mpeg">
 </audio>
-<div style="margin-top:8px;text-align:right"><a href="expanse-music.html" style="font-size:11px;color:var(--accent2);text-decoration:none;font-weight:700">Full lyrics &amp; more songs &rarr;</a></div>
+<div style="margin-top:10px;text-align:right"><a href="expanse-music.html" style="font-size:12px;color:var(--accent2);text-decoration:none;font-weight:700">Full lyrics &amp; more songs &rarr;</a></div>
+</div>
 </div>
 
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0">
@@ -233,7 +231,11 @@ nav button.active{background:var(--accent);color:#fff;border-color:var(--accent)
 </div>
 
 <div id="sec-timeline" class="section">
-<h2 style="font-family:'Orbitron',sans-serif;font-size:22px;font-weight:700;margin:20px 0 24px;color:var(--accent2);letter-spacing:1px">📜 TIMELINE</h2>
+<h2 style="font-family:'Orbitron',sans-serif;font-size:22px;font-weight:700;margin:20px 0 16px;color:var(--accent2);letter-spacing:1px">📜 TIMELINE</h2>
+<div style="margin:0 0 24px;text-align:center">
+<img src="expanse-protomolecule.png" alt="Protomolecule Timeline — Phoebe to Laconia" style="width:100%;border-radius:16px;border:1px solid var(--border)">
+<div style="font-size:12px;color:var(--text-dim);margin-top:8px">The protomolecule's path — from Phoebe Station to Eros to Venus to the Ring Gate to Laconia</div>
+</div>
 <div id="timeline-list"></div>
 </div>
 
@@ -315,24 +317,25 @@ nav button.active{background:var(--accent);color:#fff;border-color:var(--accent)
 function showSec(id,btn){document.querySelectorAll('.section').forEach(function(s){s.classList.remove('active')});document.getElementById('sec-'+id).classList.add('active');document.querySelectorAll('nav button').forEach(function(b){b.classList.remove('active')});btn.classList.add('active');window.scrollTo({top:0,behavior:'smooth'})}
 
 var TIMELINE=[
-{title:"Ring Builders' Empire (2+ Billion Years Ago)",desc:"An advanced alien civilization builds a network of wormhole gates spanning thousands of star systems. They are destroyed by an unknown enemy — the 'dark gods' — who exist in a dimension between the gates.",tag:"Ancient History"},
-{title:"Protomolecule Sent to Earth (~2 Billion Years Ago)",desc:"The Ring Builders launch the protomolecule toward primitive Earth via Saturn's moon Phoebe. It's designed to hijack life and build a Ring Gate. But it gets captured by Saturn's gravity and never reaches Earth.",tag:"Ancient History"},
+{title:"Ring Builders' Empire (2+ Billion Years Ago)",desc:"An advanced alien civilization builds a network of wormhole gates spanning thousands of star systems. They are destroyed by an unknown enemy — the 'dark gods' — who exist in a dimension between the gates.",tag:"Ancient History",img:"tl-01-builders.png"},
+{title:"Protomolecule Sent to Earth (~2 Billion Years Ago)",desc:"The Ring Builders launch the protomolecule toward primitive Earth via Saturn's moon Phoebe. It's designed to hijack life and build a Ring Gate. But it gets captured by Saturn's gravity and never reaches Earth.",tag:"Ancient History",img:"tl-02-extinction.png"},
 {title:"The Epstein Drive (~2200s)",desc:"Solomon Epstein accidentally invents a revolutionary fusion drive that makes interplanetary travel practical. It changes everything — enabling the colonization of Mars, the Belt, and the outer planets.",tag:"Pre-Series"},
 {title:"Mars Congressional Republic Founded",desc:"Mars declares independence from Earth and forms its own military government. The two powers enter a cold war that defines solar system politics for generations.",tag:"Pre-Series"},
 {title:"OPA Forms",desc:"The Outer Planets Alliance is created to fight for Belter rights. Belters are physically changed by low gravity — taller, thinner, with brittle bones. They're exploited by Earth and Mars for resources.",tag:"Pre-Series"},
-{title:"Canterbury Destroyed (Book 1: Leviathan Wakes)",desc:"The ice hauler Canterbury is destroyed by a stealth ship. Survivors Jim Holden, Naomi Nagata, Amos Burton, and Alex Kamal escape on a shuttle and eventually claim the Martian gunship Rocinante.",tag:"Leviathan Wakes"},
-{title:"Eros Incident",desc:"The protomolecule is unleashed on Eros Station, killing 100,000 people in a horrific experiment by the corporation Protogen. Detective Miller crashes Eros into Venus, sacrificing himself to prevent it from hitting Earth.",tag:"Leviathan Wakes"},
-{title:"Ganymede Incident (Book 2: Caliban's War)",desc:"A protomolecule hybrid soldier attacks UN and MCRN forces on Ganymede, the breadbasket of the outer planets. Botanist Prax Meng searches for his missing daughter. The solar system nearly goes to all-out war.",tag:"Caliban's War"},
-{title:"The Ring Gate Opens (Book 3: Abaddon's Gate)",desc:"The protomolecule constructs a massive Ring Gate near Uranus, connecting to a pocket dimension called the Slow Zone — a hub linking to 1,300+ habitable star systems. Humanity's future changes forever.",tag:"Abaddon's Gate"},
-{title:"Ilus / New Terra (Book 4: Cibola Burn)",desc:"Humanity rushes through the Ring Gates to colonize new worlds. On Ilus (New Terra), conflict erupts between Belter refugees and a corporate expedition. Ancient alien tech activates catastrophically.",tag:"Cibola Burn"},
-{title:"Free Navy War (Book 5: Nemesis Games)",desc:"Marco Inaros, a radical Belter, launches asteroid strikes on Earth, killing billions. Naomi's traumatic past with Marco is revealed. The crew of the Rocinante is scattered and must fight to reunite.",tag:"Nemesis Games"},
-{title:"Battle of the Ring Space (Book 6: Babylon's Ashes)",desc:"The combined forces of Earth, Mars, and moderate Belters fight Marco's Free Navy. The Transport Union is formed. Admiral Duarte secretly takes a rogue Martian fleet through the Laconia gate with the protomolecule.",tag:"Babylon's Ashes"},
-{title:"30-Year Time Jump",desc:"Three decades pass. The Rocinante crew ages. Duarte builds the Laconian Empire using protomolecule technology. Laconia returns to conquer the entire gate network with terrifyingly advanced warships.",tag:"Between Books"},
-{title:"Laconian Invasion (Book 7: Persepolis Rising)",desc:"Laconia's single warship, the Magnetar-class Heart of the Tempest, defeats entire fleets alone. Duarte declares himself High Consul and demands submission from all of humanity. The Rocinante crew joins the underground resistance.",tag:"Persepolis Rising"},
-{title:"Duarte's Fall (Book 8: Tiamat's Wrath)",desc:"Duarte experiments with protomolecule tech to become immortal but loses his mind. Bobbie Draper sacrifices herself heroically. The 'dark gods' that killed the Ring Builders begin to notice humanity.",tag:"Tiamat's Wrath"},
-{title:"The Ring Gates Close (Book 9: Leviathan Falls)",desc:"Holden sacrifices himself to shut down the Ring network and save humanity from the dark gods. The gates close forever, stranding colonies across 1,300 star systems. Humanity survives, scattered but free.",tag:"Leviathan Falls"}
+{title:"Canterbury Destroyed (Book 1: Leviathan Wakes)",desc:"The ice hauler Canterbury is destroyed by a stealth ship. Survivors Jim Holden, Naomi Nagata, Amos Burton, and Alex Kamal escape on a shuttle and eventually claim the Martian gunship Rocinante.",tag:"Leviathan Wakes",img:"tl-04-canterbury.png"},
+{title:"Eros Incident",desc:"The protomolecule is unleashed on Eros Station, killing 100,000 people in a horrific experiment by the corporation Protogen. Detective Miller crashes Eros into Venus, sacrificing himself to prevent it from hitting Earth.",tag:"Leviathan Wakes",img:"tl-05-eros.png"},
+{title:"Ganymede Incident (Book 2: Caliban's War)",desc:"A protomolecule hybrid soldier attacks UN and MCRN forces on Ganymede, the breadbasket of the outer planets. Botanist Prax Meng searches for his missing daughter. The solar system nearly goes to all-out war.",tag:"Caliban's War",img:"tl-06-venus.png"},
+{title:"The Ring Gate Opens (Book 3: Abaddon's Gate)",desc:"The protomolecule constructs a massive Ring Gate near Uranus, connecting to a pocket dimension called the Slow Zone — a hub linking to 1,300+ habitable star systems. Humanity's future changes forever.",tag:"Abaddon's Gate",img:"tl-07-ringgate.png"},
+{title:"Ilus / New Terra (Book 4: Cibola Burn)",desc:"Humanity rushes through the Ring Gates to colonize new worlds. On Ilus (New Terra), conflict erupts between Belter refugees and a corporate expedition. Ancient alien tech activates catastrophically.",tag:"Cibola Burn",img:"tl-08-1300worlds.png"},
+{title:"Free Navy War (Book 5: Nemesis Games)",desc:"Marco Inaros, a radical Belter, launches asteroid strikes on Earth, killing billions. Naomi's traumatic past with Marco is revealed. The crew of the Rocinante is scattered and must fight to reunite.",tag:"Nemesis Games",img:"tl-10-freenavyrocks.png"},
+{title:"Battle of the Ring Space (Book 6: Babylon's Ashes)",desc:"The combined forces of Earth, Mars, and moderate Belters fight Marco's Free Navy. The Transport Union is formed. Admiral Duarte secretly takes a rogue Martian fleet through the Laconia gate with the protomolecule.",tag:"Babylon's Ashes",img:"tl-09-coldwar.png"},
+{title:"30-Year Time Jump",desc:"Three decades pass. The Rocinante crew ages. Duarte builds the Laconian Empire using protomolecule technology. Laconia returns to conquer the entire gate network with terrifyingly advanced warships.",tag:"Between Books",img:"tl-03-phoebe.png"},
+{title:"Laconian Invasion (Book 7: Persepolis Rising)",desc:"Laconia's single warship, the Magnetar-class Heart of the Tempest, defeats entire fleets alone. Duarte declares himself High Consul and demands submission from all of humanity. The Rocinante crew joins the underground resistance.",tag:"Persepolis Rising",img:"expanse-laconia.png"},
+{title:"Duarte's Fall (Book 8: Tiamat's Wrath)",desc:"Duarte experiments with protomolecule tech to become immortal but loses his mind. Bobbie Draper sacrifices herself heroically. The 'dark gods' that killed the Ring Builders begin to notice humanity.",tag:"Tiamat's Wrath",img:"tl-13-duartefall.png"},
+{title:"Laconia's War — The Tempest",desc:"The Magnetar-class Heart of the Tempest faces combined human fleets. Its alien-enhanced weapons warp space itself, crumpling ships like foil. One ship against everyone — and one ship is enough.",tag:"Tiamat's Wrath",img:"tl-12-tempest.png"},
+{title:"The Ring Gates Close (Book 9: Leviathan Falls)",desc:"Holden sacrifices himself to shut down the Ring network and save humanity from the dark gods. The gates close forever, stranding colonies across 1,300 star systems. Humanity survives, scattered but free.",tag:"Leviathan Falls",img:"tl-14-holden.png"}
 ];
-(function(){var el=document.getElementById('timeline-list');TIMELINE.forEach(function(t,i){el.innerHTML+='<div class="tl-item fade-in" style="animation-delay:'+(i*0.05)+'s"><div class="tl-dot"></div>'+(i<TIMELINE.length-1?'<div class="tl-line"></div>':'')+'<div class="tl-content"><h3>'+t.title+'</h3><p>'+t.desc+'</p><span class="tl-tag">'+t.tag+'</span></div></div>'})})();
+(function(){var el=document.getElementById('timeline-list');TIMELINE.forEach(function(t,i){var imgHtml=t.img?'<img src="'+t.img+'" alt="'+t.title+'" style="width:100%;border-radius:12px;margin-bottom:12px;display:block;border:1px solid var(--border)">':'';el.innerHTML+='<div class="tl-item fade-in" style="animation-delay:'+(i*0.05)+'s"><div class="tl-dot"></div>'+(i<TIMELINE.length-1?'<div class="tl-line"></div>':'')+'<div class="tl-content">'+imgHtml+'<h3>'+t.title+'</h3><p>'+t.desc+'</p><span class="tl-tag">'+t.tag+'</span></div></div>'})})();
 
 var CHARS=[
 // ═══ ROCINANTE CREW ═══
