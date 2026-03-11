@@ -17,23 +17,24 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .fc-brand-bar a{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit}.fc-brand-bar img{width:32px;height:32px;border-radius:50%}
 .fc-brand-bar span{font-family:sans-serif;font-size:14px;font-weight:600;color:#c9a44a;letter-spacing:0.5px}
 .fc-brand-bar .fc-sep{color:rgba(255,255,255,0.15);font-size:18px}.fc-brand-bar .fc-page-name{font-size:13px;font-weight:500;color:rgba(255,255,255,0.4)}
-.container{position:relative;z-index:1;max-width:650px;margin:0 auto;padding:24px 16px 80px}
+.container{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:24px 16px 80px}
+.container .narrow{max-width:650px;margin:0 auto}
 .back-link{display:inline-block;color:var(--accent);text-decoration:none;font-size:13px;font-weight:600;padding:6px 14px;border:1px solid var(--border);border-radius:99px;transition:all .2s;margin-bottom:16px}.back-link:hover{border-color:var(--accent)}
 .hero{text-align:center;padding:24px 0 20px}
-.hero h1{font-family:'Orbitron',sans-serif;font-size:clamp(20px,4vw,32px);font-weight:800;background:linear-gradient(135deg,#40c890,#c860a0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:2px}
+.hero h1{font-family:'Orbitron',sans-serif;font-size:clamp(24px,4.5vw,38px);font-weight:800;background:linear-gradient(135deg,#40c890,#c860a0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:2px}
 .hero .sub{font-family:'Orbitron',sans-serif;font-size:12px;color:var(--accent2);letter-spacing:3px;margin-top:4px;font-weight:600}
-.hero p{color:var(--muted);font-size:14px;margin-top:12px;line-height:1.6}
+.hero p{color:var(--muted);font-size:14px;margin-top:12px;line-height:1.6;max-width:650px;margin-left:auto;margin-right:auto}
 .haiku-frame{position:relative;margin:24px -16px 0;overflow:hidden;text-align:center}
 .haiku-frame .vp-img{width:100%;display:block}
-.haiku-overlay{position:absolute;top:18%;left:15%;right:15%;bottom:30%;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
-.haiku-frame .haiku-label{font-family:'Orbitron',sans-serif;font-size:9px;font-weight:700;letter-spacing:2.5px;color:rgba(200,220,232,0.35);text-transform:uppercase;margin-bottom:12px}
-.haiku-line{font-family:'Orbitron',sans-serif;font-size:clamp(14px,3vw,20px);font-weight:700;color:var(--accent3);letter-spacing:1px;margin:8px 0;line-height:1.4;min-height:26px;transition:opacity .4s;text-shadow:0 0 24px rgba(64,200,144,0.4),0 0 60px rgba(6,8,16,0.9)}
-.haiku-line.l2{color:var(--accent);text-shadow:0 0 24px rgba(58,143,212,0.4),0 0 60px rgba(6,8,16,0.9)}
-.haiku-line.l3{color:var(--accent4);text-shadow:0 0 24px rgba(200,96,160,0.4),0 0 60px rgba(6,8,16,0.9)}
-.trans-label{font-family:'Orbitron',sans-serif;font-size:8px;font-weight:700;letter-spacing:2px;color:rgba(200,220,232,0.3);text-transform:uppercase;margin:14px 0 6px}
-.trans-line{font-size:13px;color:rgba(200,220,232,0.55);font-style:italic;margin:3px 0;line-height:1.5;min-height:18px;text-shadow:0 0 20px rgba(6,8,16,0.95)}
-.syl-count{font-size:10px;color:rgba(200,220,232,0.25);margin-top:10px}
-.analysis-section{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px 22px;margin:0 0 8px;text-align:center}
+.haiku-overlay{position:absolute;top:12%;left:12%;right:12%;bottom:28%;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
+.haiku-frame .haiku-label{font-family:'Orbitron',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;color:rgba(200,220,232,0.3);text-transform:uppercase;margin-bottom:16px}
+.haiku-line{font-family:'Orbitron',sans-serif;font-size:clamp(18px,4vw,32px);font-weight:700;color:var(--accent3);letter-spacing:2px;margin:10px 0;line-height:1.4;min-height:30px;transition:opacity .4s;text-shadow:0 0 30px rgba(64,200,144,0.5),0 0 80px rgba(6,8,16,0.95)}
+.haiku-line.l2{color:var(--accent);text-shadow:0 0 30px rgba(58,143,212,0.5),0 0 80px rgba(6,8,16,0.95)}
+.haiku-line.l3{color:var(--accent4);text-shadow:0 0 30px rgba(200,96,160,0.5),0 0 80px rgba(6,8,16,0.95)}
+.trans-label{font-family:'Orbitron',sans-serif;font-size:9px;font-weight:700;letter-spacing:2.5px;color:rgba(200,220,232,0.25);text-transform:uppercase;margin:18px 0 8px}
+.trans-line{font-size:clamp(13px,2vw,17px);color:rgba(200,220,232,0.5);font-style:italic;margin:4px 0;line-height:1.5;min-height:20px;text-shadow:0 0 24px rgba(6,8,16,0.95)}
+.syl-count{font-size:10px;color:rgba(200,220,232,0.2);margin-top:12px}
+.analysis-section{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px 22px;margin:16px auto 8px;text-align:center;max-width:650px}
 .analysis-section .analysis-label{font-family:'Orbitron',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;color:var(--dim);text-transform:uppercase;margin-bottom:10px}
 .gen-btn{font-family:'Orbitron',sans-serif;font-size:16px;font-weight:700;padding:16px 40px;border-radius:14px;border:none;background:linear-gradient(135deg,var(--accent3),var(--accent4));color:#fff;cursor:pointer;transition:all .3s;box-shadow:0 4px 24px rgba(64,200,144,0.2);letter-spacing:1px;margin-top:8px}
 .gen-btn:hover{transform:translateY(-3px);box-shadow:0 8px 32px rgba(64,200,144,0.3);filter:brightness(1.1)}
@@ -82,6 +83,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 <div id="analysisText" style="font-size:13px;color:var(--muted);line-height:1.7;font-style:italic;transition:opacity .3s"></div>
 </div>
 
+<div class="narrow">
 <div style="text-align:center">
 <button class="gen-btn" onclick="generateHaiku()">🌟 GENERATE HAIKU</button>
 <br>
@@ -98,7 +100,8 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 <h3>How It Works</h3>
 <p>This collection contains 50 hand-crafted haiku written in Lang Belta, the creole language of the Asteroid Belt. Each poem uses authentic Belter vocabulary and explores themes of Belt life — scarcity, solidarity, freedom, love, labor, and the vast indifference of space. The English translations are poetic rather than literal, capturing the spirit and emotion of each piece. Click the button to cycle through all 50 — no repeats until you have seen them all.</p>
 </div>
-</div>
+</div><!-- end narrow -->
+</div><!-- end container -->
 
 <script>
 var HAIKU=[
