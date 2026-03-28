@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DMV Theater Guide — Every Stage, Every Show</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0e0d12;
+  --surface: #17161d;
+  --surface2: #1f1e27;
+  --border: #2d2b38;
+  --text: #e4e1f0;
+  --text-dim: #8f8ba3;
+  --gold: #c9a84c;
+  --crimson: #c44d5e;
+  --teal: #3da eighties;
+  --teal: #3da89b;
+  --lavender: #8b7ec8;
+  --peach: #d48c6a;
+  --sky: #5c9fd4;
+  --mint: #5cc08a;
+  --font-display: 'DM Serif Display', Georgia, serif;
+  --font-body: 'DM Sans', sans-serif;
+  --radius: 8px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: var(--font-body); background: var(--bg); color: var(--text); line-height: 1.6; }
+
+/* HEADER */
+header {
+  padding: 3.5rem 2rem 2.5rem;
+  text-align: center;
+  background: linear-gradient(180deg, #1a1724 0%, var(--bg) 100%);
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+header::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 3px;
+  background: var(--gold);
+  border-radius: 2px;
+}
+header h1 {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4.5vw, 3rem);
+  color: var(--gold);
+  letter-spacing: 0.01em;
+}
+header .tagline {
+  color: var(--text-dim);
+  font-size: 1rem;
+  font-weight: 300;
+  margin-top: 0.5rem;
+  max-width: 700px;
+  margin-inline: auto;
+}
+
+/* STICKY CONTROLS */
+.controls {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(14,13,18,0.94);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+  padding: 0.6rem 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+}
+.controls .fg {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.controls label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-dim);
+  font-weight: 600;
+}
+.controls select, .controls input[type="text"] {
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.35rem 0.6rem;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  max-width: 220px;
+}
+.controls select:focus, .controls input:focus {
+  outline: none;
+  border-color: var(--gold);
+}
+.controls .btn-group {
+  display: flex;
+}
+.controls .btn-group button {
+  background: var(--surface);
+  color: var(--text-dim);
+  border: 1px solid var(--border);
+  padding: 0.35rem 0.7rem;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.controls .btn-group button:first-child { border-radius: var(--radius) 0 0 var(--radius); }
+.controls .btn-group button:last-child { border-radius: 0 var(--radius) var(--radius) 0; border-left: 0; }
+.controls .btn-group button.active {
+  background: var(--gold);
+  color: #111;
+  border-color: var(--gold);
+  font-weight: 600;
+}
+
+/* MAIN */
+main { max-width: 1500px; margin: 0 auto; padding: 1.5rem; }
+
+/* STATS */
+.stats { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; margin-bottom: 1.5rem; }
+.stat { background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 0.3rem 0.9rem; font-size: 0.75rem; color: var(--text-dim); }
+.stat b { color: var(--gold); margin-right: 0.2rem; }
+
+/* TIER BADGES */
+.tier {
+  display: inline-block;
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.12rem 0.45rem;
+  border-radius: 3px;
+  vertical-align: middle;
+}
+.tier-national { background: var(--gold); color: #111; }
+.tier-major { background: var(--lavender); color: #111; }
+.tier-regional { background: var(--teal); color: #111; }
+.tier-community { background: var(--mint); color: #111; }
+
+/* SHOW STATUS */
+.status-tag {
+  display: inline-block;
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.1rem 0.4rem;
+  border-radius: 3px;
+}
+.status-tag.now { background: var(--gold); color: #111; }
+.status-tag.upcoming { background: var(--mint); color: #111; }
+.status-tag.past { background: #555; color: #ddd; }
+
+/* THEATER SECTIONS */
+.theater-block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 1.25rem;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.theater-block:hover { border-color: #3d3a4e; }
+.theater-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.1rem 1.25rem;
+  cursor: pointer;
+  user-select: none;
+}
+.theater-header:hover { background: rgba(255,255,255,0.015); }
+.theater-info { flex: 1; min-width: 0; }
+.theater-info h2 {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.theater-location {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  margin-top: 0.15rem;
+}
+.theater-desc {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  line-height: 1.5;
+  margin-top: 0.4rem;
+  max-width: 800px;
+}
+.theater-desc a { color: var(--gold); text-decoration: none; }
+.theater-desc a:hover { text-decoration: underline; }
+.theater-toggle {
+  color: var(--text-dim);
+  font-size: 1.2rem;
+  padding: 0.2rem;
+  flex-shrink: 0;
+  margin-top: 0.2rem;
+  transition: transform 0.2s;
+}
+.theater-block.open .theater-toggle { transform: rotate(180deg); }
+.theater-shows {
+  display: none;
+  border-top: 1px solid var(--border);
+}
+.theater-block.open .theater-shows { display: block; }
+
+/* SHOW ROWS */
+.show-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.65rem 1.25rem;
+  border-bottom: 1px solid rgba(45,43,56,0.5);
+  font-size: 0.82rem;
+}
+.show-row:last-child { border-bottom: none; }
+.show-row:hover { background: rgba(201,168,76,0.03); }
+.show-title-cell {
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.show-title-cell .show-type {
+  font-weight: 400;
+  color: var(--text-dim);
+  font-size: 0.72rem;
+  margin-left: 0.4rem;
+}
+.show-dates { color: var(--text-dim); white-space: nowrap; font-size: 0.78rem; }
+.show-price { color: var(--peach); font-weight: 600; white-space: nowrap; font-size: 0.78rem; }
+
+/* FLAT TABLE VIEW */
+.flat-table-wrap {
+  overflow-x: auto;
+  display: none;
+}
+.flat-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+}
+.flat-table th {
+  text-align: left;
+  padding: 0.55rem 0.7rem;
+  border-bottom: 2px solid var(--gold);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--gold);
+  font-weight: 700;
+  position: sticky;
+  top: 44px;
+  background: var(--bg);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.flat-table th:hover { color: #fff; }
+.flat-table td {
+  padding: 0.45rem 0.7rem;
+  border-bottom: 1px solid var(--border);
+}
+.flat-table tr:hover td { background: rgba(201,168,76,0.03); }
+.flat-table .ft-show { font-weight: 600; color: #fff; }
+.flat-table .ft-theater { color: var(--text-dim); }
+.flat-table .ft-price { color: var(--peach); font-weight: 600; }
+
+/* NO RESULTS */
+.no-results { text-align: center; padding: 3rem; color: var(--text-dim); font-style: italic; }
+
+/* FOOTER */
+footer {
+  text-align: center;
+  padding: 2rem 1.5rem;
+  border-top: 1px solid var(--border);
+  color: var(--text-dim);
+  font-size: 0.75rem;
+  line-height: 1.7;
+}
+footer a { color: var(--gold); text-decoration: none; }
+
+@media (max-width: 768px) {
+  .show-row { grid-template-columns: 1fr; gap: 0.2rem; }
+  .controls { padding: 0.4rem 0.75rem; }
+  main { padding: 1rem 0.75rem; }
+  .fg { width: 100%; }
+  .controls select, .controls input[type="text"] { max-width: 100%; width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>DMV Theater Guide</h1>
+  <p class="tagline">Every stage, every show — from Broadway touring houses to intimate black-box theaters across DC, Maryland &amp; Virginia. Current &amp; upcoming seasons with ticket pricing.</p>
+</header>
+
+<div class="controls">
+  <div class="fg">
+    <label>Theater</label>
+    <select id="fTheater"><option value="all">All Theaters</option></select>
+  </div>
+  <div class="fg">
+    <label>Type</label>
+    <select id="fTier">
+      <option value="all">All Types</option>
+      <option value="National Touring">National Touring</option>
+      <option value="Major Regional">Major Regional</option>
+      <option value="Regional">Regional</option>
+      <option value="Community">Community</option>
+    </select>
+  </div>
+  <div class="fg">
+    <label>Status</label>
+    <select id="fStatus">
+      <option value="all">All</option>
+      <option value="now">Now Playing</option>
+      <option value="upcoming">Upcoming</option>
+      <option value="past">Past</option>
+    </select>
+  </div>
+  <div class="fg">
+    <label>Season</label>
+    <select id="fSeason">
+      <option value="all">All Seasons</option>
+      <option value="2025-26">2025–26</option>
+      <option value="2026-27">2026–27</option>
+    </select>
+  </div>
+  <div class="fg">
+    <label>Search</label>
+    <input type="text" id="fSearch" placeholder="Show or theater…">
+  </div>
+  <div class="btn-group">
+    <button class="active" id="vGrouped">By Theater</button>
+    <button id="vFlat">All Shows</button>
+  </div>
+</div>
+
+<main>
+  <div class="stats" id="stats"></div>
+  <div id="grouped"></div>
+  <div class="flat-table-wrap" id="flatWrap">
+    <table class="flat-table">
+      <thead><tr>
+        <th data-col="title">Show ↕</th>
+        <th data-col="theater">Theater ↕</th>
+        <th data-col="location">Location ↕</th>
+        <th data-col="start">Dates ↕</th>
+        <th data-col="price">Avg. Price ↕</th>
+        <th data-col="status">Status ↕</th>
+      </tr></thead>
+      <tbody id="flatBody"></tbody>
+    </table>
+  </div>
+</main>
+
+<footer>
+  Data compiled from official theater websites, Broadway Across America, DC Theater Arts, The Zebra's DMV Theatre Guide, Maryland Theatre Guide, and Playbill. Prices are approximate averages and vary by performance. Last updated March 2026.<br>
+  <a href="https://theatrewashington.org/" target="_blank">Theatre Washington</a> · <a href="https://dctheaterarts.org/" target="_blank">DC Theater Arts</a> · <a href="https://mdtheatreguide.com/" target="_blank">Maryland Theatre Guide</a>
+</footer>
+
+<script>
+const TODAY = new Date('2026-03-27');
+
+const theaters = [
+  // === NATIONAL TOURING ===
+  {
+    name: "Hippodrome Theatre",
+    location: "Baltimore, MD",
+    tier: "National Touring",
+    desc: "France-Merrick Performing Arts Center. Part of the Broadway Across America network, presenting 7–8 touring Broadway productions per season. The 2,220-seat Beaux-Arts landmark reopened in 2004 after a $63M restoration.",
+    url: "https://baltimore.broadway.com/",
+    shows: [
+      { title: "Wicked", start: "2025-12-17", end: "2026-01-11", price: "$65–185", type: "Musical" },
+      { title: "The Great Gatsby", start: "2026-01-31", end: "2026-02-07", price: "$55–150", type: "Musical" },
+      { title: "Back to the Future: The Musical", start: "2026-02-24", end: "2026-03-01", price: "$50–140", type: "Musical" },
+      { title: "Hadestown", start: "2026-03-13", end: "2026-03-14", price: "$60–160", type: "Musical" },
+      { title: "Suffs", start: "2026-04-28", end: "2026-05-03", price: "$50–135", type: "Musical" },
+      { title: "Bat Out of Hell: The Musical", start: "2026-05-19", end: "2026-05-24", price: "$45–130", type: "Musical" },
+      { title: "A Beautiful Noise: The Neil Diamond Musical", start: "2026-06-23", end: "2026-06-28", price: "$50–140", type: "Musical" },
+      { title: "Maybe Happy Ending", start: "2026-09-13", end: "2026-09-19", price: "$55–150", type: "Musical" },
+      { title: "SIX", start: "2026-10-25", end: "2026-11-01", price: "$55–145", type: "Musical" },
+      { title: "Hell's Kitchen", start: "2026-11-17", end: "2026-11-22", price: "$55–150", type: "Musical" },
+      { title: "'Twas the Night Before…", start: "2026-12-17", end: "2026-12-27", price: "$40–95", type: "Musical" },
+      { title: "The Sound of Music", start: "2027-01-05", end: "2027-01-10", price: "$50–140", type: "Musical" },
+      { title: "Death Becomes Her", start: "2027-02-02", end: "2027-02-07", price: "$55–150", type: "Musical" },
+      { title: "Hamilton", start: "2027-03-09", end: "2027-03-28", price: "$79–299", type: "Musical" },
+      { title: "The Outsiders", start: "2027-04-20", end: "2027-04-25", price: "$55–160", type: "Musical" },
+      { title: "Heathers: The Musical", start: "2027-05-15", end: "2027-05-22", price: "$45–130", type: "Musical" },
+      { title: "Disney's Beauty and the Beast", start: "2027-06-16", end: "2027-06-20", price: "$55–165", type: "Musical" },
+    ]
+  },
+  {
+    name: "Kennedy Center — Opera House",
+    location: "Washington, DC",
+    tier: "National Touring",
+    desc: "2,362-seat venue hosting Broadway national tours and the Broadway Center Stage series. The nation's busiest performing arts center, on the Potomac at 2700 F St NW.",
+    url: "https://www.kennedy-center.org/",
+    shows: [
+      { title: "Spamalot", start: "2025-12-16", end: "2026-01-04", price: "$59–199", type: "Musical" },
+      { title: "Chicago", start: "2026-03-31", end: "2026-04-05", price: "$49–169", type: "Musical" },
+      { title: "Moulin Rouge! The Musical", start: "2026-06-16", end: "2026-07-05", price: "$69–225", type: "Musical" },
+      { title: "Back to the Future: The Musical", start: "2026-07-07", end: "2026-07-19", price: "$55–175", type: "Musical" },
+      { title: "Mrs. Doubtfire", start: "2026-07-14", end: "2026-08-02", price: "$49–165", type: "Musical" },
+      { title: "The Outsiders", start: "2026-07-28", end: "2026-08-16", price: "$59–185", type: "Musical" },
+    ]
+  },
+  {
+    name: "The National Theatre",
+    location: "Washington, DC",
+    tier: "National Touring",
+    desc: "Opened 1835 on Pennsylvania Ave NW — the nation's oldest venue still presenting touring Broadway. Managed by Nederlander. Broadway at The National series features 7+ shows per season plus specials.",
+    url: "https://www.broadwayatthenational.com/",
+    shows: [
+      { title: "Stereophonic", start: "2026-02-10", end: "2026-03-01", price: "$55–175", type: "Play" },
+      { title: "Disney's Beauty and the Beast", start: "2026-03-18", end: "2026-04-05", price: "$59–189", type: "Musical" },
+      { title: "The Wiz", start: "2026-04-07", end: "2026-04-12", price: "$55–165", type: "Musical" },
+      { title: "The Book of Mormon", start: "2026-04-28", end: "2026-05-03", price: "$59–199", type: "Musical" },
+      { title: "The Great Gatsby", start: "2026-05-12", end: "2026-05-24", price: "$55–175", type: "Musical" },
+      { title: "Suffs", start: "2026-06-15", end: "2026-06-29", price: "$55–165", type: "Musical" },
+      { title: "Beetlejuice", start: "2026-07-07", end: "2026-07-26", price: "$55–175", type: "Musical" },
+      { title: "The Notebook", start: "2026-08-18", end: "2026-08-30", price: "$49–165", type: "Musical" },
+      { title: "Dirty Dancing", start: "2026-09-29", end: "2026-10-11", price: "$55–165", type: "Musical" },
+      { title: "Maybe Happy Ending", start: "2026-10-06", end: "2026-10-18", price: "$55–170", type: "Musical" },
+      { title: "Hamilton", start: "2026-12-16", end: "2027-02-07", price: "$79–299", type: "Musical" },
+      { title: "Oh, Mary!", start: "2027-02-09", end: "2027-02-21", price: "$55–165", type: "Play" },
+      { title: "Operation Mincemeat", start: "2027-06-08", end: "2027-06-20", price: "$55–165", type: "Musical" },
+      { title: "Just in Time", start: "2027-07-20", end: "2027-08-01", price: "$55–165", type: "Musical" },
+    ]
+  },
+
+  // === MAJOR REGIONAL ===
+  {
+    name: "Arena Stage",
+    location: "Washington, DC (SW Waterfront)",
+    tier: "Major Regional",
+    desc: "Celebrating its 75th season. Three performance spaces (Fichandler, Kreeger, Kogod Cradle) at the Mead Center for American Theater, 1101 Sixth St SW. Known for world premieres and bold revivals. Tony Award for Regional Theatre 2010.",
+    url: "https://www.arenastage.org/",
+    shows: [
+      { title: "Damn Yankees", start: "2025-09-09", end: "2025-11-09", price: "$56–110", type: "Musical" },
+      { title: "Fremont Ave. (World Premiere)", start: "2025-10-08", end: "2025-11-23", price: "$50–95", type: "Play" },
+      { title: "Step Afrika! Holiday Step Show", start: "2025-12-05", end: "2025-12-23", price: "$35–75", type: "Special" },
+      { title: "Chez Joey (Pal Joey revision)", start: "2026-01-30", end: "2026-03-15", price: "$56–110", type: "Musical" },
+      { title: "Inherit the Wind", start: "2026-02-27", end: "2026-04-05", price: "$50–95", type: "Play" },
+      { title: "A Good Day to Me Not to You", start: "2026-03-27", end: "2026-05-03", price: "$50–95", type: "Play" },
+      { title: "The Motion", start: "2026-05-06", end: "2026-06-14", price: "$50–95", type: "Play" },
+      { title: "CrazySexyCool — The TLC Musical (World Premiere)", start: "2026-06-12", end: "2026-08-09", price: "$56–125", type: "Musical" },
+    ]
+  },
+  {
+    name: "Shakespeare Theatre Company",
+    location: "Washington, DC (Penn Quarter)",
+    tier: "Major Regional",
+    desc: "One of the nation's foremost classical theater companies. Performs at Sidney Harman Hall (775 seats) and Michael R. Klein Theatre (451 seats) at 610 F St NW. Known for Shakespeare, classical works, and musicals.",
+    url: "https://www.shakespearetheatre.org/",
+    shows: [
+      { title: "Guys and Dolls", start: "2025-12-02", end: "2026-01-04", price: "$44–120", type: "Musical" },
+      { title: "Hamnet", start: "2026-03-17", end: "2026-04-12", price: "$44–110", type: "Play" },
+      { title: "The Tragedy of Hamlet", start: "2026-03-10", end: "2026-04-11", price: "$44–110", type: "Play" },
+      { title: "44: The Musical", start: "2026-04-18", end: "2026-05-10", price: "$44–120", type: "Musical" },
+      { title: "Othello", start: "2026-05-19", end: "2026-06-28", price: "$44–110", type: "Play" },
+      { title: "The Score (U.S. Premiere, starring Brian Cox)", start: "2026-09-11", end: "2026-10-18", price: "$59–145", type: "Play" },
+      { title: "Frida…A Self-Portrait", start: "2026-10-08", end: "2026-11-08", price: "$44–99", type: "Play" },
+      { title: "A Midsummer Night's Dream", start: "2026-12-04", end: "2027-01-10", price: "$44–120", type: "Play" },
+      { title: "A Raisin in the Sun", start: "2027-01-23", end: "2027-02-28", price: "$44–110", type: "Play" },
+      { title: "Romeo and Juliet", start: "2027-04-13", end: "2027-05-16", price: "$44–110", type: "Play" },
+      { title: "Follies (co-production w/ Signature Theatre)", start: "2027-05-18", end: "2027-06-20", price: "$59–145", type: "Musical" },
+    ]
+  },
+  {
+    name: "Ford's Theatre",
+    location: "Washington, DC (Downtown)",
+    tier: "Major Regional",
+    desc: "Historic 670-seat theater at 511 10th St NW, producing American stories year-round. Annual A Christmas Carol tradition since 2008. National Historic Site operated as a working theater.",
+    url: "https://www.fords.org/",
+    shows: [
+      { title: "A Christmas Carol", start: "2025-11-20", end: "2025-12-31", price: "$40–95", type: "Play" },
+      { title: "1776", start: "2026-03-13", end: "2026-05-16", price: "$40–95", type: "Musical" },
+      { title: "Come From Away", start: "2026-09-10", end: "2026-10-18", price: "$42–99", type: "Musical" },
+      { title: "A Christmas Carol", start: "2026-11-19", end: "2026-12-31", price: "$40–95", type: "Play" },
+      { title: "The 25th Annual Putnam County Spelling Bee", start: "2027-03-12", end: "2027-05-15", price: "$40–95", type: "Musical" },
+    ]
+  },
+  {
+    name: "Signature Theatre",
+    location: "Arlington, VA (Shirlington)",
+    tier: "Major Regional",
+    desc: "Tony Award–winning 36th season. Two stages — MAX (280 seats) and ARK (99 seats) — at 4200 Campbell Ave. Known as DC's premier musical theater company. 90+ Helen Hayes Awards.",
+    url: "https://www.sigtheatre.org/",
+    shows: [
+      { title: "Play On!", start: "2025-08-12", end: "2025-10-05", price: "$40–99", type: "Musical" },
+      { title: "Passing Strange", start: "2025-09-23", end: "2025-11-09", price: "$40–89", type: "Musical" },
+      { title: "Fiddler on the Roof", start: "2025-11-04", end: "2026-01-25", price: "$45–109", type: "Musical" },
+      { title: "In Clay (American Premiere)", start: "2025-12-09", end: "2026-02-01", price: "$40–85", type: "Musical" },
+      { title: "Safety Not Guaranteed (New Musical)", start: "2026-03-03", end: "2026-04-12", price: "$45–99", type: "Musical" },
+      { title: "Animal Wisdom", start: "2026-03-17", end: "2026-03-29", price: "$35–75", type: "Musical" },
+      { title: "Mother Russia", start: "2026-03-31", end: "2026-04-19", price: "$35–75", type: "Play" },
+      { title: "Oratorio for Living Things", start: "2026-05-05", end: "2026-05-17", price: "$35–75", type: "Musical" },
+      { title: "Pippin", start: "2026-05-12", end: "2026-07-26", price: "$45–109", type: "Musical" },
+      { title: "What Became of Us (DC Premiere)", start: "2026-06-16", end: "2026-07-26", price: "$40–85", type: "Play" },
+    ]
+  },
+  {
+    name: "Woolly Mammoth Theatre Company",
+    location: "Washington, DC (Penn Quarter)",
+    tier: "Major Regional",
+    desc: "DC's edgiest and most adventurous theater. 265 seats at 641 D St NW. Dedicated exclusively to new plays and experimental work. Founded 1980.",
+    url: "https://www.woollymammoth.net/",
+    shows: [
+      { title: "ho ho ho ha ha ha ha", start: "2025-11-13", end: "2025-12-21", price: "$35–80", type: "Play" },
+      { title: "The World to Come", start: "2026-02-03", end: "2026-03-01", price: "$35–80", type: "Play" },
+      { title: "TRAVESTY (Sasha Velour)", start: "2026-03-24", end: "2026-04-12", price: "$40–90", type: "Special" },
+    ]
+  },
+  {
+    name: "Studio Theatre",
+    location: "Washington, DC (14th St Corridor)",
+    tier: "Major Regional",
+    desc: "Four-theater complex at 1501 14th St NW producing contemporary plays and musicals. 200–225 seats per stage. Known for intimate, actor-focused work since 1978.",
+    url: "https://www.studiotheatre.org/",
+    shows: [
+      { title: "Mother Play", start: "2025-11-12", end: "2025-12-21", price: "$40–89", type: "Play" },
+      { title: "Best Line Wins", start: "2026-01-28", end: "2026-03-08", price: "$40–89", type: "Play" },
+      { title: "Jonah", start: "2026-03-11", end: "2026-04-19", price: "$40–89", type: "Play" },
+      { title: "Purlie Victorious", start: "2026-05-06", end: "2026-06-14", price: "$40–89", type: "Play" },
+    ]
+  },
+  {
+    name: "Round House Theatre",
+    location: "Bethesda, MD",
+    tier: "Major Regional",
+    desc: "Celebrating its 50th golden anniversary season. 400-seat theater at 4545 East-West Hwy in Bethesda. Produces bold new works and reimagined classics.",
+    url: "https://www.roundhousetheatre.org/",
+    shows: [
+      { title: "The Inheritance", start: "2025-08-27", end: "2025-10-19", price: "$45–90", type: "Play" },
+      { title: "A Wrinkle in Time (World Premiere Musical)", start: "2026-02-05", end: "2026-03-08", price: "$45–95", type: "Musical" },
+      { title: "Sally & Tom", start: "2026-05-27", end: "2026-06-28", price: "$45–90", type: "Play" },
+      { title: "Ma Rainey's Black Bottom (August Wilson)", start: "2026-09-09", end: "2026-10-18", price: "$45–95", type: "Play" },
+      { title: "Final Girl (World Premiere)", start: "2027-03-05", end: "2027-03-07", price: "$25–45", type: "Play" },
+    ]
+  },
+  {
+    name: "Olney Theatre Center",
+    location: "Olney, MD",
+    tier: "Major Regional",
+    desc: "Historic 86-year-old theater campus in Montgomery County with two stages (Roberts Mainstage 500 seats, Mulitz-Gudelsky Theatre Lab 150 seats). Known for premieres and holiday favorites.",
+    url: "https://www.olneytheatre.org/",
+    shows: [
+      { title: "Red Pitch (U.S. Premiere)", start: "2025-09-17", end: "2025-10-19", price: "$42–85", type: "Play" },
+      { title: "Hello, Dolly!", start: "2025-11-06", end: "2026-01-04", price: "$49–99", type: "Musical" },
+      { title: "Little Miss Perfect (World Premiere)", start: "2026-02-12", end: "2026-03-15", price: "$42–89", type: "Musical" },
+      { title: "Appropriate", start: "2026-03-18", end: "2026-04-19", price: "$42–85", type: "Play" },
+      { title: "I And You — The Musical (World Premiere)", start: "2026-04-23", end: "2026-05-25", price: "$42–89", type: "Musical" },
+      { title: "Carla Hall: Please Underestimate Me (World Premiere)", start: "2026-05-27", end: "2026-06-28", price: "$42–89", type: "Special" },
+    ]
+  },
+  {
+    name: "Everyman Theatre",
+    location: "Baltimore, MD (Bromo Arts District)",
+    tier: "Major Regional",
+    desc: "Professional Equity company with 18-member resident acting ensemble. 250 seats at 315 W. Fayette St. Celebrating 35 years of 'Built in Baltimore.' Pay-What-You-Choose seats at every performance.",
+    url: "https://everymantheatre.org/",
+    shows: [
+      { title: "The Piano Lesson", start: "2025-08-31", end: "2025-09-28", price: "$35–75", type: "Play" },
+      { title: "Art", start: "2025-10-19", end: "2025-11-16", price: "$35–75", type: "Play" },
+      { title: "Deceived (based on Gaslight)", start: "2025-11-30", end: "2026-01-04", price: "$35–80", type: "Play" },
+      { title: "Dawn (World Premiere)", start: "2026-02-01", end: "2026-03-01", price: "$35–75", type: "Play" },
+      { title: "Clyde's", start: "2026-03-22", end: "2026-04-19", price: "$35–75", type: "Play" },
+      { title: "Emma (Kate Hamill adaptation)", start: "2026-05-17", end: "2026-06-14", price: "$35–75", type: "Play" },
+      { title: "Kim's Convenience", start: "2026-08-30", end: "2026-09-27", price: "$35–80", type: "Play" },
+      { title: "Different Words for Happiness (World Premiere)", start: "2026-10-18", end: "2026-11-15", price: "$35–75", type: "Play" },
+      { title: "The Mirror Crack'd (Agatha Christie)", start: "2026-12-06", end: "2027-01-03", price: "$35–80", type: "Play" },
+      { title: "The Mountaintop", start: "2027-01-31", end: "2027-02-28", price: "$35–75", type: "Play" },
+      { title: "Harvey", start: "2027-03-21", end: "2027-04-18", price: "$35–75", type: "Play" },
+      { title: "A Doll's House (Schultz adaptation)", start: "2027-05-16", end: "2027-06-13", price: "$35–75", type: "Play" },
+    ]
+  },
+  {
+    name: "Folger Theatre",
+    location: "Washington, DC (Capitol Hill)",
+    tier: "Major Regional",
+    desc: "Intimate 260-seat Elizabethan-style theater inside the Folger Shakespeare Library, 201 E. Capitol St SE. Produces Shakespeare and works inspired by the Library's collections.",
+    url: "https://www.folger.edu/",
+    shows: [
+      { title: "As You Like It", start: "2026-03-10", end: "2026-04-12", price: "$40–85", type: "Play" },
+      { title: "Measure for Measure", start: "2026-09-22", end: "2026-10-25", price: "$40–85", type: "Play" },
+      { title: "Hamlet", start: "2027-03-02", end: "2027-04-04", price: "$40–89", type: "Play" },
+    ]
+  },
+
+  // === REGIONAL ===
+  {
+    name: "Keegan Theatre",
+    location: "Washington, DC (Dupont Circle)",
+    tier: "Regional",
+    desc: "115-seat intimate theater at 1742 Church St NW. Known for muscular productions of musicals and dramas. Founded 1997.",
+    url: "https://www.keegantheatre.com/",
+    shows: [
+      { title: "Lizzie the Musical", start: "2025-10-31", end: "2025-11-30", price: "$35–60", type: "Musical" },
+      { title: "The Minutes", start: "2026-04-04", end: "2026-05-03", price: "$35–55", type: "Play" },
+      { title: "The Play That Goes Wrong", start: "2026-06-06", end: "2026-07-12", price: "$35–60", type: "Play" },
+    ]
+  },
+  {
+    name: "Mosaic Theater Company",
+    location: "Washington, DC (Atlas District)",
+    tier: "Regional",
+    desc: "Dedicated to stories that illuminate the human experience at the Atlas Performing Arts Center, 1333 H St NE. Focuses on work by playwrights of color and underrepresented voices.",
+    url: "https://www.mosaictheater.org/",
+    shows: [
+      { title: "The Emmett Till Trilogy", start: "2025-09-15", end: "2025-10-19", price: "$25–60", type: "Play" },
+    ]
+  },
+  {
+    name: "GALA Hispanic Theatre",
+    location: "Washington, DC (Columbia Heights)",
+    tier: "Regional",
+    desc: "The only Hispanic theater in the DC metro area. 272-seat theater at 3333 14th St NW presenting bilingual productions and Latin American works.",
+    url: "https://www.galatheatre.org/",
+    shows: [
+      { title: "Aguardiente: Where Magic Transcends Borders", start: "2026-04-30", end: "2026-05-24", price: "$30–65", type: "Play" },
+    ]
+  },
+  {
+    name: "Theatre J",
+    location: "Washington, DC (Dupont Circle)",
+    tier: "Regional",
+    desc: "Professional theater at the Edlavitch DCJCC, 1529 16th St NW. Presents work that celebrates the Jewish experience and human condition. One of the nation's largest Jewish theaters.",
+    url: "https://www.theaterj.org/",
+    shows: [
+      { title: "This Much I Know", start: "2025-09-20", end: "2025-10-19", price: "$30–65", type: "Play" },
+      { title: "AVAAZ (National Tour Conclusion)", start: "2026-06-06", end: "2026-06-26", price: "$30–65", type: "Play" },
+    ]
+  },
+  {
+    name: "1st Stage",
+    location: "Tysons, VA",
+    tier: "Regional",
+    desc: "Intimate 100-seat black box at 1524 Spring Hill Rd. Produces thought-provoking contemporary drama and emerging playwrights. Founded 2008.",
+    url: "https://www.1ststage.org/",
+    shows: [
+      { title: "Young Americans", start: "2026-04-09", end: "2026-04-26", price: "$30–50", type: "Play" },
+    ]
+  },
+  {
+    name: "NextStop Theatre Company",
+    location: "Herndon, VA",
+    tier: "Regional",
+    desc: "Professional theater in the Industrial Arts Center in Herndon. Known for musicals, classics, and contemporary drama in a 120-seat venue.",
+    url: "https://www.nextstoptheatre.org/",
+    shows: [
+      { title: "Dream House", start: "2025-09-11", end: "2025-10-05", price: "$35–55", type: "Play" },
+    ]
+  },
+  {
+    name: "Constellation Theatre Company",
+    location: "Washington, DC",
+    tier: "Regional",
+    desc: "Imaginative, visual storytelling at Source Theatre, 1835 14th St NW. Known for bold, physical productions of classics and new adaptations.",
+    url: "https://www.constellationtheatre.org/",
+    shows: [
+      { title: "Or,", start: "2026-05-15", end: "2026-06-07", price: "$25–50", type: "Play" },
+    ]
+  },
+  {
+    name: "Toby's Dinner Theatre",
+    location: "Columbia, MD",
+    tier: "Regional",
+    desc: "Year-round professional dinner theater in the round at 5900 Symphony Woods Rd. One of the longest-running dinner theaters in the country. Dinner + show included in ticket price. No seat more than 30 feet from the stage.",
+    url: "https://tobysdinnertheatre.com/",
+    shows: [
+      { title: "Saturday Night Fever", start: "2025-08-22", end: "2025-11-02", price: "$72–85", type: "Musical" },
+      { title: "Elf The Musical", start: "2025-11-07", end: "2026-01-11", price: "$72–89", type: "Musical" },
+      { title: "Rock of Ages", start: "2026-01-16", end: "2026-03-15", price: "$72–85", type: "Musical" },
+      { title: "The Wizard of Oz", start: "2026-03-20", end: "2026-06-07", price: "$72–85", type: "Musical" },
+      { title: "Mean Girls", start: "2026-06-12", end: "2026-08-23", price: "$72–89", type: "Musical" },
+      { title: "SUMMER: The Donna Summer Musical", start: "2026-08-28", end: "2026-11-01", price: "$72–89", type: "Musical" },
+      { title: "White Christmas", start: "2026-11-06", end: "2027-01-10", price: "$72–89", type: "Musical" },
+    ]
+  },
+  {
+    name: "Rorschach Theatre",
+    location: "Washington, DC",
+    tier: "Regional",
+    desc: "Adventurous ensemble-driven theater presenting bold, immersive productions. Based at various DC venues.",
+    url: "https://www.rorschachtheatre.com/",
+    shows: [
+      { title: "Dragon Play", start: "2026-04-17", end: "2026-05-17", price: "$25–45", type: "Play" },
+    ]
+  },
+  {
+    name: "Avant Bard Theatre",
+    location: "Arlington, VA",
+    tier: "Regional",
+    desc: "Formerly WSC Avant Bard. Performs classic and contemporary plays with inventive staging at Gunston Arts Center, 2700 S. Lang St.",
+    url: "https://www.avantbard.org/",
+    shows: [
+      { title: "Ghost Limb", start: "2026-04-30", end: "2026-05-23", price: "$25–45", type: "Play" },
+    ]
+  },
+  {
+    name: "Creative Cauldron",
+    location: "Falls Church, VA",
+    tier: "Regional",
+    desc: "Intimate 80-seat theater at 410 S. Maple Ave. Produces original musicals, cabarets, and the annual Passport Music Festival.",
+    url: "https://www.creativecauldron.org/",
+    shows: [
+      { title: "Little Women: The Musical", start: "2026-05-14", end: "2026-06-07", price: "$25–40", type: "Musical" },
+    ]
+  },
+
+  {
+    name: "Baltimore Center Stage",
+    location: "Baltimore, MD (Mt. Vernon)",
+    tier: "Major Regional",
+    desc: "Designated the State Theater of Maryland in 1978. Two mainstages at 700 N. Calvert St. Under Artistic Director Stevie Walker-Webb, BCS champions powerful storytelling and boundary-pushing work. 40%+ attendance increase in 2024-25.",
+    url: "https://www.centerstage.org/",
+    shows: [
+      { title: "The Peculiar Patriot", start: "2025-10-15", end: "2025-11-09", price: "$25–65", type: "Play" },
+      { title: "Santa Claus Is Comin': A Motown Christmas Revue (World Premiere)", start: "2025-11-06", end: "2026-01-04", price: "$30–75", type: "Musical" },
+      { title: "Trinity (World Premiere, by Lena Waithe)", start: "2026-02-12", end: "2026-03-08", price: "$25–65", type: "Play" },
+      { title: "Holes", start: "2026-04-08", end: "2026-05-03", price: "$25–65", type: "Play" },
+      { title: "(pray)", start: "2026-06-13", end: "2026-07-05", price: "$25–65", type: "Musical" },
+    ]
+  },
+  {
+    name: "Maryland Ensemble Theatre",
+    location: "Frederick, MD",
+    tier: "Regional",
+    desc: "Professional collaborative ensemble in its 28th season at 31 W. Patrick St in downtown Frederick. Known for courageous, relevant programming. Also produces FUN Company children's shows and MET Comedy Night. Pay What You Will tickets from $7.",
+    url: "https://marylandensemble.org/",
+    shows: [
+      { title: "Shark Is Broken", start: "2025-09-12", end: "2025-10-12", price: "$15–36", type: "Play" },
+      { title: "The Rocky Horror Show (at FCC)", start: "2025-10-31", end: "2025-11-08", price: "$15–36", type: "Musical" },
+      { title: "A Christmas Carol (at Weinberg Center)", start: "2025-12-05", end: "2025-12-07", price: "$20–40", type: "Play" },
+      { title: "Small Mouth Sounds", start: "2026-02-13", end: "2026-03-15", price: "$15–36", type: "Play" },
+      { title: "The Crucible", start: "2026-04-03", end: "2026-04-26", price: "$15–36", type: "Play" },
+      { title: "Every Brilliant Thing", start: "2026-05-15", end: "2026-06-14", price: "$15–36", type: "Play" },
+    ]
+  },
+  {
+    name: "Weinberg Center for the Arts",
+    location: "Frederick, MD",
+    tier: "Regional",
+    desc: "Historic 1926 theater at 20 W. Patrick St in downtown Frederick. 1,200 seats. Presents touring concerts, comedy, dance, family shows, and classic films. Hosts MET's annual A Christmas Carol. Attracts 85,000+ patrons annually.",
+    url: "https://weinbergcenter.org/",
+    shows: [
+      { title: "A Christmas Carol (MET production)", start: "2025-12-05", end: "2025-12-07", price: "$20–40", type: "Play" },
+    ]
+  },
+
+  // === COMMUNITY ===
+  {
+    name: "The Little Theatre of Alexandria",
+    location: "Alexandria, VA",
+    tier: "Community",
+    desc: "One of the oldest community theaters in the US, operating since 1934 at 600 Wolfe St in Old Town. Volunteer-run, six-show seasons.",
+    url: "https://www.thelittletheatre.com/",
+    shows: [
+      { title: "Lost in Yonkers", start: "2025-09-06", end: "2025-09-27", price: "$22–32", type: "Play" },
+    ]
+  },
+  {
+    name: "The Arlington Players",
+    location: "Arlington, VA",
+    tier: "Community",
+    desc: "Community theater producing musicals and plays at the Thomas Jefferson Community Theatre. Running since 1951.",
+    url: "https://www.thearlingtonplayers.org/",
+    shows: [
+      { title: "Secret Garden", start: "2026-05-09", end: "2026-05-23", price: "$20–30", type: "Musical" },
+    ]
+  },
+  {
+    name: "Silver Spring Stage",
+    location: "Silver Spring, MD",
+    tier: "Community",
+    desc: "All-volunteer community theater at the Woodmoor Shopping Center. Affordable, accessible theater since 1968.",
+    url: "https://www.ssstage.org/",
+    shows: [
+      { title: "A Christmas Carol", start: "2025-12-12", end: "2025-12-21", price: "$15–25", type: "Play" },
+      { title: "The Effect of Gamma Rays on Man-in-the-Moon Marigolds", start: "2026-05-08", end: "2026-05-24", price: "$15–25", type: "Play" },
+    ]
+  },
+  {
+    name: "Dominion Stage",
+    location: "Arlington, VA",
+    tier: "Community",
+    desc: "Arlington's community theater at Gunston Theatre Two. Volunteer-powered productions since 1949.",
+    url: "https://www.dominionstage.org/",
+    shows: [
+      { title: "Dead Air", start: "2026-05-29", end: "2026-06-13", price: "$18–25", type: "Play" },
+    ]
+  },
+  {
+    name: "Port Tobacco Players",
+    location: "La Plata, MD (Charles County)",
+    tier: "Community",
+    desc: "Southern Maryland's community theater since 1959. 180-seat theater in Indian Head.",
+    url: "https://www.ptplayers.com/",
+    shows: [
+      { title: "Joseph and the Amazing Technicolor Dreamcoat", start: "2025-11-21", end: "2025-12-14", price: "$18–25", type: "Musical" },
+    ]
+  },
+  {
+    name: "Reston Community Players",
+    location: "Reston, VA",
+    tier: "Community",
+    desc: "Award-winning volunteer community theater performing at CenterStage Reston since 1966.",
+    url: "https://www.restonplayers.org/",
+    shows: [
+      { title: "The Sound of Music", start: "2026-05-01", end: "2026-05-16", price: "$20–28", type: "Musical" },
+    ]
+  },
+];
+
+// Flatten all shows
+function flattenShows() {
+  const all = [];
+  theaters.forEach(t => {
+    t.shows.forEach(s => {
+      all.push({ ...s, theater: t.name, theaterLocation: t.location, tier: t.tier });
+    });
+  });
+  return all;
+}
+
+function getStatus(s, e) {
+  const sd = new Date(s), ed = new Date(e);
+  if (TODAY >= sd && TODAY <= ed) return 'now';
+  if (TODAY < sd) return 'upcoming';
+  return 'past';
+}
+
+function fmtDate(d) {
+  return new Date(d + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+function statusLabel(st) {
+  return st === 'now' ? 'Now Playing' : st === 'upcoming' ? 'Upcoming' : 'Past';
+}
+
+// Populate theater filter
+const theaterSel = document.getElementById('fTheater');
+theaters.forEach(t => {
+  const o = document.createElement('option');
+  o.value = t.name;
+  o.textContent = t.name;
+  theaterSel.appendChild(o);
+});
+
+let view = 'grouped';
+let sortCol = 'start', sortDir = 1;
+
+function getFilters() {
+  return {
+    theater: document.getElementById('fTheater').value,
+    tier: document.getElementById('fTier').value,
+    status: document.getElementById('fStatus').value,
+    season: document.getElementById('fSeason').value,
+    search: document.getElementById('fSearch').value.toLowerCase(),
+  };
+}
+
+function getSeason(start) {
+  const d = new Date(start);
+  const m = d.getMonth(); // 0-indexed
+  const y = d.getFullYear();
+  // Theater seasons run ~Aug-Jul
+  if (m >= 7) return y + '-' + String(y+1).slice(2); // Aug+ = start of that year's season
+  return (y-1) + '-' + String(y).slice(2); // Jan-Jul = belongs to prior year's season
+}
+
+function filterShows(shows, f, theaterName, theaterTier) {
+  return shows.filter(s => {
+    if (f.theater !== 'all' && (theaterName || s.theater) !== f.theater) return false;
+    if (f.tier !== 'all' && (theaterTier || s.tier) !== f.tier) return false;
+    const st = getStatus(s.start, s.end);
+    if (f.status !== 'all' && st !== f.status) return false;
+    if (f.season !== 'all' && getSeason(s.start) !== f.season) return false;
+    if (f.search) {
+      const hay = (s.title + ' ' + (theaterName || s.theater || '')).toLowerCase();
+      if (!hay.includes(f.search)) return false;
+    }
+    return true;
+  });
+}
+
+function tierClass(t) {
+  if (t === 'National Touring') return 'tier-national';
+  if (t === 'Major Regional') return 'tier-major';
+  if (t === 'Regional') return 'tier-regional';
+  return 'tier-community';
+}
+
+function renderStats() {
+  const f = getFilters();
+  const allFlat = flattenShows();
+  const filtered = allFlat.filter(s => {
+    if (f.theater !== 'all' && s.theater !== f.theater) return false;
+    if (f.tier !== 'all' && s.tier !== f.tier) return false;
+    const st = getStatus(s.start, s.end);
+    if (f.status !== 'all' && st !== f.status) return false;
+    if (f.season !== 'all' && getSeason(s.start) !== f.season) return false;
+    if (f.search && !(s.title + ' ' + s.theater).toLowerCase().includes(f.search)) return false;
+    return true;
+  });
+  const np = filtered.filter(s => getStatus(s.start, s.end) === 'now').length;
+  const up = filtered.filter(s => getStatus(s.start, s.end) === 'upcoming').length;
+  const ts = new Set(filtered.map(s => s.theater)).size;
+  document.getElementById('stats').innerHTML = `
+    <div class="stat"><b>${filtered.length}</b> productions</div>
+    <div class="stat"><b>${ts}</b> theaters</div>
+    <div class="stat"><b>${np}</b> now playing</div>
+    <div class="stat"><b>${up}</b> upcoming</div>
+  `;
+}
+
+function renderGrouped() {
+  const f = getFilters();
+  const container = document.getElementById('grouped');
+  let html = '';
+  let anyResults = false;
+
+  // Group by tier
+  const tiers = ['National Touring', 'Major Regional', 'Regional', 'Community'];
+  tiers.forEach(tier => {
+    const tInTier = theaters.filter(t => t.tier === tier);
+    tInTier.forEach(t => {
+      if (f.theater !== 'all' && t.name !== f.theater) return;
+      if (f.tier !== 'all' && t.tier !== f.tier) return;
+      const filtered = filterShows(t.shows, f, t.name, t.tier);
+      if (f.search && filtered.length === 0 && !t.name.toLowerCase().includes(f.search)) return;
+
+      const showsToRender = f.search || f.status !== 'all' ? filtered : t.shows;
+      if (showsToRender.length === 0 && (f.search || f.status !== 'all')) return;
+
+      anyResults = true;
+      const sorted = [...showsToRender].sort((a, b) => a.start.localeCompare(b.start));
+
+      html += `<div class="theater-block open">
+        <div class="theater-header" onclick="this.parentElement.classList.toggle('open')">
+          <div class="theater-info">
+            <h2>${t.name} <span class="tier ${tierClass(t.tier)}">${t.tier}</span></h2>
+            <div class="theater-location">${t.location}</div>
+            <div class="theater-desc">${t.desc} <a href="${t.url}" target="_blank">${t.url.replace('https://','').replace('http://','').replace(/\/$/,'')}</a></div>
+          </div>
+          <div class="theater-toggle">▾</div>
+        </div>
+        <div class="theater-shows">`;
+
+      sorted.forEach(s => {
+        const st = getStatus(s.start, s.end);
+        html += `<div class="show-row">
+          <div class="show-title-cell">${s.title}<span class="show-type">${s.type}</span></div>
+          <div class="show-dates">${fmtDate(s.start)} – ${fmtDate(s.end)}</div>
+          <div class="show-price">${s.price}</div>
+          <div><span class="status-tag ${st}">${statusLabel(st)}</span></div>
+        </div>`;
+      });
+
+      html += `</div></div>`;
+    });
+  });
+
+  if (!anyResults) html = '<div class="no-results">No theaters or shows match your filters.</div>';
+  container.innerHTML = html;
+}
+
+function renderFlat() {
+  const f = getFilters();
+  const allFlat = flattenShows();
+  let filtered = allFlat.filter(s => {
+    if (f.theater !== 'all' && s.theater !== f.theater) return false;
+    if (f.tier !== 'all' && s.tier !== f.tier) return false;
+    const st = getStatus(s.start, s.end);
+    if (f.status !== 'all' && st !== f.status) return false;
+    if (f.season !== 'all' && getSeason(s.start) !== f.season) return false;
+    if (f.search && !(s.title + ' ' + s.theater).toLowerCase().includes(f.search)) return false;
+    return true;
+  });
+
+  filtered.sort((a, b) => {
+    let va, vb;
+    if (sortCol === 'start') { va = a.start; vb = b.start; }
+    else if (sortCol === 'title') { va = a.title; vb = b.title; }
+    else if (sortCol === 'theater') { va = a.theater; vb = b.theater; }
+    else if (sortCol === 'location') { va = a.theaterLocation; vb = b.theaterLocation; }
+    else if (sortCol === 'price') { va = a.price; vb = b.price; }
+    else if (sortCol === 'status') { va = getStatus(a.start, a.end); vb = getStatus(b.start, b.end); }
+    else { va = a.start; vb = b.start; }
+    return (va || '').localeCompare(vb || '') * sortDir;
+  });
+
+  const tbody = document.getElementById('flatBody');
+  if (filtered.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="6" class="no-results">No shows match your filters.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = filtered.map(s => {
+    const st = getStatus(s.start, s.end);
+    return `<tr>
+      <td class="ft-show">${s.title}</td>
+      <td class="ft-theater">${s.theater}</td>
+      <td>${s.theaterLocation}</td>
+      <td>${fmtDate(s.start)} – ${fmtDate(s.end)}</td>
+      <td class="ft-price">${s.price}</td>
+      <td><span class="status-tag ${st}" style="font-size:0.6rem">${statusLabel(st)}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+function render() {
+  renderStats();
+  renderGrouped();
+  renderFlat();
+}
+
+// Events
+['fTheater','fTier','fStatus','fSeason'].forEach(id => document.getElementById(id).addEventListener('change', render));
+document.getElementById('fSearch').addEventListener('input', render);
+
+document.getElementById('vGrouped').addEventListener('click', () => {
+  view = 'grouped';
+  document.getElementById('vGrouped').classList.add('active');
+  document.getElementById('vFlat').classList.remove('active');
+  document.getElementById('grouped').style.display = '';
+  document.getElementById('flatWrap').style.display = 'none';
+});
+document.getElementById('vFlat').addEventListener('click', () => {
+  view = 'flat';
+  document.getElementById('vFlat').classList.add('active');
+  document.getElementById('vGrouped').classList.remove('active');
+  document.getElementById('grouped').style.display = 'none';
+  document.getElementById('flatWrap').style.display = '';
+  renderFlat();
+});
+
+document.querySelectorAll('.flat-table th[data-col]').forEach(th => {
+  th.addEventListener('click', () => {
+    const col = th.dataset.col;
+    if (sortCol === col) sortDir *= -1;
+    else { sortCol = col; sortDir = 1; }
+    renderFlat();
+  });
+});
+
+render();
+</script>
+</body>
+</html>
