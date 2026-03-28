@@ -89,7 +89,7 @@ header .tagline {
   color: var(--text-dim);
   font-weight: 600;
 }
-.controls select, .controls input[type="text"] {
+.controls select, .controls input[type="text"], .controls input[type="date"] {
   background: var(--surface);
   color: var(--text);
   border: 1px solid var(--border);
@@ -102,6 +102,53 @@ header .tagline {
 .controls select:focus, .controls input:focus {
   outline: none;
   border-color: var(--gold);
+}
+.controls input[type="date"] {
+  max-width: 150px;
+  color-scheme: dark;
+}
+/* Price slider */
+.fg-price { min-width: 180px; }
+.price-slider-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.price-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 110px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--border);
+  outline: none;
+  cursor: pointer;
+}
+.price-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--gold);
+  border: 2px solid var(--bg);
+  cursor: pointer;
+  box-shadow: 0 0 4px rgba(201,168,76,0.4);
+}
+.price-slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--gold);
+  border: 2px solid var(--bg);
+  cursor: pointer;
+}
+.price-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--gold);
+  min-width: 38px;
+  text-align: right;
 }
 .controls .btn-group {
   display: flex;
@@ -222,23 +269,45 @@ main { max-width: 1500px; margin: 0 auto; padding: 1.5rem; }
 .theater-block.open .theater-shows { display: block; }
 
 /* SHOW ROWS */
+.show-row-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  border-bottom: 1px solid rgba(45,43,56,0.5);
+  transition: background 0.15s;
+}
+.show-row-link:last-child { border-bottom: none; }
+.show-row-link:hover {
+  background: rgba(201,168,76,0.06);
+}
+.show-row-link:hover .show-title-cell {
+  color: var(--gold);
+}
 .show-row {
   display: grid;
   grid-template-columns: 1fr auto auto auto;
   gap: 0.75rem;
   align-items: center;
   padding: 0.65rem 1.25rem;
-  border-bottom: 1px solid rgba(45,43,56,0.5);
   font-size: 0.82rem;
+  cursor: pointer;
 }
-.show-row:last-child { border-bottom: none; }
-.show-row:hover { background: rgba(201,168,76,0.03); }
 .show-title-cell {
   font-weight: 600;
   color: #fff;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  transition: color 0.15s;
+}
+.show-title-cell::after {
+  content: ' 🎟';
+  font-size: 0.65rem;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.show-row-link:hover .show-title-cell::after {
+  opacity: 0.7;
 }
 .show-title-cell .show-type {
   font-weight: 400;
@@ -280,6 +349,9 @@ main { max-width: 1500px; margin: 0 auto; padding: 1.5rem; }
   border-bottom: 1px solid var(--border);
 }
 .flat-table tr:hover td { background: rgba(201,168,76,0.03); }
+.flat-table tr.flat-row-link { cursor: pointer; }
+.flat-table tr.flat-row-link:hover td { background: rgba(201,168,76,0.06); }
+.flat-table tr.flat-row-link:hover .ft-show { color: var(--gold); }
 .flat-table .ft-show { font-weight: 600; color: #fff; }
 .flat-table .ft-theater { color: var(--text-dim); }
 .flat-table .ft-price { color: var(--peach); font-weight: 600; }
@@ -303,7 +375,7 @@ footer a { color: var(--gold); text-decoration: none; }
   .controls { padding: 0.4rem 0.75rem; }
   main { padding: 1rem 0.75rem; }
   .fg { width: 100%; }
-  .controls select, .controls input[type="text"] { max-width: 100%; width: 100%; }
+  .controls select, .controls input[type="text"], .controls input[type="date"] { max-width: 100%; width: 100%; }
 }
 </style>
 </head>
@@ -318,6 +390,18 @@ footer a { color: var(--gold); text-decoration: none; }
   <div class="fg">
     <label>Theater</label>
     <select id="fTheater"><option value="all">All Theaters</option></select>
+  </div>
+  <div class="fg">
+    <label>Region</label>
+    <select id="fRegion">
+      <option value="all">All Regions</option>
+      <option value="Baltimore">Baltimore</option>
+      <option value="Washington DC">Washington DC</option>
+      <option value="Northern VA">Northern Virginia</option>
+      <option value="Maryland Suburbs">MD Suburbs</option>
+      <option value="Frederick">Frederick</option>
+      <option value="Columbia">Columbia</option>
+    </select>
   </div>
   <div class="fg">
     <label>Type</label>
@@ -347,8 +431,23 @@ footer a { color: var(--gold); text-decoration: none; }
     </select>
   </div>
   <div class="fg">
+    <label>From</label>
+    <input type="date" id="fDateFrom" class="date-input">
+  </div>
+  <div class="fg">
+    <label>To</label>
+    <input type="date" id="fDateTo" class="date-input">
+  </div>
+  <div class="fg">
     <label>Search</label>
     <input type="text" id="fSearch" placeholder="Show or theater…">
+  </div>
+  <div class="fg fg-price">
+    <label>Max Price</label>
+    <div class="price-slider-wrap">
+      <input type="range" id="fPriceMax" min="15" max="300" value="300" step="5" class="price-slider">
+      <span id="fPriceLabel" class="price-label">Any</span>
+    </div>
   </div>
   <div class="btn-group">
     <button class="active" id="vGrouped">By Theater</button>
@@ -395,7 +494,8 @@ const theaters = [
       { title: "The Great Gatsby", start: "2026-01-31", end: "2026-02-07", price: "$55–150", type: "Musical" },
       { title: "Back to the Future: The Musical", start: "2026-02-24", end: "2026-03-01", price: "$50–140", type: "Musical" },
       { title: "Hadestown", start: "2026-03-13", end: "2026-03-14", price: "$60–160", type: "Musical" },
-      { title: "Suffs", start: "2026-04-28", end: "2026-05-03", price: "$50–135", type: "Musical" },
+      { title: "Kimberly Akimbo", start: "2026-04-28", end: "2026-05-03", price: "$45–135", type: "Musical" },
+      { title: "Suffs", start: "2026-05-26", end: "2026-05-31", price: "$50–135", type: "Musical" },
       { title: "Bat Out of Hell: The Musical", start: "2026-05-19", end: "2026-05-24", price: "$45–130", type: "Musical" },
       { title: "A Beautiful Noise: The Neil Diamond Musical", start: "2026-06-23", end: "2026-06-28", price: "$50–140", type: "Musical" },
       { title: "Maybe Happy Ending", start: "2026-09-13", end: "2026-09-19", price: "$55–150", type: "Musical" },
@@ -420,6 +520,7 @@ const theaters = [
       { title: "Spamalot", start: "2025-12-16", end: "2026-01-04", price: "$59–199", type: "Musical" },
       { title: "Chicago", start: "2026-03-31", end: "2026-04-05", price: "$49–169", type: "Musical" },
       { title: "Moulin Rouge! The Musical", start: "2026-06-16", end: "2026-07-05", price: "$69–225", type: "Musical" },
+      { title: "Bluey's Big Play", start: "2026-06-24", end: "2026-07-05", price: "$39–99", type: "Musical" },
       { title: "Back to the Future: The Musical", start: "2026-07-07", end: "2026-07-19", price: "$55–175", type: "Musical" },
       { title: "Mrs. Doubtfire", start: "2026-07-14", end: "2026-08-02", price: "$49–165", type: "Musical" },
       { title: "The Outsiders", start: "2026-07-28", end: "2026-08-16", price: "$59–185", type: "Musical" },
@@ -442,8 +543,16 @@ const theaters = [
       { title: "The Notebook", start: "2026-08-18", end: "2026-08-30", price: "$49–165", type: "Musical" },
       { title: "Dirty Dancing", start: "2026-09-29", end: "2026-10-11", price: "$55–165", type: "Musical" },
       { title: "Maybe Happy Ending", start: "2026-10-06", end: "2026-10-18", price: "$55–170", type: "Musical" },
+      { title: "Mamma Mia!", start: "2026-10-27", end: "2026-11-15", price: "$55–165", type: "Musical" },
+      { title: "The Hip Hop Nutcracker", start: "2026-11-17", end: "2026-11-29", price: "$40–95", type: "Special" },
+      { title: "Hell's Kitchen", start: "2026-11-24", end: "2026-12-06", price: "$55–175", type: "Musical" },
+      { title: "Waitress", start: "2026-12-08", end: "2026-12-13", price: "$49–155", type: "Musical" },
       { title: "Hamilton", start: "2026-12-16", end: "2027-02-07", price: "$79–299", type: "Musical" },
       { title: "Oh, Mary!", start: "2027-02-09", end: "2027-02-21", price: "$55–165", type: "Play" },
+      { title: "A Beautiful Noise: The Neil Diamond Musical", start: "2027-03-02", end: "2027-03-14", price: "$55–165", type: "Musical" },
+      { title: "The Who's Tommy", start: "2027-04-20", end: "2027-05-02", price: "$55–165", type: "Musical" },
+      { title: "Jersey Boys", start: "2027-04-27", end: "2027-05-09", price: "$55–165", type: "Musical" },
+      { title: "The Bodyguard", start: "2027-05-18", end: "2027-05-30", price: "$55–175", type: "Musical" },
       { title: "Operation Mincemeat", start: "2027-06-08", end: "2027-06-20", price: "$55–165", type: "Musical" },
       { title: "Just in Time", start: "2027-07-20", end: "2027-08-01", price: "$55–165", type: "Musical" },
     ]
@@ -471,14 +580,18 @@ const theaters = [
     name: "Shakespeare Theatre Company",
     location: "Washington, DC (Penn Quarter)",
     tier: "Major Regional",
-    desc: "One of the nation's foremost classical theater companies. Performs at Sidney Harman Hall (775 seats) and Michael R. Klein Theatre (451 seats) at 610 F St NW. Known for Shakespeare, classical works, and musicals.",
-    url: "https://www.shakespearetheatre.org/",
+    desc: "Celebrating its 40th anniversary season. Performs at Sidney Harman Hall (775 seats) and Michael R. Klein Theatre (451 seats) at 610 F St NW. Known for Shakespeare, classical works, and musicals. Artistic Director Simon Godwin.",
+    url: "https://www.shakespearetheatre.org/whats-on/",
     shows: [
+      { title: "Merry Wives", start: "2025-09-09", end: "2025-10-05", price: "$44–110", type: "Play" },
+      { title: "The Wild Duck", start: "2025-10-18", end: "2025-11-16", price: "$44–110", type: "Play" },
       { title: "Guys and Dolls", start: "2025-12-02", end: "2026-01-04", price: "$44–120", type: "Musical" },
-      { title: "Hamnet", start: "2026-03-17", end: "2026-04-12", price: "$44–110", type: "Play" },
-      { title: "The Tragedy of Hamlet", start: "2026-03-10", end: "2026-04-11", price: "$44–110", type: "Play" },
+      { title: "Paranormal Activity: A New Story Live on Stage", start: "2026-01-28", end: "2026-02-07", price: "$44–99", type: "Special" },
+      { title: "On Beckett (Bill Irwin)", start: "2026-02-11", end: "2026-03-08", price: "$44–99", type: "Play" },
+      { title: "Hamnet (U.S. Premiere)", start: "2026-03-17", end: "2026-04-12", price: "$44–110", type: "Play" },
+      { title: "The Tragedy of Hamlet (Eddie Izzard solo)", start: "2026-03-27", end: "2026-04-11", price: "$90–150", type: "Play" },
       { title: "44: The Musical", start: "2026-04-18", end: "2026-05-10", price: "$44–120", type: "Musical" },
-      { title: "Othello", start: "2026-05-19", end: "2026-06-28", price: "$44–110", type: "Play" },
+      { title: "Othello (starring Wendell Pierce)", start: "2026-05-19", end: "2026-06-28", price: "$44–120", type: "Play" },
       { title: "The Score (U.S. Premiere, starring Brian Cox)", start: "2026-09-11", end: "2026-10-18", price: "$59–145", type: "Play" },
       { title: "Frida…A Self-Portrait", start: "2026-10-08", end: "2026-11-08", price: "$44–99", type: "Play" },
       { title: "A Midsummer Night's Dream", start: "2026-12-04", end: "2027-01-10", price: "$44–120", type: "Play" },
@@ -585,7 +698,7 @@ const theaters = [
       { title: "Art", start: "2025-10-19", end: "2025-11-16", price: "$35–75", type: "Play" },
       { title: "Deceived (based on Gaslight)", start: "2025-11-30", end: "2026-01-04", price: "$35–80", type: "Play" },
       { title: "Dawn (World Premiere)", start: "2026-02-01", end: "2026-03-01", price: "$35–75", type: "Play" },
-      { title: "Clyde's", start: "2026-03-22", end: "2026-04-19", price: "$35–75", type: "Play" },
+      { title: "Vanya and Sonia and Masha and Spike", start: "2026-03-22", end: "2026-04-19", price: "$35–75", type: "Play" },
       { title: "Emma (Kate Hamill adaptation)", start: "2026-05-17", end: "2026-06-14", price: "$35–75", type: "Play" },
       { title: "Kim's Convenience", start: "2026-08-30", end: "2026-09-27", price: "$35–80", type: "Play" },
       { title: "Different Words for Happiness (World Premiere)", start: "2026-10-18", end: "2026-11-15", price: "$35–75", type: "Play" },
@@ -834,11 +947,62 @@ const theaters = [
 ];
 
 // Flatten all shows
+function slugify(title) {
+  return title
+    .toLowerCase()
+    .replace(/\(.*?\)/g, '')           // remove parenthetical text
+    .replace(/['']/g, '')              // remove smart quotes
+    .replace(/['":!?,\.]/g, '')        // remove punctuation
+    .replace(/&/g, 'and')
+    .replace(/—/g, '-')
+    .replace(/–/g, '-')
+    .replace(/disney's /i, 'disneys-')
+    .replace(/dr\. seuss' /i, 'dr-seuss-')
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+// Per-theater show URL patterns
+const showUrlPatterns = {
+  "Hippodrome Theatre": (title) => `https://baltimore.broadway.com/shows/${slugify(title)}/`,
+  "The National Theatre": (title) => `https://www.broadwayatthenational.com/show/${slugify(title)}/`,
+  "Toby's Dinner Theatre": (title, s) => {
+    const slugMap = {
+      "Saturday Night Fever": "saturday-night-fever",
+      "Elf The Musical": "elf-the-musical-2025",
+      "Rock of Ages": "rock-of-ages",
+      "The Wizard of Oz": "the-wizard-of-oz-2026",
+      "Mean Girls": "mean-girls-2026",
+      "SUMMER: The Donna Summer Musical": "summer-the-donna-summer-musical",
+      "White Christmas": "white-christmas-2026",
+    };
+    const slug = slugMap[title] || slugify(title);
+    return `https://tobysdinnertheatre.com/shows/${slug}/`;
+  },
+  "Ford's Theatre": (title) => `https://fords.org/whats-happening/2025-2026-season/`,
+  "Shakespeare Theatre Company": (title) => `https://www.shakespearetheatre.org/whats-on/`,
+  "Signature Theatre": (title) => `https://www.sigtheatre.org/shows-and-events`,
+  "Everyman Theatre": (title) => `https://everymantheatre.org/plays-events/2025-2026/`,
+  "Olney Theatre Center": (title) => `https://www.olneytheatre.org/productions`,
+  "Baltimore Center Stage": (title) => `https://www.centerstage.org/plays-and-events/plays-and-events/`,
+  "Round House Theatre": (title) => `https://www.roundhousetheatre.org/on-stage/`,
+  "Folger Theatre": (title) => `https://www.folger.edu/events/folger-theatre/`,
+  "Maryland Ensemble Theatre": (title) => `https://marylandensemble.org/2025-2026-mainstage-season/`,
+};
+
+function getShowUrl(theaterName, theaterUrl, showTitle, show) {
+  const fn = showUrlPatterns[theaterName];
+  if (fn) return fn(showTitle, show);
+  return theaterUrl;
+}
+
 function flattenShows() {
   const all = [];
   theaters.forEach(t => {
     t.shows.forEach(s => {
-      all.push({ ...s, theater: t.name, theaterLocation: t.location, tier: t.tier });
+      all.push({ ...s, theater: t.name, theaterLocation: t.location, tier: t.tier, theaterUrl: t.url, showUrl: getShowUrl(t.name, t.url, s.title, s) });
     });
   });
   return all;
@@ -859,6 +1023,31 @@ function statusLabel(st) {
   return st === 'now' ? 'Now Playing' : st === 'upcoming' ? 'Upcoming' : 'Past';
 }
 
+function getMinPrice(priceStr) {
+  // Extract the lowest number from strings like "$55–175", "$72–96", "$15–36"
+  const matches = priceStr.match(/\d+/g);
+  if (matches && matches.length > 0) return parseInt(matches[0], 10);
+  return 0;
+}
+
+function getMaxPrice(priceStr) {
+  const matches = priceStr.match(/\d+/g);
+  if (matches && matches.length > 1) return parseInt(matches[matches.length - 1], 10);
+  if (matches && matches.length === 1) return parseInt(matches[0], 10);
+  return 999;
+}
+
+function getRegion(location) {
+  const loc = location.toLowerCase();
+  if (loc.includes('baltimore')) return 'Baltimore';
+  if (loc.includes('columbia')) return 'Columbia';
+  if (loc.includes('frederick')) return 'Frederick';
+  if (loc.includes('silver spring') || loc.includes('bethesda') || loc.includes('olney') || loc.includes('la plata')) return 'Maryland Suburbs';
+  if (loc.includes('arlington') || loc.includes('tysons') || loc.includes('herndon') || loc.includes('falls church') || loc.includes('alexandria') || loc.includes('reston')) return 'Northern VA';
+  if (loc.includes('washington') || loc.includes(', dc')) return 'Washington DC';
+  return 'Other';
+}
+
 // Populate theater filter
 const theaterSel = document.getElementById('fTheater');
 theaters.forEach(t => {
@@ -872,11 +1061,16 @@ let view = 'grouped';
 let sortCol = 'start', sortDir = 1;
 
 function getFilters() {
+  const priceVal = parseInt(document.getElementById('fPriceMax').value, 10);
   return {
     theater: document.getElementById('fTheater').value,
+    region: document.getElementById('fRegion').value,
     tier: document.getElementById('fTier').value,
     status: document.getElementById('fStatus').value,
     season: document.getElementById('fSeason').value,
+    dateFrom: document.getElementById('fDateFrom').value,
+    dateTo: document.getElementById('fDateTo').value,
+    priceMax: priceVal >= 300 ? null : priceVal,
     search: document.getElementById('fSearch').value.toLowerCase(),
   };
 }
@@ -890,13 +1084,37 @@ function getSeason(start) {
   return (y-1) + '-' + String(y).slice(2); // Jan-Jul = belongs to prior year's season
 }
 
-function filterShows(shows, f, theaterName, theaterTier) {
+function theaterMatchesFilters(t, f) {
+  if (f.theater !== 'all' && t.name !== f.theater) return false;
+  if (f.tier !== 'all' && t.tier !== f.tier) return false;
+  if (f.region !== 'all' && getRegion(t.location) !== f.region) return false;
+  return true;
+}
+
+function showMatchesDates(s, f) {
+  if (f.dateFrom) {
+    const from = new Date(f.dateFrom);
+    const showEnd = new Date(s.end);
+    if (showEnd < from) return false;
+  }
+  if (f.dateTo) {
+    const to = new Date(f.dateTo);
+    const showStart = new Date(s.start);
+    if (showStart > to) return false;
+  }
+  return true;
+}
+
+function filterShows(shows, f, theaterName, theaterTier, theaterLocation) {
   return shows.filter(s => {
     if (f.theater !== 'all' && (theaterName || s.theater) !== f.theater) return false;
     if (f.tier !== 'all' && (theaterTier || s.tier) !== f.tier) return false;
+    if (f.region !== 'all' && getRegion(theaterLocation || s.theaterLocation || '') !== f.region) return false;
     const st = getStatus(s.start, s.end);
     if (f.status !== 'all' && st !== f.status) return false;
     if (f.season !== 'all' && getSeason(s.start) !== f.season) return false;
+    if (!showMatchesDates(s, f)) return false;
+    if (f.priceMax !== null && getMinPrice(s.price) > f.priceMax) return false;
     if (f.search) {
       const hay = (s.title + ' ' + (theaterName || s.theater || '')).toLowerCase();
       if (!hay.includes(f.search)) return false;
@@ -918,9 +1136,12 @@ function renderStats() {
   const filtered = allFlat.filter(s => {
     if (f.theater !== 'all' && s.theater !== f.theater) return false;
     if (f.tier !== 'all' && s.tier !== f.tier) return false;
+    if (f.region !== 'all' && getRegion(s.theaterLocation) !== f.region) return false;
     const st = getStatus(s.start, s.end);
     if (f.status !== 'all' && st !== f.status) return false;
     if (f.season !== 'all' && getSeason(s.start) !== f.season) return false;
+    if (!showMatchesDates(s, f)) return false;
+    if (f.priceMax !== null && getMinPrice(s.price) > f.priceMax) return false;
     if (f.search && !(s.title + ' ' + s.theater).toLowerCase().includes(f.search)) return false;
     return true;
   });
@@ -946,15 +1167,15 @@ function renderGrouped() {
   tiers.forEach(tier => {
     const tInTier = theaters.filter(t => t.tier === tier);
     tInTier.forEach(t => {
-      if (f.theater !== 'all' && t.name !== f.theater) return;
-      if (f.tier !== 'all' && t.tier !== f.tier) return;
-      const filtered = filterShows(t.shows, f, t.name, t.tier);
-      if (f.search && filtered.length === 0 && !t.name.toLowerCase().includes(f.search)) return;
+      if (!theaterMatchesFilters(t, f)) return;
+      const filtered = filterShows(t.shows, f, t.name, t.tier, t.location);
+      const hasActiveFilters = f.search || f.status !== 'all' || f.season !== 'all' || f.dateFrom || f.dateTo || f.priceMax !== null;
 
-      const showsToRender = f.search || f.status !== 'all' ? filtered : t.shows;
-      if (showsToRender.length === 0 && (f.search || f.status !== 'all')) return;
+      if (f.search && filtered.length === 0 && !t.name.toLowerCase().includes(f.search)) return;
+      if (filtered.length === 0 && hasActiveFilters) return;
 
       anyResults = true;
+      const showsToRender = hasActiveFilters ? filtered : t.shows;
       const sorted = [...showsToRender].sort((a, b) => a.start.localeCompare(b.start));
 
       html += `<div class="theater-block open">
@@ -970,12 +1191,15 @@ function renderGrouped() {
 
       sorted.forEach(s => {
         const st = getStatus(s.start, s.end);
-        html += `<div class="show-row">
-          <div class="show-title-cell">${s.title}<span class="show-type">${s.type}</span></div>
-          <div class="show-dates">${fmtDate(s.start)} – ${fmtDate(s.end)}</div>
-          <div class="show-price">${s.price}</div>
-          <div><span class="status-tag ${st}">${statusLabel(st)}</span></div>
-        </div>`;
+        const sUrl = getShowUrl(t.name, t.url, s.title, s);
+        html += `<a href="${sUrl}" target="_blank" class="show-row-link" title="Buy tickets – ${t.name}">
+          <div class="show-row">
+            <div class="show-title-cell">${s.title}<span class="show-type">${s.type}</span></div>
+            <div class="show-dates">${fmtDate(s.start)} – ${fmtDate(s.end)}</div>
+            <div class="show-price">${s.price}</div>
+            <div><span class="status-tag ${st}">${statusLabel(st)}</span></div>
+          </div>
+        </a>`;
       });
 
       html += `</div></div>`;
@@ -992,9 +1216,12 @@ function renderFlat() {
   let filtered = allFlat.filter(s => {
     if (f.theater !== 'all' && s.theater !== f.theater) return false;
     if (f.tier !== 'all' && s.tier !== f.tier) return false;
+    if (f.region !== 'all' && getRegion(s.theaterLocation) !== f.region) return false;
     const st = getStatus(s.start, s.end);
     if (f.status !== 'all' && st !== f.status) return false;
     if (f.season !== 'all' && getSeason(s.start) !== f.season) return false;
+    if (!showMatchesDates(s, f)) return false;
+    if (f.priceMax !== null && getMinPrice(s.price) > f.priceMax) return false;
     if (f.search && !(s.title + ' ' + s.theater).toLowerCase().includes(f.search)) return false;
     return true;
   });
@@ -1005,7 +1232,7 @@ function renderFlat() {
     else if (sortCol === 'title') { va = a.title; vb = b.title; }
     else if (sortCol === 'theater') { va = a.theater; vb = b.theater; }
     else if (sortCol === 'location') { va = a.theaterLocation; vb = b.theaterLocation; }
-    else if (sortCol === 'price') { va = a.price; vb = b.price; }
+    else if (sortCol === 'price') { va = getMinPrice(a.price); vb = getMinPrice(b.price); }
     else if (sortCol === 'status') { va = getStatus(a.start, a.end); vb = getStatus(b.start, b.end); }
     else { va = a.start; vb = b.start; }
     return (va || '').localeCompare(vb || '') * sortDir;
@@ -1018,7 +1245,7 @@ function renderFlat() {
   }
   tbody.innerHTML = filtered.map(s => {
     const st = getStatus(s.start, s.end);
-    return `<tr>
+    return `<tr class="flat-row-link" onclick="window.open('${s.showUrl}','_blank')" title="Buy tickets – ${s.theater}">
       <td class="ft-show">${s.title}</td>
       <td class="ft-theater">${s.theater}</td>
       <td>${s.theaterLocation}</td>
@@ -1036,8 +1263,18 @@ function render() {
 }
 
 // Events
-['fTheater','fTier','fStatus','fSeason'].forEach(id => document.getElementById(id).addEventListener('change', render));
+['fTheater','fTier','fStatus','fSeason','fRegion'].forEach(id => document.getElementById(id).addEventListener('change', render));
 document.getElementById('fSearch').addEventListener('input', render);
+document.getElementById('fDateFrom').addEventListener('change', render);
+document.getElementById('fDateTo').addEventListener('change', render);
+
+const priceSlider = document.getElementById('fPriceMax');
+const priceLabel = document.getElementById('fPriceLabel');
+priceSlider.addEventListener('input', () => {
+  const v = parseInt(priceSlider.value, 10);
+  priceLabel.textContent = v >= 300 ? 'Any' : '$' + v;
+  render();
+});
 
 document.getElementById('vGrouped').addEventListener('click', () => {
   view = 'grouped';
